@@ -3,14 +3,17 @@
 import Link from "next/link"
 import { useCallback, useState } from "react"
 
+/** One card per canonical APF class — matches Failure Atlas APF-001…006 */
 const ATTACKS = [
-  { id: "replay", label: "REPLAY", apf: "APF-001" },
-  { id: "duplicate", label: "DUPLICATE", apf: "APF-001" },
-  { id: "race", label: "BUDGET RACE", apf: "APF-002" },
-  { id: "stale", label: "STALE AUTH", apf: "APF-005" },
-  { id: "recipient", label: "WRONG RECIPIENT", apf: "APF-004" },
-  { id: "mismatch", label: "EXECUTION MISMATCH", apf: "APF-004" },
-]
+  { id: "apf-001", label: "REPLAY / DUPLICATE AUTH", apf: "APF-001" },
+  { id: "apf-002", label: "BUDGET RACE", apf: "APF-002" },
+  { id: "apf-003", label: "CRASH AFTER BROADCAST", apf: "APF-003" },
+  { id: "apf-004", label: "SETTLEMENT MISMATCH", apf: "APF-004" },
+  { id: "apf-005", label: "STALE AUTHORIZATION", apf: "APF-005" },
+  { id: "apf-006", label: "POLICY BYPASS", apf: "APF-006" },
+] as const
+
+const FAILURE_COUNT = ATTACKS.length
 
 type Phase = "idle" | "attacking" | "vulnerable" | "protecting" | "protected" | "blocked"
 
@@ -33,7 +36,7 @@ export function AttackDemo() {
 
   const vulnerable = phase === "vulnerable"
   const blocked = phase === "blocked" || phase === "protected"
-  const failuresFound = vulnerable ? 5 : blocked ? 0 : null
+  const showOutcome = phase === "vulnerable" || phase === "blocked"
 
   return (
     <div className="attack-demo">
@@ -49,9 +52,11 @@ export function AttackDemo() {
             <span className="prompt">$</span> railguard attack
             {phase === "attacking" ? <span className="cursor" /> : null}
           </p>
-          {(phase === "vulnerable" || phase === "blocked") && (
-            <p className="mono output warn">
-              {vulnerable ? "5 financial failures found" : "5/5 BLOCKED"}
+          {showOutcome && (
+            <p className={`mono output ${vulnerable ? "warn" : "ok"}`}>
+              {vulnerable
+                ? `${FAILURE_COUNT} financial failure classes exposed`
+                : `${FAILURE_COUNT}/${FAILURE_COUNT} BLOCKED · RECONCILED`}
             </p>
           )}
           {phase === "protected" && (
@@ -67,7 +72,7 @@ export function AttackDemo() {
 
       <ul className="attack-grid" aria-live="polite">
         {ATTACKS.map((a, i) => {
-          const hit = vulnerable && i < 5
+          const hit = vulnerable
           const safe = blocked
           return (
             <li
@@ -102,7 +107,7 @@ export function AttackDemo() {
         >
           railguard protect
         </button>
-        {failuresFound !== null && vulnerable && (
+        {vulnerable && (
           <button type="button" className="btn btn-ghost" onClick={runAttack}>
             Attack again
           </button>

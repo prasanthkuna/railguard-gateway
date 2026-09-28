@@ -17,8 +17,8 @@ export default function HomePage() {
           and the wallet you already use.
         </p>
         <div className="hero-loop">
-          <span>railguard attack</span>→<span>5 failures</span>→<span>railguard protect</span>→
-          <span>5/5 blocked</span>→<span>receipt</span>
+          <span>railguard attack</span>→<span>6 classes exposed</span>→<span>railguard protect</span>→
+          <span>6/6 blocked</span>→<span>receipt</span>
         </div>
         <div className="hero-ctas">
           <Link href="/attack" className="btn btn-mint">
