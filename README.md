@@ -1,13 +1,13 @@
 # Railguard Gateway
 
-[![PR Checks](https://github.com/prasanthkuna/railguard-cdp/actions/workflows/pr-checks.yml/badge.svg)](https://github.com/prasanthkuna/railguard-cdp/actions/workflows/pr-checks.yml)
-[![Testnet Evidence](https://github.com/prasanthkuna/railguard-cdp/actions/workflows/testnet-evidence.yml/badge.svg)](https://github.com/prasanthkuna/railguard-cdp/actions/workflows/testnet-evidence.yml)
+[![PR Checks](https://github.com/prasanthkuna/railguard-gateway/actions/workflows/pr-checks.yml/badge.svg)](https://github.com/prasanthkuna/railguard-gateway/actions/workflows/pr-checks.yml)
+[![Testnet Evidence](https://github.com/prasanthkuna/railguard-gateway/actions/workflows/testnet-evidence.yml/badge.svg)](https://github.com/prasanthkuna/railguard-gateway/actions/workflows/testnet-evidence.yml)
 
 > **Open-source financial execution firewall for autonomous software.**  
 > Agent money. Guarded.
 
 **Railguard Gateway** is the reference runtime: API, policy, reservation, execution, reconciliation, and evidence.  
-GitHub repo `railguard-cdp` is being renamed to **`railguard-gateway`**. Clone into folder **`railguard-gateway/`** (not `coinbase/`).
+GitHub: **`prasanthkuna/railguard-gateway`**. Clone into folder **`railguard-gateway/`**.
 
 | Surface | URL |
 |---------|-----|
