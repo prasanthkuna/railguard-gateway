@@ -49,7 +49,10 @@ jobs:
             packages/settlement/src/index.test.ts
 
       - name: Web typecheck
-        run: bun run --filter @railguard/web typecheck
+        run: bun run --filter @railguard/operator typecheck
 
-      - name: Web build
+      - name: Operator build
         run: bun run build:web
+
+      - name: Site typecheck
+        run: bun run --filter @railguard/site typecheck

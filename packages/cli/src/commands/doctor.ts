@@ -18,7 +18,11 @@ function padLine(label: string, value: string, width = 26): string {
   return `${label.padEnd(width)}${value}`
 }
 
-export async function runDoctor(env: RailguardEnv): Promise<void> {
+export async function runDoctor(env: RailguardEnv, options?: { banner?: string }): Promise<void> {
+  if (options?.banner) {
+    console.log(options.banner)
+    console.log("")
+  }
   try {
     await fetchJson(`${env.baseUrl}/health`)
   } catch {

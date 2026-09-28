@@ -1,34 +1,25 @@
-# Railguard monorepo layout (v5 §17)
+# Railguard Gateway monorepo layout
 
-```
-coinbase/   ← primary v5 monorepo (github.com/railguard/railguard target)
+Local folder: **`railguard-gateway/`** (GitHub: `railguard-cdp` → `railguard-gateway`).
+
+```text
+railguard-gateway/
 ├── apps/
-│   ├── api/          Encore control plane
-│   ├── web/          Operator console (v5 evidence UI)
-│   └── demo-agent/   SDK demo entry
+│   ├── api/          Encore Gateway
+│   ├── web/          Operator console (reference UI)
+│   └── demo-agent/
 ├── packages/
-│   ├── kernel/       FinancialIntent, Authority, Execution, Evidence
-│   ├── authority/    Re-export layer
-│   ├── execution/
-│   ├── evidence/
-│   ├── reconciliation/
-│   ├── observability/
-│   ├── sdk/
+│   ├── kernel/       FinancialIntent, lifecycle, evidence
+│   ├── sdk/          check(), authorize, execute, verify
 │   ├── cli/
+│   ├── integrations/
+│   ├── settlement/
 │   └── mcp/
-├── adapters/         See packages/kernel/src/adapters/
-├── examples/
-│   ├── vendor-payment-agent/
-│   ├── x402-agent/
-│   ├── procurement-agent/
-│   └── api-buying-agent/
-├── labs/failure-suite/
+├── evidence/         Testnet proofs (gitignored blobs; manifests in-repo where needed)
+├── docs/ecosystems.yaml   Grant / ecosystem manifest (tracked)
 └── docs/
 ```
 
-## Archived repos (banner only — history preserved)
+Sibling repos (not merged): **railguard-protocol**, **agent-payment-failure-lab**, **x402-guard**.
 
-- **x402-guard** → adapter inside this monorepo (`vendor/x402-guard`)
-- **railguard-cdp** → `examples/vendor-payment-agent` + `apps/demo-agent`
-
-Do not develop three independent architectures.
+Workspace index: [../../WORKSPACE.md](../../WORKSPACE.md) · Charter: [../../plan28.1-EXECUTION.md](../../plan28.1-EXECUTION.md).

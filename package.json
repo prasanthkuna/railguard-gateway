@@ -9,7 +9,8 @@
   },
   "workspaces": [
     "apps/api",
-    "apps/web",
+    "apps/operator",
+    "apps/site",
     "apps/demo-agent",
     "packages/*",
     "vendor/x402-guard/packages/*",
@@ -28,8 +29,9 @@
     "format": "biome format --write .",
     "preinstall": "node -e \"const fs=require('fs'); if(!fs.existsSync('encore.gen')) fs.mkdirSync('encore.gen'); fs.writeFileSync('encore.gen/package.json', JSON.stringify({name:'~encore',version:'0.0.0',type:'module'}))\"",
     "test": "bun test",
-    "typecheck": "encore check && bun run --filter @railguard/web typecheck",
-    "build:web": "bun run --filter @railguard/web build",
+    "typecheck": "encore check && bun run --filter @railguard/operator typecheck && bun run --filter @railguard/site typecheck",
+    "build:web": "bun run --filter @railguard/operator build",
+    "build:site": "bun run --filter @railguard/site build",
     "dev:video": "bun run --filter @railguard/video dev",
     "render:video": "bun run --filter @railguard/video render",
     "render:social": "bun run --filter @railguard/video render:social",
@@ -57,7 +59,9 @@
     "forge:test": "powershell -NoProfile -Command \"$env:PATH='$env:USERPROFILE\\.foundry\\bin;' + $env:PATH; cd ..\\railguard-new\\contracts; forge test\"",
     "gate-d-evidence": "bun run scripts/gate-d-evidence.ts",
     "test:testnet": "cross-env TESTNET_INTEGRATION=1 bun test packages/settlement/src/base-sepolia.integration.test.ts",
-    "dev:web": "bun run --filter @railguard/web dev",
+    "dev:web": "bun run --filter @railguard/operator dev",
+    "dev:operator": "bun run --filter @railguard/operator dev",
+    "dev:site": "bun run --filter @railguard/site dev",
     "dev:api": "powershell -NoProfile -Command \"$env:PAYMENT_MODE='demo'; $env:ALLOW_DEV_HEADER_AUTH='true'; $env:X402_GUARD_ENABLED='false'; encore run\""
   },
   "dependencies": {

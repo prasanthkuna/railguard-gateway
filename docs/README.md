@@ -1,16 +1,12 @@
-# coinbase / Railguard documentation
+# Railguard Gateway documentation
 
-| Doc | Purpose |
-|-----|---------|
-| [INTEGRATION.md](./INTEGRATION.md) | CLI, MCP, SDK |
-| [MONOREPO.md](./MONOREPO.md) | Package layout |
-| [OSS_CLOUD.md](./OSS_CLOUD.md) | OSS vs Cloud boundary |
-| [HOSTED_DEMO.md](./HOSTED_DEMO.md) | Production safety checklist |
-| [INVARIANTS.md](./INVARIANTS.md) | INV-001..008 |
-| [STATE_MACHINE.md](./STATE_MACHINE.md) | Payment lifecycle |
-| [api/endpoints.md](./api/endpoints.md) | REST API |
-| [runbooks/demo-verification.md](./runbooks/demo-verification.md) | End-to-end verify |
-| [runbooks/local-setup.md](./runbooks/local-setup.md) | Dev environment |
+**Start here:** [COMPONENTS.md](./COMPONENTS.md) · [ARCHITECTURE.md](./ARCHITECTURE.md) · [INTEGRATION.md](./INTEGRATION.md)
 
-**v5 plans:** [railguard-protocol/docs/v5plan.md](https://github.com/prasanthkuna/railguard-protocol/blob/master/docs/v5plan.md)  
-**Workspace map:** [railguard-protocol/docs/WORKSPACE.md](https://github.com/prasanthkuna/railguard-protocol/blob/master/docs/WORKSPACE.md)
+| Audience | Doc |
+|----------|-----|
+| Recruiters / grants | [railguard-protocol PORTFOLIO](https://github.com/prasanthkuna/railguard-protocol/blob/master/docs/PORTFOLIO.md) |
+| Operators | [HOSTED_DEMO.md](./HOSTED_DEMO.md) · [runbooks/demo-verification.md](./runbooks/demo-verification.md) |
+| Engineers | [api/endpoints.md](./api/endpoints.md) · [INVARIANTS.md](./INVARIANTS.md) |
+| Ecosystems | [ecosystems.yaml](./ecosystems.yaml) |
+
+Internal planning history: [internal/](./internal/) (not required for product understanding).

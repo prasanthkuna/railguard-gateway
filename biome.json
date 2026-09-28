@@ -4,8 +4,10 @@
     "ignore": [
       ".encore/**",
       "encore.gen/**",
-      "apps/web/.next/**",
-      "apps/web/next-env.d.ts",
+      "apps/operator/.next/**",
+      "apps/operator/next-env.d.ts",
+      "apps/site/.next/**",
+      "apps/site/next-env.d.ts",
       "apps/video/**",
       "x402-guard/**",
       "scripts/**",

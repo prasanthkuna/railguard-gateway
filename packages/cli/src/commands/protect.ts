@@ -36,6 +36,6 @@ export async function runProtect(env: RailguardEnv): Promise<number> {
   }
 
   console.log("")
-  console.log("Next: railguard doctor  →  railguard verify <executionId>")
+  console.log("Next: railguard scan  →  railguard receipts <executionId>")
   return 0
 }

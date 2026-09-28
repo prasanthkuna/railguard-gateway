@@ -10,7 +10,11 @@ export async function runEvidence(env: RailguardEnv, executionId: string): Promi
   console.log(JSON.stringify(result, null, 2))
 }
 
-export async function runMetrics(env: RailguardEnv): Promise<void> {
+export async function runMetrics(env: RailguardEnv, options?: { banner?: string }): Promise<void> {
+  if (options?.banner) {
+    console.log(options.banner)
+    console.log("")
+  }
   const token = requireToken(env)
   const metrics = await fetch(`${env.baseUrl}/v1/metrics/financial`, {
     headers: { authorization: `Bearer ${token}` },

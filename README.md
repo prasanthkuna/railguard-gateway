@@ -1,89 +1,88 @@
-# Railguard Control Plane (railguard-cdp)
+# Railguard Gateway
 
 [![PR Checks](https://github.com/prasanthkuna/railguard-cdp/actions/workflows/pr-checks.yml/badge.svg)](https://github.com/prasanthkuna/railguard-cdp/actions/workflows/pr-checks.yml)
 [![Testnet Evidence](https://github.com/prasanthkuna/railguard-cdp/actions/workflows/testnet-evidence.yml/badge.svg)](https://github.com/prasanthkuna/railguard-cdp/actions/workflows/testnet-evidence.yml)
-[![evidence](https://img.shields.io/badge/evidence-Base%20Sepolia-blue)](https://github.com/prasanthkuna/railguard-protocol/tree/master/evidence/cdp-base-sepolia)
 
-**Agent treasury control plane** — policy → authorize → execute → reconcile → evidence.
+> **Open-source financial execution firewall for autonomous software.**  
+> Agent money. Guarded.
 
-Operator UI ships as **PreBroadcast** on Vercel. Backend: Encore API + CDP on Base Sepolia.
+**Railguard Gateway** is the reference runtime: API, policy, reservation, execution, reconciliation, and evidence.  
+GitHub repo `railguard-cdp` is being renamed to **`railguard-gateway`**. Clone into folder **`railguard-gateway/`** (not `coinbase/`).
 
-> **Live demo:** [prebroadcast.vercel.app](https://prebroadcast.vercel.app) · **ZebPay pack:** [/zebpay](https://prebroadcast.vercel.app/zebpay) · API: `https://staging-railguard-s4ii.encr.app`  
-> **Constitution:** [v5plan.md](https://github.com/prasanthkuna/railguard-protocol/blob/master/docs/v5plan.md) · **Status:** [v5execution.md](https://github.com/prasanthkuna/railguard-protocol/blob/master/docs/v5execution.md)
+| Surface | URL |
+|---------|-----|
+| Staging API | https://staging-railguard-s4ii.encr.app |
+| Operator console (reference) | https://prebroadcast.vercel.app |
+| Reviewer pack | https://prebroadcast.vercel.app/zebpay |
 
-## Stack (v5)
+**Maturity:** `v0.1.0-alpha` — testnet reference implementation. Not production-ready for mainnet funds.
+
+## Lifecycle
 
 ```text
-Agent Payment Failure Lab   → conformance + adversarial profiles
-@railguard/kernel           → FinancialIntent, Authority, Execution, Evidence
-x402-guard (adapter)        → pre-payment budget + policy
-coinbase/ (this repo)       → hosted API, console, CDP execution, reconciliation
-railguard-protocol/signgate/     → optional on-chain high-assurance mode (Authority Engine Go)
+Financial Intent → Authorize → Reserve → Execute → Observe → Reconcile → Evidence
 ```
+
+## Components
+
+See [docs/COMPONENTS.md](./docs/COMPONENTS.md) — Core (protocol), Gateway (this repo), Failure Lab, x402 adapter.
 
 ## Quick start (Windows)
 
 ```powershell
-git clone https://github.com/prasanthkuna/railguard-cdp.git coinbase
-cd coinbase
+git clone https://github.com/prasanthkuna/railguard-cdp.git railguard-gateway
+cd railguard-gateway
 bun install
-bun run dev:api    # terminal 1 — Encore on :4000
-bun run dev:web    # terminal 2 — console on :3000
+bun run dev:api    # Encore :4000
+bun run dev:web    # Operator console :3000
 ```
 
-> GitHub repo name is still `railguard-cdp`; local folder is often `coinbase/`. See [docs/MONOREPO.md](./docs/MONOREPO.md).
+## CLI (public vocabulary)
 
-## Agent integration
+```powershell
+bun run railguard scan      # configuration & posture
+bun run railguard attack    # Failure Lab adversarial profiles
+bun run railguard protect   # enable / compare protection
+bun run railguard status    # execution metrics
+bun run railguard receipts  # verify & evidence
+```
 
-| Surface | Command |
-|---------|---------|
-| CLI | `bun run railguard doctor` · `bun run railguard verify` |
-| MCP | `bun run railguard:mcp` — [docs/INTEGRATION.md](./docs/INTEGRATION.md) |
-| SDK | `@railguard/sdk` — `authorize()`, `execute()`, `verify()` |
+Advanced: `doctor`, `verify`, `inject`, `lab`, MCP — [docs/INTEGRATION.md](./docs/INTEGRATION.md).
 
-## Payment modes
+## SDK
 
-| Mode | `PAYMENT_MODE` | Behavior |
-|------|----------------|----------|
-| **Demo** | `demo` | Hash-bound settlement simulation |
-| **Live testnet** | `live` | Real CDP + Base Sepolia USDC |
+```ts
+import { RailguardClient, check, createClientFromEnv } from "@railguard/sdk"
 
-## Configuration
-
-| Variable | Purpose |
-|----------|---------|
-| `PAYMENT_MODE` | `demo` or `live` |
-| `X402_GUARD_ENABLED` | `true` for x402 Authority path |
-| `RAILGUARD_ACCESS_TOKEN` | CLI / MCP / SDK auth |
-| `RAILGUARD_BASE_URL` | API base (default `http://localhost:4000`) |
+const client = new RailguardClient(createClientFromEnv())
+const decision = await check(client, intent)
+```
 
 ## Tests
 
 ```powershell
 bun run test:v5
+bun run test:integrations
+bun run testnet:all
 encore check
-bun run verify:demo   # requires dev:api running
 ```
 
-## Documentation
+## Docs
 
 | Doc | Purpose |
 |-----|---------|
+| [ARCHITECTURE.md](./docs/ARCHITECTURE.md) | Lifecycle + deployed stack |
+| [COMPONENTS.md](./docs/COMPONENTS.md) | Repo map |
 | [INTEGRATION.md](./docs/INTEGRATION.md) | CLI, MCP, SDK |
-| [PLAN25SEP_CODE.md](./docs/PLAN25SEP_CODE.md) | plan25sep.md code map (no video) |
-| [MONOREPO.md](./docs/MONOREPO.md) | Repo layout |
-| [OSS_CLOUD.md](./docs/OSS_CLOUD.md) | Open source vs Cloud |
-| [INVARIANTS.md](./docs/INVARIANTS.md) | INV-001..008 |
-| [api/endpoints.md](./docs/api/endpoints.md) | REST surface |
+| [docs/ecosystems.yaml](./docs/ecosystems.yaml) | Grant / ecosystem manifest |
 
 ## Sibling repos
 
 | Repo | Role |
 |------|------|
-| [railguard-protocol](https://github.com/prasanthkuna/railguard-protocol) | Protocol, evidence, v5 plans, optional Authority Engine (Go) |
-| [x402-guard](https://github.com/prasanthkuna/x402-guard) | x402 ExecutionRail adapter |
-| [agent-payment-failure-lab](https://github.com/prasanthkuna/agent-payment-failure-lab) | Failure / conformance suite |
-| [grant-ops](https://github.com/prasanthkuna/grant-ops) | Grant applications (private ops) |
+| [railguard-protocol](https://github.com/prasanthkuna/railguard-protocol) | Core + SignGate + contracts |
+| [agent-payment-failure-lab](https://github.com/prasanthkuna/agent-payment-failure-lab) | Failure Lab + Failure Atlas |
+| [x402-guard](https://github.com/prasanthkuna/x402-guard) | x402 adapter |
 
 ## License
 

@@ -23,7 +23,7 @@ export function Sidebar() {
           <ShieldCheck className="h-5 w-5 text-white" />
         </div>
         <div>
-          <p className="rg-headline text-[var(--rg-text-primary)]">PreBroadcast</p>
+          <p className="rg-headline text-[var(--rg-text-primary)]">Railguard Operator</p>
           <p className="rg-caption text-[var(--rg-text-muted)]">
             Built on Coinbase Developer Platform
           </p>

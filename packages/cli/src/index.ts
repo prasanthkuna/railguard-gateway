@@ -13,25 +13,21 @@ import {
 } from "./commands/v5"
 import { resolveRailguardEnv } from "./config"
 
-const HELP = `Railguard CLI v0.5 — agent treasury control plane
+const HELP = `Railguard CLI — financial execution firewall (v0.1.0-alpha)
 
-Usage:
-  railguard doctor [--base-url URL]
-  railguard verify [executionId|intentId] [--base-url URL]
-  railguard protect [--base-url URL]
-  railguard inject <scenario> [--depth N]
-  railguard race budget [--requests N]
-  railguard lab [apf-lab args...]
-  railguard metrics [--base-url URL]
-  railguard evidence <executionId> [--base-url URL]
-  railguard intent create [file.json] [--base-url URL]
-  railguard authorize <intentId> [--base-url URL]
-  railguard execute <intentId> [--payment-intent-id ID] [--base-url URL]
-  railguard pay [file.json] [--payment-intent-id ID] [--base-url URL]
+Public commands:
+  railguard scan [--base-url URL]       posture & configuration
+  railguard attack [lab args...]        Failure Lab adversarial profiles
+  railguard protect [--base-url URL]    protection setup
+  railguard status [--base-url URL]     execution metrics
+  railguard receipts [id] [--base-url]  verify & evidence
+
+Advanced:
+  doctor verify inject race lab metrics intent authorize execute pay evidence
 
 Environment:
   RAILGUARD_BASE_URL       API base (default http://localhost:4000)
-  RAILGUARD_ACCESS_TOKEN   Bearer token for v5 API calls
+  RAILGUARD_ACCESS_TOKEN   Bearer token for Gateway API calls
 `
 
 const { values, positionals } = parseArgs({
@@ -64,9 +60,21 @@ async function main(): Promise<number> {
 
   try {
     switch (cmd) {
+      case "scan":
+        await runDoctor(env, { banner: "Railguard scan — posture & configuration" })
+        return 0
       case "doctor":
         await runDoctor(env)
         return 0
+      case "attack":
+        return runLab(positionals.slice(1))
+      case "status":
+        await runMetrics(env, { banner: "Railguard status — execution metrics" })
+        return 0
+      case "receipts":
+        console.log("Railguard receipts — verify & evidence\n")
+        if (sub?.toUpperCase().startsWith("APF-")) return runVerifyApf(sub, env)
+        return runVerify(env, sub)
       case "protect":
         return runProtect(env)
       case "inject":

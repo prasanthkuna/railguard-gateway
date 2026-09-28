@@ -18,8 +18,8 @@ const mono = JetBrains_Mono({
 })
 
 export const metadata: Metadata = {
-  title: "PreBroadcast",
-  description: "Policy before USDC broadcast — built on Coinbase Developer Platform.",
+  title: "Railguard Operator",
+  description: "Reference operator console for the Railguard financial execution firewall.",
 }
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {

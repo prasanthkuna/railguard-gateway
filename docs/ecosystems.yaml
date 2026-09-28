@@ -1,0 +1,42 @@
+# Grant / ecosystem one-pager source (plan28.1). Generate site pages from this file.
+version: 1
+project:
+  name: Railguard
+  tagline: Agent money. Guarded.
+  maturity: v0.1.0-alpha
+  license: Apache-2.0 (Gateway, Failure Lab); MIT (protocol core, relicensing planned)
+
+ecosystems:
+  - id: coinbase-cdp
+    label: Coinbase Developer Platform
+    status: integrated
+    evidence:
+      - evidence/cdp-base-sepolia-live
+      - evidence/arbitrum-sepolia
+    narrative: Reference execution + reconciliation on Base Sepolia via CDP.
+
+  - id: base
+    label: Base
+    status: testnet
+    chains:
+      - base-sepolia
+    evidence:
+      - evidence/cdp-base-sepolia-live
+
+  - id: stellar
+    label: Stellar
+    status: testnet
+    evidence:
+      - evidence/stellar-testnet
+
+  - id: x402
+    label: x402
+    status: adapter
+    repo: x402-guard
+    narrative: Execution rail adapter inside Gateway kernel — not a separate product.
+
+  - id: failure-lab
+    label: Failure Lab
+    status: shipped
+    repo: agent-payment-failure-lab
+    atlas: https://github.com/prasanthkuna/agent-payment-failure-lab/tree/main/atlas

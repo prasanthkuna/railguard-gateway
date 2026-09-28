@@ -53,7 +53,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
             Checking access
           </h2>
           <p className="rg-body mt-3 text-[var(--rg-text-muted)]">
-            Preparing your PreBroadcast workspace.
+            Preparing your Railguard operator workspace.
           </p>
         </div>
       </div>

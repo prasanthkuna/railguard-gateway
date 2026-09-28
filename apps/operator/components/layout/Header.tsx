@@ -29,7 +29,7 @@ export function Header() {
     routeTitles[pathname || ""] ||
     (pathname?.startsWith("/invoices/") ? "Invoice Detail" : undefined) ||
     (pathname?.startsWith("/vendors/") ? "Vendor Detail" : undefined) ||
-    "PreBroadcast"
+    "Railguard Operator"
 
   function handleSignOut() {
     clearAuthSession()

@@ -98,6 +98,7 @@ export class RailguardClient {
 }
 
 export { authorizeIntent, executeIntent, verifyExecution, pay } from "@railguard/kernel/v5Actions"
+export { check, type CheckDecision, type CheckResult } from "./check"
 export { resolveRailguardEnv, requireToken, createClientFromEnv, type RailguardEnv } from "./env"
 export type {
   FinancialIntent,
