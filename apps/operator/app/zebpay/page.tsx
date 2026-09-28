@@ -26,7 +26,7 @@ const PROOF_LINKS = [
     detail: "authorize → execute → reconcile → GET /v1/executions/:id/evidence",
   },
   {
-    title: "PreBroadcast demo",
+    title: "Railguard reviewer pack",
     href: PREBROADCAST,
     detail: "Hosted console — policy before USDC broadcast (Base Sepolia)",
   },
@@ -130,7 +130,7 @@ bun run railguard verify <executionId> --base-url <API>`}
           </Link>
           {" · "}
           <a href={PREBROADCAST} className="text-[var(--rg-brand)] hover:underline">
-            Open PreBroadcast
+            Open operator console
           </a>
         </p>
       </div>

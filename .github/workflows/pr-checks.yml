@@ -54,5 +54,5 @@ jobs:
       - name: Operator build
         run: bun run build:web
 
-      - name: Site typecheck
-        run: bun run --filter @railguard/site typecheck
+      - name: Site build
+        run: bun run build:site

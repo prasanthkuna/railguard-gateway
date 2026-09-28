@@ -1,10 +1,42 @@
-import { redirect } from "next/navigation"
+import Link from "next/link"
+import { ReceiptCard } from "../../../components/ReceiptCard"
+import { OPERATOR_URL } from "../../../lib/constants"
+import { receiptFromId } from "../../../lib/demo-receipt"
 
 type Props = { params: Promise<{ id: string }> }
 
-/** Shareable receipt deep link — resolves to operator execution view. */
-export default async function ReceiptSharePage({ params }: Props) {
+export default async function ReceiptPage({ params }: Props) {
   const { id } = await params
-  const operator = process.env.NEXT_PUBLIC_OPERATOR_URL || "https://prebroadcast.vercel.app"
-  redirect(`${operator}/executions/${encodeURIComponent(id)}`)
+  const data = receiptFromId(decodeURIComponent(id))
+  const isDemo = id === "demo" || id.startsWith("exec_demo")
+
+  return (
+    <main className="page receipt-page">
+      <ReceiptCard data={data} demo={isDemo} />
+      <div className="receipt-actions">
+        <Link href="/attack" className="btn btn-mint">
+          Run attack demo
+        </Link>
+        <a href={`${OPERATOR_URL}/executions/${encodeURIComponent(id)}`} className="btn btn-ghost">
+          Open in operator
+        </a>
+        <Link href="/" className="btn btn-ghost">
+          Home
+        </Link>
+      </div>
+      {!isDemo && (
+        <p
+          style={{
+            textAlign: "center",
+            fontSize: "0.8rem",
+            color: "var(--muted)",
+            marginTop: "1rem",
+          }}
+        >
+          Authenticated evidence loads in the operator console. Fields above use the public envelope
+          shape.
+        </p>
+      )}
+    </main>
+  )
 }

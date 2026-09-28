@@ -131,7 +131,7 @@ export default function LoginPageContent() {
           <div className="mx-auto mb-5 flex h-12 w-12 items-center justify-center rounded-[14px] bg-[var(--rg-brand)] shadow-[var(--rg-shadow-glow)]">
             <ShieldCheck className="h-6 w-6 text-white" />
           </div>
-          <p className="rg-caption text-[var(--rg-brand)]">PreBroadcast</p>
+          <p className="rg-caption text-[var(--rg-brand)]">Railguard Operator</p>
           <h1 className="mt-2 text-[2rem] font-semibold tracking-[-0.04em] text-[var(--rg-text-primary)]">
             {mode === "signup" ? "Create account" : "Sign in"}
           </h1>
@@ -226,7 +226,7 @@ export default function LoginPageContent() {
 
         <p className="mt-5 text-center text-xs leading-5 text-[var(--rg-text-muted)]">
           Google works for new and existing accounts. After Google auth we attach you to the
-          PreBroadcast workspace automatically.
+          Railguard operator workspace automatically.
         </p>
       </div>
     </div>

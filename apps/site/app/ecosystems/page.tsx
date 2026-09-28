@@ -1,38 +1,49 @@
-const ecosystems = [
-  {
-    id: "coinbase-cdp",
-    label: "Coinbase Developer Platform",
-    status: "integrated",
-    note: "Base Sepolia reference execution + reconciliation.",
-  },
-  { id: "base", label: "Base", status: "testnet", note: "base-sepolia evidence paths." },
-  { id: "stellar", label: "Stellar", status: "testnet", note: "Horizon verify on testnet." },
-  { id: "x402", label: "x402", status: "adapter", note: "Execution rail adapter (x402-guard)." },
-  {
-    id: "failure-lab",
-    label: "Failure Lab",
-    status: "shipped",
-    note: "APF-001…006 adversarial profiles.",
-  },
-]
+import Link from "next/link"
+import { ECOSYSTEMS } from "../../lib/ecosystems"
 
 export default function EcosystemsPage() {
   return (
-    <main className="container">
-      <h1>Ecosystems</h1>
-      <p className="tagline">Grant manifest — source: railguard-gateway/docs/ecosystems.yaml</p>
-      <div className="grid">
-        {ecosystems.map((e) => (
-          <div key={e.id} className="card">
-            <h2>{e.label}</h2>
-            <p>
-              <strong>{e.status}</strong> — {e.note}
+    <main className="page">
+      <section className="hero" style={{ paddingTop: "2rem" }}>
+        <p className="eyebrow">Grant leverage</p>
+        <h1>Ecosystems</h1>
+        <p className="hero-lead">
+          Proof + failure coverage per rail. Source manifest:{" "}
+          <span className="mono">docs/ecosystems.yaml</span>
+        </p>
+      </section>
+
+      <div className="eco-grid">
+        {ECOSYSTEMS.map((e) => (
+          <article key={e.id} className="eco-card">
+            <span className="pill">{e.statusLabel}</span>
+            <h3>{e.label}</h3>
+            <p className="eco-protects">
+              <strong style={{ color: "var(--text)" }}>Railguard protects</strong>
+              <br />
+              {e.protects.join(" · ")}
             </p>
-          </div>
+            <p className="eco-apf">
+              <strong style={{ color: "var(--text)" }}>Failure coverage</strong>
+              <br />
+              {e.apf.join(" · ")}
+            </p>
+            <p style={{ fontSize: "0.85rem", color: "var(--muted)" }}>{e.narrative}</p>
+            <p style={{ marginTop: "1rem" }}>
+              <a href={e.evidenceHref}>View testnet proof</a>
+            </p>
+            <p
+              className="mono"
+              style={{ fontSize: "0.8rem", color: "var(--mint)", marginTop: "0.75rem" }}
+            >
+              Try: railguard attack
+            </p>
+          </article>
         ))}
       </div>
-      <p style={{ marginTop: "2rem" }}>
-        <a href="/">← Home</a>
+
+      <p style={{ marginTop: "2rem", textAlign: "center" }}>
+        <Link href="/">← Home</Link>
       </p>
     </main>
   )
