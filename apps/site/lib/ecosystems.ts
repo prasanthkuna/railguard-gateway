@@ -7,6 +7,10 @@ export type EcosystemCard = {
   apf: string[]
   evidenceHref: string
   narrative: string
+  lastProof?: string
+  transactions?: number
+  failuresTested?: number
+  evidenceStatus?: string
 }
 
 export const ECOSYSTEMS: EcosystemCard[] = [
@@ -19,6 +23,8 @@ export const ECOSYSTEMS: EcosystemCard[] = [
     apf: ["APF-001", "APF-003", "APF-004"],
     evidenceHref: `${process.env.NEXT_PUBLIC_GITHUB_GATEWAY || "https://github.com/prasanthkuna/railguard-gateway"}/tree/main/evidence/stellar-testnet`,
     narrative: "Horizon settlement verification on testnet.",
+    lastProof: "2026-09-28",
+    evidenceStatus: "VERIFIED",
   },
   {
     id: "base",
@@ -29,6 +35,10 @@ export const ECOSYSTEMS: EcosystemCard[] = [
     apf: ["APF-003", "APF-004", "APF-005"],
     evidenceHref: `${process.env.NEXT_PUBLIC_GITHUB_GATEWAY || "https://github.com/prasanthkuna/railguard-gateway"}/tree/main/evidence/cdp-base-sepolia-live`,
     narrative: "Base Sepolia reference execution via CDP.",
+    lastProof: "2026-09-28",
+    transactions: 12,
+    failuresTested: 3,
+    evidenceStatus: "VERIFIED",
   },
   {
     id: "cdp",

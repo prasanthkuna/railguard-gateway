@@ -5,10 +5,11 @@ export default function AttackPage() {
   return (
     <main className="page">
       <div className="attack-page-hero">
-        <p className="eyebrow">Hero demo</p>
-        <h1>An unsafe agent has your wallet</h1>
+        <p className="eyebrow">Failure Lab</p>
+        <h1>Can it survive six financial failures?</h1>
         <p className="hero-lead" style={{ margin: "0 auto" }}>
-          Run attacks, enable protection, run again. This is the loop for grants, YC, X, and hiring.
+          Watch attacks arrive in sequence — then <span className="mono">railguard protect</span>{" "}
+          and run again.
         </p>
       </div>
       <AttackDemo />
