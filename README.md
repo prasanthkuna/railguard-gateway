@@ -30,7 +30,7 @@ See [docs/COMPONENTS.md](./docs/COMPONENTS.md) — Core (protocol), Gateway (thi
 ## Quick start (Windows)
 
 ```powershell
-git clone https://github.com/prasanthkuna/railguard-cdp.git railguard-gateway
+git clone https://github.com/prasanthkuna/railguard-gateway.git
 cd railguard-gateway
 bun install
 bun run dev:api    # Encore :4000

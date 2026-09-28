@@ -5,7 +5,7 @@ One product. These repositories are **parts**, not separate companies.
 | Component | Repository | Lifecycle stages |
 |-----------|------------|------------------|
 | **Railguard Core** | [railguard-protocol](https://github.com/prasanthkuna/railguard-protocol) | Intent model, policy, optional SignGate + on-chain ENFORCE |
-| **Railguard Gateway** | [railguard-cdp](https://github.com/prasanthkuna/railguard-cdp) | Authorize, Reserve, Execute, Observe, Reconcile, Evidence (reference runtime) |
+| **Railguard Gateway** | [railguard-gateway](https://github.com/prasanthkuna/railguard-gateway) | Authorize, Reserve, Execute, Observe, Reconcile, Evidence (reference runtime) |
 | **Failure Lab** | [agent-payment-failure-lab](https://github.com/prasanthkuna/agent-payment-failure-lab) | Adversarial testing; owns [Failure Atlas](https://github.com/prasanthkuna/agent-payment-failure-lab/tree/main/atlas) |
 | **x402 adapter** | [x402-guard](https://github.com/prasanthkuna/x402-guard) | Pre-sign policy integration |
 | **Marketing site** | `apps/site` | Public positioning, ecosystems, `/r/:id` share links |
