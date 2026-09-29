@@ -27,6 +27,7 @@ encore.gen.cue
 /encore.gen/**
 !/encore.gen/package.json
 .playwright-mcp/
+**/test-results/
 
 # deployment / local tooling
 .vercel/

@@ -10,6 +10,7 @@ import { Button } from "../ui/Button"
 
 const routeTitles: Record<string, string> = {
   "/": "Dashboard",
+  "/executions": "Executions",
   "/invoices": "Invoices",
   "/invoices/upload": "Upload Invoice",
   "/vendors": "Vendors",
@@ -27,6 +28,7 @@ export function Header() {
 
   const pageTitle =
     routeTitles[pathname || ""] ||
+    (pathname?.startsWith("/executions/") ? "Execution Detail" : undefined) ||
     (pathname?.startsWith("/invoices/") ? "Invoice Detail" : undefined) ||
     (pathname?.startsWith("/vendors/") ? "Vendor Detail" : undefined) ||
     "Railguard Operator"
@@ -57,6 +59,11 @@ export function Header() {
           </div>
         ) : null}
 
+        <Link href="/executions" className="lg:hidden">
+          <Button size="sm" variant="secondary">
+            Executions
+          </Button>
+        </Link>
         <Link href="/invoices/upload">
           <Button size="sm" variant="primary" className="gap-1.5">
             <Plus className="h-4 w-4" />

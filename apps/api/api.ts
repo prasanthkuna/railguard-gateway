@@ -26,6 +26,11 @@ import type {
   VendorStatus,
   VendorWalletRecord as VendorWallet,
 } from "../../packages/db/src"
+import {
+  assertIdempotentReplay,
+  hashPaymentIntentCreateRequest,
+  normalizeIdempotencyKey as normalizeKernelIdempotencyKey,
+} from "../../packages/kernel/src/idempotency"
 import { type PolicyResult, evaluateInvoicePolicy } from "../../packages/policy/src"
 import { submitPersistedCdpTransfer } from "./cdpExecutionSubmit"
 import { db } from "./db"
@@ -744,7 +749,13 @@ export const createPaymentIntent = api(
       WHERE organization_id = ${actor.organizationID} AND idempotency_key = ${params.idempotencyKey}
     `
     if (existing) {
-      if (existing.invoice_id !== params.invoiceID) {
+      try {
+        assertIdempotentReplay(
+          "payment intent",
+          hashPaymentIntentCreateRequest(existing.invoice_id),
+          hashPaymentIntentCreateRequest(params.invoiceID),
+        )
+      } catch {
         throw APIError.failedPrecondition(
           "payment intent idempotency key is already used for a different invoice",
         )
@@ -2303,11 +2314,11 @@ function ensurePositiveBaseUnits(value: string): bigint {
 }
 
 function ensureIdempotencyKey(value: string): string {
-  const normalized = value.trim()
-  if (normalized.length < 8 || normalized.length > 128) {
+  try {
+    return normalizeKernelIdempotencyKey(value)
+  } catch {
     throw APIError.invalidArgument("idempotencyKey must be between 8 and 128 characters")
   }
-  return normalized
 }
 
 function ensureConfidence(value: number): void {

@@ -13,6 +13,7 @@ Legacy invoice path plus v5 financial authority API. Full list: [docs/api/endpoi
 - `POST /v1/intents`
 - `POST /v1/intents/:id/authorize`
 - `POST /v1/intents/:id/execute`
+- `GET /v1/executions`
 - `GET /v1/executions/:id`
 - `GET /v1/executions/:id/evidence`
 

@@ -14,6 +14,9 @@ ecosystems:
       - evidence/cdp-base-sepolia-live
       - evidence/arbitrum-sepolia
     narrative: Reference execution + reconciliation on Base Sepolia via CDP.
+    rails:
+      - cdp
+      - base
 
   - id: base
     label: Base
@@ -22,21 +25,32 @@ ecosystems:
       - base-sepolia
     evidence:
       - evidence/cdp-base-sepolia-live
+    rails:
+      - base
 
   - id: stellar
     label: Stellar
     status: testnet
     evidence:
       - evidence/stellar-testnet
+    rails:
+      - stellar
 
   - id: x402
     label: x402
     status: adapter
     repo: x402-guard
     narrative: Execution rail adapter inside Gateway kernel — not a separate product.
+    rails:
+      - x402
 
   - id: failure-lab
     label: Failure Lab
     status: shipped
     repo: agent-payment-failure-lab
     atlas: https://github.com/prasanthkuna/agent-payment-failure-lab/tree/main/atlas
+
+adapters:
+  registry: packages/integrations/src/rails/registry.ts
+  kernel: packages/kernel/src/adapters.ts
+  resolve_network: resolveRailForNetwork

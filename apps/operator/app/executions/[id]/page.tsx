@@ -54,7 +54,7 @@ export default function ExecutionDetailPage() {
   if (error || !execution) {
     return (
       <div className="space-y-4">
-        <BackLink label="Back" onClick={() => router.back()} />
+        <BackLink label="Executions" onClick={() => router.push("/executions")} />
         <p className="text-[var(--rg-text-muted)]">{error ?? "Execution not found"}</p>
       </div>
     )
@@ -62,7 +62,7 @@ export default function ExecutionDetailPage() {
 
   return (
     <div className="space-y-6 pb-16">
-      <BackLink label="Back" onClick={() => router.back()} />
+      <BackLink label="Executions" onClick={() => router.push("/executions")} />
       <PageHeader
         eyebrow="Execution"
         title={execution.executionId}

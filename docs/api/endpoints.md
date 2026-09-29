@@ -86,10 +86,17 @@ Audit exports are produced asynchronously so the UI can request evidence bundles
 | `POST` | `/v1/intents` | Create a `FinancialIntent` |
 | `POST` | `/v1/intents/:id/authorize` | Policy + budget → `AuthorizationGrant` |
 | `POST` | `/v1/intents/:id/execute` | Execute on selected rail (links to payment intent for CDP) |
+| `GET` | `/v1/executions` | List executions for the org (`limit`, `cursor`) |
 | `GET` | `/v1/executions/:id` | Execution status |
 | `GET` | `/v1/executions/:id/evidence` | Evidence envelope + explain payload |
 | `GET` | `/v1/payment-intents/:id/evidence` | Evidence by legacy payment intent id |
 | `GET` | `/v1/metrics/financial` | Financial SRE metrics |
+
+### v5 idempotency
+
+- `POST /v1/intents` with the same `idempotencyKey` replays the original intent when the canonical payload matches
+- Reusing the same `idempotencyKey` with a different intent body returns `failedPrecondition`
+- Payment intent create idempotency remains invoice-scoped (see **Idempotency** above)
 
 See [INTEGRATION.md](../INTEGRATION.md) for CLI, MCP, and SDK.
 

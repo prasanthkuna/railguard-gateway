@@ -14,6 +14,12 @@ import {
   mapLegacyPaymentStatus,
 } from "../../packages/kernel/src/executionRail"
 import {
+  assertIdempotentReplay,
+  hashFinancialIntentInput,
+  hashStoredFinancialIntent,
+  normalizeIdempotencyKey,
+} from "../../packages/kernel/src/idempotency"
+import {
   type CreateFinancialIntentInput,
   type FinancialIntent,
   createFinancialIntent,
@@ -43,11 +49,11 @@ function v5Id(prefix: string): string {
 }
 
 function ensureIdempotencyKey(value: string): string {
-  const normalized = value.trim()
-  if (normalized.length < 8 || normalized.length > 128) {
+  try {
+    return normalizeIdempotencyKey(value)
+  } catch {
     throw APIError.invalidArgument("idempotencyKey must be between 8 and 128 characters")
   }
-  return normalized
 }
 
 export async function requireV5Actor(
@@ -83,7 +89,20 @@ export async function createStoredFinancialIntent(
     SELECT * FROM financial_intents
     WHERE organization_id = ${organizationId} AND idempotency_key = ${idempotencyKey}
   `
-  if (existing) return mapRow(existing)
+  if (existing) {
+    try {
+      assertIdempotentReplay(
+        "financial intent",
+        hashStoredFinancialIntent(existing.payload_json),
+        hashFinancialIntentInput(input),
+      )
+    } catch {
+      throw APIError.failedPrecondition(
+        "financial intent idempotency key is already used for a different request payload",
+      )
+    }
+    return mapRow(existing)
+  }
 
   const intentId = v5Id("fin")
   const intent = createFinancialIntent(input, intentId)
@@ -190,6 +209,72 @@ export async function linkPaymentIntentToFinancialIntent(
         updated_at = NOW()
     WHERE id = ${intentId} AND organization_id = ${organizationId}
   `
+}
+
+export interface ExecutionListItem {
+  executionId: string
+  intentId: string
+  status: V5ExecutionStatus
+  paymentIntentId?: string
+  amount: string
+  asset: string
+  network?: string
+  rail?: string
+  updatedAt: string
+  createdAt: string
+}
+
+export async function listStoredExecutions(
+  organizationId: string,
+  options?: { limit?: number; cursor?: string },
+): Promise<{ items: ExecutionListItem[]; nextCursor?: string }> {
+  const limit = Math.min(Math.max(options?.limit ?? 50, 1), 100)
+  const cursor = options?.cursor?.trim()
+
+  const collected: FinancialIntentRow[] = []
+  const rows = cursor
+    ? await db.query<FinancialIntentRow>`
+        SELECT * FROM financial_intents
+        WHERE organization_id = ${organizationId}
+          AND execution_id IS NOT NULL
+          AND updated_at < ${new Date(cursor)}
+        ORDER BY updated_at DESC
+        LIMIT ${limit + 1}
+      `
+    : await db.query<FinancialIntentRow>`
+        SELECT * FROM financial_intents
+        WHERE organization_id = ${organizationId}
+          AND execution_id IS NOT NULL
+        ORDER BY updated_at DESC
+        LIMIT ${limit + 1}
+      `
+  for await (const row of rows) {
+    collected.push(row)
+  }
+
+  const page = collected.slice(0, limit)
+  const hasMore = collected.length > limit
+  const items: ExecutionListItem[] = page.map((row) => {
+    const intent = row.payload_json
+    const network = intent.constraints.network
+    return {
+      executionId: row.execution_id ?? row.id,
+      intentId: row.id,
+      status: row.status,
+      paymentIntentId: row.payment_intent_id ?? undefined,
+      amount: intent.value.amount,
+      asset: intent.value.asset,
+      network,
+      rail: row.payment_intent_id ? "cdp" : network?.includes("stellar") ? "stellar" : "x402",
+      updatedAt: row.updated_at.toISOString(),
+      createdAt: row.created_at.toISOString(),
+    }
+  })
+
+  return {
+    items,
+    nextCursor: hasMore ? page[page.length - 1]?.updated_at.toISOString() : undefined,
+  }
 }
 
 export async function getStoredExecution(

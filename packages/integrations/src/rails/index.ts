@@ -5,6 +5,7 @@ import { createSettlementVerifyRail } from "./settlementVerifyRail"
 import { createStellarExecutionRail } from "./stellarRail"
 
 export { createSettlementVerifyRail, createStellarExecutionRail, createAirwallexExecutionRail }
+export { createCombinedRailRegistry } from "./registry"
 
 export function createEvmSettlementRails(): ExecutionRail[] {
   return listEvmChainIds()

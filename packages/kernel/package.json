@@ -23,6 +23,7 @@
     "./observability": "./src/observability.ts",
     "./budget": "./src/budget.ts",
     "./adapters": "./src/adapters.ts",
+    "./idempotency": "./src/idempotency.ts",
     "./v5Actions": "./src/v5Actions.ts"
   }
 }

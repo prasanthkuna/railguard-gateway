@@ -58,6 +58,29 @@ export class RailguardClient {
     })
   }
 
+  /** v5 — list executions for the authenticated organization */
+  async listExecutions(options?: { limit?: number; cursor?: string }): Promise<{
+    items: Array<{
+      executionId: string
+      intentId: string
+      status: V5ExecutionStatus
+      paymentIntentId?: string
+      amount: string
+      asset: string
+      network?: string
+      rail?: string
+      updatedAt: string
+      createdAt: string
+    }>
+    nextCursor?: string
+  }> {
+    const search = new URLSearchParams()
+    if (options?.limit) search.set("limit", String(options.limit))
+    if (options?.cursor) search.set("cursor", options.cursor)
+    const qs = search.toString()
+    return this.request(`/v1/executions${qs ? `?${qs}` : ""}`)
+  }
+
   /** v5 public verb — verify via evidence endpoint */
   async verify(executionId: string): Promise<{
     executionId: string

@@ -144,6 +144,19 @@ export interface V5ExecutionResponse {
   paymentIntentId?: string
 }
 
+export interface V5ExecutionListItem {
+  executionId: string
+  intentId: string
+  status: string
+  paymentIntentId?: string
+  amount: string
+  asset: string
+  network?: string
+  rail?: string
+  updatedAt: string
+  createdAt: string
+}
+
 export interface AuditEvent {
   id: string
   entityType: string

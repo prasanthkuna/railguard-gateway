@@ -54,15 +54,16 @@ export default function DashboardPage() {
         description={`Policy, reservation, and evidence for ${workspace.name} — same lifecycle as the public site.`}
         actions={
           <>
-            <Link href="/invoices/upload">
+            <Link href="/executions">
               <Button variant="accent" className="gap-2">
-                <FileText className="h-4 w-4" />
-                Import Invoice
+                <Sparkles className="h-4 w-4" />
+                Executions
               </Button>
             </Link>
-            <Link href="/invoices">
+            <Link href="/invoices/upload">
               <Button variant="secondary" className="gap-2">
-                Review Queue
+                <FileText className="h-4 w-4" />
+                Import Invoice
               </Button>
             </Link>
           </>

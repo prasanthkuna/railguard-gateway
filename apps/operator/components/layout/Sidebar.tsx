@@ -1,6 +1,6 @@
 "use client"
 
-import { FileText, History, LayoutDashboard, Settings, Users } from "lucide-react"
+import { Activity, FileText, History, LayoutDashboard, Settings, Users } from "lucide-react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { cn } from "../../lib/cn"
@@ -8,13 +8,55 @@ import { Logo } from "../brand/Logo"
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://railguard-site.vercel.app"
 
-const navItems = [
+const primaryNav = [
   { href: "/", label: "Dashboard", icon: LayoutDashboard },
+  { href: "/executions", label: "Executions", icon: Activity },
+]
+
+const invoiceApNav = [
   { href: "/invoices", label: "Invoices", icon: FileText },
   { href: "/vendors", label: "Vendors", icon: Users },
+]
+
+const utilityNav = [
   { href: "/audit", label: "Audit Trail", icon: History },
   { href: "/settings", label: "Settings", icon: Settings },
 ]
+
+function NavLink({
+  href,
+  label,
+  icon: Icon,
+  pathname,
+}: {
+  href: string
+  label: string
+  icon: typeof LayoutDashboard
+  pathname: string | null
+}) {
+  const isActive = pathname === href || (href !== "/" && pathname?.startsWith(href))
+  return (
+    <Link
+      href={href}
+      className={cn(
+        "group flex items-center gap-3 rounded-[var(--rg-radius-md)] px-3 py-2.5 rg-label-2 transition",
+        isActive
+          ? "bg-[var(--rg-bg-primary-wash)] text-[var(--rg-brand)]"
+          : "text-[var(--rg-text-secondary)] hover:bg-[var(--rg-bg-hover)] hover:text-[var(--rg-text-primary)]",
+      )}
+    >
+      <Icon
+        className={cn(
+          "h-4 w-4 shrink-0",
+          isActive
+            ? "text-[var(--rg-brand)]"
+            : "text-[var(--rg-text-muted)] group-hover:text-[var(--rg-text-secondary)]",
+        )}
+      />
+      {label}
+    </Link>
+  )
+}
 
 export function Sidebar() {
   const pathname = usePathname()
@@ -29,33 +71,25 @@ export function Sidebar() {
         </div>
       </div>
 
-      <nav className="flex-1 space-y-1 px-3 py-4">
-        {navItems.map((item) => {
-          const isActive =
-            pathname === item.href || (item.href !== "/" && pathname?.startsWith(item.href))
-          return (
-            <Link
-              key={item.href}
-              href={item.href}
-              className={cn(
-                "group flex items-center gap-3 rounded-[var(--rg-radius-md)] px-3 py-2.5 rg-label-2 transition",
-                isActive
-                  ? "bg-[var(--rg-bg-primary-wash)] text-[var(--rg-brand)]"
-                  : "text-[var(--rg-text-secondary)] hover:bg-[var(--rg-bg-hover)] hover:text-[var(--rg-text-primary)]",
-              )}
-            >
-              <item.icon
-                className={cn(
-                  "h-4 w-4 shrink-0",
-                  isActive
-                    ? "text-[var(--rg-brand)]"
-                    : "text-[var(--rg-text-muted)] group-hover:text-[var(--rg-text-secondary)]",
-                )}
-              />
-              {item.label}
-            </Link>
-          )
-        })}
+      <nav className="flex-1 space-y-4 px-3 py-4">
+        <div className="space-y-1">
+          {primaryNav.map((item) => (
+            <NavLink key={item.href} {...item} pathname={pathname} />
+          ))}
+        </div>
+        <div>
+          <p className="px-3 pb-2 rg-caption text-[var(--rg-text-muted)]">Invoice AP (demo)</p>
+          <div className="space-y-1">
+            {invoiceApNav.map((item) => (
+              <NavLink key={item.href} {...item} pathname={pathname} />
+            ))}
+          </div>
+        </div>
+        <div className="space-y-1">
+          {utilityNav.map((item) => (
+            <NavLink key={item.href} {...item} pathname={pathname} />
+          ))}
+        </div>
       </nav>
 
       <div className="border-t border-[var(--rg-border)] p-4 space-y-3">

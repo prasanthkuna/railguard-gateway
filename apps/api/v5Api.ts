@@ -1,4 +1,4 @@
-import { APIError, api } from "encore.dev/api"
+import { APIError, type Query, api } from "encore.dev/api"
 import type { AuthorizationGrant } from "../../packages/kernel/src/authority"
 import type { EvidenceEnvelope } from "../../packages/kernel/src/evidence"
 import type { V5ExecutionStatus } from "../../packages/kernel/src/executionRail"
@@ -9,6 +9,7 @@ import {
   buildExplainCharge,
   createStoredFinancialIntent,
   getStoredExecution,
+  listStoredExecutions,
   requireV5Actor,
 } from "./v5Store"
 
@@ -155,6 +156,32 @@ export const getV1IntentVerify = api(
       full.evidence ?? (await buildAndStoreEvidence(actor.organizationID, executionId))
     const explain = buildExplainCharge({ ...full, evidence })
     return { intentId: params.id, executionId, evidence, explain }
+  },
+)
+
+/** v5 — GET /v1/executions (org-scoped index) */
+export const listV1Executions = api(
+  { expose: true, auth: true, method: "GET", path: "/v1/executions" },
+  async (params: { limit?: Query<number>; cursor?: Query<string> }): Promise<{
+    items: Array<{
+      executionId: string
+      intentId: string
+      status: V5ExecutionStatus
+      paymentIntentId?: string
+      amount: string
+      asset: string
+      network?: string
+      rail?: string
+      updatedAt: string
+      createdAt: string
+    }>
+    nextCursor?: string
+  }> => {
+    const actor = await requireV5Actor(["owner", "finance", "approver"])
+    return listStoredExecutions(actor.organizationID, {
+      limit: params.limit,
+      cursor: params.cursor,
+    })
   },
 )
 

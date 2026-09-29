@@ -287,6 +287,15 @@ export const api = {
         body: "{}",
       },
     ),
+  listExecutions: (params?: { limit?: number; cursor?: string }) => {
+    const search = new URLSearchParams()
+    if (params?.limit) search.set("limit", String(params.limit))
+    if (params?.cursor) search.set("cursor", params.cursor)
+    const qs = search.toString()
+    return apiFetch<{ items: import("./types").V5ExecutionListItem[]; nextCursor?: string }>(
+      `/v1/executions${qs ? `?${qs}` : ""}`,
+    )
+  },
   getExecution: (executionId: string) =>
     apiFetch<import("./types").V5ExecutionResponse>(`/v1/executions/${executionId}`),
   getExecutionEvidence: (executionId: string) =>
