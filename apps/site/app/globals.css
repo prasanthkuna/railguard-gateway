@@ -1204,9 +1204,69 @@ button:focus-visible {
   margin-bottom: 0.75rem;
 }
 
-.eco-verify-head h3 {
+.eco-verify-title {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.eco-verify-title h3 {
   margin: 0;
   font-size: 1.35rem;
+}
+
+.integration-logo {
+  display: inline-flex;
+  flex-shrink: 0;
+  color: var(--muted);
+}
+
+.integration-logo svg {
+  width: 100%;
+  height: 100%;
+}
+
+.eco-verify-card:hover .integration-logo {
+  color: var(--text);
+}
+
+.integrations-strip {
+  padding: 1.5rem 0 0;
+  border-top: 1px solid var(--border);
+  margin-top: 0.5rem;
+}
+
+.integrations-strip-label {
+  font-size: 0.65rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin: 0 0 0.75rem;
+}
+
+.integrations-strip-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.25rem 2rem;
+  align-items: center;
+}
+
+.integrations-strip-list li {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.integrations-disclaimer {
+  margin: 1rem 0 0;
+  font-size: 0.65rem;
+  color: var(--muted);
+  max-width: 52ch;
 }
 
 .eco-checklist {

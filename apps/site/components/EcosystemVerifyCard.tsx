@@ -1,11 +1,15 @@
 import { EXTERNAL_LINK } from "../lib/constants"
 import type { EcosystemCard } from "../lib/ecosystems"
+import { IntegrationLogo } from "./IntegrationLogo"
 
 export function EcosystemVerifyCard({ eco }: { eco: EcosystemCard }) {
   return (
     <article className="eco-verify-card">
       <header className="eco-verify-head">
-        <h3>{eco.label}</h3>
+        <div className="eco-verify-title">
+          <IntegrationLogo id={eco.id} size={28} />
+          <h3>{eco.label}</h3>
+        </div>
         <span className="pill pill-ok">● {eco.statusLabel}</span>
       </header>
       <ul className="eco-checklist">

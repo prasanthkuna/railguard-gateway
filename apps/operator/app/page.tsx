@@ -49,9 +49,9 @@ export default function DashboardPage() {
   return (
     <div className="space-y-8">
       <PageHeader
-        eyebrow="Payment Control Room"
-        title="Control Center"
-        description={`Live invoice risk posture and approval health for ${workspace.name}.`}
+        eyebrow="Execution posture"
+        title="Operator dashboard"
+        description={`Policy, reservation, and evidence for ${workspace.name} — same lifecycle as the public site.`}
         actions={
           <>
             <Link href="/invoices/upload">

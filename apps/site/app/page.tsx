@@ -3,6 +3,7 @@ import { AttackDemo } from "../components/AttackDemo"
 import { EcosystemVerifyCard } from "../components/EcosystemVerifyCard"
 import { FossSection } from "../components/FossSection"
 import { HeroSection } from "../components/HeroSection"
+import { IntegrationsStrip } from "../components/IntegrationsStrip"
 import { LifecycleTrace } from "../components/LifecycleTrace"
 import { RecipesSection } from "../components/RecipesSection"
 import { EXTERNAL_LINK, OPERATOR_URL } from "../lib/constants"
@@ -37,6 +38,8 @@ export default function HomePage() {
           </Link>
         </p>
       </section>
+
+      <IntegrationsStrip />
 
       <section className="section" id="ecosystems">
         <h2>Works across financial rails</h2>

@@ -1,7 +1,9 @@
 import { DOC_LINKS, GITHUB_X402, OPERATOR_URL } from "./constants"
 
+import type { IntegrationLogoId } from "./integration-logos"
+
 export type EcosystemCard = {
-  id: string
+  id: IntegrationLogoId
   label: string
   status: string
   statusLabel: string

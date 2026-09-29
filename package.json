@@ -32,6 +32,7 @@
     "typecheck": "encore check && bun run --filter @railguard/operator typecheck && bun run --filter @railguard/site typecheck",
     "build:web": "bun run --filter @railguard/operator build",
     "build:site": "bun run --filter @railguard/site build",
+    "test:site:e2e": "bun run --filter @railguard/site test:e2e",
     "dev:video": "bun run --filter @railguard/video dev",
     "render:video": "bun run --filter @railguard/video render",
     "render:social": "bun run --filter @railguard/video render:social",

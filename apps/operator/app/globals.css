@@ -491,3 +491,60 @@
   border-color: var(--rg-border);
   color: var(--rg-text-primary);
 }
+
+.op-lifecycle {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.op-lifecycle-step {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.75rem;
+  padding-bottom: 1rem;
+}
+
+.op-lifecycle-dot {
+  width: 10px;
+  height: 10px;
+  margin-top: 0.35rem;
+  border-radius: 50%;
+  background: #5cf2b2;
+  box-shadow: 0 0 0 3px rgba(92, 242, 178, 0.15);
+}
+
+.op-lifecycle-line {
+  position: absolute;
+  left: 4px;
+  top: 1.25rem;
+  bottom: 0;
+  width: 2px;
+  background: var(--rg-border);
+}
+
+.op-lifecycle-label {
+  display: block;
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--rg-text-muted);
+}
+
+.op-lifecycle-detail {
+  display: block;
+  font-size: 0.85rem;
+  color: var(--rg-text-primary);
+  margin-top: 0.15rem;
+  word-break: break-word;
+}
+
+.rg-operator-chrome {
+  --rg-brand: #5cf2b2;
+  --rg-accent-hover: #4de0a3;
+  --rg-accent-glow: rgba(92, 242, 178, 0.18);
+  --rg-bg-primary-wash: rgba(92, 242, 178, 0.08);
+  --rg-border-accent: rgba(92, 242, 178, 0.35);
+}

@@ -1,10 +1,10 @@
 "use client"
 
-import { ShieldCheck } from "lucide-react"
 import { usePathname, useRouter } from "next/navigation"
 import * as React from "react"
 import { hasAuthSession, isDevAuthEnabled, subscribeAuthChange } from "../../lib/auth"
 import { useIsClient } from "../../lib/hooks"
+import { Logo } from "../brand/Logo"
 import { Header } from "./Header"
 import { Sidebar } from "./Sidebar"
 
@@ -44,24 +44,18 @@ export function AppShell({ children }: { children: React.ReactNode }) {
 
   if (!isClient || !isAuthenticated) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-[var(--rg-bg-alternate)] px-6">
-        <div className="rg-card max-w-md rounded-[var(--rg-radius-xl)] p-10 text-center">
-          <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-[var(--rg-bg-primary-wash)]">
-            <ShieldCheck className="h-7 w-7 text-[var(--rg-brand)] rg-pulse-ring" />
-          </div>
-          <h2 className="rg-title-1 tracking-tight text-[var(--rg-text-primary)]">
-            Checking access
-          </h2>
-          <p className="rg-body mt-3 text-[var(--rg-text-muted)]">
-            Preparing your Railguard operator workspace.
-          </p>
+      <div className="rg-auth-screen flex min-h-screen items-center justify-center px-6">
+        <div className="max-w-md text-center">
+          <Logo size={48} />
+          <h2 className="rg-auth-title mt-4">Checking access</h2>
+          <p className="rg-auth-subtitle">Preparing your Railguard operator workspace.</p>
         </div>
       </div>
     )
   }
 
   return (
-    <div className="flex h-screen overflow-hidden bg-[var(--rg-bg-alternate)]">
+    <div className="rg-operator-chrome flex h-screen overflow-hidden bg-[var(--rg-bg-alternate)]">
       <Sidebar />
       <div className="flex min-w-0 flex-1 flex-col overflow-hidden">
         <Header />

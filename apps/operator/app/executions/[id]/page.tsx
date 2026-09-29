@@ -3,6 +3,7 @@
 import { useParams, useRouter } from "next/navigation"
 import * as React from "react"
 import { BackLink, PageHeader } from "../../../components/design-system"
+import { ExecutionLifecycle } from "../../../components/executions/ExecutionLifecycle"
 import { EvidencePanel } from "../../../components/ui/EvidencePanel"
 import { Skeleton } from "../../../components/ui/Skeleton"
 import { api } from "../../../lib/api"
@@ -67,6 +68,7 @@ export default function ExecutionDetailPage() {
         title={execution.executionId}
         description={`Intent ${execution.intentId} · ${execution.status}`}
       />
+      {evidence ? <ExecutionLifecycle execution={execution} explain={evidence.explain} /> : null}
       <EvidencePanel evidence={evidence} />
     </div>
   )
