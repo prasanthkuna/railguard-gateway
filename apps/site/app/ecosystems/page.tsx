@@ -4,7 +4,7 @@ import { ECOSYSTEMS } from "../../lib/ecosystems"
 
 export default function EcosystemsPage() {
   return (
-    <main className="page">
+    <main className="page page-wide">
       <section className="hero" style={{ paddingTop: "2rem" }}>
         <p className="eyebrow">Compatibility</p>
         <h1>Works across financial rails</h1>

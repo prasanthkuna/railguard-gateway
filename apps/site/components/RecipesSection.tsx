@@ -1,4 +1,5 @@
 import { RECIPES } from "../lib/recipes"
+import { CliCommand } from "./CliCommand"
 
 export function RecipesSection() {
   const wedge = RECIPES.filter((r) => r.wedge)
@@ -17,7 +18,7 @@ export function RecipesSection() {
           <article key={r.id} className="recipe-card wedge recipe-large">
             <h3>{r.title}</h3>
             <p className="recipe-persona">{r.persona}</p>
-            <p className="recipe-cmd">{r.command}</p>
+            <CliCommand command={r.command} />
           </article>
         ))}
       </div>
@@ -25,7 +26,7 @@ export function RecipesSection() {
         {rest.map((r) => (
           <article key={r.id} className="recipe-card recipe-compact">
             <h3>{r.title}</h3>
-            <p className="recipe-cmd">{r.command}</p>
+            <CliCommand command={r.command} />
           </article>
         ))}
       </div>

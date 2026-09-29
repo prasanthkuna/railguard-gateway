@@ -1,3 +1,5 @@
+import { CDP_PORTAL, DOC_LINKS, GITHUB_X402 } from "./constants"
+
 export type EcosystemCard = {
   id: string
   label: string
@@ -6,6 +8,9 @@ export type EcosystemCard = {
   protects: string[]
   apf: string[]
   evidenceHref: string
+  evidenceLabel?: string
+  secondaryHref?: string
+  secondaryLabel?: string
   narrative: string
   lastProof?: string
   transactions?: number
@@ -21,7 +26,8 @@ export const ECOSYSTEMS: EcosystemCard[] = [
     statusLabel: "TESTNET VERIFIED",
     protects: ["Policy", "Reservation", "Execution", "Reconciliation"],
     apf: ["APF-001", "APF-003", "APF-004"],
-    evidenceHref: `${process.env.NEXT_PUBLIC_GITHUB_GATEWAY || "https://github.com/prasanthkuna/railguard-gateway"}/tree/main/evidence/stellar-testnet`,
+    evidenceHref: DOC_LINKS.p0Testnet,
+    evidenceLabel: "View testnet proof",
     narrative: "Horizon settlement verification on testnet.",
     lastProof: "2026-09-28",
     evidenceStatus: "VERIFIED",
@@ -33,7 +39,8 @@ export const ECOSYSTEMS: EcosystemCard[] = [
     statusLabel: "TESTNET VERIFIED",
     protects: ["Policy", "Reservation", "Execution", "Reconciliation"],
     apf: ["APF-003", "APF-004", "APF-005"],
-    evidenceHref: `${process.env.NEXT_PUBLIC_GITHUB_GATEWAY || "https://github.com/prasanthkuna/railguard-gateway"}/tree/main/evidence/cdp-base-sepolia-live`,
+    evidenceHref: DOC_LINKS.demoVerification,
+    evidenceLabel: "View demo verification",
     narrative: "Base Sepolia reference execution via CDP.",
     lastProof: "2026-09-28",
     transactions: 12,
@@ -47,8 +54,10 @@ export const ECOSYSTEMS: EcosystemCard[] = [
     statusLabel: "INTEGRATED",
     protects: ["Policy", "Reservation", "Execution", "Reconciliation"],
     apf: ["APF-003", "APF-004", "APF-005"],
-    evidenceHref:
-      "https://github.com/prasanthkuna/railguard-gateway/tree/main/evidence/arbitrum-sepolia",
+    evidenceHref: CDP_PORTAL,
+    evidenceLabel: "Open CDP portal",
+    secondaryHref: DOC_LINKS.integration,
+    secondaryLabel: "Integration docs",
     narrative: "Reference runtime + reconciler for grant reviewers.",
   },
   {
@@ -58,7 +67,8 @@ export const ECOSYSTEMS: EcosystemCard[] = [
     statusLabel: "ADAPTER",
     protects: ["Pre-sign policy", "Replay", "Rolling budgets"],
     apf: ["APF-001", "APF-002"],
-    evidenceHref: "https://github.com/prasanthkuna/x402-guard",
+    evidenceHref: GITHUB_X402,
+    evidenceLabel: "View x402 adapter",
     narrative: "Execution rail inside Gateway — not a separate product.",
   },
 ]

@@ -1,3 +1,4 @@
+import { EXTERNAL_LINK } from "../lib/constants"
 import type { EcosystemCard } from "../lib/ecosystems"
 
 export function EcosystemVerifyCard({ eco }: { eco: EcosystemCard }) {
@@ -46,9 +47,16 @@ export function EcosystemVerifyCard({ eco }: { eco: EcosystemCard }) {
         </dl>
       ) : null}
       <p className="eco-narrative">{eco.narrative}</p>
-      <a href={eco.evidenceHref} className="btn btn-ghost btn-sm">
-        View evidence
-      </a>
+      <div className="eco-verify-actions">
+        <a href={eco.evidenceHref} className="btn btn-ghost btn-sm" {...EXTERNAL_LINK}>
+          {eco.evidenceLabel ?? "View evidence"}
+        </a>
+        {eco.secondaryHref ? (
+          <a href={eco.secondaryHref} className="btn btn-ghost btn-sm" {...EXTERNAL_LINK}>
+            {eco.secondaryLabel ?? "Docs"}
+          </a>
+        ) : null}
+      </div>
       <p className="mono eco-try">Try: railguard attack</p>
     </article>
   )

@@ -246,17 +246,9 @@
     min-height: 2.25rem;
   }
 
-  .telemetry-table {
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-  }
-
   .telemetry-row {
-    grid-template-columns: minmax(4.25rem, auto) minmax(3.25rem, auto) minmax(0, 1fr) minmax(
-        3.5rem,
-        auto
-      );
-    min-width: min(100%, 20rem);
+    grid-template-columns: minmax(3.5rem, auto) minmax(3rem, auto) minmax(0, 1fr) minmax(0, auto);
+    font-size: 0.64rem;
   }
 }
 

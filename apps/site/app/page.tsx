@@ -5,12 +5,12 @@ import { FossSection } from "../components/FossSection"
 import { HeroSection } from "../components/HeroSection"
 import { LifecycleTrace } from "../components/LifecycleTrace"
 import { RecipesSection } from "../components/RecipesSection"
-import { OPERATOR_URL } from "../lib/constants"
+import { EXTERNAL_LINK, OPERATOR_URL } from "../lib/constants"
 import { ECOSYSTEMS } from "../lib/ecosystems"
 
 export default function HomePage() {
   return (
-    <main className="page">
+    <main className="page page-wide">
       <HeroSection />
 
       <LifecycleTrace />
@@ -67,7 +67,7 @@ export default function HomePage() {
           <Link href="/r/demo" className="btn btn-ghost">
             Sample receipt
           </Link>
-          <a href={OPERATOR_URL} className="btn btn-ghost">
+          <a href={OPERATOR_URL} className="btn btn-ghost" {...EXTERNAL_LINK}>
             Operator console
           </a>
         </div>

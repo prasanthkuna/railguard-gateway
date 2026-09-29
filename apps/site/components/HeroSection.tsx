@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import { useEffect, useState } from "react"
-import { GITHUB_GATEWAY } from "../lib/constants"
+import { EXTERNAL_LINK, GITHUB_GATEWAY } from "../lib/constants"
 import type { TelemetryMode } from "../lib/telemetry"
 import { AnimatedHeroLogo } from "./AnimatedHeroLogo"
 import { DemoModeToggle } from "./DemoModeToggle"
@@ -35,7 +35,7 @@ export function HeroSection() {
           <Link href="/attack" className="btn btn-mint">
             Run 6 attacks
           </Link>
-          <a href={GITHUB_GATEWAY} className="btn btn-ghost">
+          <a href={GITHUB_GATEWAY} className="btn btn-ghost" {...EXTERNAL_LINK}>
             GitHub
           </a>
         </div>

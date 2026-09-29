@@ -13,7 +13,7 @@
   --font-display: var(--font-space-grotesk), system-ui, sans-serif;
   --font-mono: var(--font-geist-mono, ui-monospace), ui-monospace, monospace;
   --radius: 12px;
-  --max: 1120px;
+  --max: min(1360px, 96vw);
 }
 
 *,
@@ -186,6 +186,10 @@ button:focus-visible {
 .page {
   max-width: var(--max);
   margin: 0 auto;
+}
+
+.page-wide {
+  max-width: var(--max);
 }
 
 .hero {
@@ -755,7 +759,7 @@ button:focus-visible {
 
 @media (min-width: 960px) {
   .hero-split {
-    grid-template-columns: 45% 55%;
+    grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
     align-items: start;
     padding-top: 3rem;
     padding-bottom: 2rem;
@@ -835,13 +839,12 @@ button:focus-visible {
 
 .telemetry-table {
   padding: 0.5rem 0;
-  max-height: 280px;
-  overflow-y: auto;
+  overflow: hidden;
 }
 
 .telemetry-row {
   display: grid;
-  grid-template-columns: 5.5rem 4.5rem 1fr auto;
+  grid-template-columns: 5rem 4rem minmax(0, 1fr) minmax(0, auto);
   gap: 0.35rem 0.5rem;
   padding: 0.25rem 0.75rem;
   font-size: 0.68rem;
@@ -872,6 +875,7 @@ button:focus-visible {
 
 .telemetry-outcome {
   text-align: right;
+  white-space: nowrap;
 }
 
 .tone-neutral .telemetry-outcome {
@@ -1261,6 +1265,13 @@ button:focus-visible {
   color: var(--mint);
 }
 
+.eco-verify-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.25rem;
+}
+
 .attack-demo-layout {
   display: grid;
   gap: 1rem;
@@ -1268,9 +1279,50 @@ button:focus-visible {
 
 @media (min-width: 960px) {
   .attack-demo-layout {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
     align-items: start;
+    gap: 1.25rem;
   }
+}
+
+.cli-command {
+  margin-top: auto;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: #0a0d10;
+  padding: 0.65rem 0.75rem;
+}
+
+.cli-command-line {
+  margin: 0;
+  font-size: 0.72rem;
+  line-height: 1.55;
+  display: flex;
+  gap: 0.45rem;
+  align-items: flex-start;
+}
+
+.cli-command-line + .cli-command-line {
+  margin-top: 0.35rem;
+}
+
+.cli-prompt {
+  color: var(--mint);
+  flex-shrink: 0;
+  user-select: none;
+}
+
+.cli-text {
+  color: var(--text);
+  word-break: break-word;
+}
+
+.recipe-card .cli-command {
+  margin-top: 0.75rem;
+}
+
+.recipe-large .cli-command {
+  margin-top: auto;
 }
 
 .attack-seq.active-seq {

@@ -1,4 +1,4 @@
-import { GITHUB_GATEWAY, GITHUB_LAB } from "../lib/constants"
+import { EXTERNAL_LINK, GITHUB_GATEWAY, GITHUB_LAB } from "../lib/constants"
 
 export function FossSection() {
   return (
@@ -30,7 +30,13 @@ Your Chain`}
             <strong>Your keys stay with your infrastructure.</strong>
           </p>
           <p className="foss-links">
-            <a href={GITHUB_GATEWAY}>railguard-gateway</a> · <a href={GITHUB_LAB}>Failure Lab</a>
+            <a href={GITHUB_GATEWAY} {...EXTERNAL_LINK}>
+              railguard-gateway
+            </a>{" "}
+            ·{" "}
+            <a href={GITHUB_LAB} {...EXTERNAL_LINK}>
+              Failure Lab
+            </a>
           </p>
         </div>
       </div>

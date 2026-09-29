@@ -165,7 +165,7 @@ export function AttackDemo() {
             return (
               <li
                 key={a.id}
-                className={`attack-chip attack-seq ${exposed ? "hit" : ""} ${blocked ? "safe" : ""} ${i === activeAttack ? "active-seq" : ""}`}
+                className={`attack-chip attack-seq ${exposed ? "hit" : ""} ${blocked ? "safe" : ""} ${i === activeAttack && phase === "running" ? "active-seq" : ""}`}
               >
                 <span className="attack-label">{a.label}</span>
                 {done ? (

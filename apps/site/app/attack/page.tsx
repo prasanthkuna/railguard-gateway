@@ -3,7 +3,7 @@ import { AttackDemo } from "../../components/AttackDemo"
 
 export default function AttackPage() {
   return (
-    <main className="page">
+    <main className="page page-wide">
       <div className="attack-page-hero">
         <p className="eyebrow">Failure Lab</p>
         <h1>Can it survive six financial failures?</h1>
@@ -16,9 +16,6 @@ export default function AttackPage() {
       <div className="receipt-actions">
         <Link href="/" className="btn btn-ghost">
           ← Home
-        </Link>
-        <Link href="/r/demo" className="btn btn-mint">
-          View receipt
         </Link>
       </div>
     </main>
