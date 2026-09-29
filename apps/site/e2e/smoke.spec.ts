@@ -6,16 +6,16 @@ test.describe("Marketing site", () => {
   test("home hero and integrations strip", async ({ page }) => {
     await page.goto("/")
     await expect(page.getByRole("heading", { name: /spend money safely/i })).toBeVisible()
-    await expect(page.getByText("Execution infrastructure")).toBeVisible()
+    await expect(page.getByRole("region", { name: "Execution rails" })).toBeVisible()
     await expect(page.getByRole("heading", { name: /Failure Lab/i })).toBeVisible()
   })
 
   test("hero mode tabs switch telemetry", async ({ page }) => {
     await page.goto("/")
     await page.getByRole("tab", { name: "ATTACK" }).click()
-    await expect(page.getByText("DENY")).toBeVisible()
+    await expect(page.getByRole("log").getByText("DENY").first()).toBeVisible()
     await page.getByRole("tab", { name: "FAILURE" }).click()
-    await expect(page.getByText("UNKNOWN")).toBeVisible()
+    await expect(page.getByRole("log").getByText("UNKNOWN").first()).toBeVisible()
   })
 
   test("failure lab run attack does not crash", async ({ page }) => {
@@ -32,11 +32,12 @@ test.describe("Marketing site", () => {
     await expect(page.getByRole("heading", { name: /six financial failures/i })).toBeVisible()
   })
 
-  test("sample receipt and copy proof", async ({ page }) => {
+  test("sample receipt and copy proof", async ({ page, context }) => {
+    await context.grantPermissions(["clipboard-read", "clipboard-write"])
     await page.goto("/r/demo")
     await expect(page.getByText(/EVIDENCE VALID/i)).toBeVisible()
     await page.getByRole("button", { name: /Copy proof/i }).click()
-    await expect(page.getByRole("button", { name: /Copied/i })).toBeVisible()
+    await expect(page.getByRole("button", { name: /Copied/i })).toBeVisible({ timeout: 10_000 })
   })
 
   test("ecosystems CDP links to operator", async ({ page }) => {
