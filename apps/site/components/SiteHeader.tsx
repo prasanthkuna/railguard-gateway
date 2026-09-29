@@ -34,7 +34,7 @@ export function SiteHeader() {
     <header className="site-header-wrap">
       <div className="site-header">
         <Link href="/" className="brand" onClick={closeMenu}>
-          <Logo size={32} />
+          <Logo size={36} />
           <span>Railguard</span>
         </Link>
         <nav className="site-nav" aria-label="Primary">

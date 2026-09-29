@@ -722,6 +722,7 @@ button:focus-visible {
   position: static;
   border: none;
   background: transparent;
+  box-sizing: border-box;
 }
 
 .system-status {

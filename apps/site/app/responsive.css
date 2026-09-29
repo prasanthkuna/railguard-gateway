@@ -23,9 +23,14 @@
   padding-right: var(--page-x);
 }
 
-.hero-split {
-  padding-left: var(--page-x);
-  padding-right: var(--page-x);
+/* Hero lives inside .page — avoid double horizontal inset */
+.page > .hero-split {
+  padding-left: 0;
+  padding-right: 0;
+  max-width: none;
+  margin-left: 0;
+  margin-right: 0;
+  width: 100%;
 }
 
 .section {
@@ -170,64 +175,89 @@
   line-height: 1;
 }
 
-/* System status: all viewports, horizontal scroll on small screens */
+/* Align header + status with page column on large screens */
+@media (min-width: 768px) {
+  .site-header-wrap .site-header {
+    max-width: var(--max);
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+  }
+
+  .site-header-wrap .site-nav {
+    margin-left: auto;
+    margin-right: 1rem;
+  }
+}
+
+/* System status: scroll on small screens; centered bar on desktop */
 .system-status {
   display: flex;
-  flex-wrap: nowrap;
-  justify-content: flex-start;
   gap: 1rem;
-  overflow-x: auto;
-  overscroll-behavior-x: contain;
-  -webkit-overflow-scrolling: touch;
-  scrollbar-width: none;
   padding: 0.35rem var(--page-x) 0.5rem;
 }
 
-.system-status::-webkit-scrollbar {
-  display: none;
-}
+@media (max-width: 899px) {
+  .system-status {
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
 
-.system-status > span {
-  flex: 0 0 auto;
-  white-space: nowrap;
+  .system-status::-webkit-scrollbar {
+    display: none;
+  }
+
+  .system-status > span {
+    flex: 0 0 auto;
+    white-space: nowrap;
+  }
 }
 
 @media (min-width: 900px) {
   .system-status {
     flex-wrap: wrap;
     justify-content: center;
-    overflow-x: visible;
+    max-width: var(--max);
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+    box-sizing: border-box;
   }
 }
 
-/* Hero */
-.hero-copy .hero-ctas,
-.hero-copy .hero-loop {
-  justify-content: flex-start;
-}
+/* Hero + controls: mobile-only tweaks */
+@media (max-width: 959px) {
+  .hero-copy .hero-ctas,
+  .hero-copy .hero-loop {
+    justify-content: flex-start;
+  }
 
-.mode-toggle {
-  width: 100%;
-}
+  .mode-toggle {
+    width: 100%;
+  }
 
-.mode-toggle-btn {
-  flex: 1;
-  text-align: center;
-  min-height: 2.25rem;
-}
+  .mode-toggle-btn {
+    flex: 1;
+    text-align: center;
+    min-height: 2.25rem;
+  }
 
-/* Telemetry: prevent overflow */
-.telemetry-table {
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
-}
+  .telemetry-table {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
 
-.telemetry-row {
-  grid-template-columns: minmax(4.25rem, auto) minmax(3.25rem, auto) minmax(0, 1fr) minmax(
-      3.5rem,
-      auto
-    );
-  min-width: min(100%, 20rem);
+  .telemetry-row {
+    grid-template-columns: minmax(4.25rem, auto) minmax(3.25rem, auto) minmax(0, 1fr) minmax(
+        3.5rem,
+        auto
+      );
+    min-width: min(100%, 20rem);
+  }
 }
 
 @media (max-width: 380px) {
@@ -237,6 +267,12 @@
         3rem,
         auto
       );
+  }
+}
+
+@media (min-width: 960px) {
+  .mode-toggle-btn {
+    flex: 0 1 auto;
   }
 }
 
