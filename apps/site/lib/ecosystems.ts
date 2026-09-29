@@ -1,4 +1,4 @@
-import { CDP_PORTAL, DOC_LINKS, GITHUB_X402 } from "./constants"
+import { DOC_LINKS, GITHUB_X402, OPERATOR_URL } from "./constants"
 
 export type EcosystemCard = {
   id: string
@@ -54,11 +54,11 @@ export const ECOSYSTEMS: EcosystemCard[] = [
     statusLabel: "INTEGRATED",
     protects: ["Policy", "Reservation", "Execution", "Reconciliation"],
     apf: ["APF-003", "APF-004", "APF-005"],
-    evidenceHref: CDP_PORTAL,
-    evidenceLabel: "Open CDP portal",
+    evidenceHref: OPERATOR_URL,
+    evidenceLabel: "Open operator console",
     secondaryHref: DOC_LINKS.integration,
-    secondaryLabel: "Integration docs",
-    narrative: "Reference runtime + reconciler for grant reviewers.",
+    secondaryLabel: "CDP integration docs",
+    narrative: "Reference operator console + CDP execution path for grant reviewers.",
   },
   {
     id: "x402",

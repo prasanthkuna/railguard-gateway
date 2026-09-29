@@ -7,6 +7,8 @@ export const GITHUB_LAB = "https://github.com/prasanthkuna/agent-payment-failure
 export const GITHUB_PROTOCOL = "https://github.com/prasanthkuna/railguard-protocol"
 export const GITHUB_X402 = "https://github.com/prasanthkuna/x402-guard"
 export const CDP_PORTAL = "https://portal.cdp.coinbase.com/"
+export const MARKETING_SITE_URL =
+  process.env.NEXT_PUBLIC_SITE_URL || "https://railguard-site.vercel.app"
 
 const ghBlob = (path: string) => `${GITHUB_GATEWAY}/blob/main/${path}`
 

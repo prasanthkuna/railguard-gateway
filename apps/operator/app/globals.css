@@ -365,3 +365,129 @@
     transform: scale(1.04);
   }
 }
+
+/* Auth screens — match railguard-site (near-black + mint) */
+.rg-auth-screen {
+  --rg-bg-base: #12161c;
+  --rg-bg-alternate: #0f1216;
+  --rg-bg-hover: #1a2028;
+  --rg-text-primary: #f4f6f8;
+  --rg-text-secondary: #c9d1d9;
+  --rg-text-muted: #8b949e;
+  --rg-border: #1e262e;
+  --rg-brand: #5cf2b2;
+  --rg-accent-hover: #4de0a3;
+  --rg-accent-glow: rgba(92, 242, 178, 0.2);
+  --rg-shadow-glow: 0 0 0 1px rgba(92, 242, 178, 0.12);
+  --rg-state-regret: #ff6b6b;
+  background: #080a0c;
+  color: var(--rg-text-primary);
+}
+
+.rg-auth-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid var(--rg-border);
+  background: rgba(8, 10, 12, 0.94);
+}
+
+.rg-auth-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  color: var(--rg-text-primary);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.rg-auth-brand:hover {
+  color: var(--rg-brand);
+}
+
+.rg-auth-back {
+  font-size: 0.8rem;
+  color: var(--rg-text-muted);
+  text-decoration: none;
+}
+
+.rg-auth-back:hover {
+  color: var(--rg-brand);
+}
+
+.rg-auth-eyebrow {
+  font-family: var(--defaultFont-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--rg-brand);
+  margin: 0 0 0.5rem;
+}
+
+.rg-auth-title {
+  font-size: clamp(1.75rem, 4vw, 2.25rem);
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  margin: 0;
+  line-height: 1.1;
+}
+
+.rg-auth-subtitle {
+  margin: 0.65rem 0 1.5rem;
+  font-size: 0.95rem;
+  color: var(--rg-text-muted);
+  line-height: 1.5;
+}
+
+.rg-auth-card {
+  border: 1px solid var(--rg-border);
+  border-radius: 12px;
+  background: var(--rg-bg-base);
+  padding: 1.5rem;
+}
+
+.rg-auth-tagline {
+  margin: 1.25rem 0 0;
+  text-align: center;
+  font-size: 0.8rem;
+  color: var(--rg-text-muted);
+}
+
+.rg-auth-tagline strong {
+  color: var(--rg-text-primary);
+}
+
+.rg-auth-screen .rg-auth-tabs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.25rem;
+  padding: 0.25rem;
+  border-radius: 10px;
+  background: var(--rg-bg-alternate);
+  margin-bottom: 1.25rem;
+}
+
+.rg-auth-screen .rg-auth-tab {
+  border: none;
+  border-radius: 8px;
+  padding: 0.5rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  background: transparent;
+  color: var(--rg-text-muted);
+}
+
+.rg-auth-screen .rg-auth-tab.active {
+  background: var(--rg-bg-base);
+  color: var(--rg-text-primary);
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.2);
+}
+
+.rg-auth-screen input {
+  background: var(--rg-bg-alternate);
+  border-color: var(--rg-border);
+  color: var(--rg-text-primary);
+}
