@@ -1,0 +1,345 @@
+/* Centralized responsive layout — mobile-first overrides */
+
+:root {
+  --page-x: clamp(1rem, 4.2vw, 1.35rem);
+  --section-y: clamp(2.25rem, 6vw, 3rem);
+  --header-pad-y: 0.75rem;
+  --sticky-top: 4.25rem;
+}
+
+.page {
+  padding-left: var(--page-x);
+  padding-right: var(--page-x);
+  padding-bottom: clamp(2.5rem, 8vw, 4rem);
+}
+
+.site-header {
+  padding: var(--header-pad-y) var(--page-x);
+  gap: 0.65rem;
+}
+
+.site-footer {
+  padding-left: var(--page-x);
+  padding-right: var(--page-x);
+}
+
+.hero-split {
+  padding-left: var(--page-x);
+  padding-right: var(--page-x);
+}
+
+.section {
+  padding-top: var(--section-y);
+  padding-bottom: var(--section-y);
+}
+
+/* Header: mobile menu */
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  flex-shrink: 0;
+}
+
+.header-cta-full {
+  display: none;
+}
+
+.header-cta-short {
+  display: inline-flex;
+}
+
+@media (min-width: 480px) {
+  .header-cta-short {
+    display: none;
+  }
+
+  .header-cta-full {
+    display: inline-flex;
+  }
+}
+
+.menu-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  padding: 0;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--bg-elevated);
+  color: var(--text);
+  cursor: pointer;
+}
+
+.menu-toggle-icon {
+  display: block;
+  width: 1.1rem;
+  height: 2px;
+  background: currentColor;
+  position: relative;
+}
+
+.menu-toggle-icon::before,
+.menu-toggle-icon::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: currentColor;
+}
+
+.menu-toggle-icon::before {
+  top: -6px;
+}
+
+.menu-toggle-icon::after {
+  top: 6px;
+}
+
+@media (min-width: 768px) {
+  .menu-toggle {
+    display: none;
+  }
+}
+
+.mobile-nav-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  background: rgba(0, 0, 0, 0.55);
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.mobile-nav-panel {
+  position: fixed;
+  top: 0;
+  right: 0;
+  z-index: 70;
+  width: min(18rem, 88vw);
+  height: 100dvh;
+  padding: 1rem var(--page-x) 1.5rem;
+  background: var(--bg-elevated);
+  border-left: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  box-shadow: -8px 0 32px rgba(0, 0, 0, 0.35);
+}
+
+.mobile-nav-panel a {
+  display: block;
+  padding: 0.85rem 0.5rem;
+  font-size: 1rem;
+  color: var(--text);
+  text-decoration: none;
+  border-bottom: 1px solid var(--border);
+}
+
+.mobile-nav-panel a:hover {
+  color: var(--mint);
+  text-decoration: none;
+}
+
+.mobile-nav-panel .btn {
+  margin-top: 1rem;
+  width: 100%;
+}
+
+.mobile-nav-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.75rem;
+  font-weight: 600;
+}
+
+.mobile-nav-close {
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text);
+  cursor: pointer;
+  font-size: 1.25rem;
+  line-height: 1;
+}
+
+/* System status: all viewports, horizontal scroll on small screens */
+.system-status {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: flex-start;
+  gap: 1rem;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  padding: 0.35rem var(--page-x) 0.5rem;
+}
+
+.system-status::-webkit-scrollbar {
+  display: none;
+}
+
+.system-status > span {
+  flex: 0 0 auto;
+  white-space: nowrap;
+}
+
+@media (min-width: 900px) {
+  .system-status {
+    flex-wrap: wrap;
+    justify-content: center;
+    overflow-x: visible;
+  }
+}
+
+/* Hero */
+.hero-copy .hero-ctas,
+.hero-copy .hero-loop {
+  justify-content: flex-start;
+}
+
+.mode-toggle {
+  width: 100%;
+}
+
+.mode-toggle-btn {
+  flex: 1;
+  text-align: center;
+  min-height: 2.25rem;
+}
+
+/* Telemetry: prevent overflow */
+.telemetry-table {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.telemetry-row {
+  grid-template-columns: minmax(4.25rem, auto) minmax(3.25rem, auto) minmax(0, 1fr) minmax(
+      3.5rem,
+      auto
+    );
+  min-width: min(100%, 20rem);
+}
+
+@media (max-width: 380px) {
+  .telemetry-row {
+    font-size: 0.62rem;
+    grid-template-columns: minmax(3.75rem, auto) minmax(2.75rem, auto) minmax(0, 1fr) minmax(
+        3rem,
+        auto
+      );
+  }
+}
+
+/* Lifecycle: stack on small screens, trace first */
+@media (max-width: 959px) {
+  .lifecycle-trace-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .lifecycle-sticky {
+    position: static;
+    top: auto;
+    order: 1;
+  }
+
+  .lifecycle-steps-col {
+    order: 2;
+  }
+
+  .lifecycle-step-panel {
+    padding: 0.75rem 0;
+  }
+}
+
+@media (min-width: 960px) {
+  .lifecycle-sticky {
+    top: calc(var(--sticky-top) + 2rem);
+  }
+}
+
+/* Touch targets */
+@media (max-width: 767px) {
+  .btn {
+    min-height: 2.75rem;
+  }
+
+  .attack-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .attack-actions .btn {
+    width: 100%;
+  }
+
+  .receipt-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .receipt-actions .btn {
+    width: 100%;
+  }
+
+  .final-cta .hero-ctas {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .final-cta .hero-ctas .btn {
+    width: 100%;
+  }
+
+  .hero-copy .hero-ctas .btn {
+    flex: 1 1 auto;
+    min-width: min(100%, 12rem);
+  }
+
+  .eco-verify-head {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .receipt-timeline-head {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .receipt-timeline-head .btn {
+    width: 100%;
+  }
+}
+
+@media (max-width: 420px) {
+  .recipes-compact-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .brand span {
+    font-size: 0.95rem;
+  }
+}
+
+/* Safe area for notched devices */
+@supports (padding: max(0px)) {
+  .site-header-wrap {
+    padding-left: max(0px, env(safe-area-inset-left));
+    padding-right: max(0px, env(safe-area-inset-right));
+  }
+
+  .mobile-nav-panel {
+    padding-bottom: max(1.5rem, env(safe-area-inset-bottom));
+  }
+}

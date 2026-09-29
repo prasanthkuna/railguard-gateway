@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useRef, useState } from "react"
+import { useLayoutEffect, useRef, useState } from "react"
 import { LIFECYCLE_STEPS, TELEMETRY_BY_MODE } from "../lib/telemetry"
 import { ExecutionTelemetry } from "./ExecutionTelemetry"
 
@@ -10,16 +10,19 @@ export function LifecycleTrace() {
   const [active, setActive] = useState(0)
   const refs = useRef<(HTMLElement | null)[]>([])
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const observers: IntersectionObserver[] = []
     const elements = refs.current.filter(Boolean) as HTMLElement[]
+    const rootMargin = window.matchMedia("(max-width: 959px)").matches
+      ? "-20% 0px -55% 0px"
+      : "-35% 0px -45% 0px"
     for (let idx = 0; idx < elements.length; idx++) {
       const el = elements[idx]
       const obs = new IntersectionObserver(
         ([entry]) => {
           if (entry.isIntersecting) setActive(idx)
         },
-        { rootMargin: "-35% 0px -45% 0px", threshold: 0 },
+        { rootMargin, threshold: 0 },
       )
       obs.observe(el)
       observers.push(obs)

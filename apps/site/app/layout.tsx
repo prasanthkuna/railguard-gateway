@@ -4,12 +4,19 @@ import { Space_Grotesk } from "next/font/google"
 import { SiteFooter } from "../components/SiteFooter"
 import { SiteHeader } from "../components/SiteHeader"
 import "./globals.css"
+import "./responsive.css"
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
   variable: "--font-space-grotesk",
   display: "swap",
 })
+
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
+}
 
 export const metadata: Metadata = {
   title: "Railguard — financial execution firewall",
