@@ -19,7 +19,7 @@ export function HeroSection() {
     return () => window.clearTimeout(t)
   }, [mode])
 
-  const displayMode = mode === "normal" && autoPhase === "attack" ? "attack" : mode
+  const displayMode: TelemetryMode = mode === "normal" && autoPhase === "attack" ? "attack" : mode
 
   return (
     <section className="hero-split">
@@ -45,7 +45,7 @@ export function HeroSection() {
       </div>
       <div className="hero-visual">
         <DemoModeToggle
-          value={mode}
+          value={displayMode}
           onChange={(m) => {
             setMode(m)
             setAutoPhase("normal")

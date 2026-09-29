@@ -37,7 +37,7 @@ export function ExecutionTelemetry({
     return () => window.clearInterval(id)
   }, [animateIn, lines])
 
-  const shown = maxLines ? lines.slice(0, maxLines) : lines
+  const shown = maxLines !== undefined ? lines.slice(0, Math.max(0, maxLines)) : lines
 
   return (
     <div className={`telemetry-panel ${className}`}>

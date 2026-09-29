@@ -1,7 +1,7 @@
 "use client"
 
 import Link from "next/link"
-import { useCallback, useEffect, useState } from "react"
+import { useCallback, useEffect, useRef, useState } from "react"
 import type { TelemetryLine } from "../lib/telemetry"
 
 const ATTACKS = [
@@ -18,20 +18,23 @@ const FAILURE_COUNT = ATTACKS.length
 type Phase = "idle" | "running" | "exposed" | "protecting" | "protected" | "blocked"
 
 function attackTelemetry(seq: number, blocked: boolean): TelemetryLine[] {
+  const attack = ATTACKS[seq]
+  if (!attack) return []
+
   const base = `19:42:01.${220 + seq}`
   const decision = blocked ? "BLOCKED" : "EXPOSED"
   return [
     {
       time: base,
       stage: "attack",
-      detail: ATTACKS[seq].label.toLowerCase(),
+      detail: attack.label.toLowerCase(),
       outcome: "detected",
       tone: "red",
     },
     {
       time: `${base.slice(0, -1)}1`,
       stage: "policy",
-      detail: ATTACKS[seq].cause,
+      detail: attack.cause,
       outcome: blocked ? "DENY" : "GAP",
       tone: blocked ? "red" : "amber",
     },
@@ -50,41 +53,67 @@ export function AttackDemo() {
   const [protectedOn, setProtectedOn] = useState(false)
   const [activeAttack, setActiveAttack] = useState(-1)
   const [log, setLog] = useState<TelemetryLine[]>([])
+  const [runBlocked, setRunBlocked] = useState(false)
 
-  const runSequence = useCallback((blocked: boolean) => {
-    setPhase("running")
-    setActiveAttack(-1)
-    setLog([])
-    let i = 0
-    const tick = () => {
-      if (i >= FAILURE_COUNT) {
-        setPhase(blocked ? "blocked" : "exposed")
-        return
-      }
-      setActiveAttack(i)
-      setLog((prev) => [...prev, ...attackTelemetry(i, blocked)])
-      i += 1
-      window.setTimeout(tick, 420)
-    }
-    tick()
+  const runIdRef = useRef(0)
+  const timeoutsRef = useRef<number[]>([])
+
+  const clearSequence = useCallback(() => {
+    for (const t of timeoutsRef.current) window.clearTimeout(t)
+    timeoutsRef.current = []
   }, [])
+
+  useEffect(() => () => clearSequence(), [clearSequence])
+
+  const schedule = useCallback((fn: () => void, ms: number) => {
+    const id = window.setTimeout(fn, ms)
+    timeoutsRef.current.push(id)
+    return id
+  }, [])
+
+  const runSequence = useCallback(
+    (blocked: boolean) => {
+      clearSequence()
+      const runId = ++runIdRef.current
+      setRunBlocked(blocked)
+      setPhase("running")
+      setActiveAttack(-1)
+      setLog([])
+
+      let i = 0
+      const tick = () => {
+        if (runId !== runIdRef.current) return
+        if (i >= FAILURE_COUNT) {
+          setPhase(blocked ? "blocked" : "exposed")
+          return
+        }
+        setActiveAttack(i)
+        setLog((prev) => [...prev, ...attackTelemetry(i, blocked)])
+        i += 1
+        schedule(tick, 420)
+      }
+      tick()
+    },
+    [clearSequence, schedule],
+  )
 
   const runAttack = useCallback(() => {
     runSequence(protectedOn)
   }, [protectedOn, runSequence])
 
   const runProtect = useCallback(() => {
+    clearSequence()
+    runIdRef.current += 1
     setPhase("protecting")
     setProtectedOn(true)
-    window.setTimeout(() => setPhase("protected"), 600)
-  }, [])
+    schedule(() => setPhase("protected"), 600)
+  }, [clearSequence, schedule])
 
   useEffect(() => {
-    if (phase === "protected") {
-      const t = window.setTimeout(() => runSequence(true), 400)
-      return () => window.clearTimeout(t)
-    }
-  }, [phase, runSequence])
+    if (phase !== "protected") return
+    const id = schedule(() => runSequence(true), 400)
+    return () => window.clearTimeout(id)
+  }, [phase, runSequence, schedule])
 
   const terminalLine =
     phase === "exposed"
@@ -92,6 +121,14 @@ export function AttackDemo() {
       : phase === "blocked"
         ? `${FAILURE_COUNT}/${FAILURE_COUNT} BLOCKED · RECONCILED`
         : null
+
+  const chipOutcome = (i: number): string | null => {
+    if (i > activeAttack || phase === "idle") return null
+    if (phase === "running") return runBlocked ? "BLOCKED" : "EXPOSED"
+    if (phase === "blocked") return "BLOCKED"
+    if (phase === "exposed") return "EXPOSED"
+    return null
+  }
 
   return (
     <div className="attack-demo-layout">
@@ -111,14 +148,20 @@ export function AttackDemo() {
             {phase === "protected" && (
               <p className="mono output ok">Protection enabled — ASSURANCE enforce</p>
             )}
+            {phase === "idle" && (
+              <p className="mono output muted">
+                Run attack, then railguard protect, then attack again.
+              </p>
+            )}
           </div>
         </div>
 
         <ul className="attack-grid" aria-live="polite">
           {ATTACKS.map((a, i) => {
             const done = i <= activeAttack && phase !== "idle"
-            const blocked = phase === "blocked" && done
-            const exposed = phase === "exposed" && done
+            const outcome = chipOutcome(i)
+            const blocked = outcome === "BLOCKED"
+            const exposed = outcome === "EXPOSED"
             return (
               <li
                 key={a.id}
@@ -128,9 +171,7 @@ export function AttackDemo() {
                 {done ? (
                   <>
                     <span className="attack-cause">{a.cause}</span>
-                    <span className="mono attack-state">
-                      {blocked ? "BLOCKED" : exposed ? "EXPOSED" : "…"}
-                    </span>
+                    <span className="mono attack-state">{outcome ?? "…"}</span>
                   </>
                 ) : (
                   <span className="attack-state">—</span>
@@ -145,7 +186,7 @@ export function AttackDemo() {
             type="button"
             className="btn btn-ghost"
             onClick={runAttack}
-            disabled={phase === "running"}
+            disabled={phase === "running" || phase === "protecting"}
           >
             Run attack
           </button>
@@ -153,11 +194,11 @@ export function AttackDemo() {
             type="button"
             className="btn btn-mint"
             onClick={runProtect}
-            disabled={protectedOn || phase === "protecting"}
+            disabled={protectedOn || phase === "protecting" || phase === "running"}
           >
             railguard protect
           </button>
-          {phase === "blocked" && (
+          {(phase === "blocked" || phase === "exposed") && (
             <Link href="/r/demo" className="btn btn-mint">
               View receipt
             </Link>
@@ -172,11 +213,11 @@ export function AttackDemo() {
         </div>
         <div className="telemetry-table">
           {log.length === 0 ? (
-            <p className="telemetry-empty mono">awaiting railguard attack…</p>
+            <p className="telemetry-empty mono">Press Run attack to stream telemetry…</p>
           ) : (
             log.map((line) => (
               <div
-                key={`${line.time}-${line.stage}-${line.detail}`}
+                key={`${line.time}-${line.stage}-${line.detail}-${line.outcome}`}
                 className={`telemetry-row tone-${line.tone}`}
               >
                 <span className="mono telemetry-time">{line.time}</span>

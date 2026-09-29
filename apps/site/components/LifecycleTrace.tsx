@@ -12,8 +12,9 @@ export function LifecycleTrace() {
 
   useEffect(() => {
     const observers: IntersectionObserver[] = []
-    refs.current.forEach((el, idx) => {
-      if (!el) return
+    const elements = refs.current.filter(Boolean) as HTMLElement[]
+    for (let idx = 0; idx < elements.length; idx++) {
+      const el = elements[idx]
       const obs = new IntersectionObserver(
         ([entry]) => {
           if (entry.isIntersecting) setActive(idx)
@@ -22,7 +23,7 @@ export function LifecycleTrace() {
       )
       obs.observe(el)
       observers.push(obs)
-    })
+    }
     return () => {
       for (const o of observers) o.disconnect()
     }

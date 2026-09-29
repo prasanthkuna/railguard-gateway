@@ -494,6 +494,12 @@ button:focus-visible {
   margin: 0.75rem 0 0;
 }
 
+.output.muted {
+  color: var(--muted);
+  margin: 0.75rem 0 0;
+  font-size: 0.8rem;
+}
+
 .cursor {
   display: inline-block;
   width: 8px;
