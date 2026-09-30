@@ -14,7 +14,7 @@ export function ArbitrumTierBDemo() {
   const router = useRouter()
   const [busy, setBusy] = React.useState(false)
   const [error, setError] = React.useState<string | null>(null)
-  const [network, setNetwork] = React.useState<"arbitrum-sepolia" | "arbitrum-one">("arbitrum-sepolia")
+  const network = "arbitrum-sepolia" as const
 
   const run = async () => {
     setBusy(true)
@@ -22,7 +22,7 @@ export function ArbitrumTierBDemo() {
     try {
       const idem = `idem_arb_${Date.now()}_${Math.random().toString(36).slice(2, 10)}`
       const expires = new Date(Date.now() + 86_400_000).toISOString()
-      const asset = network === "arbitrum-one" ? "USDT" : "USDC"
+      const asset = "USDC"
       const created = await api.createFinancialIntent({
         principal: { organizationId: "demo", actorId: "agent-demo", actorType: "agent" },
         action: { type: "transfer", purpose: "Arbitrum Tier B demo" },
@@ -49,24 +49,9 @@ export function ArbitrumTierBDemo() {
       <p className="rg-body text-[var(--rg-text-secondary)] mb-3">
         Creates intent → authorize → awaiting MetaMask broadcast (0.01 USDC to grant wallet).
       </p>
-      <div className="flex flex-wrap gap-2 mb-3">
-        <Button
-          type="button"
-          variant={network === "arbitrum-sepolia" ? "primary" : "secondary"}
-          size="sm"
-          onClick={() => setNetwork("arbitrum-sepolia")}
-        >
-          Arbitrum Sepolia
-        </Button>
-        <Button
-          type="button"
-          variant={network === "arbitrum-one" ? "primary" : "secondary"}
-          size="sm"
-          onClick={() => setNetwork("arbitrum-one")}
-        >
-          Arbitrum One
-        </Button>
-      </div>
+      <p className="text-xs text-[var(--rg-text-muted)] mb-3">
+        Network: Arbitrum Sepolia (421614) · Circle USDC · recipient {DEMO_RECIPIENT.slice(0, 6)}…
+      </p>
       <Button type="button" disabled={busy} onClick={run}>
         {busy ? "Creating…" : "Start Tier B flow"}
       </Button>

@@ -10,7 +10,7 @@ Open-source financial execution firewall for autonomous agents.
 
 ## Description (short)
 
-Railguard sits between AI agents and wallets: policy, reservation, execution, reconciliation, and evidence. Failure Lab demonstrates six financial failure classes (APF-001…006). On **Arbitrum One**, we verify real USDT settlement facts on-chain and emit auditable evidence—same lifecycle kernel as Base/CDP and Stellar testnets.
+Railguard sits between AI agents and wallets: policy, reservation, execution, reconciliation, and evidence. Failure Lab demonstrates six financial failure classes (APF-001…006). On **Arbitrum Sepolia**, we deploy the execution hook and verify USDC settlement via Tier B (MetaMask broadcast + observe)—same lifecycle kernel as Base/CDP and Stellar testnets.
 
 ## Links
 
@@ -21,7 +21,7 @@ Railguard sits between AI agents and wallets: policy, reservation, execution, re
 | Arbitrum proof page | https://railguard-site.vercel.app/ecosystems/arbitrum |
 | GitHub | https://github.com/prasanthkuna/railguard-gateway |
 | Operator | https://prebroadcast.vercel.app/ |
-| On-chain proof | _(from `evidence/arbitrum-one/README.md` — Arbiscan tx)_ |
+| On-chain proof | Sepolia hook + Tier B tx — `evidence/arbitrum-sepolia-hook/` + `evidence/arbitrum-sepolia/` |
 | Video | _(HyperFrames master — YouTube/unlisted when ready)_ |
 
 ## Track / tags
@@ -38,4 +38,4 @@ Arbitrum One address used for builder contact (your MetaMask `0x9a3f…`).
 
 ## On-chain proof (submission)
 
-Paste **Arbitrum One** tx hash and Arbiscan URL from `evidence/arbitrum-one/manifest.json`.
+Paste **Sepolia** hook address (`sepolia.arbiscan.io`) and Tier B settlement tx from `evidence/arbitrum-sepolia/manifest.json`.

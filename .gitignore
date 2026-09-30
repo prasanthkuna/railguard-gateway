@@ -38,7 +38,11 @@ encore.gen.cue
 .env
 .env.local
 .env.*.local
-evidence/
+evidence/*
+!evidence/arbitrum-sepolia-hook/
+!evidence/arbitrum-sepolia/
+!evidence/**/README.md
+!evidence/**/manifest.json
 
 # logs
 *.log

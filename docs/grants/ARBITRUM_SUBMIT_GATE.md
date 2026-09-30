@@ -1,38 +1,24 @@
-# Arbitrum HackQuest — submit gate (do not submit until all checked)
+# Arbitrum HackQuest — submit gate (testnet-only)
 
 **Program:** [Arbitrum Open House Singapore](https://arbitrum-singapore.hackquest.io/buildathons/Arbitrum-Open-House-Singapore-Online-Buildathon)  
-**Project submit window:** through **2026-10-04**
+**Submit by:** **2026-10-04**  
+**Master checklist:** [ARBITRUM_TESTNET_SUBMIT.md](./ARBITRUM_TESTNET_SUBMIT.md)
 
-## On-chain
+## On-chain (Sepolia)
 
-- [ ] USDT (or USDC) transfer on **Arbitrum One** completed
-- [ ] `bun run arbitrum-one-evidence` → `evidence/arbitrum-one/manifest.json` with `ok: true`
-- [ ] Arbiscan link in `evidence/arbitrum-one/README.md`
+- [ ] Hook deploy → `evidence/arbitrum-sepolia-hook/README.md`
+- [ ] Tier B demo tx → `evidence/arbitrum-sepolia/manifest.json` (`ok: true`)
+- [ ] Both links on HackQuest (sepolia.arbiscan.io)
 
-## Track A — Arbitrum Sepolia hook
+## Product
 
-- [ ] `forge script` deploy → addresses in `evidence/arbitrum-sepolia-hook/README.md`
-- [ ] Verified on https://sepolia.arbiscan.io
+- [ ] Encore staging Tier B routes live
+- [ ] prebroadcast Executions + **Arbitrum Tier B demo** → SETTLED
+- [ ] `/ecosystems/arbitrum` → **SEPOLIA VERIFIED**
 
-## Track B — Tier B product
+## Video + HackQuest
 
-- [ ] `POST /v1/intents/:id/execute-external` + `POST /v1/executions/:id/observe` on staging
-- [ ] Operator: Executions → **Arbitrum Tier B demo** + MetaMask + observe → **SETTLED**
+- [ ] ~90s demo (HyperFrames pipeline)
+- [ ] Project submit: GitHub, URLs, video, Sepolia proofs
 
-## Repo & deploy
-
-- [ ] `evidence/arbitrum-one/` committed on `main`
-- [ ] Encore staging serves `GET /v1/executions` (operator Executions page)
-- [ ] `railguard-site` deployed with `/ecosystems/arbitrum` = **MAINNET VERIFIED**
-
-## Video (HyperFrames)
-
-- [ ] Old Remotion/CapCut outputs removed (see `docs/media/HYPERFRAMES_PIPELINE.md`)
-- [ ] Grant master ~90s rendered from HyperFrames + FFmpeg
-- [ ] `docs/media/CLAIM_MAP.md` — every on-screen claim has CLI, URL, or tx proof
-
-## HackQuest
-
-- [ ] Registration complete (About you + Online profiles)
-- [ ] Project form: name, description, GitHub, demo URL, **video URL**, **tx proof**
-- [ ] Copy from `docs/grants/HACKQUEST_ARBITRUM_COPY.md`
+**Mainnet:** not required for this submission track.

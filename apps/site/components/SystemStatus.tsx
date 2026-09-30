@@ -14,7 +14,7 @@ export function SystemStatus() {
         <span className="status-dot ok" /> Stellar testnet verified
       </span>
       <span>
-        <span className="status-dot ok" /> Arbitrum mainnet verified
+        <span className="status-dot ok" /> Arbitrum Sepolia verified
       </span>
     </div>
   )
