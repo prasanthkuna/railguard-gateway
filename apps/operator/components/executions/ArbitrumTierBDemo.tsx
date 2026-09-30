@@ -51,6 +51,7 @@ export function ArbitrumTierBDemo() {
   }
 
   return (
+    <div id="tier-b-demo">
     <SectionCard title="Arbitrum Tier B demo">
       <p className="rg-body text-[var(--rg-text-secondary)] mb-3">
         Creates intent → authorize → awaiting MetaMask broadcast (0.01 USDC to grant wallet).
@@ -63,5 +64,6 @@ export function ArbitrumTierBDemo() {
       </Button>
       {error ? <p className="mt-2 text-sm text-[var(--rg-danger)]">{error}</p> : null}
     </SectionCard>
+    </div>
   )
 }

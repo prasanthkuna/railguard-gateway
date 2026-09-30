@@ -40,10 +40,10 @@ export default function ExecutionsIndexPage() {
         title="Executions"
         description="Search decisions, rails, and evidence across financial intents — primary control surface for Railguard."
         actions={
-          <Link href="/zebpay">
+          <Link href="#tier-b-demo">
             <Button variant="secondary" className="gap-2">
               <Activity className="h-4 w-4" />
-              Demo flow
+              Tier B demo
             </Button>
           </Link>
         }
