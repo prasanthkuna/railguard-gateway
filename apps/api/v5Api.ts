@@ -120,7 +120,7 @@ export const observeV1Execution = api(
   async (params: {
     id: string
     txHash: string
-  }): Promise<V5ExecutionResponse & { intentId: string; txHash: string; explorerUrl?: string }> {
+  }): Promise<V5ExecutionResponse & { intentId: string; txHash: string; explorerUrl?: string }> => {
     const actor = await requireV5Actor(["owner", "finance"])
     const stored = await observeExternalStoredExecution(
       actor.organizationID,
