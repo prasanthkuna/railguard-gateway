@@ -1,1 +1,11 @@
-export type IntegrationLogoId = "stellar" | "base" | "cdp" | "x402"
+export type IntegrationLogoId =
+  | "stellar"
+  | "base"
+  | "cdp"
+  | "x402"
+  | "arbitrum"
+  | "monad"
+  | "arc"
+  | "celo"
+  | "airwallex"
+  | "failure-lab"

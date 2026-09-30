@@ -1,3 +1,4 @@
+import Link from "next/link"
 import { EXTERNAL_LINK } from "../lib/constants"
 import type { EcosystemCard } from "../lib/ecosystems"
 import { IntegrationLogo } from "./IntegrationLogo"
@@ -51,6 +52,9 @@ export function EcosystemVerifyCard({ eco }: { eco: EcosystemCard }) {
         </dl>
       ) : null}
       <p className="eco-narrative">{eco.narrative}</p>
+      <p className="rg-caption" style={{ marginTop: "0.75rem" }}>
+        <Link href={`/ecosystems/${eco.id}`}>Grant one-pager →</Link>
+      </p>
       <div className="eco-verify-actions">
         <a href={eco.evidenceHref} className="btn btn-ghost btn-sm" {...EXTERNAL_LINK}>
           {eco.evidenceLabel ?? "View evidence"}
