@@ -1,6 +1,6 @@
 #!/usr/bin/env bun
 /**
- * Tier B on staging Encore (requires WorkOS access token from operator session).
+ * External-wallet verification on staging Encore (requires WorkOS access token from operator session).
  * Usage:
  *   TIER_B_ACCESS_TOKEN=eyJ... bun run scripts/run-tier-b-staging.ts
  * Optional: TIER_B_TX_HASH=0x... (skip on-chain; only observe)
@@ -54,12 +54,12 @@ async function main() {
     method: "POST",
     body: JSON.stringify({
       principal: { organizationId: "demo", actorId: "agent-demo", actorType: "agent" },
-      action: { type: "transfer", purpose: "Arbitrum Tier B demo" },
+        action: { type: "transfer", purpose: "Arbitrum Sepolia wallet verification" },
       counterparty: { address: DEMO_RECIPIENT },
       value: { amount: DEMO_AMOUNT, asset: "USDC" },
       constraints: { expiresAt: expires, network: "arbitrum-sepolia" },
       idempotencyKey: idem,
-      context: { task: "hackquest-tier-b" },
+        context: { task: "external-wallet-verification" },
     }),
   })
 

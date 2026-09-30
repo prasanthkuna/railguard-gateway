@@ -41,9 +41,9 @@ Prashanth Kuna — solo / founder
 
 ## On-chain proof (submission)
 
-**Track A — hook:** `0x756829c3ab0eB02b22fe4D7C9E35252A9738965E` on Arbitrum Sepolia (421614).
+**Hook deployment:** `0x756829c3ab0eB02b22fe4D7C9E35252A9738965E` on Arbitrum Sepolia (421614).
 
-**Track B — settlement:** tx `0x243ec1e8eb6a992a85a035af11edd5ff70d78e3b84e7eb6c78ab5badc409608d` · 0.01 USDC · execution `exec_b73824e9-726f-4d59-af49-ac5cd1e1c9aa` · public proof page above.
+**Wallet settlement:** tx `0x243ec1e8eb6a992a85a035af11edd5ff70d78e3b84e7eb6c78ab5badc409608d` · 0.01 USDC · execution `exec_b73824e9-726f-4d59-af49-ac5cd1e1c9aa` · public proof page above.
 
 **Proof caption:** Arbitrum Sepolia · 0.01 USDC · matching token, recipient, amount, and chain verified · execution SETTLED · explorer and evidence links in project description.
 

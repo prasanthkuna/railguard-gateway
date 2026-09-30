@@ -9,7 +9,7 @@
 | 2 | 0:10–0:35 | HF + capture | Six tiles animate in (APF-001…006); cut to `/attack` or Failure Lab | Six failures | APF-001…006 |
 | 3 | 0:35–0:55 | capture + HF | `railguard protect` block OR staging policy deny; green “blocked” pulse | Policy gate | CLI / API |
 | 4 | 0:55–1:10 | capture + HF | Receipt JSON / operator lifecycle diagram | Evidence | `/r/demo`, receipt |
-| 5 | 1:10–1:22 | capture | **prebroadcast** Tier B → **SETTLED**; Sepolia Arbiscan tx | Testnet settlement | manifest + tx |
+| 5 | 1:10–1:22 | capture | Public proof + **SETTLED**; Sepolia Arbiscan tx | Wallet verification | manifest + tx |
 | 6 | 1:22–1:30 | HF | Logo, tagline, URLs | Close | site + operator |
 
 ## Beat 1 — Hook (HF)
@@ -40,7 +40,7 @@
   1. `https://prebroadcast.vercel.app/executions/exec_b73824e9-726f-4d59-af49-ac5cd1e1c9aa` — status **SETTLED**
   2. `evidence/arbitrum-sepolia/manifest.json` — `"ok": true`
   3. Arbiscan: `https://sepolia.arbiscan.io/tx/0x243ec1e8eb6a992a85a035af11edd5ff70d78e3b84e7eb6c78ab5badc409608d`
-- **Optional 2s HF:** hook address caption `0x7568…965E` (Track A) — text only, no fake chain footage.
+- **Optional 2s HF:** hook address caption `0x7568…965E` (hook deployment) — text only, no fake chain footage.
 
 ## Beat 6 — Close (HF)
 

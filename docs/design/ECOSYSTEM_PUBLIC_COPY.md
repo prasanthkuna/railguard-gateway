@@ -17,16 +17,17 @@ Judges discover programs from the submission form. The **Arbitrum page** should 
 - “Every grant submission must…”
 - “For grant reviewers” in card narratives
 - Video VO: “Open House”, “HackQuest”, “judges”, “submission”
+- **Track A / Track B**, **Tier B** (internal shorthand — use plain names below)
 
 ## Allowed on public UI
 
 - Status: `SEPOLIA VERIFIED`, evidence links, `oneCommand`, APF coverage
 - “Reproduce this proof”, “Integration details”, “View evidence”
-- Track A (hook deploy) / Track B (external-wallet verification) **without** event names — never “Tier B” on public UI
+- **Hook deployment** and **external-wallet verification** as separate proofs
 
 ## Arbitrum page — target narrative
 
-**Hero:** Track A hook on Sepolia; Track B 0.01 USDC external-wallet verification — separate proofs, same lifecycle kernel.
+**Hero:** Hook contracts on Sepolia; separately, 0.01 USDC external-wallet verification — two independent proofs, same lifecycle kernel.
 
 **Side panel:** Reproduce — `bun run arbitrum-sepolia-evidence`, code path, rail id, public proof page + hook README.
 
@@ -37,10 +38,3 @@ Judges discover programs from the submission form. The **Arbitrum page** should 
 - `apps/hyperframes/SCRIPT.md` — product VO only (see revised script)
 - On-screen proof cards — tx hash, hook address, SETTLED (no event branding)
 - `GOAL.md` / `docs/grants/*` — may mention HackQuest for agent context; not spoken in VO
-
-## Checklist before `render.ps1`
-
-- [ ] `/ecosystems/arbitrum` has no grant-reviewer heading or submission portal button
-- [ ] Card link says “Integration details” not “Grant one-pager”
-- [ ] SCRIPT has no buildathon / grant program names
-- [ ] `bun run verify-hackquest-pack` still passes (technical URLs unchanged)

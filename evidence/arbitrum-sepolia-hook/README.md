@@ -1,4 +1,4 @@
-# Arbitrum Sepolia — Railguard hook deploy (Track A)
+# Arbitrum Sepolia — Railguard hook deployment
 
 | Contract | Address | Source verified | Arbiscan |
 |----------|---------|-----------------|----------|
@@ -17,7 +17,7 @@ Contract source: [railguard-protocol](https://github.com/prasanthkuna/railguard-
 
 Verification on Arbiscan may require Etherscan API V2 (`forge verify-contract` with V2 URL).
 
-## Track B (staging, 2026-09-30)
+## External-wallet verification (staging, 2026-09-30)
 
 | Step | Value |
 |------|--------|

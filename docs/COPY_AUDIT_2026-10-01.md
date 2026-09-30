@@ -251,7 +251,9 @@ Do not submit until all P0 items are complete:
 
 **Done in repo:** marketing P0/P1 (sample receipt, Failure Lab simulation labels, ecosystem planned styling, proof links, hero/CTAs, recipes scope, evaluator section, custody copy, category alignment on site/operator/zebpay), operator P0/P1 (testnet banner, Arbitrum wallet copy, evidence envelope wording, status plain-language, audit trail copy, README), public `/proof/arbitrum-sepolia`, `verify-hackquest-pack` body checks, `docs/ecosystems.yaml` + `check:ecosystems-drift`, grant doc supersede + gate mirror, runbook, hook source-verified table, revised `SCRIPT.md` / HackQuest paste targets.
 
-**Still human / deploy / external:** upload 90s video URL everywhere; `git push origin main` for Vercel; optional Etherscan source verify; commit reproducibility helpers in `railguard-protocol`; HyperFrames full UI capture composition + render.
+**Terminology (2026-10 follow-up):** public copy uses **hook deployment** and **external-wallet verification** (no Track A/B or Tier B on site, operator UI, video, or grant paste targets). Internal script env vars (`TIER_B_*`) and filenames (`run-tier-b-staging.ts`) unchanged.
+
+**Still human / deploy / external:** upload 90s video URL everywhere; optional Etherscan source verify; commit reproducibility helpers in `railguard-protocol`; HyperFrames full UI capture composition + render.
 
 ## What should remain unchanged
 

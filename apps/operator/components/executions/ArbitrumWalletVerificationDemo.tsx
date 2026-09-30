@@ -10,7 +10,7 @@ import { getErrorMessage } from "../../lib/errors"
 const DEMO_RECIPIENT = "0x8c7E2543Aa8bf69dc8458Dc28104234f6A334233"
 const DEMO_AMOUNT = "10000" // 0.01 USDC (6 decimals)
 
-export function ArbitrumTierBDemo() {
+export function ArbitrumWalletVerificationDemo() {
   const router = useRouter()
   const [busy, setBusy] = React.useState(false)
   const [error, setError] = React.useState<string | null>(null)
@@ -37,7 +37,7 @@ export function ArbitrumTierBDemo() {
         value: { amount: DEMO_AMOUNT, asset },
         constraints: { expiresAt: expires, network },
         idempotencyKey: idem,
-        context: { task: "hackquest-tier-b" },
+        context: { task: "external-wallet-verification" },
       })
       let rawIntent: unknown = created.intent
       if (typeof rawIntent === "string") {
@@ -58,26 +58,26 @@ export function ArbitrumTierBDemo() {
   }
 
   return (
-    <div id="tier-b-demo">
-    <SectionCard title="Arbitrum Sepolia wallet verification">
-      <p className="rg-body text-[var(--rg-text-secondary)] mb-3">
-        Create and authorize a <strong>0.01 USDC</strong> test intent. You will send the transfer
-        separately from your wallet. Railguard will not initiate or sign the transfer.
-      </p>
-      <p className="text-xs text-[var(--rg-text-muted)] mb-2 font-mono break-all">
-        Active chain: Arbitrum Sepolia (421614) · USDC
-      </p>
-      <p className="text-xs text-[var(--rg-text-muted)] mb-3 font-mono break-all">
-        Demo recipient wallet: {DEMO_RECIPIENT}
-      </p>
-      <Button type="button" variant="secondary" size="sm" className="mb-3" onClick={copyRecipient}>
-        {copied ? "Recipient copied" : "Copy recipient address"}
-      </Button>
-      <Button type="button" disabled={busy} onClick={run}>
-        {busy ? "Creating…" : "Create test intent"}
-      </Button>
-      {error ? <p className="mt-2 text-sm text-[var(--rg-danger)]">{error}</p> : null}
-    </SectionCard>
+    <div id="wallet-verification-demo">
+      <SectionCard title="Arbitrum Sepolia wallet verification">
+        <p className="rg-body text-[var(--rg-text-secondary)] mb-3">
+          Create and authorize a <strong>0.01 USDC</strong> test intent. You will send the transfer
+          separately from your wallet. Railguard will not initiate or sign the transfer.
+        </p>
+        <p className="text-xs text-[var(--rg-text-muted)] mb-2 font-mono break-all">
+          Active chain: Arbitrum Sepolia (421614) · USDC
+        </p>
+        <p className="text-xs text-[var(--rg-text-muted)] mb-3 font-mono break-all">
+          Demo recipient wallet: {DEMO_RECIPIENT}
+        </p>
+        <Button type="button" variant="secondary" size="sm" className="mb-3" onClick={copyRecipient}>
+          {copied ? "Recipient copied" : "Copy recipient address"}
+        </Button>
+        <Button type="button" disabled={busy} onClick={run}>
+          {busy ? "Creating…" : "Create test intent"}
+        </Button>
+        {error ? <p className="mt-2 text-sm text-[var(--rg-danger)]">{error}</p> : null}
+      </SectionCard>
     </div>
   )
 }

@@ -3,7 +3,9 @@
 > **SUPERSEDED for Oct 2026 submission:** Canonical checklist is [ARBITRUM_TESTNET_SUBMIT.md](./ARBITRUM_TESTNET_SUBMIT.md) (Sepolia testnet only). Mainnet proof rows in this doc are not required for HackQuest testnet track.
 
 **Submit by:** 2026-10-04  
-**Goal:** **Complete on Arbitrum Sepolia** (contracts + product) + **pro Tier B** (full lifecycle) + **mainnet proof** + **90s video**  
+**Goal:** **Complete on Arbitrum Sepolia** (contracts + product) + **external-wallet verification** (full lifecycle) + **mainnet proof** + **90s video**  
+
+**Terminology (2026-10):** use **hook deployment** and **external-wallet verification** — not hook deployment/B or external-wallet verification in public copy.
 **Judging lens:** smart-contract quality · PMF · innovation · real problem · USDG consideration
 
 ---
@@ -31,7 +33,7 @@ Do **not** compete on “most features.” Compete on **coherent security produc
 
 ```text
 Arbitrum Sepolia (421614)     →  HOOK + ADAPTER + VALIDATOR deploy
-                                 Tier B demo (USDC/USDG transfer + observe)
+                                 external-wallet verification demo (USDC/USDG transfer + observe)
                                  Foundry + addresses in evidence/
 
 Arbitrum One (42161)          →  One real settlement (USDT or USDG)
@@ -44,7 +46,7 @@ Mainnet satisfies **“this is real, not testnet theater.”**
 
 ---
 
-## 3. Track A — Protocol complete on Arbitrum Sepolia
+## 3. Hook deployment — protocol on Arbitrum Sepolia
 
 **Repo:** `railguard-new/contracts`  
 **Script:** `script/Deploy.s.sol` (Hook + Adapter + Validator)
@@ -91,14 +93,14 @@ Pick **one** path (time-box):
 Reference token on Sepolia (used by other HackQuest projects):  
 `0xFFC95faa3d63Cde504a05B567C600B78C0b41892` (verify on Arbiscan before use).
 
-- One **Tier B** intent denominated in USDG + MetaMask send + observe  
+- One **external-wallet verification** intent denominated in USDG + MetaMask send + observe  
 - Submission copy: “USDG settlement path on Arbitrum Sepolia”
 
-**Do not** chase Robinhood Chain (4663) unless Sepolia + Tier B are done.
+**Do not** chase Robinhood Chain (4663) unless Sepolia + external-wallet verification are done.
 
 ---
 
-## 4. Track B — Pro Tier B in Gateway (core product)
+## 4. External-wallet verification in Gateway (core product)
 
 **Problem today:** `POST /v1/intents/:id/execute` requires **CDP paymentIntentId** — not MetaMask / external broadcast.
 
@@ -148,8 +150,8 @@ On `executions/[id]`:
 | Artifact | Path |
 | --- | --- |
 | Sepolia hook deploy | `evidence/arbitrum-sepolia-hook/` |
-| Sepolia Tier B tx | `evidence/arbitrum-sepolia/` (extend existing script) |
-| Mainnet Tier B | `evidence/arbitrum-one/` |
+| Sepolia external-wallet verification tx | `evidence/arbitrum-sepolia/` (extend existing script) |
+| Mainnet external-wallet verification | `evidence/arbitrum-one/` |
 | Site | `/ecosystems/arbitrum` — **two proofs**: Sepolia hook + mainnet settlement |
 | Submit gate | [ARBITRUM_SUBMIT_GATE.md](./ARBITRUM_SUBMIT_GATE.md) all checked |
 
@@ -167,7 +169,7 @@ Update manifest **honestly**:
 1. Hook — agent wallet risk  
 2. Six failures (fast) — `/attack`  
 3. `protect` — block  
-4. **Operator Tier B** — intent → MetaMask → observe → **SETTLED**  
+4. **Operator external-wallet verification** — intent → MetaMask → observe → **SETTLED**  
 5. **Sepolia hook** address on Arbiscan (5s)  
 6. **Mainnet** evidence tx  
 7. Tagline + URLs  
@@ -193,7 +195,7 @@ Keep **APF-001…006**. In demo and video:
 - New failure profiles  
 - Robinhood Chain / x402 USDG facilitator  
 - Full Remotion/CapCut pipeline  
-- Hook on **mainnet** unless Sepolia + Tier B + video are done early
+- Hook on **mainnet** unless Sepolia + external-wallet verification + video are done early
 
 ---
 
@@ -202,7 +204,7 @@ Keep **APF-001…006**. In demo and video:
 | Day | Focus |
 | --- | --- |
 | **D1** | Deploy hook triple **Arbitrum Sepolia** + evidence README |
-| **D2** | Tier B API (`execute-external`, `observe`) + Sepolia USDC test transfer |
+| **D2** | external-wallet verification API (`execute-external`, `observe`) + Sepolia USDC test transfer |
 | **D3** | Operator UI + deny-path demo + Encore deploy executions API |
 | **D4** | Mainnet USDT observe + commit all evidence |
 | **D5** | Site deploy + `/ecosystems/arbitrum` dual proof + optional USDG Sepolia tx |
@@ -228,7 +230,7 @@ Keep **APF-001…006**. In demo and video:
 
 | Risk | Mitigation |
 | --- | --- |
-| Tier B API slips | Ship observe-only MVP first (manual intent in DB + observe endpoint) |
+| external-wallet verification API slips | Ship observe-only MVP first (manual intent in DB + observe endpoint) |
 | SignGate E2E heavy | Sepolia deploy + one hook event tx enough for “contract quality” |
 | No mainnet USDT yet | Block submit until `arbitrum-one-evidence` passes |
 | Executions 404 | Encore deploy day 3 hard deadline |
@@ -236,4 +238,4 @@ Keep **APF-001…006**. In demo and video:
 
 ---
 
-**Next engineering start:** Track B `observe` + `execute-external` (Gateway) in parallel with Track A deploy (protocol).
+**Next engineering start:** external-wallet verification `observe` + `execute-external` (Gateway) in parallel with hook deployment deploy (protocol).

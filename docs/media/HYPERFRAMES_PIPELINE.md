@@ -20,7 +20,7 @@ See [LAUNCH.md](../../../LAUNCH.md), [CLAIM_MAP.md](./CLAIM_MAP.md), and the ful
 2. Six failures (Failure Lab / `/attack`)  
 3. `railguard protect` → block / reconcile  
 4. Receipt + lifecycle  
-5. **Arbitrum Sepolia** — Tier B SETTLED + `evidence/arbitrum-sepolia` + Sepolia Arbiscan  
+5. **Arbitrum Sepolia** — wallet verification SETTLED + `evidence/arbitrum-sepolia` + Sepolia Arbiscan  
 6. Tagline + URLs  
 
 ## Tooling

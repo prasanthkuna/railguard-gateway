@@ -1,4 +1,4 @@
-/** Verify on-chain ERC-20 transfer against a financial intent (Tier B external broadcast). */
+/** Verify on-chain ERC-20 transfer against a financial intent (external-wallet broadcast). */
 
 import { getEvmChain } from "../../packages/settlement/src/chains.ts"
 import { ARBITRUM_ONE_USDT } from "../../packages/settlement/src/arbitrum-one.ts"

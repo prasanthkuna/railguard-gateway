@@ -118,7 +118,7 @@ export const ECOSYSTEM_MANIFEST: EcosystemManifestEntry[] = [
     protects: ["Policy", "Execution", "Observe", "Reconcile", "Evidence"],
     apf: ["APF-003", "APF-004"],
     narrative:
-      "Track A: hook contracts deployed on Sepolia. Track B: external-wallet 0.01 USDC verified via operator lifecycle (separate proof).",
+      "Hook contracts deployed on Sepolia; separately, external-wallet 0.01 USDC verified via operator lifecycle (two independent proofs).",
     evidenceHref: `${MARKETING_SITE_URL}/proof/arbitrum-sepolia`,
     evidenceLabel: "Public SETTLED proof",
     secondaryHref: `${GITHUB_GATEWAY}/tree/main/evidence/arbitrum-sepolia-hook`,
@@ -130,7 +130,7 @@ export const ECOSYSTEM_MANIFEST: EcosystemManifestEntry[] = [
     grantPortal:
       "https://arbitrum-singapore.hackquest.io/buildathons/Arbitrum-Open-House-Singapore-Online-Buildathon",
     oneCommand: "bun run arbitrum-sepolia-evidence",
-    architectureBlurb: `Track A: hook on Sepolia (421614). Track B: external-wallet verification via ${LIFECYCLE} — separate proofs.`,
+    architectureBlurb: `Hook deployment on Sepolia (421614); external-wallet verification via ${LIFECYCLE} — separate proofs.`,
   },
   {
     id: "monad",

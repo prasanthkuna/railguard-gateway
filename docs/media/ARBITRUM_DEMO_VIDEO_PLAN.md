@@ -43,7 +43,7 @@ Hackathon guides converge on the same shape for **90s**:
 | 0:10–0:20 | What you built (UI flash) |
 | 0:20–0:55 | **One happy path** — input → policy → execution → observe |
 | 0:55–0:70 | **Technical proof** — explorer tx, hook address, manifest `ok: true` |
-| 0:70–0:85 | Why Arbitrum / rubric fit (Track A hook + Track B settlement) |
+| 0:70–0:85 | Why Arbitrum / rubric fit (hook deployment + wallet settlement proof) |
 | 0:85–0:90 | CTA + URLs |
 
 Rules from ElevenLabs / Tensor / Web3 demo guides:
@@ -65,8 +65,8 @@ Your `STORYBOARD.md` already maps to this; tighten beat 2 so Failure Lab is **�
 
 1. Hook only (0:10)
 2. Six failures montage (0:15)
-3. Tier B SETTLED + Arbiscan (0:20)
-4. Track A hook address (0:15)
+3. Wallet verification SETTLED + Arbiscan (0:20)
+4. Hook deployment address (0:15)
 5. CTA → `/ecosystems/arbitrum`
 
 Do **not** ship 20 unrelated AI clips; ship **one master + matrix**.
@@ -86,7 +86,7 @@ Do **not** ship 20 unrelated AI clips; ship **one master + matrix**.
 Record in one session (dark browser, zoom 110%, notifications off):
 
 1. `railguard-site.vercel.app/attack` — one failure firing
-2. `prebroadcast.vercel.app` — Tier B demo section → execution detail **SETTLED**
+2. Public proof page + optional testnet console execution **SETTLED**
 3. Sepolia Arbiscan tx (scroll to token transfer)
 4. Optional: 5s terminal `protect` block
 

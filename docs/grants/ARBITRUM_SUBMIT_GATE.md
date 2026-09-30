@@ -15,7 +15,7 @@
 
 - [x] Encore staging wallet-verification routes live
 - [x] Public proof page (no auth) → `/proof/arbitrum-sepolia`
-- [x] `/ecosystems/arbitrum` → **SEPOLIA VERIFIED** + Track A/B copy
+- [x] `/ecosystems/arbitrum` → **SEPOLIA VERIFIED** + hook / wallet proof copy
 
 ## Video + HackQuest
 

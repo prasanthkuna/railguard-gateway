@@ -8,7 +8,7 @@ import { Button } from "../../components/ui/Button"
 import { Skeleton } from "../../components/ui/Skeleton"
 import { api } from "../../lib/api"
 import { getErrorMessage } from "../../lib/errors"
-import { ArbitrumTierBDemo } from "../../components/executions/ArbitrumTierBDemo"
+import { ArbitrumWalletVerificationDemo } from "../../components/executions/ArbitrumWalletVerificationDemo"
 import { formatExecutionStatus, formatRailLabel } from "../../lib/executionStatusLabels"
 import type { V5ExecutionListItem } from "../../lib/types"
 
@@ -41,7 +41,7 @@ export default function ExecutionsIndexPage() {
         title="Executions"
         description="Search decisions, rails, and evidence across financial intents — primary control surface for Railguard."
         actions={
-          <Link href="#tier-b-demo">
+          <Link href="#wallet-verification-demo">
             <Button variant="secondary" className="gap-2">
               <Activity className="h-4 w-4" />
               Arbitrum wallet test
@@ -50,7 +50,7 @@ export default function ExecutionsIndexPage() {
         }
       />
 
-      <ArbitrumTierBDemo />
+      <ArbitrumWalletVerificationDemo />
 
       {loading ? (
         <Skeleton className="h-64 w-full rounded-[var(--rg-radius-xl)]" />

@@ -89,7 +89,7 @@ export const authorizeV1Intent = api(
   },
 )
 
-/** Tier B — POST /v1/intents/:id/execute-external (MetaMask / wallet broadcast) */
+/** External wallet — POST /v1/intents/:id/execute-external (MetaMask / wallet broadcast) */
 export const executeExternalV1Intent = api(
   {
     expose: true,
@@ -109,7 +109,7 @@ export const executeExternalV1Intent = api(
   },
 )
 
-/** Tier B — POST /v1/executions/:id/observe */
+/** External wallet — POST /v1/executions/:id/observe */
 export const observeV1Execution = api(
   {
     expose: true,

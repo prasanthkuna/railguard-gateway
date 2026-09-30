@@ -14,9 +14,9 @@ export default function ArbitrumSepoliaProofPage() {
       <p className="eyebrow">v0.1.0-alpha · {P.networkLabel}</p>
       <h1>Verified testnet execution</h1>
       <p className="section-intro">
-        Track B: external-wallet flow — intent, authorization, wallet transfer, verification, and{" "}
-        <span className="mono">SETTLED</span> evidence. This is separate from Track A hook contract
-        deployment on the same network.
+        External-wallet verification — intent, authorization, wallet transfer, verification, and{" "}
+        <span className="mono">SETTLED</span> evidence. This is separate from hook contract deployment
+        on the same network (the settlement tx did not traverse the hook in this demo).
       </p>
 
       <article className="proof-card">
@@ -60,7 +60,7 @@ export default function ArbitrumSepoliaProofPage() {
       </article>
 
       <section className="section">
-        <h2>Track A — hook contracts (deploy only)</h2>
+        <h2>Hook deployment (Sepolia)</h2>
         <p className="section-intro">
           Railguard execution-hook contracts on Sepolia. The settlement transaction above was verified
           via the operator lifecycle; it did not traverse this hook in the demonstrated path.

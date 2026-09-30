@@ -46,7 +46,7 @@ ecosystems:
     evidence:
       - evidence/arbitrum-sepolia-hook
       - evidence/arbitrum-sepolia
-    narrative: Sepolia hook deploy (Track A) + external-wallet USDC verification (Track B).
+    narrative: Sepolia hook deployment + external-wallet USDC verification (separate proofs).
     rails:
       - arbitrum-sepolia
 
