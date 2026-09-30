@@ -21,7 +21,8 @@ Verification on Arbiscan may require Etherscan API V2 (`forge verify-contract` w
 |------|--------|
 | Intent | `fin_881568b7-208e-4587-9192-2f015118a788` |
 | Execution | `exec_b73824e9-726f-4d59-af49-ac5cd1e1c9aa` |
-| Status | `AWAITING_BROADCAST` (0.01 USDC → grant wallet) |
+| Status | **SETTLED** |
+| Tx | [0x243ec1e8…608d](https://sepolia.arbiscan.io/tx/0x243ec1e8eb6a992a85a035af11edd5ff70d78e3b84e7eb6c78ab5badc409608d) |
 | Operator | [execution detail](https://prebroadcast.vercel.app/executions/exec_b73824e9-726f-4d59-af49-ac5cd1e1c9aa) |
 | USDC helper | `railguard-new/scripts/metamask-tier-b-usdc.html` (local port 8765) |
 
