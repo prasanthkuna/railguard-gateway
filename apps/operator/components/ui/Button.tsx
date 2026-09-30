@@ -15,9 +15,9 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
   ) => {
     const variants = {
       primary:
-        "bg-[var(--rg-brand)] text-white hover:bg-[var(--rg-accent-hover)] shadow-[var(--rg-shadow-glow)]",
+        "bg-[var(--rg-brand)] text-[var(--rg-text-inverse)] hover:bg-[var(--rg-accent-hover)] hover:text-[var(--rg-text-inverse)] shadow-[var(--rg-shadow-glow)]",
       accent:
-        "bg-[var(--rg-brand)] text-white hover:bg-[var(--rg-accent-hover)] shadow-[var(--rg-shadow-glow)]",
+        "bg-[var(--rg-brand)] text-[var(--rg-text-inverse)] hover:bg-[var(--rg-accent-hover)] hover:text-[var(--rg-text-inverse)] shadow-[var(--rg-shadow-glow)]",
       secondary:
         "border border-[var(--rg-border)] bg-[var(--rg-bg-base)] text-[var(--rg-text-primary)] hover:bg-[var(--rg-bg-hover)]",
       ghost:

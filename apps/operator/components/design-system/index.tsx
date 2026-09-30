@@ -168,7 +168,7 @@ export function FilterTabs({
             className={cn(
               "rg-label-2 rounded-[var(--rg-radius-pill)] px-4 py-2 transition",
               active
-                ? "bg-[var(--rg-brand)] text-white shadow-[var(--rg-shadow-glow)]"
+                ? "bg-[var(--rg-brand)] text-[var(--rg-text-inverse)] shadow-[var(--rg-shadow-glow)]"
                 : "border border-[var(--rg-border)] bg-[var(--rg-bg-base)] text-[var(--rg-text-secondary)] hover:bg-[var(--rg-bg-hover)]",
             )}
           >
@@ -242,8 +242,8 @@ export function PaymentStepper({ status }: { status: string }) {
             <div
               className={cn(
                 "rg-caption flex h-8 min-w-8 items-center justify-center rounded-full transition",
-                done && "bg-[var(--rg-state-joy)] text-white",
-                active && "bg-[var(--rg-brand)] text-white ring-4 ring-[var(--rg-accent-glow)]",
+                done && "bg-[var(--rg-state-joy)] text-[var(--rg-text-inverse)]",
+                active && "bg-[var(--rg-brand)] text-[var(--rg-text-inverse)] ring-4 ring-[var(--rg-accent-glow)]",
                 !done &&
                   !active &&
                   "border border-[var(--rg-border)] bg-[var(--rg-bg-base)] text-[var(--rg-text-muted)]",

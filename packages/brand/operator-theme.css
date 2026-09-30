@@ -21,7 +21,7 @@
   --rg-text-primary: var(--text);
   --rg-text-secondary: var(--muted);
   --rg-text-muted: var(--muted);
-  --rg-text-inverse: var(--bg);
+  --rg-text-inverse: var(--on-mint);
 
   --rg-accent: var(--mint);
   --rg-accent-hover: #7ef5c4;

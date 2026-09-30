@@ -1,5 +1,7 @@
 # Railguard Pro Video Pipeline (2026)
 
+> **Grant submissions:** use [media/HYPERFRAMES_PIPELINE.md](./media/HYPERFRAMES_PIPELINE.md) instead. This doc is legacy Remotion/CapCut.
+
 Three lanes — no Rotato, no broken Playwright launch.
 
 | Lane | Tool | Output |
@@ -11,7 +13,7 @@ Three lanes — no Rotato, no broken Playwright launch.
 ## One command
 
 ```powershell
-cd C:\Users\PrashanthKuna\coinbase
+cd C:\Users\PrashanthKuna\personal\web3\railguard-gateway
 bun run video:pipeline
 ```
 
