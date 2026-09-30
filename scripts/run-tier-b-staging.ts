@@ -31,6 +31,22 @@ const DEMO_RECIPIENT = "0x8c7E2543Aa8bf69dc8458Dc28104234f6A334233"
 const DEMO_AMOUNT = "10000"
 
 async function main() {
+  const observeOnly = process.env.TIER_B_OBSERVE_ONLY === "1"
+  const executionId = process.env.TIER_B_EXECUTION_ID?.trim()
+  const txHashOnly = process.env.TIER_B_TX_HASH?.trim()
+  if (observeOnly) {
+    if (!executionId || !txHashOnly) {
+      console.error("TIER_B_OBSERVE_ONLY=1 requires TIER_B_EXECUTION_ID and TIER_B_TX_HASH")
+      process.exit(1)
+    }
+    const observed = await api<{ status: string; txHash: string; explorerUrl?: string }>(
+      `/v1/executions/${executionId}/observe`,
+      { method: "POST", body: JSON.stringify({ txHash: txHashOnly }) },
+    )
+    console.log("observe:", JSON.stringify(observed, null, 2))
+    return
+  }
+
   const idem = `idem_arb_${Date.now()}_${Math.random().toString(36).slice(2, 10)}`
   const expires = new Date(Date.now() + 86_400_000).toISOString()
 

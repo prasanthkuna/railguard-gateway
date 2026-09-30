@@ -82,7 +82,7 @@ export async function verifyIntentSettlementTx(input: {
   const expected = {
     chainId: descriptor.chainId,
     tokenAddress,
-    sender: transfer.sender,
+    sender: transfer.from,
     recipient,
     amount: expectedAmount,
   }

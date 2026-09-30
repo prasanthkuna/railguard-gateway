@@ -2,27 +2,27 @@
   "network": "arbitrum-sepolia",
   "chainId": 421614,
   "rpcUrl": "https://sepolia-rollup.arbitrum.io/rpc",
-  "txHash": "0x5f5c31cb59c51fb77ff1895139493e70a17d3df0f43c8819b20ec4d1d113a931",
-  "explorerUrl": "https://sepolia.arbiscan.io/tx/0x5f5c31cb59c51fb77ff1895139493e70a17d3df0f43c8819b20ec4d1d113a931",
+  "txHash": "0x243ec1e8eb6a992a85a035af11edd5ff70d78e3b84e7eb6c78ab5badc409608d",
+  "explorerUrl": "https://sepolia.arbiscan.io/tx/0x243ec1e8eb6a992a85a035af11edd5ff70d78e3b84e7eb6c78ab5badc409608d",
   "expected": {
     "chainId": 421614,
     "tokenAddress": "0x75faf114eafb1bdbe2f0316df893fd58ce46aa4d",
-    "sender": "0x865328a6cdf6a3017c16b9a682d823031613f52b",
-    "recipient": "0x5a112f3e8d386e73b52b7a8ad5d716791fb4e64d",
-    "amount": "4750000"
+    "sender": "0x9a3f50804306fdb12046243bdf2db33d61dcba2d",
+    "recipient": "0x8c7e2543aa8bf69dc8458dc28104234f6a334233",
+    "amount": "10000"
   },
   "settlement": {
     "status": "CONFIRMED",
     "matchedTransfer": {
       "tokenAddress": "0x75faf114eafb1bdbe2f0316df893fd58ce46aa4d",
-      "from": "0x865328a6cdf6a3017c16b9a682d823031613f52b",
-      "to": "0x5a112f3e8d386e73b52b7a8ad5d716791fb4e64d",
-      "amount": "4750000"
+      "from": "0x9a3f50804306fdb12046243bdf2db33d61dcba2d",
+      "to": "0x8c7e2543aa8bf69dc8458dc28104234f6a334233",
+      "amount": "10000"
     },
-    "txHash": "0x5f5c31cb59c51fb77ff1895139493e70a17d3df0f43c8819b20ec4d1d113a931",
-    "confirmations": 135
+    "txHash": "0x243ec1e8eb6a992a85a035af11edd5ff70d78e3b84e7eb6c78ab5badc409608d",
+    "confirmations": 139
   },
-  "confirmations": 135,
-  "generatedAt": "2026-09-25T07:32:27.544Z",
+  "confirmations": 139,
+  "generatedAt": "2026-09-30T18:58:28.824Z",
   "ok": true
 }
