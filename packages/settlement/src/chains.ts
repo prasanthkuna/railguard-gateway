@@ -42,6 +42,15 @@ export const EVM_CHAINS: Record<string, EvmChainDescriptor> = {
     usdcAddress: "0xaf88d065e77c8cC2239327C5EDb3A432268e5831",
     cdpExecution: false,
   },
+  "arbitrum-one": {
+    id: "arbitrum-one",
+    name: "Arbitrum One",
+    chainId: 42161,
+    rpcUrls: ["https://arb1.arbitrum.io/rpc"],
+    explorerTxUrl: (h) => `https://arbiscan.io/tx/${h}`,
+    usdcAddress: "0xaf88d065e77c8cC2239327C5EDb3A432268e5831",
+    cdpExecution: false,
+  },
   "monad-testnet": {
     id: "monad-testnet",
     name: "Monad Testnet",

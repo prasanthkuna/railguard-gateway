@@ -9,6 +9,7 @@ export type V5ExecutionStatus =
   | "AUTHORIZED"
   | "RESERVED"
   | "EXECUTING"
+  | "AWAITING_BROADCAST"
   | "SUBMITTED"
   | "SETTLED"
   | "DENIED"

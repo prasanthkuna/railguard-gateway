@@ -8,6 +8,7 @@ import { Button } from "../../components/ui/Button"
 import { Skeleton } from "../../components/ui/Skeleton"
 import { api } from "../../lib/api"
 import { getErrorMessage } from "../../lib/errors"
+import { ArbitrumTierBDemo } from "../../components/executions/ArbitrumTierBDemo"
 import type { V5ExecutionListItem } from "../../lib/types"
 
 export default function ExecutionsIndexPage() {
@@ -47,6 +48,8 @@ export default function ExecutionsIndexPage() {
           </Link>
         }
       />
+
+      <ArbitrumTierBDemo />
 
       {loading ? (
         <Skeleton className="h-64 w-full rounded-[var(--rg-radius-xl)]" />

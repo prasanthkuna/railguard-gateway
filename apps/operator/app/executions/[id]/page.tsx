@@ -4,6 +4,7 @@ import { useParams, useRouter } from "next/navigation"
 import * as React from "react"
 import { BackLink, PageHeader } from "../../../components/design-system"
 import { ExecutionLifecycle } from "../../../components/executions/ExecutionLifecycle"
+import { ExternalBroadcastPanel } from "../../../components/executions/ExternalBroadcastPanel"
 import { EvidencePanel } from "../../../components/ui/EvidencePanel"
 import { Skeleton } from "../../../components/ui/Skeleton"
 import { api } from "../../../lib/api"
@@ -67,6 +68,13 @@ export default function ExecutionDetailPage() {
         eyebrow="Execution"
         title={execution.executionId}
         description={`Intent ${execution.intentId} · ${execution.status}`}
+      />
+      <ExternalBroadcastPanel
+        execution={execution}
+        onUpdated={(next) => {
+          setExecution(next)
+          void api.getExecutionEvidence(executionId).then(setEvidence).catch(() => {})
+        }}
       />
       {evidence ? <ExecutionLifecycle execution={execution} explain={evidence.explain} /> : null}
       <EvidencePanel evidence={evidence} />

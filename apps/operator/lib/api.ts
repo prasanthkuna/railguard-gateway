@@ -287,6 +287,24 @@ export const api = {
         body: "{}",
       },
     ),
+  executeExternalFinancialIntent: (intentId: string) =>
+    apiFetch<{
+      executionId: string
+      intentId: string
+      status: string
+      broadcastSheet: Record<string, unknown>
+    }>(`/v1/intents/${intentId}/execute-external`, {
+      method: "POST",
+      body: "{}",
+    }),
+  observeExecution: (executionId: string, txHash: string) =>
+    apiFetch<import("./types").V5ExecutionResponse & { txHash: string; explorerUrl?: string }>(
+      `/v1/executions/${executionId}/observe`,
+      {
+        method: "POST",
+        body: JSON.stringify({ txHash }),
+      },
+    ),
   listExecutions: (params?: { limit?: number; cursor?: string }) => {
     const search = new URLSearchParams()
     if (params?.limit) search.set("limit", String(params.limit))

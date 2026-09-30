@@ -32,8 +32,9 @@
 | Winners | Oct 12, 2026 |
 | Prize | $115K (70K open + 15K promising + 30K grants) |
 | Requirement | Deploy on **Arbitrum chain**; existing projects allowed |
-| Railguard code | `packages/settlement` `arbitrum-sepolia`; `createSettlementVerifyRail` |
-| Site slice | `/ecosystems/arbitrum` |
+| Railguard code | `packages/settlement/src/arbitrum-one.ts` + `evidence/arbitrum-one/` (mainnet USDT) |
+| Site slice | `/ecosystems/arbitrum` (MAINNET VERIFIED) |
+| Submit gate | [ARBITRUM_SUBMIT_GATE.md](./ARBITRUM_SUBMIT_GATE.md) — **no submit until video + evidence** |
 | Submit fields (typical HackQuest) | Project name, description, GitHub, demo URL, team, track, **video**, on-chain deployment proof |
 | Copy paste | One-liner: *Open-source financial execution firewall for autonomous agents.* Demo: `railguard attack` → protect → receipt. Link operator + `/attack`. |
 | You must | **Register** (button “Start Register”) → create/update project before Oct 4 |
@@ -112,7 +113,7 @@ Polygon Encode (closed), Web3 Foundation (watch), Kite / Open Agent (unverified)
 | `x402` | `kernel/adapters/x402Rail.ts` | x402-guard repo |
 | `cdp` / `base` | `cdpRail`, `baseRail` | demo-verification, operator |
 | `stellar` | `integrations/rails/stellarRail.ts` | P0_TESTNET_COMPLETE |
-| `arbitrum` | `settlementVerifyRail(arbitrum-sepolia)` | arbitrum-sepolia tests |
+| `arbitrum` | `arbitrum-one` settlement verify | `arbitrum-one.test.ts`, `evidence/arbitrum-one` |
 | `monad` | `settlementVerifyRail(monad-testnet)` | chains.ts |
 | `arc` | `settlementVerifyRail(arc*)` | `docs/P0_TESTNET_COMPLETE` arc section |
 | `celo` | `settlementVerifyRail(celo*)` | optional testnet |

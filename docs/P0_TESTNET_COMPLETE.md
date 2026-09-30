@@ -10,6 +10,7 @@
 | CDP Base Sepolia | Smoke + live script | `bun run cdp-base-sepolia-smoke`; `bun run cdp-live-transfer-smoke` (needs USDC on CDP wallet) |
 | Foundry E2E | Done | `bun run forge:test` (53 tests, `railguard-new/contracts`) |
 | Stellar testnet | Done | `bun run stellar-testnet-evidence` → Horizon verify |
+| Arbitrum One (mainnet) | Grant proof | `bun run arbitrum-one-evidence` → `evidence/arbitrum-one/` (USDT verify) |
 
 ```powershell
 bun run testnet:all

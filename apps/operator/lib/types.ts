@@ -138,6 +138,9 @@ export interface V5EvidenceResponse {
 }
 
 export interface V5ExecutionResponse {
+  broadcastSheet?: Record<string, unknown>
+  txHash?: string
+  explorerUrl?: string
   executionId: string
   intentId: string
   status: string

@@ -62,7 +62,7 @@ function buildReadme(bundle: {
 ## Reproduce
 
 \`\`\`powershell
-cd coinbase
+cd railguard-gateway
 $env:ARBITRUM_SEPOLIA_TX_HASH="${bundle.txHash}"
 bun run arbitrum-sepolia-evidence
 \`\`\`

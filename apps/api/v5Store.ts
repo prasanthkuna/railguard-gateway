@@ -193,6 +193,118 @@ export async function authorizeStoredIntent(
   return auth
 }
 
+export async function getStoredFinancialIntentById(
+  organizationId: string,
+  intentId: string,
+): Promise<ReturnType<typeof mapRow>> {
+  const row = await db.queryRow<FinancialIntentRow>`
+    SELECT * FROM financial_intents
+    WHERE organization_id = ${organizationId} AND id = ${intentId}
+  `
+  if (!row) throw APIError.notFound("financial intent not found")
+  return mapRow(row)
+}
+
+function isExternalSettlementNetwork(network?: string): boolean {
+  const n = network?.toLowerCase() ?? ""
+  return n.includes("arbitrum") || (n.includes("base") && n.includes("sepolia"))
+}
+
+export async function executeExternalStoredIntent(
+  organizationId: string,
+  intentId: string,
+): Promise<{
+  executionId: string
+  intentId: string
+  status: V5ExecutionStatus
+  broadcastSheet: Record<string, unknown>
+}> {
+  const row = await db.queryRow<FinancialIntentRow>`
+    SELECT * FROM financial_intents
+    WHERE organization_id = ${organizationId} AND id = ${intentId}
+  `
+  if (!row) throw APIError.notFound("financial intent not found")
+  if (row.status === "DENIED" || row.status === "APPROVAL_REQUIRED") {
+    throw APIError.failedPrecondition(`intent not authorized: ${row.status}`)
+  }
+  if (row.status !== "AUTHORIZED" && row.status !== "RESERVED") {
+    throw APIError.failedPrecondition(`intent must be AUTHORIZED before external execute: ${row.status}`)
+  }
+  const intent = row.payload_json
+  if (!isExternalSettlementNetwork(intent.constraints.network)) {
+    throw APIError.invalidArgument(
+      "external execute requires network arbitrum-sepolia, arbitrum-one, or arbitrum",
+    )
+  }
+  const { buildBroadcastSheet } = await import("./settlementVerifyIntent")
+  const sheet = buildBroadcastSheet(intent)
+  const executionId = row.execution_id ?? v5Id("exec")
+  const context = {
+    ...(intent.context ?? {}),
+    broadcastSheet: sheet,
+    rail: "settlement-verify",
+  }
+  const updatedIntent: FinancialIntent = { ...intent, context }
+  await db.exec`
+    UPDATE financial_intents
+    SET execution_id = ${executionId},
+        status = 'AWAITING_BROADCAST',
+        payload_json = ${JSON.stringify(updatedIntent)},
+        updated_at = NOW()
+    WHERE id = ${intentId} AND organization_id = ${organizationId}
+  `
+  return {
+    executionId,
+    intentId,
+    status: "AWAITING_BROADCAST",
+    broadcastSheet: sheet as unknown as Record<string, unknown>,
+  }
+}
+
+export async function observeExternalStoredExecution(
+  organizationId: string,
+  executionId: string,
+  txHash: string,
+): Promise<ReturnType<typeof mapRow>> {
+  const normalizedTx = txHash.trim()
+  if (!/^0x[a-fA-F0-9]{64}$/.test(normalizedTx)) {
+    throw APIError.invalidArgument("txHash must be a 0x-prefixed 32-byte hash")
+  }
+  const row = await db.queryRow<FinancialIntentRow>`
+    SELECT * FROM financial_intents
+    WHERE organization_id = ${organizationId} AND execution_id = ${executionId}
+  `
+  if (!row) throw APIError.notFound("execution not found")
+  if (row.status !== "AWAITING_BROADCAST" && row.status !== "EXECUTING" && row.status !== "SUBMITTED") {
+    throw APIError.failedPrecondition(`execution not awaiting observe: ${row.status}`)
+  }
+  const intent = row.payload_json
+  const { verifyIntentSettlementTx } = await import("./settlementVerifyIntent")
+  const verified = await verifyIntentSettlementTx({ intent, txHash: normalizedTx })
+  if (verified.settlementStatus !== "CONFIRMED") {
+    throw APIError.failedPrecondition(
+      `settlement verify ${verified.settlementStatus} for tx ${normalizedTx}`,
+    )
+  }
+  const context = {
+    ...(intent.context ?? {}),
+    txHash: normalizedTx,
+    explorerUrl: verified.explorerUrl,
+    chainKey: verified.chainKey,
+    rail: "settlement-verify",
+  }
+  const updatedIntent: FinancialIntent = { ...intent, context }
+  await db.exec`
+    UPDATE financial_intents
+    SET status = 'SETTLED',
+        payload_json = ${JSON.stringify(updatedIntent)},
+        updated_at = NOW()
+    WHERE id = ${row.id} AND organization_id = ${organizationId}
+  `
+  await buildAndStoreEvidence(organizationId, executionId)
+  return getStoredExecution(organizationId, executionId)
+}
+
 export async function linkPaymentIntentToFinancialIntent(
   organizationId: string,
   intentId: string,
@@ -265,7 +377,15 @@ export async function listStoredExecutions(
       amount: intent.value.amount,
       asset: intent.value.asset,
       network,
-      rail: row.payment_intent_id ? "cdp" : network?.includes("stellar") ? "stellar" : "x402",
+      rail: row.payment_intent_id
+        ? "cdp"
+        : intent.context?.rail === "settlement-verify"
+          ? String(intent.context?.chainKey ?? "settlement-verify")
+          : network?.includes("stellar")
+            ? "stellar"
+            : network?.includes("arbitrum")
+              ? "arbitrum"
+              : "x402",
       updatedAt: row.updated_at.toISOString(),
       createdAt: row.created_at.toISOString(),
     }
@@ -298,13 +418,22 @@ export async function buildAndStoreEvidence(
     WHERE organization_id = ${organizationId} AND execution_id = ${executionId}
   `
   if (!row) throw APIError.notFound("execution not found")
+  const ctx = row.payload_json.context ?? {}
+  const txHash = typeof ctx.txHash === "string" ? ctx.txHash : undefined
+  const rail =
+    typeof ctx.rail === "string"
+      ? ctx.rail
+      : row.payment_intent_id
+        ? "cdp"
+        : "x402"
   const envelope = buildEvidenceEnvelope({
     intent: row.payload_json,
     policyDecision: { status: row.status },
     authorizationGrant: row.authorization_grant_json ?? { grantId: "none" },
     execution: {
-      provider: row.payment_intent_id ? "cdp" : "x402",
+      provider: rail,
       submissionId: row.payment_intent_id ?? undefined,
+      txHash,
     },
     settlement: {
       status: row.status === "SETTLED" ? "FINALIZED" : "UNOBSERVED",
@@ -340,7 +469,12 @@ export function buildExplainCharge(
     task: typeof row.intent.context?.task === "string" ? row.intent.context.task : undefined,
     requested: `${row.intent.value.amount} ${row.intent.value.asset}`,
     decision: row.authorizationGrant?.decision ?? "pending",
-    rail: row.paymentIntentId ? "cdp" : "x402",
+    rail:
+      typeof row.intent.context?.rail === "string"
+        ? String(row.intent.context.rail)
+        : row.paymentIntentId
+          ? "cdp"
+          : "x402",
   })
 }
 

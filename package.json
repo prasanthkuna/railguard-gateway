@@ -52,6 +52,7 @@
     "test:integrations": "bun test packages/integrations/src packages/settlement/src",
     "testnet-evidence": "bun run scripts/testnet-evidence.ts",
     "arbitrum-sepolia-evidence": "bun run scripts/arbitrum-sepolia-evidence.ts",
+    "arbitrum-one-evidence": "bun run scripts/arbitrum-one-evidence.ts",
     "testnet:all": "bun run scripts/testnet-all.ts",
     "stellar-testnet-evidence": "bun run scripts/stellar-testnet-evidence.ts",
     "arc-testnet-evidence": "bun run scripts/arc-testnet-evidence.ts",

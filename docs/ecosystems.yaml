@@ -36,6 +36,17 @@ ecosystems:
     rails:
       - stellar
 
+  - id: arbitrum
+    label: Arbitrum
+    status: integrated
+    chains:
+      - arbitrum-one
+    evidence:
+      - evidence/arbitrum-one
+    narrative: Arbitrum One mainnet USDT transfer verified via settlement rail.
+    rails:
+      - arbitrum-one
+
   - id: x402
     label: x402
     status: adapter

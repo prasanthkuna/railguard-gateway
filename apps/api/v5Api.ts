@@ -8,8 +8,10 @@ import {
   buildAndStoreEvidence,
   buildExplainCharge,
   createStoredFinancialIntent,
+  executeExternalStoredIntent,
   getStoredExecution,
   listStoredExecutions,
+  observeExternalStoredExecution,
   requireV5Actor,
 } from "./v5Store"
 
@@ -31,6 +33,9 @@ interface V5ExecutionResponse {
   intentId: string
   status: V5ExecutionStatus
   paymentIntentId?: string
+  broadcastSheet?: Record<string, unknown>
+  txHash?: string
+  explorerUrl?: string
 }
 
 interface V5ExplainCharge {
@@ -80,6 +85,57 @@ export const authorizeV1Intent = api(
   async (params: { id: string }): Promise<V5AuthorizeResponse> => {
     const actor = await requireV5Actor(["owner", "finance"])
     return authorizeStoredIntent(actor.organizationID, params.id)
+  },
+)
+
+/** Tier B — POST /v1/intents/:id/execute-external (MetaMask / wallet broadcast) */
+export const executeExternalV1Intent = api(
+  {
+    expose: true,
+    auth: true,
+    method: "POST",
+    path: "/v1/intents/:id/execute-external",
+    sensitive: true,
+  },
+  async (params: { id: string }): Promise<{
+    executionId: string
+    intentId: string
+    status: V5ExecutionStatus
+    broadcastSheet: Record<string, unknown>
+  }> => {
+    const actor = await requireV5Actor(["owner", "finance"])
+    return executeExternalStoredIntent(actor.organizationID, params.id)
+  },
+)
+
+/** Tier B — POST /v1/executions/:id/observe */
+export const observeV1Execution = api(
+  {
+    expose: true,
+    auth: true,
+    method: "POST",
+    path: "/v1/executions/:id/observe",
+    sensitive: true,
+  },
+  async (params: {
+    id: string
+    txHash: string
+  }): Promise<V5ExecutionResponse & { intentId: string; txHash: string; explorerUrl?: string }> {
+    const actor = await requireV5Actor(["owner", "finance"])
+    const stored = await observeExternalStoredExecution(
+      actor.organizationID,
+      params.id,
+      params.txHash,
+    )
+    const ctx = stored.intent.context ?? {}
+    return {
+      executionId: params.id,
+      intentId: stored.intent.id,
+      status: stored.status,
+      paymentIntentId: stored.paymentIntentId,
+      txHash: params.txHash,
+      explorerUrl: typeof ctx.explorerUrl === "string" ? ctx.explorerUrl : undefined,
+    }
   },
 )
 
@@ -191,11 +247,17 @@ export const getV1Execution = api(
   async (params: { id: string }): Promise<V5ExecutionResponse & { intentId: string }> => {
     const actor = await requireV5Actor(["owner", "finance", "approver"])
     const stored = await getStoredExecution(actor.organizationID, params.id)
+    const ctx = stored.intent.context ?? {}
+    const sheet = ctx.broadcastSheet
     return {
       executionId: params.id,
       intentId: stored.intent.id,
       status: stored.status,
       paymentIntentId: stored.paymentIntentId,
+      broadcastSheet:
+        sheet && typeof sheet === "object" ? (sheet as Record<string, unknown>) : undefined,
+      txHash: typeof ctx.txHash === "string" ? ctx.txHash : undefined,
+      explorerUrl: typeof ctx.explorerUrl === "string" ? ctx.explorerUrl : undefined,
     }
   },
 )
