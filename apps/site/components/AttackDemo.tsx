@@ -150,7 +150,7 @@ export function AttackDemo() {
             )}
             {phase === "idle" && (
               <p className="mono output muted">
-                Run attack, then railguard protect, then attack again.
+                Simulate attacks, then railguard protect, then simulate again.
               </p>
             )}
           </div>
@@ -188,7 +188,7 @@ export function AttackDemo() {
             onClick={runAttack}
             disabled={phase === "running" || phase === "protecting"}
           >
-            Run attack
+            Simulate attack
           </button>
           <button
             type="button"
@@ -208,12 +208,12 @@ export function AttackDemo() {
 
       <div className="telemetry-panel attack-side-telemetry">
         <div className="telemetry-panel-head">
-          <span className="telemetry-live-dot" />
-          <span className="mono telemetry-panel-title">ATTACK TELEMETRY</span>
+          <span className="telemetry-sim-label">SIM</span>
+          <span className="mono telemetry-panel-title">SIMULATION TRACE</span>
         </div>
         <div className="telemetry-table">
           {log.length === 0 ? (
-            <p className="telemetry-empty mono">Press Run attack to stream telemetry…</p>
+            <p className="telemetry-empty mono">Press Simulate attack to run the client-side trace…</p>
           ) : (
             log.map((line) => (
               <div

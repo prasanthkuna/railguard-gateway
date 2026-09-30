@@ -22,13 +22,13 @@ Judges discover programs from the submission form. The **Arbitrum page** should 
 
 - Status: `SEPOLIA VERIFIED`, evidence links, `oneCommand`, APF coverage
 - “Reproduce this proof”, “Integration details”, “View evidence”
-- Technical Track A / Tier B language **without** event names
+- Track A (hook deploy) / Track B (external-wallet verification) **without** event names — never “Tier B” on public UI
 
 ## Arbitrum page — target narrative
 
-**Hero:** Hook + adapter on Sepolia; Tier B USDC settlement through the same lifecycle as other rails.
+**Hero:** Track A hook on Sepolia; Track B 0.01 USDC external-wallet verification — separate proofs, same lifecycle kernel.
 
-**Side panel:** Reproduce — `bun run arbitrum-sepolia-evidence`, code path, rail id, links to hook README + operator execution.
+**Side panel:** Reproduce — `bun run arbitrum-sepolia-evidence`, code path, rail id, public proof page + hook README.
 
 **Optional footer (text link only):** External buildathon page — not a mint CTA.
 

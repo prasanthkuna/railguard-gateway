@@ -1,6 +1,7 @@
 import Link from "next/link"
 import { AttackDemo } from "../components/AttackDemo"
 import { EcosystemVerifyCard } from "../components/EcosystemVerifyCard"
+import { EvaluatorSection } from "../components/EvaluatorSection"
 import { FossSection } from "../components/FossSection"
 import { HeroSection } from "../components/HeroSection"
 import { IntegrationsStrip } from "../components/IntegrationsStrip"
@@ -19,8 +20,9 @@ export default function HomePage() {
       <section className="section" id="failure-lab">
         <h2>Failure Lab</h2>
         <p className="section-intro">
-          Six canonical failure classes — attack, protect, attack again. Same story as the
-          executable Atlas and <span className="mono">railguard attack</span>.
+          Interactive failure simulation — six canonical classes. Client-side animation, not live
+          payment execution. Same story as the executable Atlas and{" "}
+          <span className="mono">railguard attack</span>.
         </p>
         <AttackDemo />
       </section>
@@ -30,10 +32,14 @@ export default function HomePage() {
       <section className="section" id="evidence">
         <h2>Evidence</h2>
         <p className="section-intro">
-          Every execution produces a verifiable envelope — intent, policy, settlement, hash chain.
+          Stored Railguard executions produce a tamper-evident envelope — intent, policy, settlement,
+          hash chain.
         </p>
-        <p>
-          <Link href="/r/demo" className="btn btn-mint">
+        <p className="hero-ctas" style={{ marginTop: "1rem" }}>
+          <Link href="/proof/arbitrum-sepolia" className="btn btn-mint">
+            View verified testnet proof
+          </Link>
+          <Link href="/r/demo" className="btn btn-ghost">
             View sample receipt
           </Link>
         </p>
@@ -42,14 +48,20 @@ export default function HomePage() {
       <IntegrationsStrip />
 
       <section className="section" id="ecosystems">
-        <h2>Works across financial rails</h2>
+        <h2>One control model across supported and planned rails</h2>
         <p className="section-intro">
           Railguard keeps the control model constant while execution infrastructure changes.
         </p>
         <div className="eco-grid">
-          {ECOSYSTEMS.map((e) => (
-            <EcosystemVerifyCard key={e.id} eco={e} />
-          ))}
+          {[...ECOSYSTEMS]
+            .sort((a, b) => {
+              const rank = (s: (typeof ECOSYSTEMS)[number]["status"]) =>
+                s === "grant-phase" ? 2 : s === "adapter" ? 1 : 0
+              return rank(a.status) - rank(b.status)
+            })
+            .map((e) => (
+              <EcosystemVerifyCard key={e.id} eco={e} />
+            ))}
         </div>
         <p style={{ marginTop: "1.25rem" }}>
           <Link href="/ecosystems">All ecosystems →</Link>
@@ -57,6 +69,8 @@ export default function HomePage() {
       </section>
 
       <FossSection />
+
+      <EvaluatorSection />
 
       <section className="final-cta">
         <h2>Give agents authority. Not unlimited money.</h2>
@@ -71,7 +85,7 @@ export default function HomePage() {
             Sample receipt
           </Link>
           <a href={OPERATOR_URL} className="btn btn-ghost" {...EXTERNAL_LINK}>
-            Operator console
+            Open testnet console
           </a>
         </div>
       </section>

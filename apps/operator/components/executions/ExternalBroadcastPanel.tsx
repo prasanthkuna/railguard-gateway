@@ -46,7 +46,7 @@ export function ExternalBroadcastPanel({
 
   if (execution.status === "SETTLED" && execution.txHash) {
     return (
-      <SectionCard title="On-chain settlement">
+      <SectionCard title="Verified Arbitrum Sepolia transfer">
         <p className="font-mono text-sm break-all">{execution.txHash}</p>
         {execution.explorerUrl ? (
           <a
@@ -72,9 +72,10 @@ export function ExternalBroadcastPanel({
   const chainId = String(sheet.chainId ?? "")
 
   return (
-    <SectionCard title="External broadcast (MetaMask)">
+    <SectionCard title="Send with your wallet">
       <p className="rg-body text-[var(--rg-text-secondary)] mb-4">
-        Send exactly this ERC-20 transfer on chain {chainId}, then paste the transaction hash below.
+        On Arbitrum Sepolia, send <strong>0.01 USDC</strong> to the recipient below. Railguard does
+        not initiate or sign the transfer. Paste the transaction hash when done.
       </p>
       <dl className="grid gap-2 text-sm font-mono mb-4">
         <div className="flex justify-between gap-2">
@@ -86,8 +87,10 @@ export function ExternalBroadcastPanel({
           <dd className="truncate">{recipient}</dd>
         </div>
         <div className="flex justify-between gap-2">
-          <dt className="text-[var(--rg-text-muted)]">Amount (base units)</dt>
-          <dd>{amount}</dd>
+          <dt className="text-[var(--rg-text-muted)]">Amount</dt>
+          <dd>
+            0.01 USDC · {amount} base units · chain {chainId}
+          </dd>
         </div>
       </dl>
       <div className="flex flex-wrap gap-2 mb-4">
@@ -110,7 +113,7 @@ export function ExternalBroadcastPanel({
           className="flex-1"
         />
         <Button type="button" disabled={busy || !txHash.trim()} onClick={observe}>
-          {busy ? "Verifying…" : "Observe & settle"}
+          {busy ? "Verifying…" : "Verify transaction"}
         </Button>
       </div>
       {error ? <p className="mt-2 text-sm text-[var(--rg-text-muted)]">{error}</p> : null}

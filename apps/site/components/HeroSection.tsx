@@ -25,22 +25,25 @@ export function HeroSection() {
     <section className="hero-split">
       <div className="hero-copy">
         <AnimatedHeroLogo />
-        <p className="eyebrow">v0.1.0-alpha · open source</p>
-        <h1>Can your AI agent spend money safely?</h1>
+        <p className="eyebrow">v0.1.0-alpha · open source · testnet</p>
+        <h1>Stop agent payment mistakes before they become losses.</h1>
         <p className="hero-lead">
-          <strong>Railguard</strong> is the financial execution firewall between autonomous software
-          and the wallet you already use.
+          <strong>Railguard</strong> applies policy before a wallet signs, tracks uncertain
+          broadcasts, and produces tamper-evident execution records—without taking custody.
         </p>
         <div className="hero-ctas">
           <Link href="/attack" className="btn btn-mint">
-            Run 6 attacks
+            Simulate six failures
+          </Link>
+          <Link href="/proof/arbitrum-sepolia" className="btn btn-ghost">
+            View verified testnet proof
           </Link>
           <a href={GITHUB_GATEWAY} className="btn btn-ghost" {...EXTERNAL_LINK}>
-            GitHub
+            Run locally on GitHub
           </a>
         </div>
         <p className="hero-loop mono">
-          railguard attack → protect → <span>6/6 blocked</span> → receipt
+          simulate → protect → <span>6/6 blocked</span> → sample receipt
         </p>
       </div>
       <div className="hero-visual">

@@ -51,7 +51,7 @@ export default function DashboardPage() {
       <PageHeader
         eyebrow="Execution posture"
         title="Operator dashboard"
-        description={`Policy, reservation, and evidence for ${workspace.name} — same lifecycle as the public site.`}
+        description={`Policy, reservation, and evidence for stored executions in ${workspace.name} — same lifecycle as the public site.`}
         actions={
           <>
             <Link href="/executions">
@@ -104,7 +104,7 @@ export default function DashboardPage() {
       <div className="grid gap-4 lg:grid-cols-5">
         <div className="lg:col-span-3">
           <HeroMetric
-            label="Total Protected Volume"
+            label="Screened volume · all time"
             value={formatUSDC(data.totalProtectedBaseUnits)}
             sub="Gross payment volume screened with policy controls before broadcast."
             accent="accent"

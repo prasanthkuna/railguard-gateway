@@ -3,21 +3,35 @@ import { EXTERNAL_LINK } from "../lib/constants"
 import type { EcosystemCard } from "../lib/ecosystems"
 import { IntegrationLogo } from "./IntegrationLogo"
 
+function pillClass(status: EcosystemCard["status"], evidenceStatus?: string) {
+  if (status === "grant-phase") return "pill pill-planned"
+  if (status === "adapter") return "pill pill-warn"
+  if (evidenceStatus === "VERIFIED" || status === "shipped") return "pill pill-ok"
+  if (status === "testnet" || status === "integrated") return "pill pill-ok"
+  return "pill pill-warn"
+}
+
+function showChecks(status: EcosystemCard["status"]) {
+  return status !== "grant-phase"
+}
+
 export function EcosystemVerifyCard({ eco }: { eco: EcosystemCard }) {
+  const checks = showChecks(eco.status)
+
   return (
-    <article className="eco-verify-card">
+    <article className={`eco-verify-card ${eco.status === "grant-phase" ? "eco-planned" : ""}`}>
       <header className="eco-verify-head">
         <div className="eco-verify-title">
           <IntegrationLogo id={eco.id} size={28} />
           <h3>{eco.label}</h3>
         </div>
-        <span className="pill pill-ok">● {eco.statusLabel}</span>
+        <span className={pillClass(eco.status, eco.evidenceStatus)}>● {eco.statusLabel}</span>
       </header>
       <ul className="eco-checklist">
         {eco.protects.map((p) => (
           <li key={p}>
             <span>{p}</span>
-            <span className="eco-check">✓</span>
+            {checks ? <span className="eco-check">✓</span> : <span className="eco-dash">—</span>}
           </li>
         ))}
       </ul>

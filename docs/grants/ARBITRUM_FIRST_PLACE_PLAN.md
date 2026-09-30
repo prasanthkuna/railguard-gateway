@@ -1,5 +1,7 @@
 # Arbitrum Open House — first-place execution plan
 
+> **SUPERSEDED for Oct 2026 submission:** Canonical checklist is [ARBITRUM_TESTNET_SUBMIT.md](./ARBITRUM_TESTNET_SUBMIT.md) (Sepolia testnet only). Mainnet proof rows in this doc are not required for HackQuest testnet track.
+
 **Submit by:** 2026-10-04  
 **Goal:** **Complete on Arbitrum Sepolia** (contracts + product) + **pro Tier B** (full lifecycle) + **mainnet proof** + **90s video**  
 **Judging lens:** smart-contract quality · PMF · innovation · real problem · USDG consideration

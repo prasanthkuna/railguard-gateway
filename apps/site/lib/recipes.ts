@@ -21,7 +21,7 @@ export const RECIPES: Recipe[] = [
     title: "AI agent",
     persona: "Tool-using agents with spend authority",
     wedge: true,
-    protects: ["Budget caps", "Recipient allowlists", "At-most-once execute"],
+    protects: ["Budget caps on supported rails", "Recipient allowlists", "Idempotent execute (APF-001)"],
     command: "railguard check(intent)",
   },
   {
@@ -57,7 +57,7 @@ export const RECIPES: Recipe[] = [
     id: "trading-bot",
     title: "Trading bot",
     persona: "Automated spends with race-safe budgets",
-    protects: ["Budget race (APF-002)", "Replay block", "Reservation freeze fix"],
+    protects: ["Budget race (APF-002)", "Replay resistance (APF-001)", "Reservation freeze fix"],
     command: "railguard attack --profiles APF-002",
   },
   {

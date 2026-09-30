@@ -77,12 +77,12 @@ export default function AuditPage() {
       <PageHeader
         eyebrow="Compliance"
         title="Audit Trail"
-        description="Immutable ledger of policy decisions, approvals, and payment actions."
+        description="Tamper-evident history of policy decisions, approvals, and payment actions."
       />
 
       <SectionCard
-        title="Query Ledger"
-        description="Search append-only events by entity type and ID."
+        title="Query event history"
+        description="Search tamper-evident, append-only events by entity type and ID."
       >
         <form onSubmit={handleSearch} className="flex flex-col gap-4 lg:flex-row lg:items-end">
           <div className="flex-1">

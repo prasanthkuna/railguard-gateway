@@ -1,12 +1,14 @@
 # Grant & hackathon submission matrix
 
+> **SUPERSEDED — Arbitrum HackQuest (Oct 2026):** Use **[ARBITRUM_TESTNET_SUBMIT.md](./ARBITRUM_TESTNET_SUBMIT.md)** as canonical (Arbitrum Sepolia testnet only). Rows below that mention Arbitrum One mainnet / MAINNET VERIFIED are outdated for this submission.
+
 **Verified:** 2026-09-30 via Chrome DevTools (HackQuest Arbitrum Singapore, Stellar SCF awards) + repo code map.  
 **Master pack (every submission):** [LAUNCH.md](../../../LAUNCH.md) — site URLs, 90s video, APF-001…006, `docs/ecosystems.yaml`, PORTFOLIO, GitHub pins.
 
 | Canonical URLs | |
 | --- | --- |
-| Site | https://railguard-site.vercel.app/ (`/`, `/attack`, `/ecosystems`, `/r/demo`) |
-| Operator | https://prebroadcast.vercel.app/ (signed-in: Executions, `/zebpay`) |
+| Site | https://railguard-site.vercel.app/ (`/`, `/attack`, `/proof/arbitrum-sepolia`, `/ecosystems`, `/r/demo`) |
+| Operator | https://prebroadcast.vercel.app/ (Railguard Operator testnet console; `/zebpay` public) |
 | API staging | https://staging-railguard-s4ii.encr.app |
 | Gateway repo | https://github.com/prasanthkuna/railguard-gateway |
 
@@ -33,7 +35,7 @@
 | Prize | $115K (70K open + 15K promising + 30K grants) |
 | Requirement | Deploy on **Arbitrum chain**; existing projects allowed |
 | Railguard code | `packages/settlement/src/arbitrum-one.ts` + `evidence/arbitrum-one/` (mainnet USDT) |
-| Site slice | `/ecosystems/arbitrum` (MAINNET VERIFIED) |
+| Site slice | `/ecosystems/arbitrum` (SEPOLIA VERIFIED — see ARBITRUM_TESTNET_SUBMIT.md) |
 | Submit gate | [ARBITRUM_SUBMIT_GATE.md](./ARBITRUM_SUBMIT_GATE.md) — **no submit until video + evidence** |
 | Submit fields (typical HackQuest) | Project name, description, GitHub, demo URL, team, track, **video**, on-chain deployment proof |
 | Copy paste | One-liner: *Open-source financial execution firewall for autonomous agents.* Demo: `railguard attack` → protect → receipt. Link operator + `/attack`. |

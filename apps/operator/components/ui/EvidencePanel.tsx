@@ -2,6 +2,7 @@
 
 import * as React from "react"
 import { cn } from "../../lib/cn"
+import { formatRailLabel } from "../../lib/executionStatusLabels"
 import type { V5EvidenceExplain, V5EvidenceResponse } from "../../lib/types"
 import { SectionCard } from "../design-system"
 import { Skeleton } from "./Skeleton"
@@ -36,7 +37,7 @@ export function EvidencePanel({
 }) {
   if (isLoading) {
     return (
-      <SectionCard title="Why was this payment allowed?">
+      <SectionCard title="Why did Railguard make this decision?">
         <Skeleton className="h-48 w-full" />
       </SectionCard>
     )
@@ -44,7 +45,7 @@ export function EvidencePanel({
 
   if (error) {
     return (
-      <SectionCard title="Why was this payment allowed?">
+      <SectionCard title="Why did Railguard make this decision?">
         <p className="text-sm text-[var(--rg-text-muted)]">{error}</p>
       </SectionCard>
     )
@@ -55,7 +56,7 @@ export function EvidencePanel({
   const explain: V5EvidenceExplain = evidence.explain
 
   return (
-    <SectionCard title="Why was this payment allowed?">
+    <SectionCard title="Why did Railguard make this decision?">
       <div className="rounded-[var(--rg-radius-md)] border border-[var(--rg-border)] bg-[var(--rg-bg-alternate)] p-4">
         <Row label="Agent" value={explain.agent} />
         {explain.task ? <Row label="Task" value={explain.task} /> : null}
@@ -64,11 +65,11 @@ export function EvidencePanel({
         {explain.merchant ? <Row label="Merchant" value={explain.merchant} /> : null}
         <Row label="Policy" value={explain.policyVersion} />
         <Row label="Decision" value={explain.decision.toUpperCase()} />
-        {explain.rail ? <Row label="Rail" value={explain.rail} /> : null}
+        {explain.rail ? <Row label="Rail" value={formatRailLabel(explain.rail)} /> : null}
         <Row label="Settlement" value={explain.settlement} />
         <Row
           label="Evidence"
-          value={explain.evidenceValid ? "VALID" : "INVALID"}
+          value={explain.evidenceValid ? "Envelope complete" : "Incomplete"}
           valid={explain.evidenceValid}
         />
       </div>

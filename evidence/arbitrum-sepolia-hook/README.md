@@ -1,10 +1,12 @@
 # Arbitrum Sepolia — Railguard hook deploy (Track A)
 
-| Contract | Address | Arbiscan |
-|----------|---------|----------|
-| RailguardExecutionHook | `0x756829c3ab0eB02b22fe4D7C9E35252A9738965E` | [hook](https://sepolia.arbiscan.io/address/0x756829c3ab0eB02b22fe4D7C9E35252A9738965E) |
-| RailguardAccountAdapter | `0xe84aEa57cF7b12f746C1c4e6Be64348051fD3514` | [adapter](https://sepolia.arbiscan.io/address/0xe84aEa57cF7b12f746C1c4e6Be64348051fD3514) |
-| RailguardSessionValidator | `0xc0Bf25808d6cC3B283CCa952e01bD6Fd505fD663` | [validator](https://sepolia.arbiscan.io/address/0xc0Bf25808d6cC3B283CCa952e01bD6Fd505fD663) |
+| Contract | Address | Source verified | Arbiscan |
+|----------|---------|-----------------|----------|
+| RailguardExecutionHook | `0x756829c3ab0eB02b22fe4D7C9E35252A9738965E` | no (pending Etherscan V2) | [hook](https://sepolia.arbiscan.io/address/0x756829c3ab0eB02b22fe4D7C9E35252A9738965E) |
+| RailguardAccountAdapter | `0xe84aEa57cF7b12f746C1c4e6Be64348051fD3514` | no (pending Etherscan V2) | [adapter](https://sepolia.arbiscan.io/address/0xe84aEa57cF7b12f746C1c4e6Be64348051fD3514) |
+| RailguardSessionValidator | `0xc0Bf25808d6cC3B283CCa952e01bD6Fd505fD663` | no (pending Etherscan V2) | [validator](https://sepolia.arbiscan.io/address/0xc0Bf25808d6cC3B283CCa952e01bD6Fd505fD663) |
+
+Contract source: [railguard-protocol](https://github.com/prasanthkuna/railguard-protocol) (commit pinned in deploy notes below).
 
 **Chain:** Arbitrum Sepolia (421614)  
 **Deployer:** `0xee93c47daCB59B9B21595c7ecf86920d0DceE89C`  
@@ -23,7 +25,8 @@ Verification on Arbiscan may require Etherscan API V2 (`forge verify-contract` w
 | Execution | `exec_b73824e9-726f-4d59-af49-ac5cd1e1c9aa` |
 | Status | **SETTLED** |
 | Tx | [0x243ec1e8…608d](https://sepolia.arbiscan.io/tx/0x243ec1e8eb6a992a85a035af11edd5ff70d78e3b84e7eb6c78ab5badc409608d) |
-| Operator | [execution detail](https://prebroadcast.vercel.app/executions/exec_b73824e9-726f-4d59-af49-ac5cd1e1c9aa) |
+| Public proof | [verified testnet page](https://railguard-site.vercel.app/proof/arbitrum-sepolia) |
+| Operator (auth) | [execution detail](https://prebroadcast.vercel.app/executions/exec_b73824e9-726f-4d59-af49-ac5cd1e1c9aa) |
 | USDC helper | `railguard-new/scripts/metamask-tier-b-usdc.html` (local port 8765) |
 
 After MetaMask send, observe then refresh evidence:

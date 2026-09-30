@@ -5,11 +5,11 @@ export default function AttackPage() {
   return (
     <main className="page page-wide">
       <div className="attack-page-hero">
-        <p className="eyebrow">Failure Lab</p>
+        <p className="eyebrow">Failure Lab · interactive simulation</p>
         <h1>Can it survive six financial failures?</h1>
         <p className="hero-lead" style={{ margin: "0 auto" }}>
-          Watch attacks arrive in sequence — then <span className="mono">railguard protect</span>{" "}
-          and run again.
+          Client-side simulation of six payment-failure classes — then{" "}
+          <span className="mono">railguard protect</span> and simulate again.
         </p>
       </div>
       <AttackDemo />

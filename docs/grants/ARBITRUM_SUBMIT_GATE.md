@@ -1,24 +1,25 @@
 # Arbitrum HackQuest — submit gate (testnet-only)
 
+**Do not duplicate checklist edits here.** This file mirrors [ARBITRUM_TESTNET_SUBMIT.md](./ARBITRUM_TESTNET_SUBMIT.md). Update the master pack first, then sync boxes below.
+
 **Program:** [Arbitrum Open House Singapore](https://arbitrum-singapore.hackquest.io/buildathons/Arbitrum-Open-House-Singapore-Online-Buildathon)  
-**Submit by:** **2026-10-04**  
-**Master checklist:** [ARBITRUM_TESTNET_SUBMIT.md](./ARBITRUM_TESTNET_SUBMIT.md)
+**Submit by:** **2026-10-04**
 
 ## On-chain (Sepolia)
 
-- [ ] Hook deploy → `evidence/arbitrum-sepolia-hook/README.md`
-- [ ] Tier B demo tx → `evidence/arbitrum-sepolia/manifest.json` (`ok: true`)
-- [ ] Both links on HackQuest (sepolia.arbiscan.io)
+- [x] Hook deploy → `evidence/arbitrum-sepolia-hook/README.md`
+- [x] External-wallet settlement → `evidence/arbitrum-sepolia/manifest.json` (`ok: true`)
+- [x] Both on Sepolia Arbiscan (hook + tx URLs in master pack)
 
 ## Product
 
-- [ ] Encore staging Tier B routes live
-- [ ] prebroadcast Executions + **Arbitrum Tier B demo** → SETTLED
-- [ ] `/ecosystems/arbitrum` → **SEPOLIA VERIFIED**
+- [x] Encore staging wallet-verification routes live
+- [x] Public proof page (no auth) → `/proof/arbitrum-sepolia`
+- [x] `/ecosystems/arbitrum` → **SEPOLIA VERIFIED** + Track A/B copy
 
 ## Video + HackQuest
 
-- [ ] ~90s demo (HyperFrames pipeline)
+- [ ] ~90s demo (HyperFrames pipeline) uploaded — URL in `HACKQUEST_ARBITRUM_COPY.md`
 - [ ] Project submit: GitHub, URLs, video, Sepolia proofs
 
 **Mainnet:** not required for this submission track.

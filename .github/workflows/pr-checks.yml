@@ -37,6 +37,9 @@ jobs:
       - name: Lint
         run: bun run lint
 
+      - name: Ecosystem manifest drift
+        run: bun run check:ecosystems-drift
+
       - name: Unit tests
         run: bun run test
 

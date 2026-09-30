@@ -17,14 +17,18 @@ export function ReceiptCard({ data, demo }: { data: ReceiptViewModel; demo?: boo
           <p className="eyebrow">Execution receipt</p>
           <h1 className="receipt-title mono">{data.executionId}</h1>
         </div>
-        <span className={`pill ${data.chainValid ? "pill-ok" : "pill-bad"}`}>
-          {data.chainValid ? "EVIDENCE VALID" : "NEEDS REVIEW"}
-        </span>
+        {demo ? (
+          <span className="pill pill-planned">SAMPLE DATA · NOT AN ON-CHAIN PROOF</span>
+        ) : (
+          <span className={`pill ${data.chainValid ? "pill-ok" : "pill-bad"}`}>
+            {data.chainValid ? "Envelope complete" : "NEEDS REVIEW"}
+          </span>
+        )}
       </header>
 
       {demo ? (
         <p className="receipt-demo-note">
-          Sample receipt envelope. Live operator executions use the same fields.
+          Illustrative fields only. For verified testnet proof see /proof/arbitrum-sepolia.
         </p>
       ) : null}
 

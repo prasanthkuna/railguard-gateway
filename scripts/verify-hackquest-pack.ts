@@ -44,16 +44,31 @@ add(
 const hfIndex = join(root, "apps", "hyperframes", "grant-90s", "index.html")
 add("HyperFrames grant-90s composition", existsSync(hfIndex), hfIndex)
 
-const urls = [
-  ["prebroadcast execution", "https://prebroadcast.vercel.app/executions/exec_b73824e9-726f-4d59-af49-ac5cd1e1c9aa"],
-  ["site arbitrum", "https://railguard-site.vercel.app/ecosystems/arbitrum"],
-  ["site attack lab", "https://railguard-site.vercel.app/attack"],
-] as const
+const EXEC_ID = "exec_b73824e9-726f-4d59-af49-ac5cd1e1c9aa"
+const PUBLIC_PROOF = "https://railguard-site.vercel.app/proof/arbitrum-sepolia"
 
-for (const [name, url] of urls) {
+const urlChecks: { name: string; url: string; bodyMust?: string[] }[] = [
+  {
+    name: "public Arbitrum proof page",
+    url: PUBLIC_PROOF,
+    bodyMust: ["SETTLED", EXEC_ID, "testnet", "0x243ec1e8"],
+  },
+  { name: "site arbitrum", url: "https://railguard-site.vercel.app/ecosystems/arbitrum" },
+  { name: "site attack lab", url: "https://railguard-site.vercel.app/attack" },
+]
+
+for (const { name, url, bodyMust } of urlChecks) {
   try {
-    const res = await fetch(url, { method: "HEAD", redirect: "follow" })
-    add(`URL ${name}`, res.ok, `${res.status} ${url}`)
+    const res = await fetch(url, { redirect: "follow" })
+    let ok = res.ok
+    let detail = `${res.status} ${url}`
+    if (ok && bodyMust?.length) {
+      const html = await res.text()
+      const missing = bodyMust.filter((s) => !html.includes(s))
+      ok = missing.length === 0
+      detail = ok ? detail : `missing in body: ${missing.join(", ")}`
+    }
+    add(`URL ${name}`, ok, detail)
   } catch (e) {
     add(`URL ${name}`, false, String(e))
   }

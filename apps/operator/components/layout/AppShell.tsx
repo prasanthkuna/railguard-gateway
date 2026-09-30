@@ -7,6 +7,7 @@ import { useIsClient } from "../../lib/hooks"
 import { Logo } from "../brand/Logo"
 import { Header } from "./Header"
 import { Sidebar } from "./Sidebar"
+import { TestnetBanner } from "./TestnetBanner"
 
 export function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname()
@@ -39,7 +40,12 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   }, [isAuthenticated, isClient, isPublicRoute, router])
 
   if (isPublicRoute) {
-    return <>{children}</>
+    return (
+      <>
+        <TestnetBanner />
+        {children}
+      </>
+    )
   }
 
   if (!isClient || !isAuthenticated) {
@@ -58,6 +64,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
     <div className="rg-operator-chrome flex h-screen overflow-hidden bg-[var(--rg-bg-alternate)]">
       <Sidebar />
       <div className="flex min-w-0 flex-1 flex-col overflow-hidden">
+        <TestnetBanner />
         <Header />
         <main className="flex-1 overflow-y-auto p-4 md:p-6 lg:p-8">
           <div className="rg-page-enter mx-auto max-w-7xl">{children}</div>

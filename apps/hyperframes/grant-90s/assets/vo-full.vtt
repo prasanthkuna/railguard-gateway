@@ -1,0 +1,72 @@
+1
+00:00:00,050 --> 00:00:16,450
+<speak version="1.0" xmlns="http://www.w3.org/2001/10/synthesis" xml:lang="en-US">
+
+2
+00:00:16,450 --> 00:00:20,650
+<voice name="en-US-AndrewMultilingualNeural">
+
+3
+00:00:20,650 --> 00:00:26,662
+<prosody rate="+2%" pitch="-0.5st">
+
+4
+00:00:26,662 --> 00:00:28,612
+Agents can pay in seconds.
+
+5
+00:00:28,612 --> 00:00:30,862
+One mistake becomes real loss.
+
+6
+00:00:30,862 --> 00:00:35,187
+<break time="350ms"/>
+
+7
+00:00:35,187 --> 00:00:43,000
+Railguard sits between agent and wallet: policy first, reconcile after broadcast, evidence without custody.
+
+8
+00:00:43,000 --> 00:00:47,300
+<break time="400ms"/>
+
+9
+00:00:47,300 --> 00:00:53,725
+Our Failure Lab simulates six classes&mdash;replay, races, stale auth, settlement mismatch.
+
+10
+00:00:53,725 --> 00:00:58,050
+<break time="350ms"/>
+
+11
+00:00:58,050 --> 00:01:01,537
+On Arbitrum Sepolia, hook contracts deployed.
+
+12
+00:01:01,537 --> 00:01:06,587
+Separately, zero point zero one USDC verified on-chain and marked settled.
+
+13
+00:01:06,587 --> 00:01:10,887
+<break time="400ms"/>
+
+14
+00:01:10,887 --> 00:01:12,375
+Proofs are public.
+
+15
+00:01:12,375 --> 00:01:15,750
+Open source, testnet-first, for agents that move money.
+
+16
+00:01:15,750 --> 00:01:17,212
+</prosody>
+
+17
+00:01:17,212 --> 00:01:18,462
+</voice>
+
+18
+00:01:18,462 --> 00:01:19,775
+</speak>
+

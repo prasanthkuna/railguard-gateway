@@ -12,7 +12,7 @@ const spaceGrotesk = Space_Grotesk({
 
 export const metadata: Metadata = {
   title: "Railguard Operator",
-  description: "Reference operator console for the Railguard financial execution firewall.",
+  description: "Railguard Operator — testnet reference console for the financial execution firewall.",
   icons: {
     icon: [{ url: "/icon.svg", type: "image/svg+xml" }],
     apple: [{ url: "/icon.svg", type: "image/svg+xml" }],

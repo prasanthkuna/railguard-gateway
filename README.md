@@ -12,7 +12,7 @@ GitHub: **`prasanthkuna/railguard-gateway`**. Clone into folder **`railguard-gat
 | Surface | URL |
 |---------|-----|
 | Staging API | https://staging-railguard-s4ii.encr.app |
-| Operator console (reference) | https://prebroadcast.vercel.app |
+| Railguard Operator (testnet console) | https://prebroadcast.vercel.app |
 | Reviewer pack | https://prebroadcast.vercel.app/zebpay |
 
 **Maturity:** `v0.1.0-alpha` — testnet reference implementation. Not production-ready for mainnet funds.

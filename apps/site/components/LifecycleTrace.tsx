@@ -38,7 +38,7 @@ export function LifecycleTrace() {
     <section className="section lifecycle-trace" id="lifecycle">
       <h2>Watch Railguard decide</h2>
       <p className="section-intro">
-        Every autonomous payment follows the same financial-control lifecycle.
+        On supported execution rails, stored payments follow the same financial-control lifecycle.
       </p>
       <div className="lifecycle-trace-grid">
         <div className="lifecycle-steps-col">

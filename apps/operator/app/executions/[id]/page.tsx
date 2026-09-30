@@ -9,6 +9,7 @@ import { EvidencePanel } from "../../../components/ui/EvidencePanel"
 import { Skeleton } from "../../../components/ui/Skeleton"
 import { api } from "../../../lib/api"
 import { getErrorMessage } from "../../../lib/errors"
+import { formatExecutionStatus } from "../../../lib/executionStatusLabels"
 import type { V5EvidenceResponse, V5ExecutionResponse } from "../../../lib/types"
 
 export default function ExecutionDetailPage() {
@@ -67,7 +68,7 @@ export default function ExecutionDetailPage() {
       <PageHeader
         eyebrow="Execution"
         title={execution.executionId}
-        description={`Intent ${execution.intentId} · ${execution.status}`}
+        description={`Intent ${execution.intentId} · ${formatExecutionStatus(execution.status)}`}
       />
       <ExternalBroadcastPanel
         execution={execution}

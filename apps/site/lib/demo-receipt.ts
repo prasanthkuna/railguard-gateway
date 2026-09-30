@@ -42,15 +42,9 @@ export const DEMO_RECEIPT: ReceiptViewModel = {
   chainValid: true,
 }
 
-export function receiptFromId(id: string): ReceiptViewModel {
+export function receiptFromId(id: string): ReceiptViewModel | null {
   if (id === "demo" || id.startsWith("exec_demo")) {
     return { ...DEMO_RECEIPT, executionId: id === "demo" ? DEMO_RECEIPT.executionId : id }
   }
-  const short = id.slice(0, 8)
-  return {
-    ...DEMO_RECEIPT,
-    executionId: id,
-    reservation: { ...DEMO_RECEIPT.reservation, grantId: `grant_${short}` },
-    evidenceHash: `${short}${DEMO_RECEIPT.evidenceHash.slice(8)}`,
-  }
+  return null
 }

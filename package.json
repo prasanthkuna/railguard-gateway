@@ -23,7 +23,8 @@
     "@x402-guard/receipts": "workspace:*"
   },
   "scripts": {
-    "check": "bun run lint && bun run test && bun run typecheck",
+    "check": "bun run lint && bun run test && bun run typecheck && bun run check:ecosystems-drift",
+    "check:ecosystems-drift": "bun run scripts/check-ecosystems-drift.ts",
     "lint": "biome check .",
     "lint:fix": "biome check --write .",
     "format": "biome format --write .",
@@ -37,6 +38,8 @@
     "render:video": "bun run --filter @railguard/video render",
     "render:social": "bun run --filter @railguard/video render:social",
     "capture:shots": "bun run scripts/capture-staging-shots.ts",
+    "capture:hyperframes": "bun run scripts/capture-hyperframes-screens.ts",
+    "render:pro-video": "powershell -NoProfile -ExecutionPolicy Bypass -File apps/hyperframes/scripts/render-pro-master.ps1",
     "capture:rotato": "echo Deprecated — use video:pipeline instead && exit 1",
     "video:seed": "bun run scripts/video-seed.ts",
     "video:sync": "bun run scripts/sync-video-manifest.ts",

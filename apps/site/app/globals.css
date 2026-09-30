@@ -369,6 +369,75 @@ button:focus-visible {
   color: var(--danger);
 }
 
+.pill-planned {
+  border-color: var(--muted);
+  color: var(--muted);
+}
+
+.pill-warn {
+  border-color: var(--amber, #c9a227);
+  color: var(--amber, #c9a227);
+}
+
+.eco-verify-card.eco-planned {
+  opacity: 0.92;
+}
+
+.eco-dash {
+  color: var(--muted);
+}
+
+.proof-card {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  margin: 1.5rem 0;
+  background: var(--bg-card);
+}
+
+.proof-dl {
+  display: grid;
+  gap: 0.75rem;
+  font-size: 0.8rem;
+}
+
+.proof-dl dt {
+  color: var(--muted);
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.proof-dl dd {
+  margin: 0.15rem 0 0;
+  word-break: break-all;
+}
+
+.proof-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 2rem;
+}
+
+.system-status-title {
+  display: block;
+  width: 100%;
+  margin-bottom: 0.35rem;
+  color: var(--muted);
+  font-size: 0.65rem;
+  letter-spacing: 0.08em;
+}
+
+.system-status a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.system-status a:hover {
+  color: var(--mint);
+}
+
 .eco-protects,
 .eco-apf {
   font-size: 0.85rem;
@@ -807,6 +876,16 @@ button:focus-visible {
   border-radius: 50%;
   background: var(--mint);
   animation: pulse-dot 2s ease infinite;
+}
+
+.telemetry-sim-label {
+  font-family: var(--font-mono);
+  font-size: 0.55rem;
+  letter-spacing: 0.12em;
+  padding: 0.1rem 0.35rem;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  color: var(--muted);
 }
 
 @keyframes pulse-dot {

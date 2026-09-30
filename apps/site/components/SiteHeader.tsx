@@ -6,9 +6,12 @@ import { GITHUB_GATEWAY } from "../lib/constants"
 import { Logo } from "./Logo"
 import { SystemStatus } from "./SystemStatus"
 
+const ARCHITECTURE = `${GITHUB_GATEWAY}/blob/main/docs/ARCHITECTURE.md`
+
 const links = [
-  { href: "/attack", label: "Attack" },
-  { href: "/r/demo", label: "Evidence" },
+  { href: "/attack", label: "Failure Lab" },
+  { href: "/proof/arbitrum-sepolia", label: "Testnet proof" },
+  { href: ARCHITECTURE, label: "Architecture", external: true },
   { href: GITHUB_GATEWAY, label: "GitHub", external: true },
 ]
 

@@ -10,8 +10,10 @@ export function RecipesSection() {
       <h2>One firewall. Different money flows.</h2>
       <p className="section-intro">
         Same five commands —{" "}
-        <span className="mono">scan · attack · protect · status · receipts</span>. Developer, agent,
-        and treasury teams are the wedge; everyone else inherits the same controls.
+        <span className="mono">scan · attack · protect · status · receipts</span>. Built first for
+        agent developers and treasury operators; the same controls extend to payouts, trading bots,
+        DAOs, and shared wallets. Security properties are demonstrated per rail in the{" "}
+        <a href="/attack">Failure Lab</a> and repository tests.
       </p>
       <div className="recipes-wedge-grid">
         {wedge.map((r) => (

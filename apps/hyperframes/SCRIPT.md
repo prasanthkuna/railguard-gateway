@@ -7,42 +7,36 @@ Brace lines `{like this}` are exact dialogue for timing marks.
 
 ## VO-1 (0:00–0:48)
 
-{Autonomous agents can initiate payments the moment they decide to act.}
+{AI agents can initiate payments in seconds.}
 
-{That speed is useful — until the wrong recipient, the wrong chain, or a replay turns a demo into real loss.}
+{A wrong recipient, replay, or ambiguous broadcast can turn that speed into loss.}
 
-{Railguard treats agent payments like production traffic: policy first, evidence always.}
+{Railguard adds a financial execution firewall between agent intent and the wallet.}
 
-{We classify six autonomous payment failures — from replay and amount drift to broken session keys and missing settlement proof.}
+{It checks policy before signing, binds authorization to the exact payment, and records what happens after broadcast.}
 
-{You can probe them in the open Failure Lab — same semantics we enforce in production.}
+{The Failure Lab simulates six payment-failure classes, including replay, budget races, stale authorization, and settlement mismatch.}
 
-{When a request violates policy, we do not silently fix it.}
-
-{We block, reconcile, and leave an auditable trail.}
+{Unsafe requests are blocked before broadcast; submitted transactions are observed and reconciled instead of being guessed successful or failed.}
 
 ---
 
 ## VO-2 (0:48–1:30)
 
-{Every execution moves through a receipt lifecycle — intent, authorization, observation, settlement.}
+{On Arbitrum Sepolia, we deployed the Railguard hook contracts and completed a separate external-wallet test: 0.01 USDC sent with MetaMask, verified against the authorized token, recipient, amount, and network, then recorded as SETTLED.}
 
-{On Arbitrum Sepolia we ran Tier B end to end: MetaMask USDC, operator observe, manifest verified on chain.}
+{The transaction, contract addresses, tests, and evidence manifest are public.}
 
-{Status settled — ten thousand base units — transaction hash on Sepolia Arbiscan, manifest ok true.}
+{Railguard is open source, testnet-first, and built for agents that move money.}
 
-{Track A deploys the execution hook on Arbitrum Sepolia — same ENFORCE semantics as the operator path.}
-
-{Railguard — guardrails for agents that move money.}
-
-{Try the lab and operator links in the description.}
+{Try the Failure Lab, public proof page, and repository links in the description.}
 
 ---
 
 ## Word-count check
 
 - VO-1: ~95 words → ~40s  
-- VO-2: ~85 words → ~35s  
-- **Total:** ~75s VO + ~15s breathing room for inserts and motion holds → target 90s
+- VO-2: ~55 words → ~25s  
+- **Total:** ~65s VO + UI captures and motion holds → target 90s
 
 Adjust pacing after first render; update timestamps in `docs/media/CLAIM_MAP.md`.

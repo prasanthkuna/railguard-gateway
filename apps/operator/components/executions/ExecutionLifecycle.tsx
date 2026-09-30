@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+import { formatExecutionStatus, formatRailLabel } from "../../lib/executionStatusLabels"
 import type { V5EvidenceExplain, V5ExecutionResponse } from "../../lib/types"
 import { SectionCard } from "../design-system"
 import { Button } from "../ui/Button"
@@ -12,12 +13,12 @@ function steps(explain: V5EvidenceExplain, execution: V5ExecutionResponse) {
     { label: "Intent", detail: execution.intentId },
     { label: "Authorize", detail: `${explain.policyVersion} · ${explain.decision.toUpperCase()}` },
     { label: "Reserve", detail: explain.budget ?? explain.requested },
-    { label: "Execute", detail: execution.status },
-    { label: "Observe", detail: explain.rail ?? "Settlement rail" },
+    { label: "Execute", detail: formatExecutionStatus(execution.status) },
+    { label: "Observe", detail: formatRailLabel(explain.rail) },
     { label: "Reconcile", detail: explain.settlement },
     {
       label: "Evidence",
-      detail: explain.evidenceValid ? "SEALED · VALID" : "NEEDS REVIEW",
+      detail: explain.evidenceValid ? "Envelope complete" : "NEEDS REVIEW",
     },
   ]
 }

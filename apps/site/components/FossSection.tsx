@@ -27,7 +27,10 @@ Your Signer
 Your Chain`}
           </pre>
           <p className="foss-keys">
-            <strong>Your keys stay with your infrastructure.</strong>
+            <strong>
+              Railguard does not custody your funds or private keys. It sits between agent intent and
+              your signer or wallet provider.
+            </strong>
           </p>
           <p className="foss-links">
             <a href={GITHUB_GATEWAY} {...EXTERNAL_LINK}>

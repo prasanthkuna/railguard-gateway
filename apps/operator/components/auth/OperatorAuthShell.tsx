@@ -24,12 +24,16 @@ export function OperatorAuthShell({ title, subtitle, children }: Props) {
 
       <div className="flex flex-1 items-center justify-center px-6 py-10">
         <div className="w-full max-w-[420px]">
-          <p className="rg-auth-eyebrow">Operator console</p>
+          <p className="rg-auth-eyebrow">Railguard Operator · testnet console</p>
           <h1 className="rg-auth-title">{title}</h1>
           <p className="rg-auth-subtitle">{subtitle}</p>
           <div className="rg-auth-card">{children}</div>
           <p className="rg-auth-tagline">
             Give agents authority. <strong>Not unlimited money.</strong>
+          </p>
+          <p className="rg-caption mt-3 text-center text-[var(--rg-text-muted)]">
+            Hosted at <span className="font-mono">prebroadcast.vercel.app</span> — legacy testnet
+            hostname, not a separate product brand.
           </p>
         </div>
       </div>

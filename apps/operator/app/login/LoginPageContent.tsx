@@ -107,7 +107,7 @@ export default function LoginPageContent() {
   return (
     <OperatorAuthShell
       title={mode === "signup" ? "Create account" : "Sign in"}
-      subtitle="Financial execution firewall — policy, reservation, and evidence for every payment."
+      subtitle="Financial execution firewall — policy, reservation, and tamper-evident evidence on stored executions (v0.1 testnet alpha)."
     >
       <div className="rg-auth-tabs">
         <button

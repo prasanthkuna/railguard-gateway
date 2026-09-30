@@ -6,11 +6,11 @@ Railguard
 
 ## One-liner
 
-Open-source financial execution firewall for autonomous agents.
+Open-source financial execution firewall for AI agents.
 
 ## Description (short)
 
-Railguard sits between AI agents and wallets: policy, reservation, execution, reconciliation, and evidence. Failure Lab demonstrates six financial failure classes (APF-001…006). On **Arbitrum Sepolia**, we deploy the execution hook and verify USDC settlement via Tier B (MetaMask broadcast + observe)—same lifecycle kernel as Base/CDP and Stellar testnets.
+Railguard adds a financial-control boundary between AI agents and wallets. It applies policy before signing, binds authorization to recipient, asset, amount, and network, tracks uncertain broadcasts, verifies settlement, and emits a tamper-evident evidence envelope. On Arbitrum Sepolia, we deployed the Railguard execution-hook contracts and completed a separate 0.01 USDC external-wallet flow from intent and authorization through on-chain verification and `SETTLED` evidence. The public Failure Lab demonstrates six payment-failure classes, while the repository provides tests, contract addresses, transaction proof, and reproduction commands. Railguard is currently a v0.1 alpha/testnet reference implementation.
 
 ## Links
 
@@ -18,10 +18,13 @@ Railguard sits between AI agents and wallets: policy, reservation, execution, re
 | --- | --- |
 | Website | https://railguard-site.vercel.app/ |
 | Demo / Failure Lab | https://railguard-site.vercel.app/attack |
-| Arbitrum proof page | https://railguard-site.vercel.app/ecosystems/arbitrum |
+| Public Arbitrum proof | https://railguard-site.vercel.app/proof/arbitrum-sepolia |
+| Arbitrum integration | https://railguard-site.vercel.app/ecosystems/arbitrum |
 | GitHub | https://github.com/prasanthkuna/railguard-gateway |
-| Operator | https://prebroadcast.vercel.app/ |
-| On-chain proof | Sepolia hook + Tier B tx — `evidence/arbitrum-sepolia-hook/` + `evidence/arbitrum-sepolia/` |
+| Testnet console | https://prebroadcast.vercel.app/ (auth required) |
+| Sepolia tx | https://sepolia.arbiscan.io/tx/0x243ec1e8eb6a992a85a035af11edd5ff70d78e3b84e7eb6c78ab5badc409608d |
+| Hook contract | https://sepolia.arbiscan.io/address/0x756829c3ab0eB02b22fe4D7C9E35252A9738965E |
+| Evidence | https://github.com/prasanthkuna/railguard-gateway/tree/main/evidence/arbitrum-sepolia |
 | Video | _(HyperFrames master — YouTube/unlisted when ready)_ |
 
 ## Track / tags
@@ -34,8 +37,21 @@ Prashanth Kuna — solo / founder
 
 ## Wallet (registration)
 
-Arbitrum One address used for builder contact (your MetaMask `0x9a3f…`).
+`0x9a3f50804306fDB12046243bDF2dB33D61dcBA2d` (builder contact)
 
 ## On-chain proof (submission)
 
-Paste **Sepolia** hook address (`sepolia.arbiscan.io`) and Tier B settlement tx from `evidence/arbitrum-sepolia/manifest.json`.
+**Track A — hook:** `0x756829c3ab0eB02b22fe4D7C9E35252A9738965E` on Arbitrum Sepolia (421614).
+
+**Track B — settlement:** tx `0x243ec1e8eb6a992a85a035af11edd5ff70d78e3b84e7eb6c78ab5badc409608d` · 0.01 USDC · execution `exec_b73824e9-726f-4d59-af49-ac5cd1e1c9aa` · public proof page above.
+
+**Proof caption:** Arbitrum Sepolia · 0.01 USDC · matching token, recipient, amount, and chain verified · execution SETTLED · explorer and evidence links in project description.
+
+## CTA order (video description)
+
+1. Watch 90-second demo  
+2. Open public Arbitrum proof  
+3. Inspect Sepolia transaction  
+4. Inspect hook contracts and source  
+5. Run the Failure Lab  
+6. Clone the repository  

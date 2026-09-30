@@ -9,6 +9,7 @@ import { Skeleton } from "../../components/ui/Skeleton"
 import { api } from "../../lib/api"
 import { getErrorMessage } from "../../lib/errors"
 import { ArbitrumTierBDemo } from "../../components/executions/ArbitrumTierBDemo"
+import { formatExecutionStatus, formatRailLabel } from "../../lib/executionStatusLabels"
 import type { V5ExecutionListItem } from "../../lib/types"
 
 export default function ExecutionsIndexPage() {
@@ -43,7 +44,7 @@ export default function ExecutionsIndexPage() {
           <Link href="#tier-b-demo">
             <Button variant="secondary" className="gap-2">
               <Activity className="h-4 w-4" />
-              Tier B demo
+              Arbitrum wallet test
             </Button>
           </Link>
         }
@@ -58,7 +59,7 @@ export default function ExecutionsIndexPage() {
       ) : items.length === 0 ? (
         <SectionCard title="No executions yet">
           <p className="rg-body text-[var(--rg-text-secondary)]">
-            Authorize a financial intent and execute a payment intent to populate this index.
+            Create and authorize an intent, then start an execution to see it here.
           </p>
         </SectionCard>
       ) : (
@@ -88,11 +89,11 @@ export default function ExecutionsIndexPage() {
                         {row.executionId}
                       </Link>
                     </td>
-                    <td className="py-3 pr-4">{row.status}</td>
+                    <td className="py-3 pr-4 text-xs">{formatExecutionStatus(row.status)}</td>
                     <td className="py-3 pr-4">
                       {row.amount} {row.asset}
                     </td>
-                    <td className="py-3 pr-4">{row.rail ?? "—"}</td>
+                    <td className="py-3 pr-4">{formatRailLabel(row.rail)}</td>
                     <td className="py-3 text-[var(--rg-text-muted)]">
                       {new Date(row.updatedAt).toLocaleString()}
                     </td>

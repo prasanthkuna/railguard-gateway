@@ -14,7 +14,7 @@ type Props = {
 
 export function ExecutionTelemetry({
   mode,
-  title = "LIVE EXECUTION TELEMETRY",
+  title = "EXECUTION SIMULATION",
   animateIn = true,
   className = "",
   maxLines,
@@ -42,7 +42,9 @@ export function ExecutionTelemetry({
   return (
     <div className={`telemetry-panel ${className}`}>
       <div className="telemetry-panel-head">
-        <span className="telemetry-live-dot" aria-hidden />
+        <span className="telemetry-sim-label" aria-hidden>
+          SIM
+        </span>
         <span className="mono telemetry-panel-title">{title}</span>
       </div>
       <div className="telemetry-table" role="log" aria-live="polite">

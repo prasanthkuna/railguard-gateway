@@ -57,8 +57,8 @@ export default function ZebPayPitchPage() {
       <div className="mx-auto max-w-3xl px-6 py-12 md:py-16">
         <PageHeader
           eyebrow="ZebPay Web3 Pitch · Devcon Mumbai 2026"
-          title="Financial Execution Assurance for Autonomous Ethereum Agents"
-          description="A valid signature proves authority. It does not prove the economic action was correct."
+          title="Financial execution firewall for autonomous Ethereum agents"
+          description="Execution assurance: a valid signature proves authority, not that the payment was correct."
         />
 
         <p className="rg-body -mt-4 text-[var(--rg-text-muted)]">
@@ -130,7 +130,7 @@ bun run railguard verify <executionId> --base-url <API>`}
           </Link>
           {" · "}
           <a href={PREBROADCAST} className="text-[var(--rg-brand)] hover:underline">
-            Open operator console
+            Open testnet console
           </a>
         </p>
       </div>

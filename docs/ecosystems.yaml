@@ -1,4 +1,6 @@
-# Grant / ecosystem one-pager source (plan28.1). Generate site pages from this file.
+# Grant / ecosystem one-pager (plan28.1).
+# Canonical site cards + /ecosystems pages: apps/site/lib/ecosystems.manifest.ts
+# CI: bun run check:ecosystems-drift
 version: 1
 project:
   name: Railguard
@@ -38,14 +40,15 @@ ecosystems:
 
   - id: arbitrum
     label: Arbitrum
-    status: integrated
+    status: testnet
     chains:
-      - arbitrum-one
+      - arbitrum-sepolia
     evidence:
-      - evidence/arbitrum-one
-    narrative: Arbitrum One mainnet USDT transfer verified via settlement rail.
+      - evidence/arbitrum-sepolia-hook
+      - evidence/arbitrum-sepolia
+    narrative: Sepolia hook deploy (Track A) + external-wallet USDC verification (Track B).
     rails:
-      - arbitrum-one
+      - arbitrum-sepolia
 
   - id: x402
     label: x402

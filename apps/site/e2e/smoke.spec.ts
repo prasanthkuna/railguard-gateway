@@ -5,7 +5,7 @@ const OPERATOR_HOST = "prebroadcast.vercel.app"
 test.describe("Marketing site", () => {
   test("home hero and integrations strip", async ({ page }) => {
     await page.goto("/")
-    await expect(page.getByRole("heading", { name: /spend money safely/i })).toBeVisible()
+    await expect(page.getByRole("heading", { name: /payment mistakes/i })).toBeVisible()
     await expect(page.getByRole("region", { name: "Execution rails" })).toBeVisible()
     await expect(page.getByRole("heading", { name: /Failure Lab/i })).toBeVisible()
   })
@@ -20,7 +20,7 @@ test.describe("Marketing site", () => {
 
   test("failure lab run attack does not crash", async ({ page }) => {
     await page.goto("/")
-    await page.getByRole("button", { name: "Run attack" }).click()
+    await page.getByRole("button", { name: "Simulate attack" }).click()
     await expect(page.getByText(/financial failure classes exposed/i)).toBeVisible({
       timeout: 8000,
     })
@@ -35,22 +35,22 @@ test.describe("Marketing site", () => {
   test("sample receipt and copy proof", async ({ page, context }) => {
     await context.grantPermissions(["clipboard-read", "clipboard-write"])
     await page.goto("/r/demo")
-    await expect(page.getByText(/EVIDENCE VALID/i)).toBeVisible()
-    await page.getByRole("button", { name: /Copy proof/i }).click()
+    await expect(page.getByText(/SAMPLE DATA/i)).toBeVisible()
+    await page.getByRole("button", { name: /Copy sample/i }).click()
     await expect(page.getByRole("button", { name: /Copied/i })).toBeVisible({ timeout: 10_000 })
   })
 
   test("ecosystems CDP links to operator", async ({ page }) => {
     await page.goto("/ecosystems")
-    const cdp = page.getByRole("link", { name: /Open operator console/i })
+    const cdp = page.getByRole("link", { name: /Open testnet console/i })
     await expect(cdp).toHaveAttribute("href", new RegExp(OPERATOR_HOST))
     await expect(cdp).toHaveAttribute("target", "_blank")
   })
 
-  test("header evidence route", async ({ page }) => {
+  test("header testnet proof route", async ({ page }) => {
     await page.goto("/")
-    await page.getByRole("link", { name: "Evidence", exact: true }).click()
-    await expect(page).toHaveURL(/\/r\/demo/)
+    await page.getByRole("link", { name: "Testnet proof", exact: true }).click()
+    await expect(page).toHaveURL(/\/proof\/arbitrum-sepolia/)
   })
 })
 

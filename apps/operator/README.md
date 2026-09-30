@@ -4,7 +4,7 @@ Reference **operator UI** for demos, grants, and ops testing (hosted on Vercel).
 
 **Vercel:** set root directory to `apps/operator` (renamed from `apps/web`).
 
-This is **not** the public Railguard brand surface — marketing site and Failure Lab front door are separate (`apps/site` planned; see [plan28.1-EXECUTION.md](../../../plan28.1-EXECUTION.md)).
+This is **not** the public Railguard brand surface — the marketing site (`apps/site`) hosts Failure Lab, ecosystems, and public testnet proof pages. Product name: **Railguard Operator**; `prebroadcast.vercel.app` is a legacy testnet hostname.
 
 | Env | Purpose |
 |-----|---------|

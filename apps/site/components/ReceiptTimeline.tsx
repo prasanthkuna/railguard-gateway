@@ -13,7 +13,13 @@ const EVENTS = (data: ReceiptViewModel) => [
   { time: "12:42:18", label: "Evidence sealed", detail: `${data.evidenceHash.slice(0, 12)}…` },
 ]
 
-export function ReceiptTimeline({ data }: { data: ReceiptViewModel }) {
+export function ReceiptTimeline({
+  data,
+  sample = false,
+}: {
+  data: ReceiptViewModel
+  sample?: boolean
+}) {
   const [copied, setCopied] = useState(false)
   const events = EVENTS(data)
 
@@ -38,12 +44,16 @@ export function ReceiptTimeline({ data }: { data: ReceiptViewModel }) {
             {data.intent.amount} {data.intent.asset} →{" "}
             <span className="mono">{data.intent.recipient}</span>
           </p>
-          <p className={`pill ${data.chainValid ? "pill-ok" : "pill-bad"}`}>
-            {data.chainValid ? "✓ EVIDENCE VALID" : "NEEDS REVIEW"}
-          </p>
+          {sample ? (
+            <p className="pill pill-planned">SAMPLE DATA · NOT AN ON-CHAIN PROOF</p>
+          ) : (
+            <p className={`pill ${data.chainValid ? "pill-ok" : "pill-bad"}`}>
+              {data.chainValid ? "Envelope complete" : "NEEDS REVIEW"}
+            </p>
+          )}
         </div>
         <button type="button" className="btn btn-ghost btn-sm" onClick={copyProof}>
-          {copied ? "Copied" : "Copy proof"}
+          {copied ? "Copied" : sample ? "Copy sample" : "Copy proof"}
         </button>
       </header>
 
