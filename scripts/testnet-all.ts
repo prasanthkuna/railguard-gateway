@@ -92,8 +92,14 @@ async function main(): Promise<void> {
 
   console.log("\n=== Arbitrum Sepolia settlement evidence ===\n")
   try {
+    const { expectedArbitrumSepoliaTransferFromEnv } = await import(
+      "../packages/settlement/src/arbitrum-sepolia.ts"
+    )
+    const txHash = process.env.ARBITRUM_SEPOLIA_TX_HASH?.trim()
+    if (!txHash) throw new Error("ARBITRUM_SEPOLIA_TX_HASH required for testnet-all")
     const arb = await generateArbitrumSepoliaEvidence({
-      txHash: process.env.ARBITRUM_SEPOLIA_TX_HASH,
+      txHash,
+      expected: expectedArbitrumSepoliaTransferFromEnv(),
     })
     log({
       chain: "arbitrum-sepolia",

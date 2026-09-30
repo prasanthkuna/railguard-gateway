@@ -126,7 +126,21 @@ export async function createStoredFinancialIntent(
   }
 
   const intentId = v5Id("fin")
-  const intent = createFinancialIntent(input, intentId)
+  if (
+    input.principal.organizationId &&
+    input.principal.organizationId !== organizationId
+  ) {
+    throw APIError.permissionDenied(
+      "principal.organizationId must match the authenticated organization",
+    )
+  }
+  const intent = createFinancialIntent(
+    {
+      ...input,
+      principal: { ...input.principal, organizationId },
+    },
+    intentId,
+  )
   const row = await db.queryRow<FinancialIntentRow>`
     INSERT INTO financial_intents (
       id, organization_id, payload_json, status, idempotency_key
@@ -287,8 +301,8 @@ export async function observeExternalStoredExecution(
   executionId: string,
   txHash: string,
 ): Promise<ReturnType<typeof mapRow>> {
-  const normalizedTx = txHash.trim()
-  if (!/^0x[a-fA-F0-9]{64}$/.test(normalizedTx)) {
+  const normalizedTx = txHash.trim().toLowerCase()
+  if (!/^0x[a-f0-9]{64}$/.test(normalizedTx)) {
     throw APIError.invalidArgument("txHash must be a 0x-prefixed 32-byte hash")
   }
   const row = await db.queryRow<FinancialIntentRow>`
@@ -296,17 +310,33 @@ export async function observeExternalStoredExecution(
     WHERE organization_id = ${organizationId} AND execution_id = ${executionId}
   `
   if (!row) throw APIError.notFound("execution not found")
+
+  const intent = parseIntentPayload(row.payload_json as FinancialIntent | string)
+  const existingTx =
+    typeof intent.context?.txHash === "string" ? intent.context.txHash.trim().toLowerCase() : null
+  if (row.status === "SETTLED") {
+    if (existingTx === normalizedTx) {
+      if (!row.evidence_json) {
+        await buildAndStoreEvidence(organizationId, executionId)
+      }
+      return getStoredExecution(organizationId, executionId)
+    }
+    throw APIError.failedPrecondition("execution already settled with a different transaction")
+  }
   if (row.status !== "AWAITING_BROADCAST" && row.status !== "EXECUTING" && row.status !== "SUBMITTED") {
     throw APIError.failedPrecondition(`execution not awaiting observe: ${row.status}`)
   }
-  const intent = parseIntentPayload(row.payload_json as FinancialIntent | string)
+
   const { verifyIntentSettlementTx } = await import("./settlementVerifyIntent")
+  const { getEvmChain } = await import("../../packages/settlement/src/chains.ts")
   const verified = await verifyIntentSettlementTx({ intent, txHash: normalizedTx })
   if (verified.settlementStatus !== "CONFIRMED") {
     throw APIError.failedPrecondition(
       `settlement verify ${verified.settlementStatus} for tx ${normalizedTx}`,
     )
   }
+  const chainId = getEvmChain(verified.chainKey).chainId
+
   const context = {
     ...(intent.context ?? {}),
     txHash: normalizedTx,
@@ -315,14 +345,52 @@ export async function observeExternalStoredExecution(
     rail: "settlement-verify",
   }
   const updatedIntent: FinancialIntent = { ...intent, context }
-  await db.exec`
-    UPDATE financial_intents
-    SET status = 'SETTLED',
-        payload_json = ${updatedIntent as unknown as Record<string, unknown>},
-        updated_at = NOW()
-    WHERE id = ${row.id} AND organization_id = ${organizationId}
-  `
-  await buildAndStoreEvidence(organizationId, executionId)
+  const envelope = buildEvidenceEnvelopeForIntentRow(row, updatedIntent, "SETTLED")
+
+  const dbTx = await db.begin()
+  try {
+    const claimed = await dbTx.queryRow<{ execution_id: string }>`
+      INSERT INTO settlement_tx_claims (chain_id, tx_hash, organization_id, execution_id, intent_id)
+      VALUES (${chainId}, ${normalizedTx}, ${organizationId}, ${executionId}, ${row.id})
+      ON CONFLICT (chain_id, tx_hash) DO NOTHING
+      RETURNING execution_id
+    `
+    if (!claimed) {
+      const owner = await dbTx.queryRow<{ execution_id: string; organization_id: string }>`
+        SELECT execution_id, organization_id FROM settlement_tx_claims
+        WHERE chain_id = ${chainId} AND tx_hash = ${normalizedTx}
+      `
+      if (
+        !owner ||
+        owner.execution_id !== executionId ||
+        owner.organization_id !== organizationId
+      ) {
+        throw APIError.failedPrecondition(
+          "txHash already claimed by another execution or organization",
+        )
+      }
+    }
+
+    const updated = await dbTx.queryRow<{ id: string }>`
+      UPDATE financial_intents
+      SET status = 'SETTLED',
+          payload_json = ${updatedIntent as unknown as Record<string, unknown>},
+          evidence_json = ${envelope as unknown as Record<string, unknown>},
+          updated_at = NOW()
+      WHERE id = ${row.id}
+        AND organization_id = ${organizationId}
+        AND status IN ('AWAITING_BROADCAST', 'EXECUTING', 'SUBMITTED')
+      RETURNING id
+    `
+    if (!updated) {
+      throw APIError.failedPrecondition("execution observe raced or status changed")
+    }
+    await dbTx.commit()
+  } catch (error) {
+    await dbTx.rollback()
+    throw error
+  }
+
   return getStoredExecution(organizationId, executionId)
 }
 
@@ -430,6 +498,37 @@ export async function getStoredExecution(
   return mapRow(row)
 }
 
+function buildEvidenceEnvelopeForIntentRow(
+  row: FinancialIntentRow,
+  intent: FinancialIntent,
+  status: string,
+): EvidenceEnvelope {
+  const ctx = intent.context ?? {}
+  const txHash = typeof ctx.txHash === "string" ? ctx.txHash : undefined
+  const rail =
+    typeof ctx.rail === "string"
+      ? ctx.rail
+      : row.payment_intent_id
+        ? "cdp"
+        : "x402"
+  return buildEvidenceEnvelope({
+    intent,
+    policyDecision: { status },
+    authorizationGrant: row.authorization_grant_json ?? { grantId: "none" },
+    execution: {
+      provider: rail,
+      submissionId: row.payment_intent_id ?? undefined,
+      txHash,
+    },
+    settlement: {
+      status: status === "SETTLED" ? "FINALIZED" : "UNOBSERVED",
+      observedAt: row.updated_at.toISOString(),
+    },
+    policyVersion: row.authorization_grant_json?.policyVersion ?? "railguard-v5",
+    sequence: 1,
+  })
+}
+
 export async function buildAndStoreEvidence(
   organizationId: string,
   executionId: string,
@@ -440,30 +539,7 @@ export async function buildAndStoreEvidence(
   `
   if (!row) throw APIError.notFound("execution not found")
   const intent = parseIntentPayload(row.payload_json as FinancialIntent | string)
-  const ctx = intent.context ?? {}
-  const txHash = typeof ctx.txHash === "string" ? ctx.txHash : undefined
-  const rail =
-    typeof ctx.rail === "string"
-      ? ctx.rail
-      : row.payment_intent_id
-        ? "cdp"
-        : "x402"
-  const envelope = buildEvidenceEnvelope({
-    intent,
-    policyDecision: { status: row.status },
-    authorizationGrant: row.authorization_grant_json ?? { grantId: "none" },
-    execution: {
-      provider: rail,
-      submissionId: row.payment_intent_id ?? undefined,
-      txHash,
-    },
-    settlement: {
-      status: row.status === "SETTLED" ? "FINALIZED" : "UNOBSERVED",
-      observedAt: row.updated_at.toISOString(),
-    },
-    policyVersion: row.authorization_grant_json?.policyVersion ?? "railguard-v5",
-    sequence: 1,
-  })
+  const envelope = buildEvidenceEnvelopeForIntentRow(row, intent, row.status)
   await db.exec`
     UPDATE financial_intents
     SET evidence_json = ${envelope as unknown as Record<string, unknown>}, updated_at = NOW()

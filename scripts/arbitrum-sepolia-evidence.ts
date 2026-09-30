@@ -3,12 +3,19 @@
  * Arbitrum Sepolia live settlement evidence — read-only RPC verification.
  *
  * Usage:
- *   ARBITRUM_SEPOLIA_TX_HASH=0x... bun run scripts/arbitrum-sepolia-evidence.ts
+ *   ARBITRUM_SEPOLIA_TX_HASH=0x...
+ *   ARBITRUM_SEPOLIA_SENDER=0x...
+ *   ARBITRUM_SEPOLIA_RECIPIENT=0x...
+ *   ARBITRUM_SEPOLIA_AMOUNT=10000
+ *   bun run scripts/arbitrum-sepolia-evidence.ts
  */
 
 import { mkdirSync, writeFileSync } from "node:fs"
 import { join } from "node:path"
-import { generateArbitrumSepoliaEvidence } from "../packages/settlement/src/arbitrum-sepolia.ts"
+import {
+  expectedArbitrumSepoliaTransferFromEnv,
+  generateArbitrumSepoliaEvidence,
+} from "../packages/settlement/src/arbitrum-sepolia.ts"
 
 const evidenceDir = join(import.meta.dir, "..", "evidence", "arbitrum-sepolia")
 
@@ -23,13 +30,23 @@ function serializeEvidence(value: unknown): string {
 async function main(): Promise<void> {
   mkdirSync(evidenceDir, { recursive: true })
 
+  const txHash = process.env.ARBITRUM_SEPOLIA_TX_HASH?.trim()
+  if (!txHash) {
+    throw new Error("ARBITRUM_SEPOLIA_TX_HASH is required")
+  }
+
   const evidence = await generateArbitrumSepoliaEvidence({
-    txHash: process.env.ARBITRUM_SEPOLIA_TX_HASH,
+    txHash,
+    expected: expectedArbitrumSepoliaTransferFromEnv(),
     rpcUrl: process.env.ARBITRUM_SEPOLIA_RPC_URL,
   })
 
   const bundle = {
     ...evidence,
+    expected: {
+      ...evidence.expected,
+      amount: evidence.expected.amount.toString(),
+    },
     ok: evidence.settlement.status === "CONFIRMED",
   }
 
@@ -64,6 +81,9 @@ function buildReadme(bundle: {
 \`\`\`powershell
 cd railguard-gateway
 $env:ARBITRUM_SEPOLIA_TX_HASH="${bundle.txHash}"
+$env:ARBITRUM_SEPOLIA_SENDER="<sender>"
+$env:ARBITRUM_SEPOLIA_RECIPIENT="<recipient>"
+$env:ARBITRUM_SEPOLIA_AMOUNT="10000"
 bun run arbitrum-sepolia-evidence
 \`\`\`
 `

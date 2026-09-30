@@ -23,7 +23,6 @@ export function resolveTokenAddress(chainKey: string, asset: string): string {
   const chain = getEvmChain(chainKey)
   if (symbol === "USDC" && chain.usdcAddress) return chain.usdcAddress
   if (symbol === "USDT" && chainKey === "arbitrum-one") return ARBITRUM_ONE_USDT
-  if (chain.usdcAddress) return chain.usdcAddress
   throw new Error(`cannot resolve token asset "${asset}" on ${chainKey}`)
 }
 
