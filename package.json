@@ -28,7 +28,7 @@
     "lint:fix": "biome check --write .",
     "format": "biome format --write .",
     "preinstall": "node -e \"const fs=require('fs'); if(!fs.existsSync('encore.gen')) fs.mkdirSync('encore.gen'); fs.writeFileSync('encore.gen/package.json', JSON.stringify({name:'~encore',version:'0.0.0',type:'module'}))\"",
-    "test": "bun test",
+    "test": "bun test apps/api packages vendor/x402-guard/packages",
     "typecheck": "encore check && bun run --filter @railguard/operator typecheck && bun run --filter @railguard/site typecheck",
     "build:web": "bun run --filter @railguard/operator build",
     "build:site": "bun run --filter @railguard/site build",
