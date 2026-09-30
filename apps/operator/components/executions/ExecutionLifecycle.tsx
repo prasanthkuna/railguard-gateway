@@ -5,7 +5,7 @@ import type { V5EvidenceExplain, V5ExecutionResponse } from "../../lib/types"
 import { SectionCard } from "../design-system"
 import { Button } from "../ui/Button"
 
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://railguard-site.vercel.app"
+import { SITE_URL } from "../../lib/site-url"
 
 function steps(explain: V5EvidenceExplain, execution: V5ExecutionResponse) {
   return [

@@ -1,8 +1,7 @@
 import Link from "next/link"
 import type { ReactNode } from "react"
+import { MARKETING_SITE_URL, SITE_URL } from "../../lib/site-url"
 import { Logo } from "../brand/Logo"
-
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://railguard-site.vercel.app"
 
 type Props = {
   title: string
@@ -18,7 +17,7 @@ export function OperatorAuthShell({ title, subtitle, children }: Props) {
           <Logo size={36} />
           <span>Railguard</span>
         </Link>
-        <Link href={SITE_URL} className="rg-auth-back">
+        <Link href={MARKETING_SITE_URL} className="rg-auth-back">
           ← Marketing site
         </Link>
       </header>

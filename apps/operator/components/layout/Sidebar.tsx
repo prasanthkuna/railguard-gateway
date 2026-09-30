@@ -4,9 +4,8 @@ import { Activity, FileText, History, LayoutDashboard, Settings, Users } from "l
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { cn } from "../../lib/cn"
+import { MARKETING_SITE_URL } from "../../lib/site-url"
 import { Logo } from "../brand/Logo"
-
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://railguard-site.vercel.app"
 
 const primaryNav = [
   { href: "/", label: "Dashboard", icon: LayoutDashboard },
@@ -100,7 +99,7 @@ export function Sidebar() {
           </p>
         </div>
         <a
-          href={SITE_URL}
+          href={MARKETING_SITE_URL}
           target="_blank"
           rel="noopener noreferrer"
           className="rg-caption block text-center text-[var(--rg-text-muted)] hover:text-[var(--rg-brand)]"

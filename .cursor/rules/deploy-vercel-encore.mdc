@@ -1,0 +1,46 @@
+---
+description: Deploy frontend to Vercel and backend to Encore after related changes
+alwaysApply: true
+---
+
+# Deploy after changes
+
+When you finish work the user asked for (or they expect it live), deploy using the change type:
+
+## Frontend → Vercel
+
+Applies to changes under:
+
+- `apps/operator/` (prebroadcast)
+- `apps/site/` (railguard-site)
+- `packages/brand/` (shared UI tokens consumed by those apps)
+
+**Steps:**
+
+1. Commit only relevant files (no secrets, `.cursor/mcp.json` local overrides, or build `obj/` artifacts unless intentional).
+2. `git push origin main` — production Vercel projects track this repo/branch.
+
+Verify: prebroadcast.vercel.app and/or railguard-site.vercel.app after the build completes.
+
+## Backend → Encore
+
+Applies to changes under:
+
+- `services/` (Encore app, e.g. gateway APIs)
+- Encore config, migrations, or staging behavior consumed by operator/site
+
+**Steps:**
+
+1. Commit backend changes.
+2. `git push encore main` (or the repo’s documented Encore remote).
+
+Verify: staging rollouts / API health (e.g. staging-railguard-s4ii.encr.app).
+
+## Mixed changes
+
+Commit once (or split commits if clearer). Push **both** remotes when both areas changed.
+
+## Do not
+
+- Push secrets or `.env` files.
+- Skip deploy when the user’s rule applies and the change is meant for production/staging unless they say not to deploy.
