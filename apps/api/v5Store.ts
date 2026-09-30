@@ -74,6 +74,20 @@ export function parseIntentPayload(payload: FinancialIntent | string): Financial
   return payload
 }
 
+export function parseEvidencePayload(
+  payload: EvidenceEnvelope | string | null | undefined,
+): EvidenceEnvelope | undefined {
+  if (payload == null) return undefined
+  let value: unknown = payload
+  if (typeof value === "string") {
+    value = JSON.parse(value) as unknown
+    if (typeof value === "string") value = JSON.parse(value) as unknown
+  }
+  const envelope = value as EvidenceEnvelope
+  if (!envelope?.settlement?.status) return undefined
+  return envelope
+}
+
 function mapRow(row: FinancialIntentRow) {
   return {
     intent: parseIntentPayload(row.payload_json as FinancialIntent | string),
@@ -81,7 +95,7 @@ function mapRow(row: FinancialIntentRow) {
     paymentIntentId: row.payment_intent_id ?? undefined,
     authorizationGrant: row.authorization_grant_json ?? undefined,
     executionId: row.execution_id ?? undefined,
-    evidence: row.evidence_json ?? undefined,
+    evidence: parseEvidencePayload(row.evidence_json),
     createdAt: row.created_at.toISOString(),
     updatedAt: row.updated_at.toISOString(),
   }
@@ -452,7 +466,7 @@ export async function buildAndStoreEvidence(
   })
   await db.exec`
     UPDATE financial_intents
-    SET evidence_json = ${JSON.stringify(envelope)}, updated_at = NOW()
+    SET evidence_json = ${envelope as unknown as Record<string, unknown>}, updated_at = NOW()
     WHERE id = ${row.id}
   `
   return envelope

@@ -269,8 +269,11 @@ export const getV1ExecutionEvidence = api(
   async (params: { id: string }): Promise<V5EvidenceResponse> => {
     const actor = await requireV5Actor(["owner", "finance", "approver"])
     const stored = await getStoredExecution(actor.organizationID, params.id)
-    const evidence =
+    let evidence =
       stored.evidence ?? (await buildAndStoreEvidence(actor.organizationID, params.id))
+    if (!evidence.settlement?.status) {
+      evidence = await buildAndStoreEvidence(actor.organizationID, params.id)
+    }
     const explain = buildExplainCharge({ ...stored, evidence })
     return { executionId: params.id, evidence, explain }
   },

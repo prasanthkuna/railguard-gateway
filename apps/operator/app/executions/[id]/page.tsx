@@ -24,13 +24,13 @@ export default function ExecutionDetailPage() {
     let cancelled = false
     ;(async () => {
       try {
-        const [exec, ev] = await Promise.all([
-          api.getExecution(executionId),
-          api.getExecutionEvidence(executionId),
-        ])
-        if (!cancelled) {
-          setExecution(exec)
-          setEvidence(ev)
+        const exec = await api.getExecution(executionId)
+        if (!cancelled) setExecution(exec)
+        try {
+          const ev = await api.getExecutionEvidence(executionId)
+          if (!cancelled) setEvidence(ev)
+        } catch {
+          if (!cancelled) setEvidence(null)
         }
       } catch (err) {
         if (!cancelled) setError(getErrorMessage(err, "Failed to load execution"))

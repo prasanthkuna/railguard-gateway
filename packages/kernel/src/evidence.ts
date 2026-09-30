@@ -80,7 +80,8 @@ export function explainCharge(
     rail?: string
   },
 ): ExplainThisCharge {
-  const settled = ["FINALIZED", "SAFE", "INCLUDED"].includes(envelope.settlement.status)
+  const settlementStatus = envelope.settlement?.status ?? "UNOBSERVED"
+  const settled = ["FINALIZED", "SAFE", "INCLUDED"].includes(settlementStatus)
   return {
     agent: meta.agent,
     task: meta.task,
@@ -90,7 +91,7 @@ export function explainCharge(
     policyVersion: envelope.policyVersion,
     decision: meta.decision,
     rail: meta.rail,
-    settlement: settled ? "VERIFIED" : envelope.settlement.status,
+    settlement: settled ? "VERIFIED" : settlementStatus,
     evidenceValid: Boolean(envelope.intentHash && envelope.authorizationGrantHash),
   }
 }
