@@ -1,4 +1,4 @@
-# Grant master — voiceover script (~90s)
+# Demo video — voiceover script (~90s, product voice)
 
 Read at ~145 wpm. Chunk at **VO-1** / **VO-2** for TTS (≤60s each).  
 Brace lines `{like this}` are exact dialogue for timing marks.
@@ -31,7 +31,7 @@ Brace lines `{like this}` are exact dialogue for timing marks.
 
 {Status settled — ten thousand base units — transaction hash on Sepolia Arbiscan, manifest ok true.}
 
-{Track A ships the execution hook on the same testnet for Open House Singapore.}
+{Track A deploys the execution hook on Arbitrum Sepolia — same ENFORCE semantics as the operator path.}
 
 {Railguard — guardrails for agents that move money.}
 

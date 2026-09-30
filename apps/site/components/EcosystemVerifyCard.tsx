@@ -53,7 +53,7 @@ export function EcosystemVerifyCard({ eco }: { eco: EcosystemCard }) {
       ) : null}
       <p className="eco-narrative">{eco.narrative}</p>
       <p className="rg-caption" style={{ marginTop: "0.75rem" }}>
-        <Link href={`/ecosystems/${eco.id}`}>Grant one-pager →</Link>
+        <Link href={`/ecosystems/${eco.id}`}>Integration details →</Link>
       </p>
       <div className="eco-verify-actions">
         <a href={eco.evidenceHref} className="btn btn-ghost btn-sm" {...EXTERNAL_LINK}>

@@ -1,23 +1,43 @@
 param(
     [ValidateSet("grant-90s")]
     [string]$Profile = "grant-90s",
-    [string]$HyperFramesCli = "hyperframes"
+    [switch]$MuxCaptures
 )
 
 $ErrorActionPreference = "Stop"
-$Root = Split-Path -Parent $PSScriptRoot
-$OutDir = Join-Path $Root "media\grant"
-New-Item -ItemType Directory -Force -Path $OutDir | Out-Null
+$HyperframesRoot = $PSScriptRoot
+$RepoRoot = Split-Path (Split-Path $HyperframesRoot -Parent) -Parent
+$ProjectDir = Join-Path $HyperframesRoot $Profile
+$OutDir = Join-Path $ProjectDir "out"
+$MediaGrant = Join-Path $RepoRoot "media\grant"
+New-Item -ItemType Directory -Force -Path $OutDir, $MediaGrant | Out-Null
 
-Write-Host "HyperFrames profile: $Profile" -ForegroundColor Cyan
-Write-Host "Install HyperFrames CLI and add scenes under apps/hyperframes/scenes/ before running." -ForegroundColor Yellow
-
-if (-not (Get-Command $HyperFramesCli -ErrorAction SilentlyContinue)) {
-    Write-Error "HyperFrames CLI not found. See docs/media/HYPERFRAMES_PIPELINE.md"
+if (-not (Test-Path (Join-Path $ProjectDir "index.html"))) {
+    Write-Error "Missing $ProjectDir\index.html"
 }
 
-$Master = Join-Path $OutDir "arbitrum-open-house-2026-master.mp4"
-Write-Host "Target output: $Master" -ForegroundColor Green
-# Example after scenes exist:
-# & $HyperFramesCli render --config ./scenes/grant-90s.json --out $OutDir
-Write-Host "Wire scene config and FFmpeg concat in this script after HyperFrames project is authored."
+Push-Location $ProjectDir
+try {
+    Write-Host "HyperFrames check..." -ForegroundColor Cyan
+    npm run check
+    if ($LASTEXITCODE -ne 0) {
+        Write-Error "hyperframes check failed - fix lint before render"
+    }
+    $HfMp4 = Join-Path $OutDir "$Profile-hf.mp4"
+    Write-Host "Rendering $HfMp4 ..." -ForegroundColor Cyan
+    npx --yes hyperframes@latest render --output $HfMp4
+    if ($LASTEXITCODE -ne 0) { throw "hyperframes render failed" }
+} finally {
+    Pop-Location
+}
+
+$HfMp4 = Join-Path $OutDir "$Profile-hf.mp4"
+$Master = Join-Path $MediaGrant "arbitrum-open-house-2026-master.mp4"
+
+if ($MuxCaptures) {
+    & (Join-Path $ProjectDir "mux\mux.ps1") -HfRender $HfMp4 -Out $Master
+} else {
+    Copy-Item $HfMp4 $Master -Force
+    Write-Host "HF master: $Master" -ForegroundColor Green
+    Write-Host 'Optional: add captures then re-run with -MuxCaptures' -ForegroundColor Yellow
+}

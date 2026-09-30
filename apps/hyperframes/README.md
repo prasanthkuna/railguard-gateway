@@ -11,4 +11,14 @@
 
 Pipeline: `docs/media/HYPERFRAMES_PIPELINE.md` · claims: `docs/media/CLAIM_MAP.md`
 
-Add scene HTML under `scenes/` and wire `grant-90s.json` in `render.ps1` once HyperFrames CLI is installed locally.
+## Render (pro path)
+
+```powershell
+cd railguard-gateway\apps\hyperframes
+.\render.ps1 -Profile grant-90s          # HF-only → media/grant/
+.\render.ps1 -Profile grant-90s -MuxCaptures   # after captures/ filled
+cd grant-90s && npm run dev              # preview in browser
+bun run verify-hackquest-pack            # from repo root
+```
+
+Composition lives in **`grant-90s/index.html`** (90s, brand + APF + Sepolia proof typography).

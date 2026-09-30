@@ -1,5 +1,5 @@
 /**
- * Single source for ecosystem cards + grant detail pages.
+ * Single source for ecosystem cards + integration detail pages.
  * Keep in sync with docs/ecosystems.yaml and packages/settlement/src/chains.ts.
  */
 
@@ -43,6 +43,7 @@ export type EcosystemManifestEntry = {
   transactions?: number
   failuresTested?: number
   evidenceStatus?: string
+  /** Internal + grant-phase pages only — not shown on verified integration pages (e.g. Arbitrum). */
   grantProgram?: string
   grantDeadline?: string
   grantPortal?: string
@@ -78,7 +79,7 @@ export const ECOSYSTEM_MANIFEST: EcosystemManifestEntry[] = [
     codePath: "packages/kernel/src/adapters/cdpRail.ts",
     protects: ["Policy", "Reservation", "Execution", "Reconciliation"],
     apf: ["APF-003", "APF-004", "APF-005"],
-    narrative: "Reference operator console + CDP execution path for grant reviewers.",
+    narrative: "Reference operator console + CDP execution path on Base Sepolia.",
     evidenceHref: OPERATOR_URL,
     evidenceLabel: "Open operator console",
     secondaryHref: CDP_PORTAL,
@@ -226,7 +227,7 @@ export const ECOSYSTEM_MANIFEST: EcosystemManifestEntry[] = [
     codePath: "agent-payment-failure-lab",
     protects: ["APF-001…006", "SARIF", "CI reproduction"],
     apf: ["APF-001", "APF-002", "APF-003", "APF-004", "APF-005", "APF-006"],
-    narrative: "Six financial failure classes every grant submission must reference.",
+    narrative: "Six financial failure classes — attack, protect, and reproduce in the open lab.",
     evidenceHref: GITHUB_LAB,
     evidenceLabel: "Failure Atlas",
     secondaryHref: `${MARKETING_SITE_URL}/attack`,

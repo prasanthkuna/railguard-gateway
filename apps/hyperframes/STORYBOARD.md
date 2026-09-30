@@ -1,4 +1,4 @@
-# Grant master — storyboard (Claude / HyperFrames lane)
+# Demo master — storyboard (Claude / HyperFrames lane)
 
 **Runtime:** ~90s · **Profile:** `grant-90s`  
 **Style:** Fable-style pipeline — VO + code-timed motion (HyperFrames/GSAP) + **real** UI/terminal/Arbiscan inserts only.

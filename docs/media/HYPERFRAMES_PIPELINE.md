@@ -1,6 +1,6 @@
-# Grant video — HyperFrames (canonical)
+# Demo video — HyperFrames (canonical)
 
-**Supersedes** Remotion/CapCut as the **grant master** (`docs/VIDEO-PIPELINE.md` is legacy).
+**Supersedes** Remotion/CapCut as the **~90s master** (`docs/VIDEO-PIPELINE.md` is legacy). Copy rules: [ECOSYSTEM_PUBLIC_COPY.md](../design/ECOSYSTEM_PUBLIC_COPY.md).
 
 ## Purge before render
 
@@ -14,7 +14,7 @@ Do **not** commit seed phrases or wallet keys.
 
 ## Story (~90s)
 
-See [LAUNCH.md](../../../LAUNCH.md) and [CLAIM_MAP.md](./CLAIM_MAP.md).
+See [LAUNCH.md](../../../LAUNCH.md), [CLAIM_MAP.md](./CLAIM_MAP.md), and the full production plan [ARBITRUM_DEMO_VIDEO_PLAN.md](./ARBITRUM_DEMO_VIDEO_PLAN.md).
 
 1. Hook — agent + wallet risk  
 2. Six failures (Failure Lab / `/attack`)  

@@ -30,19 +30,24 @@ export default async function EcosystemDetailPage({
 
   return (
     <main className="page page-wide">
-      <p className="eyebrow">Ecosystem proof</p>
+      <p className="eyebrow">Integration</p>
       <h1>{eco.label}</h1>
       <p className="hero-lead">{eco.architectureBlurb}</p>
 
       <div className="eco-detail-grid" style={{ marginTop: "2rem" }}>
         <EcosystemVerifyCard eco={eco} />
         <section className="eco-detail-panel">
-          <h2 className="rg-headline">Grant reviewers</h2>
+          <h2 className="rg-headline">Reproduce this proof</h2>
+          <p className="rg-body" style={{ color: "var(--muted)", marginBottom: "1rem" }}>
+            Same commands and repo paths we use for testnet verification.
+          </p>
           <dl className="eco-stats mono">
-            <div>
-              <dt>One command</dt>
-              <dd>{eco.oneCommand}</dd>
-            </div>
+            {eco.oneCommand ? (
+              <div>
+                <dt>Verify</dt>
+                <dd>{eco.oneCommand}</dd>
+              </div>
+            ) : null}
             <div>
               <dt>Code</dt>
               <dd>{eco.codePath}</dd>
@@ -51,23 +56,20 @@ export default async function EcosystemDetailPage({
               <dt>Rail</dt>
               <dd>{eco.rail}</dd>
             </div>
-            {eco.grantProgram ? (
-              <div>
-                <dt>Program</dt>
-                <dd>{eco.grantProgram}</dd>
-              </div>
-            ) : null}
-            {eco.grantDeadline ? (
-              <div>
-                <dt>Deadline</dt>
-                <dd>{eco.grantDeadline}</dd>
-              </div>
-            ) : null}
           </dl>
-          {eco.grantPortal ? (
-            <a href={eco.grantPortal} className="btn btn-accent" {...EXTERNAL_LINK}>
-              Open submission portal
-            </a>
+          {eco.status === "grant-phase" && eco.grantProgram ? (
+            <p className="rg-caption" style={{ marginTop: "1rem" }}>
+              Program (in progress): {eco.grantProgram}
+              {eco.grantDeadline ? ` · deadline ${eco.grantDeadline}` : ""}
+              {eco.grantPortal ? (
+                <>
+                  {" · "}
+                  <a href={eco.grantPortal} {...EXTERNAL_LINK}>
+                    External program page
+                  </a>
+                </>
+              ) : null}
+            </p>
           ) : null}
           <p style={{ marginTop: "1.5rem" }}>
             <Link href="/ecosystems">← All ecosystems</Link>

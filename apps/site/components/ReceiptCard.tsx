@@ -24,7 +24,7 @@ export function ReceiptCard({ data, demo }: { data: ReceiptViewModel; demo?: boo
 
       {demo ? (
         <p className="receipt-demo-note">
-          Demo receipt for grants and reviewers. Live executions use the same envelope shape.
+          Sample receipt envelope. Live operator executions use the same fields.
         </p>
       ) : null}
 

@@ -1,7 +1,7 @@
 # Paste into Claude Code (`/goal`)
 
 ```text
-Produce the Railguard Arbitrum Open House grant master video (~90s) using the Claude/Fable orchestration lane:
+Produce the Railguard Arbitrum demo master video (~90s) using the Claude/Fable orchestration lane. Public VO is product-only (no HackQuest/grant names on screen or in SCRIPT.md):
 
 - Storyboard: apps/hyperframes/STORYBOARD.md
 - Voiceover: apps/hyperframes/SCRIPT.md (chunk VO-1 and VO-2 for TTS ≤60s)
@@ -17,5 +17,5 @@ Workflow:
 4) Visual QA: frame grabs per beat; fix timing/layout failures
 5) Output media/grant/arbitrum-open-house-2026-master.mp4 via render.ps1
 
-Stop only when claim map is fully satisfied and Sepolia proof is legible. This ships to HackQuest judges — quality bar is high.
+Stop only when claim map is fully satisfied and Sepolia proof is legible. Quality bar: credible infra demo, not a grant application narrated aloud.
 ```
