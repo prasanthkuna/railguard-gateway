@@ -6,6 +6,7 @@ const encoreApiUrl =
   "https://staging-railguard-s4ii.encr.app"
 
 const nextConfig: NextConfig = {
+  transpilePackages: ["@railguard/brand"],
   async rewrites() {
     return [
       {

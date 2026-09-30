@@ -1,0 +1,112 @@
+/**
+ * Maps operator UI tokens (--rg-*) to @railguard/brand marketing tokens.
+ * Import after tokens.css in apps/operator/globals.css.
+ */
+@import "./tokens.css";
+
+:root {
+  --rg-bg-base: var(--bg);
+  --rg-bg-elevated: var(--bg-card);
+  --rg-bg-alternate: var(--bg-elevated);
+  --rg-bg-panel: var(--bg-card);
+  --rg-bg-glass: rgba(18, 22, 28, 0.92);
+  --rg-bg-glass-strong: var(--bg-card);
+  --rg-bg-hover: #161b22;
+  --rg-bg-active: #1a2129;
+  --rg-bg-primary-wash: var(--mint-dim);
+  --rg-bg-positive-wash: rgba(92, 242, 178, 0.08);
+  --rg-bg-negative-wash: rgba(255, 107, 107, 0.1);
+  --rg-bg-warning-wash: rgba(240, 180, 41, 0.1);
+
+  --rg-text-primary: var(--text);
+  --rg-text-secondary: var(--muted);
+  --rg-text-muted: var(--muted);
+  --rg-text-inverse: var(--bg);
+
+  --rg-accent: var(--mint);
+  --rg-accent-hover: #7ef5c4;
+  --rg-accent-dim: var(--mint-dim);
+  --rg-accent-glow: rgba(92, 242, 178, 0.2);
+  --rg-brand: var(--mint);
+  --rg-brand-dim: var(--mint-dim);
+  --rg-brand-muted: #3dd99a;
+
+  --rg-state-calm: var(--blue);
+  --rg-state-joy: var(--mint);
+  --rg-state-caution: var(--warn);
+  --rg-state-regret: var(--danger);
+
+  --rg-status-allow: var(--mint);
+  --rg-status-block: var(--danger);
+  --rg-status-escalate: var(--warn);
+  --rg-status-info: var(--blue);
+  --rg-status-neutral: var(--muted);
+
+  --rg-border: var(--border);
+  --rg-border-strong: #2a343e;
+  --rg-border-accent: rgba(92, 242, 178, 0.35);
+
+  --rg-radius-sm: 8px;
+  --rg-radius-md: var(--radius);
+  --rg-radius-lg: 16px;
+  --rg-radius-xl: 24px;
+  --rg-radius-pill: 999px;
+
+  --rg-shadow-sm: 0 8px 24px rgba(0, 0, 0, 0.35);
+  --rg-shadow-md: 0 12px 32px rgba(0, 0, 0, 0.45);
+  --rg-shadow-glow: 0 0 0 1px rgba(92, 242, 178, 0.12);
+
+  --rg-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --rg-duration: 180ms;
+
+  --rg-space-1: 4px;
+  --rg-space-2: 8px;
+  --rg-space-3: 12px;
+  --rg-space-4: 16px;
+  --rg-space-5: 20px;
+  --rg-space-6: 24px;
+  --rg-space-8: 32px;
+
+  --defaultFont-sans: var(--font-display);
+  --defaultFont-mono: var(--font-mono);
+
+  --fontSize-display1: 4rem;
+  --lineHeight-display1: 4.5rem;
+  --fontWeight-display1: 400;
+  --fontSize-display2: 3rem;
+  --lineHeight-display2: 3.5rem;
+  --fontWeight-display2: 400;
+  --fontSize-display3: 2.5rem;
+  --lineHeight-display3: 3rem;
+  --fontWeight-display3: 400;
+  --fontSize-title1: 1.75rem;
+  --lineHeight-title1: 2.25rem;
+  --fontWeight-title1: 600;
+  --fontSize-title2: 1.75rem;
+  --lineHeight-title2: 2.25rem;
+  --fontWeight-title2: 400;
+  --fontSize-title3: 1.25rem;
+  --lineHeight-title3: 1.75rem;
+  --fontWeight-title3: 600;
+  --fontSize-title4: 1.25rem;
+  --lineHeight-title4: 1.75rem;
+  --fontWeight-title4: 400;
+  --fontSize-headline: 1rem;
+  --lineHeight-headline: 1.5rem;
+  --fontWeight-headline: 600;
+  --fontSize-body: 1rem;
+  --lineHeight-body: 1.5rem;
+  --fontWeight-body: 400;
+  --fontSize-label1: 0.875rem;
+  --lineHeight-label1: 1.25rem;
+  --fontWeight-label1: 600;
+  --fontSize-label2: 0.875rem;
+  --lineHeight-label2: 1.25rem;
+  --fontWeight-label2: 400;
+  --fontSize-caption: 0.8125rem;
+  --lineHeight-caption: 1rem;
+  --fontWeight-caption: 600;
+  --fontSize-legal: 0.8125rem;
+  --lineHeight-legal: 1rem;
+  --fontWeight-legal: 400;
+}

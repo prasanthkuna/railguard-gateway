@@ -1,0 +1,21 @@
+/**
+ * Railguard product tokens — marketing site, operator, HyperFrames scenes.
+ * Source of truth for color, type, and radius.
+ */
+:root {
+  --bg: #080a0c;
+  --bg-elevated: #0f1216;
+  --bg-card: #12161c;
+  --border: #1e262e;
+  --text: #f4f6f8;
+  --muted: #8b949e;
+  --mint: #5cf2b2;
+  --mint-dim: rgba(92, 242, 178, 0.12);
+  --danger: #ff6b6b;
+  --warn: #f0b429;
+  --blue: #6eb5ff;
+  --font-display: var(--font-space-grotesk), system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono, ui-monospace), ui-monospace, monospace;
+  --radius: 12px;
+  --max: min(1360px, 96vw);
+}

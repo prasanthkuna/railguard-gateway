@@ -22,6 +22,10 @@ export const metadata: Metadata = {
   title: "Railguard — financial execution firewall",
   description:
     "Can your AI agent spend money safely? Open-source firewall between autonomous software and your wallet. Agent money. Guarded.",
+  icons: {
+    icon: [{ url: "/icon.svg", type: "image/svg+xml" }],
+    apple: [{ url: "/icon.svg", type: "image/svg+xml" }],
+  },
   openGraph: {
     title: "Railguard",
     description: "Attack → protect → attack. Financial execution firewall for agents.",

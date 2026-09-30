@@ -1,138 +1,8 @@
+@import "@railguard/brand/operator-theme.css";
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-/* ============================================================
-   RAILGUARD × COINBASE DESIGN SYSTEM (CDS Light)
-   Tokens aligned with cds.coinbase.com default light theme
-   ============================================================ */
-
-:root {
-  /* CDS semantic surfaces (light) */
-  --rg-bg-base: rgb(255, 255, 255);
-  --rg-bg-elevated: rgb(255, 255, 255);
-  --rg-bg-alternate: rgb(247, 248, 249);
-  --rg-bg-panel: rgb(255, 255, 255);
-  --rg-bg-glass: rgb(255, 255, 255);
-  --rg-bg-glass-strong: rgb(255, 255, 255);
-  --rg-bg-hover: rgb(247, 248, 249);
-  --rg-bg-active: rgb(238, 240, 243);
-  --rg-bg-primary-wash: rgb(245, 248, 255);
-  --rg-bg-positive-wash: rgb(245, 255, 251);
-  --rg-bg-negative-wash: rgb(255, 245, 246);
-  --rg-bg-warning-wash: rgb(255, 250, 245);
-
-  /* CDS text */
-  --rg-text-primary: rgb(10, 11, 13);
-  --rg-text-secondary: rgb(91, 97, 110);
-  --rg-text-muted: rgb(91, 97, 110);
-  --rg-text-inverse: rgb(255, 255, 255);
-
-  /* CDS brand — Coinbase blue */
-  --rg-accent: rgb(0, 82, 255);
-  --rg-accent-hover: rgb(0, 75, 235);
-  --rg-accent-dim: rgb(245, 248, 255);
-  --rg-accent-glow: rgba(0, 82, 255, 0.18);
-  --rg-brand: rgb(0, 82, 255);
-  --rg-brand-dim: rgb(245, 248, 255);
-  --rg-brand-muted: rgb(115, 162, 255);
-
-  /* CDS semantic states */
-  --rg-state-calm: rgb(0, 82, 255);
-  --rg-state-joy: rgb(9, 133, 81);
-  --rg-state-caution: rgb(207, 71, 14);
-  --rg-state-regret: rgb(207, 32, 47);
-
-  --rg-status-allow: var(--rg-state-joy);
-  --rg-status-block: var(--rg-state-regret);
-  --rg-status-escalate: var(--rg-state-caution);
-  --rg-status-info: var(--rg-brand);
-  --rg-status-neutral: rgb(137, 144, 158);
-
-  /* CDS lines */
-  --rg-border: rgba(91, 97, 110, 0.2);
-  --rg-border-strong: rgba(91, 97, 110, 0.35);
-  --rg-border-accent: rgb(115, 162, 255);
-
-  /* CDS radius */
-  --rg-radius-sm: 8px;
-  --rg-radius-md: 12px;
-  --rg-radius-lg: 16px;
-  --rg-radius-xl: 24px;
-  --rg-radius-pill: 999px;
-
-  /* CDS elevation */
-  --rg-shadow-sm: 0 8px 12px rgba(0, 0, 0, 0.08);
-  --rg-shadow-md: 0 8px 24px rgba(0, 0, 0, 0.12);
-  --rg-shadow-glow: 0 0 0 1px rgba(0, 82, 255, 0.08);
-
-  --rg-ease: cubic-bezier(0.22, 1, 0.36, 1);
-  --rg-duration: 180ms;
-
-  --rg-space-1: 4px;
-  --rg-space-2: 8px;
-  --rg-space-3: 12px;
-  --rg-space-4: 16px;
-  --rg-space-5: 20px;
-  --rg-space-6: 24px;
-  --rg-space-8: 32px;
-
-  /* CDS typography — cds.coinbase.com/theming */
-  --defaultFont-sans: var(--font-body), "Inter", system-ui, -apple-system, sans-serif;
-  --defaultFont-mono: var(--font-mono), Menlo, Consolas, monospace;
-
-  --fontSize-display1: 4rem;
-  --lineHeight-display1: 4.5rem;
-  --fontWeight-display1: 400;
-
-  --fontSize-display2: 3rem;
-  --lineHeight-display2: 3.5rem;
-  --fontWeight-display2: 400;
-
-  --fontSize-display3: 2.5rem;
-  --lineHeight-display3: 3rem;
-  --fontWeight-display3: 400;
-
-  --fontSize-title1: 1.75rem;
-  --lineHeight-title1: 2.25rem;
-  --fontWeight-title1: 600;
-
-  --fontSize-title2: 1.75rem;
-  --lineHeight-title2: 2.25rem;
-  --fontWeight-title2: 400;
-
-  --fontSize-title3: 1.25rem;
-  --lineHeight-title3: 1.75rem;
-  --fontWeight-title3: 600;
-
-  --fontSize-title4: 1.25rem;
-  --lineHeight-title4: 1.75rem;
-  --fontWeight-title4: 400;
-
-  --fontSize-headline: 1rem;
-  --lineHeight-headline: 1.5rem;
-  --fontWeight-headline: 600;
-
-  --fontSize-body: 1rem;
-  --lineHeight-body: 1.5rem;
-  --fontWeight-body: 400;
-
-  --fontSize-label1: 0.875rem;
-  --lineHeight-label1: 1.25rem;
-  --fontWeight-label1: 600;
-
-  --fontSize-label2: 0.875rem;
-  --lineHeight-label2: 1.25rem;
-  --fontWeight-label2: 400;
-
-  --fontSize-caption: 0.8125rem;
-  --lineHeight-caption: 1rem;
-  --fontWeight-caption: 600;
-
-  --fontSize-legal: 0.8125rem;
-  --lineHeight-legal: 1rem;
-  --fontWeight-legal: 400;
-}
 
 @layer base {
   * {
@@ -152,17 +22,12 @@
   }
 
   body {
+    background: var(--bg);
     background-image: radial-gradient(
-        ellipse 90% 60% at 50% -20%,
-        rgba(0, 82, 255, 0.08),
-        transparent 60%
-      ),
-      linear-gradient(
-        180deg,
-        rgb(245, 248, 255) 0%,
-        rgb(247, 248, 249) 28%,
-        rgb(238, 240, 243) 100%
-      );
+      ellipse 80% 50% at 50% -15%,
+      rgba(92, 242, 178, 0.08),
+      transparent 55%
+    );
     background-attachment: fixed;
   }
 

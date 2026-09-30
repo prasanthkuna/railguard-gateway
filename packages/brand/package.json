@@ -1,0 +1,14 @@
+{
+  "name": "@railguard/brand",
+  "private": true,
+  "version": "0.1.0",
+  "exports": {
+    "./tokens.css": "./tokens.css",
+    "./operator-theme.css": "./operator-theme.css",
+    "./Logo": "./Logo.tsx",
+    "./assets/icon.svg": "./assets/icon.svg"
+  },
+  "peerDependencies": {
+    "react": "^19.0.0"
+  }
+}
