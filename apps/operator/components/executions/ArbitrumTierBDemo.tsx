@@ -32,7 +32,12 @@ export function ArbitrumTierBDemo() {
         idempotencyKey: idem,
         context: { task: "hackquest-tier-b" },
       })
-      const intentId = (created.intent as { id?: string }).id
+      const rawIntent = created.intent as { id?: string } | string
+      const intent =
+        typeof rawIntent === "string"
+          ? (JSON.parse(rawIntent) as { id?: string })
+          : rawIntent
+      const intentId = intent.id
       if (!intentId) throw new Error("missing intent id")
       await api.authorizeFinancialIntent(intentId)
       const ext = await api.executeExternalFinancialIntent(intentId)

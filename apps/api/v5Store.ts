@@ -67,9 +67,16 @@ export async function requireV5Actor(
   return actor
 }
 
+export function parseIntentPayload(payload: FinancialIntent | string): FinancialIntent {
+  if (typeof payload === "string") {
+    return JSON.parse(payload) as FinancialIntent
+  }
+  return payload
+}
+
 function mapRow(row: FinancialIntentRow) {
   return {
-    intent: row.payload_json,
+    intent: parseIntentPayload(row.payload_json as FinancialIntent | string),
     status: row.status,
     paymentIntentId: row.payment_intent_id ?? undefined,
     authorizationGrant: row.authorization_grant_json ?? undefined,
@@ -93,7 +100,7 @@ export async function createStoredFinancialIntent(
     try {
       assertIdempotentReplay(
         "financial intent",
-        hashStoredFinancialIntent(existing.payload_json),
+        hashStoredFinancialIntent(parseIntentPayload(existing.payload_json as FinancialIntent | string)),
         hashFinancialIntentInput(input),
       )
     } catch {
@@ -111,7 +118,7 @@ export async function createStoredFinancialIntent(
       id, organization_id, payload_json, status, idempotency_key
     )
     VALUES (
-      ${intentId}, ${organizationId}, ${JSON.stringify(intent)}, 'CREATED', ${idempotencyKey}
+      ${intentId}, ${organizationId}, ${intent as unknown as Record<string, unknown>}, 'CREATED', ${idempotencyKey}
     )
     RETURNING *
   `
@@ -129,7 +136,7 @@ export async function authorizeStoredIntent(
   `
   if (!row) throw APIError.notFound("financial intent not found")
 
-  const intent = row.payload_json
+  const intent = parseIntentPayload(row.payload_json as FinancialIntent | string)
   const auth = await authorizeIntent(intent, async (candidate) => {
     if (!isX402GuardEnabled()) {
       return {
@@ -230,7 +237,7 @@ export async function executeExternalStoredIntent(
   if (row.status !== "AUTHORIZED" && row.status !== "RESERVED") {
     throw APIError.failedPrecondition(`intent must be AUTHORIZED before external execute: ${row.status}`)
   }
-  const intent = row.payload_json
+  const intent = parseIntentPayload(row.payload_json as FinancialIntent | string)
   if (!isExternalSettlementNetwork(intent.constraints.network)) {
     throw APIError.invalidArgument(
       "external execute requires network arbitrum-sepolia, arbitrum-one, or arbitrum",
@@ -249,7 +256,7 @@ export async function executeExternalStoredIntent(
     UPDATE financial_intents
     SET execution_id = ${executionId},
         status = 'AWAITING_BROADCAST',
-        payload_json = ${JSON.stringify(updatedIntent)},
+        payload_json = ${updatedIntent as unknown as Record<string, unknown>},
         updated_at = NOW()
     WHERE id = ${intentId} AND organization_id = ${organizationId}
   `
@@ -278,7 +285,7 @@ export async function observeExternalStoredExecution(
   if (row.status !== "AWAITING_BROADCAST" && row.status !== "EXECUTING" && row.status !== "SUBMITTED") {
     throw APIError.failedPrecondition(`execution not awaiting observe: ${row.status}`)
   }
-  const intent = row.payload_json
+  const intent = parseIntentPayload(row.payload_json as FinancialIntent | string)
   const { verifyIntentSettlementTx } = await import("./settlementVerifyIntent")
   const verified = await verifyIntentSettlementTx({ intent, txHash: normalizedTx })
   if (verified.settlementStatus !== "CONFIRMED") {
@@ -297,7 +304,7 @@ export async function observeExternalStoredExecution(
   await db.exec`
     UPDATE financial_intents
     SET status = 'SETTLED',
-        payload_json = ${JSON.stringify(updatedIntent)},
+        payload_json = ${updatedIntent as unknown as Record<string, unknown>},
         updated_at = NOW()
     WHERE id = ${row.id} AND organization_id = ${organizationId}
   `
@@ -367,7 +374,7 @@ export async function listStoredExecutions(
   const page = collected.slice(0, limit)
   const hasMore = collected.length > limit
   const items: ExecutionListItem[] = page.map((row) => {
-    const intent = row.payload_json
+    const intent = parseIntentPayload(row.payload_json as FinancialIntent | string)
     const network = intent.constraints.network
     return {
       executionId: row.execution_id ?? row.id,
@@ -418,7 +425,8 @@ export async function buildAndStoreEvidence(
     WHERE organization_id = ${organizationId} AND execution_id = ${executionId}
   `
   if (!row) throw APIError.notFound("execution not found")
-  const ctx = row.payload_json.context ?? {}
+  const intent = parseIntentPayload(row.payload_json as FinancialIntent | string)
+  const ctx = intent.context ?? {}
   const txHash = typeof ctx.txHash === "string" ? ctx.txHash : undefined
   const rail =
     typeof ctx.rail === "string"
@@ -427,7 +435,7 @@ export async function buildAndStoreEvidence(
         ? "cdp"
         : "x402"
   const envelope = buildEvidenceEnvelope({
-    intent: row.payload_json,
+    intent,
     policyDecision: { status: row.status },
     authorizationGrant: row.authorization_grant_json ?? { grantId: "none" },
     execution: {

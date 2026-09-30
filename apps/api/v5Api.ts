@@ -2,7 +2,7 @@ import { APIError, type Query, api } from "encore.dev/api"
 import type { AuthorizationGrant } from "../../packages/kernel/src/authority"
 import type { EvidenceEnvelope } from "../../packages/kernel/src/evidence"
 import type { V5ExecutionStatus } from "../../packages/kernel/src/executionRail"
-import type { CreateFinancialIntentInput } from "../../packages/kernel/src/intent"
+import type { CreateFinancialIntentInput, FinancialIntent } from "../../packages/kernel/src/intent"
 import {
   authorizeStoredIntent,
   buildAndStoreEvidence,
@@ -12,6 +12,7 @@ import {
   getStoredExecution,
   listStoredExecutions,
   observeExternalStoredExecution,
+  parseIntentPayload,
   requireV5Actor,
 } from "./v5Store"
 
@@ -310,7 +311,7 @@ async function getStoredExecutionByIntent(organizationId: string, intentId: stri
   `
   if (!row) throw APIError.notFound("financial intent not found")
   return {
-    intent: row.payload_json,
+    intent: parseIntentPayload(row.payload_json as FinancialIntent | string),
     status: row.status,
     paymentIntentId: row.payment_intent_id ?? undefined,
     executionId: row.execution_id ?? undefined,
