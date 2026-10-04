@@ -42,6 +42,7 @@ evidence/*
 !evidence/arbitrum-sepolia-hook/
 !evidence/arbitrum-sepolia/
 !evidence/stellar-testnet/
+!evidence/monad-testnet/
 !evidence/**/README.md
 !evidence/**/manifest.json
 

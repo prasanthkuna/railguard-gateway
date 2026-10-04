@@ -16,7 +16,9 @@ export const INTEGRATION_SNIPPETS = {
   failureLab: cliBunRun("attack"),
   arbitrumSepoliaEvidence: "bun run arbitrum-sepolia-evidence",
   stellarTestnetEvidence: "bun run stellar-testnet-evidence",
-  verifyPublicProofs: "bun run verify-arbitrum-sepolia-pack && bun run verify-stellar-testnet-pack",
+  monadTestnetEvidence: "bun run monad-testnet-evidence",
+  verifyPublicProofs:
+    "bun run verify-arbitrum-sepolia-pack && bun run verify-stellar-testnet-pack && bun run verify-monad-metropolis-pack",
   mcpDocPath: `${GITHUB_GATEWAY}/blob/main/docs/mcp-cursor.example.json`,
   mcpRun: "bun run railguard:mcp",
   apiDoc: `${GITHUB_GATEWAY}/blob/main/docs/INTEGRATION.md`,

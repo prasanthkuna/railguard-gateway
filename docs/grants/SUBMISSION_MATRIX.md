@@ -12,6 +12,16 @@
 | API staging | https://staging-railguard-s4ii.encr.app |
 | Gateway repo | https://github.com/prasanthkuna/railguard-gateway |
 
+## Status snapshot (2026-10-04)
+
+| Program | Status | Next action |
+| --- | --- | --- |
+| Stellar SCF #46 Interest | **Submitted** | Wait for Build invite → [STELLAR_SCF_46_BUILD.md](./STELLAR_SCF_46_BUILD.md) |
+| Arbitrum HackQuest | **Submitted** (check portal) | [ARBITRUM_TESTNET_SUBMIT.md](./ARBITRUM_TESTNET_SUBMIT.md) |
+| **Monad Metropolis** | **In progress** — RPC + evidence scripts ready; **no committed tx manifest yet** | USDC transfer + [MONAD_METROPOLIS_SUBMIT.md](./MONAD_METROPOLIS_SUBMIT.md) · `bun run verify-monad-metropolis-pack` |
+| Arc Microgrant | **Registered, not submitted** | Arc **mainnet** proof → [ARC_MICROGRANT_SUBMIT.md](./ARC_MICROGRANT_SUBMIT.md) by **14 Oct** |
+| Airwallex Agentic Banking | **Blocked** (event portal) | [AIRWALLEX_AGENTIC_BANKING.md](./AIRWALLEX_AGENTIC_BANKING.md) — NO-GO until portal works |
+
 ## Blockers found today
 
 | Issue | Evidence | Fix |
@@ -63,10 +73,12 @@
 
 | Field | Value |
 | --- | --- |
-| Deadline | **Oct 13, 2026** (plan25) |
+| Deadline | **Oct 13, 2026** |
+| Portal | https://hackathon.monad.xyz/ |
+| Submit pack | [MONAD_METROPOLIS_SUBMIT.md](./MONAD_METROPOLIS_SUBMIT.md) |
 | Track | Trust, Identity & AI Infrastructure (+ payments demo) |
-| Code | `monad-testnet` in `packages/settlement/src/chains.ts` |
-| Site | `/ecosystems/monad` |
+| Code | `monad-testnet.ts` + `bun run monad-testnet-evidence` |
+| Site | `/ecosystems/monad` · `/proof/monad-testnet` (after manifest) |
 | Optional | Chainlink CRE bounty (~$3K) — do not make Chainlink the product |
 
 ### 4. Colosseum Crypto World’s Fair (optional)
@@ -76,13 +88,14 @@
 
 ### 5. Airwallex Agentic Banking
 
-| When | Brief **Oct 5** → GO/NO-GO before building |
-| Code | `packages/integrations/src/rails/airwallexRail.ts` (stub path) |
+| Status | **NO-GO** — [AIRWALLEX_AGENTIC_BANKING.md](./AIRWALLEX_AGENTIC_BANKING.md) |
+| Code | `packages/integrations/src/rails/airwallexRail.ts` (stub only) |
 
 ### 6. Arc Microgrant
 
 | Deadline | **Oct 14, 2026** |
-| Code | `arc` / `arc-testnet` chains + settlement verify rail |
+| Submit pack | [ARC_MICROGRANT_SUBMIT.md](./ARC_MICROGRANT_SUBMIT.md) |
+| Code | `arc` mainnet required; testnet = `bun run arc-testnet-evidence` only |
 | Site | `/ecosystems/arc` |
 
 ---
@@ -116,7 +129,7 @@ Polygon Encode (closed), Web3 Foundation (watch), Kite / Open Agent (unverified)
 | `cdp` / `base` | `cdpRail`, `baseRail` | demo-verification, operator |
 | `stellar` | `integrations/rails/stellarRail.ts` | P0_TESTNET_COMPLETE |
 | `arbitrum` | `arbitrum-one` settlement verify | `arbitrum-one.test.ts`, `evidence/arbitrum-one` |
-| `monad` | `settlementVerifyRail(monad-testnet)` | chains.ts |
+| `monad` | `settlementVerifyRail(monad-testnet)` | [MONAD_METROPOLIS_SUBMIT.md](./MONAD_METROPOLIS_SUBMIT.md) |
 | `arc` | `settlementVerifyRail(arc*)` | `docs/P0_TESTNET_COMPLETE` arc section |
 | `celo` | `settlementVerifyRail(celo*)` | optional testnet |
 | `airwallex` | `airwallexRail.ts` | grant-phase |

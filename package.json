@@ -63,6 +63,8 @@
     "testnet:all": "bun run scripts/testnet-all.ts",
     "stellar-testnet-evidence": "bun run scripts/stellar-testnet-evidence.ts",
     "arc-testnet-evidence": "bun run scripts/arc-testnet-evidence.ts",
+    "monad-testnet-evidence": "bun run scripts/monad-testnet-evidence.ts",
+    "verify-monad-metropolis-pack": "bun run scripts/verify-monad-metropolis-pack.ts",
     "cdp-base-sepolia-smoke": "bun run scripts/cdp-base-sepolia-smoke.ts",
     "cdp-live-transfer-smoke": "bun run scripts/cdp-live-transfer-smoke.ts",
     "forge:test": "powershell -NoProfile -Command \"$env:PATH='$env:USERPROFILE\\.foundry\\bin;' + $env:PATH; cd ..\\railguard-new\\contracts; forge test\"",
