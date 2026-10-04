@@ -14,8 +14,9 @@ export async function generateMetadata({
   const eco = getEcosystemById(id)
   if (!eco) return { title: "Integration · Railguard" }
   return {
-    title: `${eco.label} integration · Railguard`,
-    description: eco.architectureBlurb,
+    title: `${eco.label} integration`,
+    description: eco.narrative,
+    alternates: { canonical: `/ecosystems/${id}` },
   }
 }
 

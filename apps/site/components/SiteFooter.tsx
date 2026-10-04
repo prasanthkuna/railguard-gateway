@@ -1,3 +1,4 @@
+import Link from "next/link"
 import {
   EXTERNAL_LINK,
   GITHUB_GATEWAY,
@@ -11,6 +12,10 @@ export function SiteFooter() {
     <footer className="site-footer">
       <p className="footer-tag">Agent money. Guarded.</p>
       <div className="footer-links">
+        <Link href="/ecosystems">Ecosystems</Link>
+        <Link href="/attack">Failure Lab</Link>
+        <Link href="/proof/stellar-testnet">Stellar proof</Link>
+        <Link href="/proof/arbitrum-sepolia">Arbitrum proof</Link>
         <a href={GITHUB_GATEWAY} {...EXTERNAL_LINK}>
           Gateway
         </a>

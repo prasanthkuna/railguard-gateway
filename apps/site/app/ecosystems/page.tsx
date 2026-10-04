@@ -1,6 +1,14 @@
+import type { Metadata } from "next"
 import Link from "next/link"
 import { EcosystemVerifyCard } from "../../components/EcosystemVerifyCard"
 import { ECOSYSTEMS } from "../../lib/ecosystems"
+
+export const metadata: Metadata = {
+  title: "Execution rails & testnet proof",
+  description:
+    "Stellar, Arbitrum, Base, CDP, and other rails supported by Railguard—public testnet proofs and reproduce commands.",
+  alternates: { canonical: "/ecosystems" },
+}
 
 export default function EcosystemsPage() {
   return (

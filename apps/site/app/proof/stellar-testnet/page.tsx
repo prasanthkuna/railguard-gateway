@@ -3,9 +3,10 @@ import { STELLAR_TESTNET_PROOF as P } from "../../../lib/stellar-public-proof"
 import { EXTERNAL_LINK, GITHUB_GATEWAY } from "../../../lib/constants"
 
 export const metadata = {
-  title: "Stellar testnet verified proof · Railguard",
+  title: "Stellar testnet verified proof",
   description:
     "Public Stellar testnet proof: Horizon settlement verification CONFIRMED for a native XLM payment.",
+  alternates: { canonical: "/proof/stellar-testnet" },
 }
 
 export default function StellarTestnetProofPage() {

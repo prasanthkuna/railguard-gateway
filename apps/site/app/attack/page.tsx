@@ -1,5 +1,13 @@
+import type { Metadata } from "next"
 import Link from "next/link"
 import { AttackDemo } from "../../components/AttackDemo"
+
+export const metadata: Metadata = {
+  title: "Failure Lab — six payment failure classes",
+  description:
+    "Interactive simulation of agent payment failure classes (APF). Compare unprotected flows with Railguard policy, protect, and verify.",
+  alternates: { canonical: "/attack" },
+}
 
 export default function AttackPage() {
   return (

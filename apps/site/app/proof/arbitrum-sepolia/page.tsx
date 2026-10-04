@@ -3,9 +3,10 @@ import { ARBITRUM_SEPOLIA_PROOF as P } from "../../../lib/arbitrum-public-proof"
 import { EXTERNAL_LINK, GITHUB_GATEWAY, OPERATOR_LOGIN_URL } from "../../../lib/constants"
 
 export const metadata = {
-  title: "Arbitrum Sepolia verified proof · Railguard",
+  title: "Arbitrum Sepolia verified proof",
   description:
     "Public testnet proof: external-wallet USDC settlement verified and recorded as SETTLED, separate from hook contract deployment.",
+  alternates: { canonical: "/proof/arbitrum-sepolia" },
 }
 
 export default function ArbitrumSepoliaProofPage() {

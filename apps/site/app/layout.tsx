@@ -3,6 +3,7 @@ import type { Metadata } from "next"
 import { Space_Grotesk } from "next/font/google"
 import { SiteFooter } from "../components/SiteFooter"
 import { SiteHeader } from "../components/SiteHeader"
+import { siteOrigin } from "../lib/site-seo"
 import "./globals.css"
 import "./responsive.css"
 
@@ -19,9 +20,15 @@ export const viewport = {
 }
 
 export const metadata: Metadata = {
-  title: "Railguard — financial execution firewall",
+  metadataBase: new URL(siteOrigin()),
+  title: {
+    default: "Railguard — financial execution firewall",
+    template: "%s · Railguard",
+  },
   description:
-    "Open-source financial execution firewall for AI agents. Policy before signing, tamper-evident records—v0.1 testnet alpha. Agent money. Guarded.",
+    "Open-source financial execution firewall for AI agents. Policy before signing, settlement verification, and tamper-evident records—v0.1 testnet alpha.",
+  robots: { index: true, follow: true },
+  alternates: { canonical: "/" },
   icons: {
     icon: [{ url: "/icon.svg", type: "image/svg+xml" }],
     apple: [{ url: "/icon.svg", type: "image/svg+xml" }],
