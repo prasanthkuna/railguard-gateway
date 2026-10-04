@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import { useCallback, useEffect, useState } from "react"
-import { GITHUB_GATEWAY } from "../lib/constants"
+import { GITHUB_GATEWAY, GITHUB_PROFILE } from "../lib/constants"
 import { Logo } from "./Logo"
 import { SystemStatus } from "./SystemStatus"
 
@@ -12,7 +12,8 @@ const links = [
   { href: "/attack", label: "Failure Lab" },
   { href: "/ecosystems", label: "Testnet proofs" },
   { href: ARCHITECTURE, label: "Architecture", external: true },
-  { href: GITHUB_GATEWAY, label: "GitHub", external: true },
+  { href: GITHUB_PROFILE, label: "GitHub", external: true },
+  { href: GITHUB_GATEWAY, label: "Source", external: true },
 ]
 
 export function SiteHeader() {

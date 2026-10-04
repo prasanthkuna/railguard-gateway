@@ -21,6 +21,15 @@ export const OPERATOR_SETTLED_REPLAY_URL = `${operatorRoot}/executions/${SETTLED
 
 export const STAGING_API =
   process.env.NEXT_PUBLIC_API_URL || "https://staging-railguard-s4ii.encr.app"
+export const GITHUB_PROFILE = "https://github.com/prasanthkuna"
+
+export const FOUNDER_SOCIAL = {
+  name: "Prashanth Kuna",
+  github: GITHUB_PROFILE,
+  linkedin: "https://www.linkedin.com/in/prasanth-kuna-1463631b3/",
+  x: "https://x.com/prasanth_kuna",
+} as const
+
 export const GITHUB_GATEWAY = "https://github.com/prasanthkuna/railguard-gateway"
 export const GITHUB_LAB = "https://github.com/prasanthkuna/agent-payment-failure-lab"
 export const GITHUB_PROTOCOL = "https://github.com/prasanthkuna/railguard-protocol"

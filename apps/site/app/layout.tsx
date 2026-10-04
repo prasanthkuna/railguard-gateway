@@ -3,6 +3,7 @@ import type { Metadata } from "next"
 import { Space_Grotesk } from "next/font/google"
 import { SiteFooter } from "../components/SiteFooter"
 import { SiteHeader } from "../components/SiteHeader"
+import { founderJsonLd } from "../lib/founder-jsonld"
 import { siteOrigin } from "../lib/site-seo"
 import "./globals.css"
 import "./responsive.css"
@@ -36,12 +37,23 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Railguard",
     description: "Attack → protect → attack. Financial execution firewall for agents.",
+    url: siteOrigin(),
+  },
+  twitter: {
+    card: "summary",
+    creator: "@prasanth_kuna",
   },
 }
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" className={`${spaceGrotesk.variable} ${GeistMono.variable}`}>
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(founderJsonLd()) }}
+        />
+      </head>
       <body>
         <SiteHeader />
         {children}

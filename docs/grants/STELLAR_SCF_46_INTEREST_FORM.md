@@ -32,16 +32,18 @@ Objectives for Stellar: (1) Horizon-based settlement verification on testnet (do
 
 ### Current Traction *
 
+**Portal limit: 1000 characters** (paste block below only — ~676 chars).
+
 ```
-Stage: testnet-verified reference implementation (v0.1 alpha).
+v0.1 alpha · testnet-verified OSS.
 
-Stellar: Horizon testnet payment verify CONFIRMED. Public proof: https://railguard-site.vercel.app/proof/stellar-testnet · Reproduce: bun run stellar-testnet-evidence (github.com/prasanthkuna/railguard-gateway). Evidence tx: 3dc3225844f711f9f96ead65690d224b7ccfd616d1da5387df6bfc63bfb8e437 — https://horizon-testnet.stellar.org/transactions/3dc3225844f711f9f96ead65690d224b7ccfd616d1da5387df6bfc63bfb8e437
+Stellar: Horizon testnet CONFIRMED. Proof https://railguard-site.vercel.app/proof/stellar-testnet · tx https://horizon-testnet.stellar.org/transactions/3dc3225844f711f9f96ead65690d224b7ccfd616d1da5387df6bfc63bfb8e437 · repro bun run stellar-testnet-evidence
 
-Cross-chain validation (not Stellar TVL): same evidence pattern on EVM testnet (Sepolia SETTLED + hook deployment). Public proof: https://railguard-site.vercel.app/proof/arbitrum-sepolia · Failure Lab (APF demos): https://railguard-site.vercel.app/attack
+Cross-chain (not Stellar TVL): EVM Sepolia SETTLED reference https://railguard-site.vercel.app/proof/arbitrum-sepolia · Failure Lab https://railguard-site.vercel.app/attack
 
-Site: https://railguard-site.vercel.app/ecosystems/stellar · GitHub: https://github.com/prasanthkuna/railguard-gateway
+https://railguard-site.vercel.app/ecosystems/stellar · https://github.com/prasanthkuna/railguard-gateway
 
-Users/TVL: pre-revenue OSS; traction = verifiable testnet/mainnet evidence and hackathon/grant submissions, not retail user counts yet.
+Pre-revenue OSS; traction = verifiable testnet evidence + grant submissions, not user/TVL counts yet.
 ```
 
 ### Website *
@@ -85,7 +87,7 @@ Team size: 1 (solo founder).
 
 Prashanth Kuna — full-stack engineer (TypeScript, Go, Solidity); building Railguard open-source financial execution firewall for AI agents. Shipped Stellar Horizon testnet CONFIRMED evidence; additional EVM testnet reference (Sepolia SETTLED) using the same verify-and-proof pattern.
 
-LinkedIn: (paste your profile URL)
+LinkedIn: https://www.linkedin.com/in/prasanth-kuna-1463631b3/
 
 Prior experience: enterprise backend / platform engineering (payments-adjacent systems); not a first-time builder for production software. No separate company entity required for this interest form.
 

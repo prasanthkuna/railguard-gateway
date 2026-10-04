@@ -480,6 +480,17 @@ button:focus-visible {
   font-weight: 600;
 }
 
+.founder-social {
+  margin: 0.75rem auto 0;
+  max-width: 36rem;
+  font-size: 0.8rem;
+  line-height: 1.5;
+}
+
+.founder-social-label {
+  color: var(--text);
+}
+
 .footer-links {
   display: flex;
   flex-wrap: wrap;
