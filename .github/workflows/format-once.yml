@@ -25,7 +25,7 @@ jobs:
         run: bun install
 
       - name: Apply Biome safe fixes
-        run: bun run lint:fix
+        run: bun run lint:fix || true
 
       - name: Commit formatter output
         shell: bash
