@@ -10,7 +10,7 @@ const ARCHITECTURE = `${GITHUB_GATEWAY}/blob/main/docs/ARCHITECTURE.md`
 
 const links = [
   { href: "/attack", label: "Failure Lab" },
-  { href: "/proof/arbitrum-sepolia", label: "Testnet proof" },
+  { href: "/ecosystems", label: "Testnet proofs" },
   { href: ARCHITECTURE, label: "Architecture", external: true },
   { href: GITHUB_GATEWAY, label: "GitHub", external: true },
 ]

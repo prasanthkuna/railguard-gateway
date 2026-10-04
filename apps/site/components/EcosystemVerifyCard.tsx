@@ -1,7 +1,33 @@
+import type { ReactNode } from "react"
 import Link from "next/link"
 import { EXTERNAL_LINK } from "../lib/constants"
 import type { EcosystemCard } from "../lib/ecosystems"
+import { internalSitePath } from "../lib/site-links"
 import { IntegrationLogo } from "./IntegrationLogo"
+
+function EvidenceLink({
+  href,
+  className,
+  children,
+}: {
+  href: string
+  className: string
+  children: ReactNode
+}) {
+  const path = internalSitePath(href)
+  if (path) {
+    return (
+      <Link href={path} className={className}>
+        {children}
+      </Link>
+    )
+  }
+  return (
+    <a href={href} className={className} {...EXTERNAL_LINK}>
+      {children}
+    </a>
+  )
+}
 
 function pillClass(status: EcosystemCard["status"], evidenceStatus?: string) {
   if (status === "grant-phase") return "pill pill-planned"
@@ -15,7 +41,14 @@ function showChecks(status: EcosystemCard["status"]) {
   return status !== "grant-phase"
 }
 
-export function EcosystemVerifyCard({ eco }: { eco: EcosystemCard }) {
+export function EcosystemVerifyCard({
+  eco,
+  showDetailsLink = true,
+}: {
+  eco: EcosystemCard
+  /** Hide on `/ecosystems/[id]` — card is already on the detail page. */
+  showDetailsLink?: boolean
+}) {
   const checks = showChecks(eco.status)
 
   return (
@@ -66,20 +99,22 @@ export function EcosystemVerifyCard({ eco }: { eco: EcosystemCard }) {
         </dl>
       ) : null}
       <p className="eco-narrative">{eco.narrative}</p>
-      <p className="rg-caption" style={{ marginTop: "0.75rem" }}>
-        <Link href={`/ecosystems/${eco.id}`}>Integration details →</Link>
-      </p>
+      {showDetailsLink ? (
+        <p className="rg-caption" style={{ marginTop: "0.75rem" }}>
+          <Link href={`/ecosystems/${eco.id}`}>Integration details →</Link>
+        </p>
+      ) : null}
       <div className="eco-verify-actions">
-        <a href={eco.evidenceHref} className="btn btn-ghost btn-sm" {...EXTERNAL_LINK}>
+        <EvidenceLink href={eco.evidenceHref} className="btn btn-ghost btn-sm">
           {eco.evidenceLabel ?? "View evidence"}
-        </a>
+        </EvidenceLink>
         {eco.secondaryHref ? (
           <a href={eco.secondaryHref} className="btn btn-ghost btn-sm" {...EXTERNAL_LINK}>
             {eco.secondaryLabel ?? "Docs"}
           </a>
         ) : null}
       </div>
-      <p className="mono eco-try">Try: railguard attack</p>
+      {eco.oneCommand ? <p className="mono eco-try">Try: {eco.oneCommand}</p> : null}
     </article>
   )
 }

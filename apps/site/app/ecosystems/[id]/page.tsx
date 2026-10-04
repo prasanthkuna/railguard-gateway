@@ -1,8 +1,24 @@
+import type { Metadata } from "next"
 import Link from "next/link"
 import { notFound } from "next/navigation"
 import { EcosystemVerifyCard } from "../../../components/EcosystemVerifyCard"
-import { EXTERNAL_LINK, MARKETING_SITE_URL } from "../../../lib/constants"
+import { EXTERNAL_LINK } from "../../../lib/constants"
 import { getEcosystemById } from "../../../lib/ecosystems"
+import { internalSitePath } from "../../../lib/site-links"
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ id: string }>
+}): Promise<Metadata> {
+  const { id } = await params
+  const eco = getEcosystemById(id)
+  if (!eco) return { title: "Integration · Railguard" }
+  return {
+    title: `${eco.label} integration · Railguard`,
+    description: eco.architectureBlurb,
+  }
+}
 
 export function generateStaticParams() {
   return [
@@ -35,8 +51,15 @@ export default async function EcosystemDetailPage({
       <p className="hero-lead">{eco.architectureBlurb}</p>
 
       <div className="eco-detail-grid" style={{ marginTop: "2rem" }}>
-        <EcosystemVerifyCard eco={eco} />
+        <EcosystemVerifyCard eco={eco} showDetailsLink={false} />
         <section className="eco-detail-panel">
+          {internalSitePath(eco.evidenceHref) ? (
+            <p style={{ marginBottom: "1rem" }}>
+              <Link href={internalSitePath(eco.evidenceHref)!} className="btn btn-mint btn-sm">
+                {eco.evidenceLabel ?? "Public proof"}
+              </Link>
+            </p>
+          ) : null}
           <h2 className="rg-headline">Reproduce this proof</h2>
           <p className="rg-body" style={{ color: "var(--muted)", marginBottom: "1rem" }}>
             Same commands and repo paths we use for testnet verification.
@@ -75,7 +98,7 @@ export default async function EcosystemDetailPage({
           <p style={{ marginTop: "1.5rem" }}>
             <Link href="/ecosystems">← All ecosystems</Link>
             {" · "}
-            <a href={`${MARKETING_SITE_URL}/attack`}>Failure Lab</a>
+            <Link href="/attack">Failure Lab</Link>
           </p>
         </section>
       </div>

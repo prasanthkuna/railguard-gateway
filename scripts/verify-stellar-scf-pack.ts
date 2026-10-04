@@ -79,7 +79,7 @@ const urlChecks: { name: string; url: string; bodyMust?: string[] }[] = [
   {
     name: "site stellar ecosystem",
     url: STELLAR_ECOSYSTEM,
-    bodyMust: ["Stellar", "Horizon"],
+    bodyMust: ["Stellar", "HORIZON CONFIRMED"],
   },
   { name: "site attack lab", url: "https://railguard-site.vercel.app/attack" },
 ]

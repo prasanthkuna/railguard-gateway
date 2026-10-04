@@ -55,10 +55,10 @@ test.describe("Marketing site", () => {
     await expect(page.getByText(/not a shell command/i).first()).toBeVisible()
   })
 
-  test("header testnet proof route", async ({ page }) => {
+  test("header testnet proofs route", async ({ page }) => {
     await page.goto("/")
-    await page.getByRole("link", { name: "Testnet proof", exact: true }).click()
-    await expect(page).toHaveURL(/\/proof\/arbitrum-sepolia/)
+    await page.getByRole("link", { name: "Testnet proofs", exact: true }).click()
+    await expect(page).toHaveURL(/\/ecosystems/)
   })
 
   test("stellar public proof page", async ({ page }) => {

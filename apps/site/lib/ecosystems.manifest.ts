@@ -170,12 +170,14 @@ export const ECOSYSTEM_MANIFEST: EcosystemManifestEntry[] = [
     id: "stellar",
     label: "Stellar",
     status: "testnet",
-    statusLabel: "TESTNET VERIFIED",
-    rail: "stellar",
-    codePath: "packages/integrations/src/rails/stellarRail.ts",
-    protects: ["Policy", "Reservation", "Execution", "Reconciliation"],
+    statusLabel: "HORIZON CONFIRMED",
+    rail: "stellar-testnet",
+    codePath:
+      "packages/integrations/src/rails/stellarRail.ts · packages/settlement/src/stellar-testnet.ts",
+    protects: ["Policy", "Execution", "Observe", "Reconcile", "Evidence"],
     apf: ["APF-001", "APF-003", "APF-004"],
-    narrative: "Horizon settlement verification on testnet.",
+    narrative:
+      "Native XLM payment on testnet verified via Horizon (CONFIRMED); public proof page + committed manifest — same evidence envelope as EVM rails.",
     evidenceHref: `${MARKETING_SITE_URL}/proof/stellar-testnet`,
     evidenceLabel: "Public CONFIRMED proof",
     secondaryHref: `${GITHUB_GATEWAY}/tree/main/evidence/stellar-testnet`,
@@ -186,7 +188,7 @@ export const ECOSYSTEM_MANIFEST: EcosystemManifestEntry[] = [
     grantDeadline: "2026-11-08",
     grantPortal: "https://communityfund.stellar.org/awards/recxrSMYwAl8vcglg",
     oneCommand: "bun run stellar-testnet-evidence",
-    architectureBlurb: "Non-EVM observe/reconcile via Horizon; same evidence envelope.",
+    architectureBlurb: `Horizon observe/reconcile on Stellar testnet; verification path aligned with ${LIFECYCLE}.`,
   },
   {
     id: "celo",

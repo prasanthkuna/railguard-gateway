@@ -2,7 +2,7 @@
 
 Portal: **SCF Build Interest Form** on [communityfund.stellar.org](https://communityfund.stellar.org/) (Dashboard after Discord login).
 
-**Your action:** Paste **Email** and **LinkedIn**, then **Submit Interest Form** (everything else — site proof, GitHub evidence, docs — is live as of commit `0b5081b`).
+**Your action:** Paste **Email** and **LinkedIn**, then **Submit Interest Form**. Site proof, GitHub evidence, and docs are live — re-check with `bun run verify-stellar-scf-pack`.
 
 ---
 
@@ -37,7 +37,7 @@ Stage: testnet-verified reference implementation (v0.1 alpha).
 
 Stellar: Horizon testnet payment verify CONFIRMED. Public proof: https://railguard-site.vercel.app/proof/stellar-testnet · Reproduce: bun run stellar-testnet-evidence (github.com/prasanthkuna/railguard-gateway). Evidence tx: 3dc3225844f711f9f96ead65690d224b7ccfd616d1da5387df6bfc63bfb8e437 — https://horizon-testnet.stellar.org/transactions/3dc3225844f711f9f96ead65690d224b7ccfd616d1da5387df6bfc63bfb8e437
 
-Cross-chain validation (not Stellar TVL): Arbitrum Sepolia hook deployment + 0.01 USDC external-wallet settlement (SETTLED). Public proof: https://railguard-site.vercel.app/proof/arbitrum-sepolia · demo https://youtu.be/L-Gss08bzR0 · Failure Lab https://railguard-site.vercel.app/attack
+Cross-chain validation (not Stellar TVL): same evidence pattern on EVM testnet (Sepolia SETTLED + hook deployment). Public proof: https://railguard-site.vercel.app/proof/arbitrum-sepolia · Failure Lab (APF demos): https://railguard-site.vercel.app/attack
 
 Site: https://railguard-site.vercel.app/ecosystems/stellar · GitHub: https://github.com/prasanthkuna/railguard-gateway
 
@@ -83,7 +83,7 @@ Tech stack: TypeScript/Bun, Horizon REST, existing Railguard kernel (intent, gra
 ```
 Team size: 1 (solo founder).
 
-Prashanth Kuna — full-stack engineer (TypeScript, Go, Solidity); building Railguard open-source financial execution firewall for AI agents. Implemented multi-chain settlement verify rails including Stellar Horizon testnet evidence; Arbitrum Sepolia hook + USDC settlement for hackathon demo.
+Prashanth Kuna — full-stack engineer (TypeScript, Go, Solidity); building Railguard open-source financial execution firewall for AI agents. Shipped Stellar Horizon testnet CONFIRMED evidence; additional EVM testnet reference (Sepolia SETTLED) using the same verify-and-proof pattern.
 
 LinkedIn: (paste your profile URL)
 
@@ -128,3 +128,5 @@ AI disclosure: AI tools used for documentation, tests, and grant drafting; archi
 
 - Review all fields → **Submit Interest Form**
 - After invite: full Build application → [STELLAR_SCF_46_BUILD.md](./STELLAR_SCF_46_BUILD.md) · deadline **2026-11-08**
+
+**Optional (not in paste blocks):** Arbitrum demo video https://youtu.be/L-Gss08bzR0 — use in full Build only if you add Stellar-first proof; skip on Interest Form to keep reviewers on Horizon.

@@ -13,6 +13,11 @@ const PROOFS: { label: string; href: string; date: string; external?: boolean }[
     date: "2026-09-30",
   },
   {
+    label: "Stellar testnet · CONFIRMED proof",
+    href: "/proof/stellar-testnet",
+    date: "2026-10-04",
+  },
+  {
     label: "Repository tests & evidence",
     href: `${GITHUB_GATEWAY}/tree/main/evidence`,
     date: "main branch",
