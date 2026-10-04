@@ -18,7 +18,7 @@
 - [x] `/ecosystems/stellar` live
 - [x] `/proof/stellar-testnet` page in repo
 - [x] `evidence/stellar-testnet/` whitelisted in `.gitignore` (README + manifest committed)
-- [ ] Production proof URL returns 200 — run `bun run verify-stellar-scf-pack` after Vercel deploy
+- [x] Production proof URL returns 200 — `bun run verify-stellar-scf-pack`
 - [x] Failure Lab `/attack` live (cross-ecosystem APF demo)
 
 ### SCF portal (human steps)

@@ -2,7 +2,7 @@
 
 Portal: **SCF Build Interest Form** on [communityfund.stellar.org](https://communityfund.stellar.org/) (Dashboard after Discord login).
 
-**Do not submit** until you paste your real **Email** and **LinkedIn** where noted.
+**Your action:** Paste **Email** and **LinkedIn**, then **Submit Interest Form** (everything else — site proof, GitHub evidence, docs — is live as of commit `0b5081b`).
 
 ---
 
