@@ -1,10 +1,10 @@
 import { describe, expect, it } from "bun:test"
+import type { FinancialIntent } from "../../packages/kernel/src/intent"
 import {
   buildBroadcastSheet,
   resolveSettlementChainKey,
   resolveTokenAddress,
 } from "./settlementVerifyIntent"
-import type { FinancialIntent } from "../../packages/kernel/src/intent"
 
 describe("settlementVerifyIntent helpers", () => {
   it("resolves arbitrum sepolia and one", () => {
@@ -30,7 +30,10 @@ describe("settlementVerifyIntent helpers", () => {
       action: { type: "transfer" },
       counterparty: { address: "0x8c7E2543Aa8bf69dc8458Dc28104234f6A334233" },
       value: { amount: "10000", asset: "USDC" },
-      constraints: { expiresAt: new Date(Date.now() + 3600_000).toISOString(), network: "arbitrum-sepolia" },
+      constraints: {
+        expiresAt: new Date(Date.now() + 3600_000).toISOString(),
+        network: "arbitrum-sepolia",
+      },
       idempotencyKey: "idem_test_12345678",
     }
     const sheet = buildBroadcastSheet(intent)

@@ -9,7 +9,10 @@ export function redactRpcUrlForEvidence(rpcUrl: string, publicDefault: string): 
         return publicDefault
       }
     }
-    if (/alchemy\.com|infura\.io|quicknode\.com|ankr\.com/i.test(u.hostname) && u.pathname.length > 1) {
+    if (
+      /alchemy\.com|infura\.io|quicknode\.com|ankr\.com/i.test(u.hostname) &&
+      u.pathname.length > 1
+    ) {
       return publicDefault
     }
     return rpcUrl

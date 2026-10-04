@@ -129,13 +129,6 @@
       "name": "@railguard/db",
       "version": "0.1.0",
     },
-    "packages/evidence": {
-      "name": "@railguard/evidence",
-      "version": "0.5.0",
-      "dependencies": {
-        "@railguard/kernel": "workspace:*",
-      },
-    },
     "packages/execution": {
       "name": "@railguard/execution",
       "version": "0.5.0",
@@ -447,8 +440,6 @@
     "@railguard/db": ["@railguard/db@workspace:packages/db"],
 
     "@railguard/demo-agent": ["@railguard/demo-agent@workspace:apps/demo-agent"],
-
-    "@railguard/evidence": ["@railguard/evidence@workspace:packages/evidence"],
 
     "@railguard/execution": ["@railguard/execution@workspace:packages/execution"],
 

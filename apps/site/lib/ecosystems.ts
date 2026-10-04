@@ -1,4 +1,4 @@
-import type { EcosystemManifestEntry, EcosystemLogoId } from "./ecosystems.manifest"
+import type { EcosystemLogoId, EcosystemManifestEntry } from "./ecosystems.manifest"
 import { ECOSYSTEM_MANIFEST } from "./ecosystems.manifest"
 
 export type EcosystemCard = EcosystemManifestEntry & { id: EcosystemLogoId }

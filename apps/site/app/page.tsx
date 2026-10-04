@@ -8,11 +8,7 @@ import { HeroSection } from "../components/HeroSection"
 import { IntegrationsStrip } from "../components/IntegrationsStrip"
 import { LifecycleTrace } from "../components/LifecycleTrace"
 import { RecipesSection } from "../components/RecipesSection"
-import {
-  EXTERNAL_LINK,
-  OPERATOR_LOGIN_URL,
-  PUBLIC_PROOF_URL,
-} from "../lib/constants"
+import { EXTERNAL_LINK, OPERATOR_LOGIN_URL, PUBLIC_PROOF_URL } from "../lib/constants"
 import { ECOSYSTEMS } from "../lib/ecosystems"
 
 export default function HomePage() {
@@ -39,8 +35,8 @@ export default function HomePage() {
       <section className="section" id="evidence">
         <h2>Evidence</h2>
         <p className="section-intro">
-          Stored Railguard executions produce a tamper-evident envelope — intent, policy, settlement,
-          hash chain.
+          Stored Railguard executions produce a tamper-evident envelope — intent, policy,
+          settlement, hash chain.
         </p>
         <p className="hero-ctas" style={{ marginTop: "1rem" }}>
           <Link href="/proof/arbitrum-sepolia" className="btn btn-mint">

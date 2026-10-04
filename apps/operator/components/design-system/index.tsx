@@ -243,7 +243,8 @@ export function PaymentStepper({ status }: { status: string }) {
               className={cn(
                 "rg-caption flex h-8 min-w-8 items-center justify-center rounded-full transition",
                 done && "bg-[var(--rg-state-joy)] text-[var(--rg-text-inverse)]",
-                active && "bg-[var(--rg-brand)] text-[var(--rg-text-inverse)] ring-4 ring-[var(--rg-accent-glow)]",
+                active &&
+                  "bg-[var(--rg-brand)] text-[var(--rg-text-inverse)] ring-4 ring-[var(--rg-accent-glow)]",
                 !done &&
                   !active &&
                   "border border-[var(--rg-border)] bg-[var(--rg-bg-base)] text-[var(--rg-text-muted)]",

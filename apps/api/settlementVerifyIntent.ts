@@ -1,11 +1,11 @@
 /** Verify on-chain ERC-20 transfer against a financial intent (external-wallet broadcast). */
 
-import { getEvmChain } from "../../packages/settlement/src/chains.ts"
-import { ARBITRUM_ONE_USDT } from "../../packages/settlement/src/arbitrum-one.ts"
-import type { FinancialIntent } from "../../packages/kernel/src/intent"
-import { parseErc20TransferLogs, verifyTransferFacts } from "../../packages/settlement/src/index.ts"
 import type { Hash } from "viem"
 import { defineChain } from "viem"
+import type { FinancialIntent } from "../../packages/kernel/src/intent"
+import { ARBITRUM_ONE_USDT } from "../../packages/settlement/src/arbitrum-one.ts"
+import { getEvmChain } from "../../packages/settlement/src/chains.ts"
+import { parseErc20TransferLogs, verifyTransferFacts } from "../../packages/settlement/src/index.ts"
 
 export function resolveSettlementChainKey(network?: string): string | null {
   const n = network?.trim().toLowerCase() ?? ""
@@ -47,7 +47,9 @@ export async function verifyIntentSettlementTx(input: {
 }> {
   const chainKey = resolveSettlementChainKey(input.intent.constraints.network)
   if (!chainKey) {
-    throw new Error(`network "${input.intent.constraints.network}" does not support external settlement verify`)
+    throw new Error(
+      `network "${input.intent.constraints.network}" does not support external settlement verify`,
+    )
   }
   const descriptor = getEvmChain(chainKey)
   const tokenAddress = resolveTokenAddress(chainKey, input.intent.value.asset)

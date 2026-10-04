@@ -1,11 +1,11 @@
 "use client"
 
-import * as React from "react"
 import { useRouter } from "next/navigation"
-import { SectionCard } from "../design-system"
-import { Button } from "../ui/Button"
+import * as React from "react"
 import { api } from "../../lib/api"
 import { getErrorMessage } from "../../lib/errors"
+import { SectionCard } from "../design-system"
+import { Button } from "../ui/Button"
 
 const DEMO_RECIPIENT = "0x8c7E2543Aa8bf69dc8458Dc28104234f6A334233"
 const DEMO_AMOUNT = "10000" // 0.01 USDC (6 decimals)
@@ -70,7 +70,13 @@ export function ArbitrumWalletVerificationDemo() {
         <p className="text-xs text-[var(--rg-text-muted)] mb-3 font-mono break-all">
           Demo recipient wallet: {DEMO_RECIPIENT}
         </p>
-        <Button type="button" variant="secondary" size="sm" className="mb-3" onClick={copyRecipient}>
+        <Button
+          type="button"
+          variant="secondary"
+          size="sm"
+          className="mb-3"
+          onClick={copyRecipient}
+        >
           {copied ? "Recipient copied" : "Copy recipient address"}
         </Button>
         <Button type="button" disabled={busy} onClick={run}>

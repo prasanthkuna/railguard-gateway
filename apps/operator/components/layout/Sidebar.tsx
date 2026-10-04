@@ -66,7 +66,9 @@ export function Sidebar() {
         <Logo size={36} />
         <div>
           <p className="rg-headline text-[var(--rg-text-primary)]">Railguard Operator</p>
-          <p className="rg-caption text-[var(--rg-text-muted)]">Operator console · testnet reference</p>
+          <p className="rg-caption text-[var(--rg-text-muted)]">
+            Operator console · testnet reference
+          </p>
         </div>
       </div>
 

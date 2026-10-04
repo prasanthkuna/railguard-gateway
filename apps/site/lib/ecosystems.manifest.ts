@@ -151,7 +151,8 @@ export const ECOSYSTEM_MANIFEST: EcosystemManifestEntry[] = [
     codePath: "packages/settlement/src/chains.ts",
     protects: ["Observe", "Reconcile", "Evidence"],
     apf: ["APF-003", "APF-004"],
-    narrative: "Settlement-verification adapter is implemented; no public live proof is claimed yet.",
+    narrative:
+      "Settlement-verification adapter is implemented; no public live proof is claimed yet.",
     evidenceHref: DOC_LINKS.p0Testnet,
     evidenceLabel: "Arc testnet evidence",
     oneCommand: "bun run arc-testnet-evidence",

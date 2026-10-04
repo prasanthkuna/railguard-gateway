@@ -1,4 +1,5 @@
 import Link from "next/link"
+import { EXTERNAL_LINK, GITHUB_GATEWAY } from "../lib/constants"
 import {
   CLI_VERBS,
   INTEGRATION_SNIPPETS,
@@ -6,7 +7,6 @@ import {
   REPO_CLONE_HINT,
   cliBunRun,
 } from "../lib/integration-snippets"
-import { EXTERNAL_LINK, GITHUB_GATEWAY } from "../lib/constants"
 import { CliCommand } from "./CliCommand"
 import { ConfigSnippet } from "./ConfigSnippet"
 
@@ -15,11 +15,10 @@ export function AgentIntegrationsSection() {
     <section className="section" id="integrate">
       <h2>CLI, MCP, and API — same lifecycle</h2>
       <p className="section-intro">
-        Lines that start with <span className="mono">$</span> are{" "}
-        <strong>terminal commands</strong> (PowerShell, bash, or Windows Terminal). JSON blocks are{" "}
-        <strong>config files</strong> for Cursor or Claude Desktop — do not paste them into a shell.
-        Packages are developed in the open repo; there is no public{" "}
-        <span className="mono">npx @railguard/cli</span> yet.
+        Lines that start with <span className="mono">$</span> are <strong>terminal commands</strong>{" "}
+        (PowerShell, bash, or Windows Terminal). JSON blocks are <strong>config files</strong> for
+        Cursor or Claude Desktop — do not paste them into a shell. Packages are developed in the
+        open repo; there is no public <span className="mono">npx @railguard/cli</span> yet.
       </p>
 
       <CliCommand
@@ -36,8 +35,7 @@ export function AgentIntegrationsSection() {
             Humans, CI, and demos — authorize, execute, verify from the terminal.
           </p>
           <p className="rg-caption">
-            Verbs:{" "}
-            <span className="mono">{CLI_VERBS.join(" · ")}</span>
+            Verbs: <span className="mono">{CLI_VERBS.join(" · ")}</span>
           </p>
           <CliCommand
             command={`${cliBunRun("doctor")} && ${cliBunRun("attack")}`}

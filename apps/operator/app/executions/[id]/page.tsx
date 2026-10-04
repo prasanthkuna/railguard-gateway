@@ -74,7 +74,10 @@ export default function ExecutionDetailPage() {
         execution={execution}
         onUpdated={(next) => {
           setExecution(next)
-          void api.getExecutionEvidence(executionId).then(setEvidence).catch(() => {})
+          void api
+            .getExecutionEvidence(executionId)
+            .then(setEvidence)
+            .catch(() => {})
         }}
       />
       {evidence ? <ExecutionLifecycle execution={execution} explain={evidence.explain} /> : null}

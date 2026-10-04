@@ -1,7 +1,8 @@
 import { GITHUB_GATEWAY } from "./constants"
 
 /** Shown on marketing site — matches root package.json scripts (not published npm yet). */
-export const REPO_CLONE_HINT = "git clone https://github.com/prasanthkuna/railguard-gateway.git && cd railguard-gateway && bun install"
+export const REPO_CLONE_HINT =
+  "git clone https://github.com/prasanthkuna/railguard-gateway.git && cd railguard-gateway && bun install"
 
 export const CLI_VERBS = ["scan", "attack", "protect", "status", "receipts"] as const
 

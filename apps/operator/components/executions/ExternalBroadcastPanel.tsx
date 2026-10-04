@@ -1,12 +1,12 @@
 "use client"
 
 import * as React from "react"
-import { SectionCard } from "../design-system"
-import { Button } from "../ui/Button"
-import { Input } from "../ui/Input"
 import { api } from "../../lib/api"
 import { getErrorMessage } from "../../lib/errors"
 import type { V5ExecutionResponse } from "../../lib/types"
+import { SectionCard } from "../design-system"
+import { Button } from "../ui/Button"
+import { Input } from "../ui/Input"
 
 export function ExternalBroadcastPanel({
   execution,
@@ -97,7 +97,12 @@ export function ExternalBroadcastPanel({
         <Button type="button" variant="secondary" size="sm" onClick={() => copy("Token", token)}>
           Copy token
         </Button>
-        <Button type="button" variant="secondary" size="sm" onClick={() => copy("Recipient", recipient)}>
+        <Button
+          type="button"
+          variant="secondary"
+          size="sm"
+          onClick={() => copy("Recipient", recipient)}
+        >
           Copy recipient
         </Button>
         <Button type="button" variant="secondary" size="sm" onClick={() => copy("Amount", amount)}>
