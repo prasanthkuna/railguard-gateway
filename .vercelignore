@@ -1,0 +1,16 @@
+# Local production media and toolchains are not website deployment inputs.
+apps/video/
+apps/hyperframes/
+media/
+*.mp4
+*.wav
+*.webm
+*.mov
+
+# Local build/cache output.
+**/.venv*/
+**/node_modules/
+**/.next/
+**/obj/
+**/bin/
+coverage/

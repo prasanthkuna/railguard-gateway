@@ -64,6 +64,7 @@ function buildReadme(bundle: {
   txHash: string
   explorerUrl: string
   chainId: number
+  expected: { sender: string; recipient: string; amount: string }
   settlement: { status: string }
 }): string {
   return `# Monad testnet — settlement evidence
@@ -81,13 +82,13 @@ function buildReadme(bundle: {
 \`\`\`powershell
 cd railguard-gateway
 $env:MONAD_TESTNET_TX_HASH="${bundle.txHash}"
-$env:MONAD_TESTNET_SENDER="<sender>"
-$env:MONAD_TESTNET_RECIPIENT="<recipient>"
-$env:MONAD_TESTNET_AMOUNT="10000"
+$env:MONAD_TESTNET_SENDER="${bundle.expected.sender}"
+$env:MONAD_TESTNET_RECIPIENT="${bundle.expected.recipient}"
+$env:MONAD_TESTNET_AMOUNT="${bundle.expected.amount}"
 bun run monad-testnet-evidence
 \`\`\`
 
-USDC on Monad testnet: \`0x534b2f3A21130d7a60830c2Df862319e593943A3\` (6 decimals). Faucet: https://faucet.monad.xyz
+USDC on Monad testnet: \`0x534b2f3A21130d7a60830c2Df862319e593943A3\` (6 decimals). USDC faucet: https://faucet.circle.com/ · MON gas faucet: https://faucet.monad.xyz
 `
 }
 

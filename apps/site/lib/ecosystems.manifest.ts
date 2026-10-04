@@ -47,8 +47,7 @@ export type EcosystemManifestEntry = {
   architectureBlurb: string
 }
 
-const LIFECYCLE =
-  "Intent → Authorize → Reserve → Execute → Observe → Reconcile → Evidence"
+const LIFECYCLE = "Intent → Authorize → Reserve → Execute → Observe → Reconcile → Evidence"
 
 export const ECOSYSTEM_MANIFEST: EcosystemManifestEntry[] = [
   {
@@ -126,18 +125,22 @@ export const ECOSYSTEM_MANIFEST: EcosystemManifestEntry[] = [
     id: "monad",
     label: "Monad",
     status: "testnet",
-    statusLabel: "SETTLEMENT VERIFY",
+    statusLabel: "TESTNET VERIFIED",
     rail: "monad-testnet",
     codePath: "packages/settlement/src/chains.ts",
     protects: ["Policy", "Reservation", "Execution", "Reconciliation"],
     apf: ["APF-002", "APF-003", "APF-005"],
-    narrative: "Monad testnet executor via EVM settlement-verify rail.",
-    evidenceHref: `${MARKETING_SITE_URL}/ecosystems/monad`,
-    evidenceLabel: "Monad integration (portal paste in repo)",
+    narrative:
+      "External-wallet 1 USDC transfer on Monad testnet independently verified from receipt logs.",
+    evidenceHref: `${MARKETING_SITE_URL}/proof/monad-testnet`,
+    evidenceLabel: "Public CONFIRMED proof",
     secondaryHref: `${GITHUB_GATEWAY}/blob/main/docs/grants/MONAD_METROPOLIS_PORTAL_PASTE.md`,
     secondaryLabel: "Metropolis portal paste",
+    lastProof: "2026-10-04",
+    evidenceStatus: "VERIFIED",
     oneCommand: "bun run monad-testnet-evidence",
-    architectureBlurb: "Same kernel; Monad chain ID + RPC in settlement registry.",
+    architectureBlurb:
+      "Monad chain ID + RPC in the shared settlement registry; exact USDC Transfer fields reconciled on-chain.",
   },
   {
     id: "arc",

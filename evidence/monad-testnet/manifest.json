@@ -1,0 +1,28 @@
+{
+  "network": "monad-testnet",
+  "chainId": 10143,
+  "rpcUrl": "https://rpc-testnet.monadinfra.com",
+  "txHash": "0x1cbd46100de39c60d88d8d7ee7a1dc66cf2c9c16956ebb403b69c1751b98aab2",
+  "explorerUrl": "https://testnet.monadvision.com/tx/0x1cbd46100de39c60d88d8d7ee7a1dc66cf2c9c16956ebb403b69c1751b98aab2",
+  "expected": {
+    "chainId": 10143,
+    "tokenAddress": "0x534b2f3a21130d7a60830c2df862319e593943a3",
+    "sender": "0x9a3f50804306fdb12046243bdf2db33d61dcba2d",
+    "recipient": "0x8c7e2543aa8bf69dc8458dc28104234f6a334233",
+    "amount": "1000000"
+  },
+  "settlement": {
+    "status": "CONFIRMED",
+    "matchedTransfer": {
+      "tokenAddress": "0x534b2f3a21130d7a60830c2df862319e593943a3",
+      "from": "0x9a3f50804306fdb12046243bdf2db33d61dcba2d",
+      "to": "0x8c7e2543aa8bf69dc8458dc28104234f6a334233",
+      "amount": "1000000"
+    },
+    "txHash": "0x1cbd46100de39c60d88d8d7ee7a1dc66cf2c9c16956ebb403b69c1751b98aab2",
+    "confirmations": 731
+  },
+  "confirmations": 731,
+  "generatedAt": "2026-10-04T15:17:05.090Z",
+  "ok": true
+}

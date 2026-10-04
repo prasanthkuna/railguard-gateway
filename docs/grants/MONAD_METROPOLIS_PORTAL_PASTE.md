@@ -56,18 +56,21 @@ https://railguard-site.vercel.app/
 
 https://github.com/prasanthkuna/railguard-gateway
 
-## Monad testnet on-chain proof (paste when tx is done)
+## Monad testnet on-chain proof
 
-After you send USDC from your builder wallet on chain **10143**, paste:
+Verified external-wallet USDC transfer on chain **10143**:
 
 | Field | Value |
 | --- | --- |
 | Builder wallet | `0x9a3f50804306fDB12046243bDF2dB33D61dcBA2d` |
-| Tx hash | _(paste from wallet / MonadVision)_ |
-| Explorer | `https://testnet.monadvision.com/tx/<hash>` |
-| Reproduce | `bun run monad-testnet-evidence` with `MONAD_TESTNET_TX_HASH`, `MONAD_TESTNET_SENDER`, `MONAD_TESTNET_RECIPIENT`, `MONAD_TESTNET_AMOUNT` |
+| Recipient | `0x8c7e2543aa8bf69dc8458Dc28104234f6a334233` |
+| Amount | **1 USDC** (1000000 base units) |
+| Tx hash | `0x1cbd46100de39c60d88d8d7ee7a1dc66cf2c9c16956ebb403b69c1751b98aab2` |
+| Explorer | https://testnet.monadvision.com/tx/0x1cbd46100de39c60d88d8d7ee7a1dc66cf2c9c16956ebb403b69c1751b98aab2 |
+| Public proof | https://railguard-site.vercel.app/proof/monad-testnet |
+| Reproduce | `bun run monad-testnet-evidence` with the values in `evidence/monad-testnet/README.md` |
 
-Until tx is pasted, judges can rely on **Arbitrum + Stellar** public proofs for settlement behavior and **monad-testnet** code for Monad-specific work.
+The manifest records `CONFIRMED` only after the receipt succeeds and its USDC `Transfer` event exactly matches token, sender, recipient, and amount. This proves the Monad verifier against a real transaction; it does not claim Railguard originated or custodied the external-wallet payment.
 
 ## Team
 
@@ -86,5 +89,5 @@ AI agents, identity, policy, payments, USDC, security, infrastructure, EVM, Mona
 - [ ] Public project profile is **visible**  
 - [ ] Demo link + GitHub + short write-up filled  
 - [ ] Logo uploaded  
-- [ ] Optional: Monad testnet USDC tx + explorer link in description  
+- [x] Monad testnet USDC tx + explorer link in description
 - [ ] Click **Submit** / publish profile (wording depends on portal UI)

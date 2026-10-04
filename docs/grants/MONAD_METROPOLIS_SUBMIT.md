@@ -45,30 +45,31 @@ Working product + **public project profile**: demo, short write-up, **link to pu
 | On-chain | USDC transfer on **Monad testnet** (chain **10143**), verified read-only |
 | Reproduce | `bun run monad-testnet-evidence` → `evidence/monad-testnet/manifest.json` |
 | Verify pack | `bun run verify-monad-metropolis-pack` |
-| Public proof | `/proof/monad-testnet` (after manifest + site deploy) |
+| Public proof | https://railguard-site.vercel.app/proof/monad-testnet |
 
 ## Engineering checklist
 
 - [x] Chain registry + fallback RPCs (Ankr / Monadinfra — QuickNode URL often times out)
 - [x] `packages/settlement/src/monad-testnet.ts` + `bun run monad-testnet-evidence`
-- [ ] **Your** testnet USDC tx (do not reuse random chain activity — use same wallets as Arbitrum demo if possible)
-- [ ] Commit `evidence/monad-testnet/manifest.json` with `ok: true` / `CONFIRMED`
-- [ ] Public proof page + ecosystem card → `/proof/monad-testnet`
+- [x] Builder-wallet testnet USDC tx: `0x1cbd46100de39c60d88d8d7ee7a1dc66cf2c9c16956ebb403b69c1751b98aab2`
+- [x] Generate `evidence/monad-testnet/manifest.json` with `ok: true` / `CONFIRMED`
+- [x] Public proof page + ecosystem card → `/proof/monad-testnet` (deployed)
 - [ ] Hackathon profile: demo video or Loom, GitHub link, 1-paragraph write-up
 
 ## Generate evidence (PowerShell)
 
 1. Add Monad testnet to wallet (chain ID **10143**). RPC (try in order): `https://rpc.ankr.com/monad_testnet` · `https://rpc-testnet.monadinfra.com` · `https://monad-testnet.drpc.org`
-2. Faucet MON: https://faucet.monad.xyz — **requires unblocked DNS/VPN**; or fund wallet from a builder who can reach the faucet.
-3. Send **0.01 USDC** (10000 base units, 6 decimals) on testnet USDC `0x534b2f3A21130d7a60830c2Df862319e593943A3`.
-4. Run:
+2. Faucet MON for gas: https://faucet.monad.xyz — **requires unblocked DNS/VPN**; or fund wallet from a builder who can reach the faucet.
+3. Get test USDC from Circle's official faucet: https://faucet.circle.com/ — select **Monad Testnet** and send it to the proof wallet. Do not call `mintFaucet()` directly on the token contract; that path can revert and still consume gas.
+4. The completed proof sent **1 USDC** (1000000 base units, 6 decimals) on testnet USDC `0x534b2f3A21130d7a60830c2Df862319e593943A3`.
+5. Run:
 
 ```powershell
 cd railguard-gateway
-$env:MONAD_TESTNET_TX_HASH="0x..."
-$env:MONAD_TESTNET_SENDER="0x..."
-$env:MONAD_TESTNET_RECIPIENT="0x..."
-$env:MONAD_TESTNET_AMOUNT="10000"
+$env:MONAD_TESTNET_TX_HASH="0x1cbd46100de39c60d88d8d7ee7a1dc66cf2c9c16956ebb403b69c1751b98aab2"
+$env:MONAD_TESTNET_SENDER="0x9a3f50804306fDB12046243bDF2dB33D61dcBA2d"
+$env:MONAD_TESTNET_RECIPIENT="0x8c7e2543aa8bf69dc8458Dc28104234f6a334233"
+$env:MONAD_TESTNET_AMOUNT="1000000"
 bun run monad-testnet-evidence
 bun run verify-monad-metropolis-pack
 ```
