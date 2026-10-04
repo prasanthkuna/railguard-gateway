@@ -185,6 +185,7 @@ export function AttackDemo() {
           <button
             type="button"
             className="btn btn-ghost"
+            data-testid="attack-simulate"
             onClick={runAttack}
             disabled={phase === "running" || phase === "protecting"}
           >

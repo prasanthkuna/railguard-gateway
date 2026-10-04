@@ -2,7 +2,6 @@ import type { Metadata } from "next"
 import Link from "next/link"
 import { notFound } from "next/navigation"
 import { EcosystemVerifyCard } from "../../../components/EcosystemVerifyCard"
-import { EXTERNAL_LINK } from "../../../lib/constants"
 import { getEcosystemById } from "../../../lib/ecosystems"
 import { internalSitePath } from "../../../lib/site-links"
 
@@ -80,21 +79,6 @@ export default async function EcosystemDetailPage({
               <dd>{eco.rail}</dd>
             </div>
           </dl>
-          {eco.grantProgram ? (
-            <p className="rg-caption" style={{ marginTop: "1rem" }}>
-              {eco.status === "grant-phase" ? "Program (in progress):" : "Grant program:"}{" "}
-              {eco.grantProgram}
-              {eco.grantDeadline ? ` · deadline ${eco.grantDeadline}` : ""}
-              {eco.grantPortal ? (
-                <>
-                  {" · "}
-                  <a href={eco.grantPortal} {...EXTERNAL_LINK}>
-                    External program page
-                  </a>
-                </>
-              ) : null}
-            </p>
-          ) : null}
           <p style={{ marginTop: "1.5rem" }}>
             <Link href="/ecosystems">← All ecosystems</Link>
             {" · "}

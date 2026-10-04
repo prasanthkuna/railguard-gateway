@@ -1408,6 +1408,101 @@ button:focus-visible {
   }
 }
 
+.cli-command-wrap {
+  margin: 0;
+}
+
+.cli-command-label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 0.35rem;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.cli-command-sublabel {
+  font-weight: 400;
+  text-transform: none;
+  letter-spacing: normal;
+  color: var(--muted);
+  opacity: 0.85;
+}
+
+.cli-copy-btn {
+  font-size: 0.68rem;
+  text-transform: none;
+  letter-spacing: normal;
+  font-weight: 500;
+  color: var(--mint);
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 0.2rem 0.55rem;
+  cursor: pointer;
+}
+
+.cli-copy-btn:hover {
+  border-color: var(--mint);
+}
+
+.cli-command-comment {
+  margin: 0 0 0.35rem;
+  font-size: 0.68rem;
+  line-height: 1.45;
+  color: var(--muted);
+}
+
+.integrate-grid {
+  display: grid;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+@media (min-width: 960px) {
+  .integrate-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+.integrate-card {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.1rem 1.15rem;
+  background: var(--surface, rgba(8, 10, 12, 0.4));
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.integrate-card h3 {
+  margin: 0;
+  font-size: 1.05rem;
+}
+
+.integrate-foot {
+  margin: 0.35rem 0 0;
+  font-size: 0.78rem;
+}
+
+.integrate-foot a {
+  color: var(--mint);
+}
+
+.config-pre {
+  margin: 0;
+  white-space: pre-wrap;
+  word-break: break-word;
+  font-size: 0.65rem;
+  line-height: 1.5;
+  max-height: 220px;
+  overflow: auto;
+}
+
 .cli-command {
   margin-top: auto;
   border: 1px solid var(--border);

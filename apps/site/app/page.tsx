@@ -1,4 +1,5 @@
 import Link from "next/link"
+import { AgentIntegrationsSection } from "../components/AgentIntegrationsSection"
 import { AttackDemo } from "../components/AttackDemo"
 import { EcosystemVerifyCard } from "../components/EcosystemVerifyCard"
 import { EvaluatorSection } from "../components/EvaluatorSection"
@@ -7,7 +8,11 @@ import { HeroSection } from "../components/HeroSection"
 import { IntegrationsStrip } from "../components/IntegrationsStrip"
 import { LifecycleTrace } from "../components/LifecycleTrace"
 import { RecipesSection } from "../components/RecipesSection"
-import { EXTERNAL_LINK, OPERATOR_URL } from "../lib/constants"
+import {
+  EXTERNAL_LINK,
+  OPERATOR_LOGIN_URL,
+  PUBLIC_PROOF_URL,
+} from "../lib/constants"
 import { ECOSYSTEMS } from "../lib/ecosystems"
 
 export default function HomePage() {
@@ -28,6 +33,8 @@ export default function HomePage() {
       </section>
 
       <RecipesSection />
+
+      <AgentIntegrationsSection />
 
       <section className="section" id="evidence">
         <h2>Evidence</h2>
@@ -84,8 +91,11 @@ export default function HomePage() {
           <Link href="/r/demo" className="btn btn-ghost">
             Sample receipt
           </Link>
-          <a href={OPERATOR_URL} className="btn btn-ghost" {...EXTERNAL_LINK}>
-            Open testnet console
+          <a href={PUBLIC_PROOF_URL} className="btn btn-ghost">
+            Public testnet proof
+          </a>
+          <a href={OPERATOR_LOGIN_URL} className="btn btn-ghost" {...EXTERNAL_LINK}>
+            Replay in console (sign-in)
           </a>
         </div>
       </section>

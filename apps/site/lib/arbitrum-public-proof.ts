@@ -1,4 +1,4 @@
-/** Public HackQuest / judge-facing proof (from evidence manifests — no auth). */
+/** Public Arbitrum Sepolia proof constants (from evidence manifests — no auth). */
 export const ARBITRUM_SEPOLIA_PROOF = {
   slug: "arbitrum-sepolia",
   networkLabel: "Arbitrum Sepolia · testnet",

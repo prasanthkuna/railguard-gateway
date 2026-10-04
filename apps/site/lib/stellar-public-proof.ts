@@ -1,4 +1,4 @@
-/** Public SCF / judge-facing Stellar testnet proof (from evidence manifest — no auth). */
+/** Public Stellar testnet proof constants (from evidence manifest — no auth). */
 export const STELLAR_TESTNET_PROOF = {
   slug: "stellar-testnet",
   networkLabel: "Stellar testnet · Horizon",

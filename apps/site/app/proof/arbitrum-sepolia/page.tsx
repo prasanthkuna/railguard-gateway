@@ -1,6 +1,6 @@
 import Link from "next/link"
 import { ARBITRUM_SEPOLIA_PROOF as P } from "../../../lib/arbitrum-public-proof"
-import { EXTERNAL_LINK, GITHUB_GATEWAY } from "../../../lib/constants"
+import { EXTERNAL_LINK, GITHUB_GATEWAY, OPERATOR_LOGIN_URL } from "../../../lib/constants"
 
 export const metadata = {
   title: "Arbitrum Sepolia verified proof · Railguard",
@@ -16,7 +16,9 @@ export default function ArbitrumSepoliaProofPage() {
       <p className="section-intro">
         External-wallet verification — intent, authorization, wallet transfer, verification, and{" "}
         <span className="mono">SETTLED</span> evidence. This is separate from hook contract deployment
-        on the same network (the settlement tx did not traverse the hook in this demo).
+        on the same network (the settlement tx did not traverse the hook in this demo).{" "}
+        <strong>No sign-in or wallet required</strong> to verify this page — use the transaction and
+        repo links below. The testnet console (PreBroadcast) is optional for replaying the operator UI.
       </p>
 
       <article className="proof-card">
@@ -96,6 +98,9 @@ export default function ArbitrumSepoliaProofPage() {
         <Link href="/attack" className="btn btn-ghost">
           Failure Lab simulation
         </Link>
+        <a href={OPERATOR_LOGIN_URL} className="btn btn-ghost" {...EXTERNAL_LINK}>
+          Optional: replay in operator
+        </a>
       </div>
     </main>
   )

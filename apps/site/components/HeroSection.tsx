@@ -38,8 +38,11 @@ export function HeroSection() {
           <Link href="/proof/arbitrum-sepolia" className="btn btn-ghost">
             View verified testnet proof
           </Link>
+          <Link href="#integrate" className="btn btn-ghost">
+            CLI &amp; MCP setup
+          </Link>
           <a href={GITHUB_GATEWAY} className="btn btn-ghost" {...EXTERNAL_LINK}>
-            Run locally on GitHub
+            GitHub
           </a>
         </div>
         <p className="hero-loop mono">

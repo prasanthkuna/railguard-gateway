@@ -1,5 +1,7 @@
 import Link from "next/link"
+import { CliCommand } from "./CliCommand"
 import { EXTERNAL_LINK, GITHUB_GATEWAY } from "../lib/constants"
+import { INTEGRATION_SNIPPETS } from "../lib/integration-snippets"
 
 const ARCHITECTURE = `${GITHUB_GATEWAY}/blob/main/docs/ARCHITECTURE.md`
 const QUICKSTART = `${GITHUB_GATEWAY}#quick-start-windows`
@@ -23,6 +25,14 @@ export function EvaluatorSection() {
         <a href={GITHUB_GATEWAY} className="btn btn-ghost" {...EXTERNAL_LINK}>
           Run Railguard locally
         </a>
+      </div>
+      <div style={{ marginTop: "1.5rem", maxWidth: "42rem" }}>
+        <CliCommand
+          label="Verify pack locally (terminal)"
+          command={`${INTEGRATION_SNIPPETS.verifyPublicProofs} && ${INTEGRATION_SNIPPETS.verifyDemo}`}
+          comments={[INTEGRATION_SNIPPETS.installComment]}
+          bunRunRailguard={false}
+        />
       </div>
       <p className="rg-caption" style={{ marginTop: "1.25rem" }}>
         <a href={ARCHITECTURE} {...EXTERNAL_LINK}>
