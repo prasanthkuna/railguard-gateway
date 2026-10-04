@@ -1,6 +1,6 @@
-# Grant / ecosystem one-pager (plan28.1).
-# Canonical site cards + /ecosystems pages: apps/site/lib/ecosystems.manifest.ts
-# CI: bun run check:ecosystems-drift
+# Public ecosystem manifest.
+# Canonical product-facing source: apps/site/lib/ecosystems.manifest.ts
+# CI drift guard: bun run check:ecosystems-drift
 version: 1
 project:
   name: Railguard
@@ -9,13 +9,20 @@ project:
   license: Apache-2.0 (Gateway, Failure Lab); MIT (protocol core, relicensing planned)
 
 ecosystems:
+  - id: x402
+    label: x402
+    status: adapter
+    narrative: Pre-sign policy adapter inside the Railguard execution lifecycle.
+    rails:
+      - x402
+
   - id: coinbase-cdp
     label: Coinbase Developer Platform
     status: integrated
     evidence:
       - evidence/cdp-base-sepolia-live
       - evidence/arbitrum-sepolia
-    narrative: Reference execution + reconciliation on Base Sepolia via CDP.
+    narrative: Reference execution and reconciliation path via CDP.
     rails:
       - cdp
       - base
@@ -30,14 +37,6 @@ ecosystems:
     rails:
       - base
 
-  - id: stellar
-    label: Stellar
-    status: testnet
-    evidence:
-      - evidence/stellar-testnet
-    rails:
-      - stellar
-
   - id: arbitrum
     label: Arbitrum
     status: testnet
@@ -46,17 +45,56 @@ ecosystems:
     evidence:
       - evidence/arbitrum-sepolia-hook
       - evidence/arbitrum-sepolia
-    narrative: Sepolia hook deployment + external-wallet USDC verification (separate proofs).
+    narrative: Sepolia hook deployment and separate external-wallet USDC settlement verification.
     rails:
       - arbitrum-sepolia
 
-  - id: x402
-    label: x402
-    status: adapter
-    repo: x402-guard
-    narrative: Execution rail adapter inside Gateway kernel — not a separate product.
+  - id: monad
+    label: Monad
+    status: testnet
+    chains:
+      - monad-testnet
+    evidence:
+      - evidence/monad-testnet
+    narrative: External-wallet 1 USDC transfer independently matched from Monad testnet receipt logs.
     rails:
-      - x402
+      - monad-testnet
+
+  - id: arc
+    label: Arc
+    status: testnet
+    chains:
+      - arc-testnet
+    narrative: Settlement-verification adapter is implemented; mainnet evidence is not yet claimed.
+    rails:
+      - arc-testnet
+      - arc
+
+  - id: stellar
+    label: Stellar
+    status: testnet
+    evidence:
+      - evidence/stellar-testnet
+    narrative: Native testnet payment independently confirmed through Horizon.
+    rails:
+      - stellar
+
+  - id: celo
+    label: Celo
+    status: grant-phase
+    chains:
+      - celo-alfajores
+    narrative: Shared EVM settlement-verification path; no public live proof claimed yet.
+    rails:
+      - celo-alfajores
+      - celo
+
+  - id: airwallex
+    label: Airwallex
+    status: grant-phase
+    narrative: Fiat execution adapter is a roadmap integration, not a shipped live rail.
+    rails:
+      - airwallex
 
   - id: failure-lab
     label: Failure Lab

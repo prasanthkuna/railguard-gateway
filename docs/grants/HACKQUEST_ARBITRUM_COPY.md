@@ -1,4 +1,4 @@
-# HackQuest — Arbitrum Open House Singapore (paste targets)
+# HackQuest - Arbitrum Open House Singapore (submitted archive)\n\n**Status:** Submitted on 2026-10-04. This file preserves the evidence/copy package used for the submission.
 
 ## Project name
 
@@ -25,7 +25,7 @@ Railguard adds a financial-control boundary between AI agents and wallets. It ap
 | Sepolia tx | https://sepolia.arbiscan.io/tx/0x243ec1e8eb6a992a85a035af11edd5ff70d78e3b84e7eb6c78ab5badc409608d |
 | Hook contract | https://sepolia.arbiscan.io/address/0x756829c3ab0eB02b22fe4D7C9E35252A9738965E |
 | Evidence | https://github.com/prasanthkuna/railguard-gateway/tree/main/evidence/arbitrum-sepolia |
-| Video | _(HyperFrames master — YouTube/unlisted when ready)_ |
+| Video | https://youtu.be/L-Gss08bzR0 |
 
 ## Track / tags
 
@@ -49,7 +49,7 @@ Prashanth Kuna — solo / founder
 
 ## CTA order (video description)
 
-1. Watch 90-second demo  
+1. Watch 84-second demo  
 2. Open public Arbitrum proof  
 3. Inspect Sepolia transaction  
 4. Inspect hook contracts and source  
