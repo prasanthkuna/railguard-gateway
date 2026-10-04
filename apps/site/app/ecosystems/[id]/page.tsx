@@ -44,6 +44,8 @@ export default async function EcosystemDetailPage({
   const eco = getEcosystemById(id)
   if (!eco) notFound()
 
+  const evidencePath = internalSitePath(eco.evidenceHref)
+
   return (
     <main className="page page-wide">
       <p className="eyebrow">Integration</p>
@@ -53,9 +55,9 @@ export default async function EcosystemDetailPage({
       <div className="eco-detail-grid" style={{ marginTop: "2rem" }}>
         <EcosystemVerifyCard eco={eco} showDetailsLink={false} />
         <section className="eco-detail-panel">
-          {internalSitePath(eco.evidenceHref) ? (
+          {evidencePath ? (
             <p style={{ marginBottom: "1rem" }}>
-              <Link href={internalSitePath(eco.evidenceHref)!} className="btn btn-mint btn-sm">
+              <Link href={evidencePath} className="btn btn-mint btn-sm">
                 {eco.evidenceLabel ?? "Public proof"}
               </Link>
             </p>
