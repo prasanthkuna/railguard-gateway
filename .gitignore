@@ -41,6 +41,7 @@ encore.gen.cue
 evidence/*
 !evidence/arbitrum-sepolia-hook/
 !evidence/arbitrum-sepolia/
+!evidence/stellar-testnet/
 !evidence/**/README.md
 !evidence/**/manifest.json
 
@@ -74,10 +75,18 @@ Prasanth_*
 scripts/.showcase-seed-out.json
 scripts/*-out.json
 
-# Private — interview prep, product PRDs, video production (local only)
+# Private — interview prep, product PRDs (local only)
 docs/private/
-apps/video/
 notes/
+# Video renders (sources in apps/video are tracked)
+apps/video/out/
+apps/video/.venv-vo/
+apps/video/.venv-vo-qwen/
+apps/video/.venv-vo-chatterbox/
+apps/video/.venv-vo-kokoro/
+apps/video/models/
+apps/video/public/.vo-work/
+media/grant/
 *.local.md
 scripts/capture-*.ts
 scripts/extract-*.ts

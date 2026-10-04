@@ -7,7 +7,7 @@
 
 | Canonical URLs | |
 | --- | --- |
-| Site | https://railguard-site.vercel.app/ (`/`, `/attack`, `/proof/arbitrum-sepolia`, `/ecosystems`, `/r/demo`) |
+| Site | https://railguard-site.vercel.app/ (`/`, `/attack`, `/proof/arbitrum-sepolia`, `/proof/stellar-testnet`, `/ecosystems`, `/r/demo`) |
 | Operator | https://prebroadcast.vercel.app/ (Railguard Operator testnet console; `/zebpay` public) |
 | API staging | https://staging-railguard-s4ii.encr.app |
 | Gateway repo | https://github.com/prasanthkuna/railguard-gateway |
@@ -53,7 +53,7 @@
 | Criteria | Product market fit, use of Stellar, integration plan, budget tranches, submission quality |
 | Railguard code | `packages/integrations/src/rails/stellarRail.ts`, testnet verify |
 | Site slice | `/ecosystems/stellar` (already on index) |
-| Submit pack | Testnet proof (`docs/P0_TESTNET_COMPLETE.md`), Horizon tx, Failure Lab APF-001/003/004 |
+| Submit pack | **Interest:** [STELLAR_SCF_46_INTEREST_FORM.md](./STELLAR_SCF_46_INTEREST_FORM.md) · **Checklist:** [STELLAR_SCF_46_SUBMIT.md](./STELLAR_SCF_46_SUBMIT.md) · **Build (post-invite):** [STELLAR_SCF_46_BUILD.md](./STELLAR_SCF_46_BUILD.md) |
 
 ---
 

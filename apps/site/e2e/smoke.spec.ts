@@ -47,10 +47,24 @@ test.describe("Marketing site", () => {
     await expect(cdp).toHaveAttribute("target", "_blank")
   })
 
+  test("integrate section labels terminal vs MCP", async ({ page }) => {
+    await page.goto("/#integrate")
+    await expect(page.getByRole("heading", { name: /CLI, MCP, and API/i })).toBeVisible()
+    await expect(page.getByText("Terminal command").first()).toBeVisible()
+    await expect(page.getByText("MCP config (JSON)")).toBeVisible()
+    await expect(page.getByText(/not a shell command/i).first()).toBeVisible()
+  })
+
   test("header testnet proof route", async ({ page }) => {
     await page.goto("/")
     await page.getByRole("link", { name: "Testnet proof", exact: true }).click()
     await expect(page).toHaveURL(/\/proof\/arbitrum-sepolia/)
+  })
+
+  test("stellar public proof page", async ({ page }) => {
+    await page.goto("/proof/stellar-testnet")
+    await expect(page.getByRole("heading", { name: /Verified testnet settlement/i })).toBeVisible()
+    await expect(page.getByText("CONFIRMED")).toBeVisible()
   })
 })
 

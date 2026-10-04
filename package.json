@@ -56,6 +56,7 @@
     "testnet-evidence": "bun run scripts/testnet-evidence.ts",
     "arbitrum-sepolia-evidence": "bun run scripts/arbitrum-sepolia-evidence.ts",
     "verify-hackquest-pack": "bun run scripts/verify-hackquest-pack.ts",
+    "verify-stellar-scf-pack": "bun run scripts/verify-stellar-scf-pack.ts",
     "arbitrum-one-evidence": "bun run scripts/arbitrum-one-evidence.ts",
     "testnet:all": "bun run scripts/testnet-all.ts",
     "stellar-testnet-evidence": "bun run scripts/stellar-testnet-evidence.ts",

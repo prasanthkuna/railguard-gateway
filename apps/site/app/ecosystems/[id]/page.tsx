@@ -57,9 +57,10 @@ export default async function EcosystemDetailPage({
               <dd>{eco.rail}</dd>
             </div>
           </dl>
-          {eco.status === "grant-phase" && eco.grantProgram ? (
+          {eco.grantProgram ? (
             <p className="rg-caption" style={{ marginTop: "1rem" }}>
-              Program (in progress): {eco.grantProgram}
+              {eco.status === "grant-phase" ? "Program (in progress):" : "Grant program:"}{" "}
+              {eco.grantProgram}
               {eco.grantDeadline ? ` · deadline ${eco.grantDeadline}` : ""}
               {eco.grantPortal ? (
                 <>
