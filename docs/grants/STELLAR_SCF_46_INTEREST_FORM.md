@@ -2,7 +2,7 @@
 
 Portal: **SCF Build Interest Form** on [communityfund.stellar.org](https://communityfund.stellar.org/) (Dashboard after Discord login).
 
-**Your action:** Paste **Email** and **LinkedIn**, then **Submit Interest Form**. Site proof, GitHub evidence, and docs are live — re-check with `bun run verify-stellar-scf-pack`.
+**Status:** Interest Form **submitted 2026-10-04**. Use this file as archive only. Next step: [STELLAR_SCF_46_SUBMIT.md](./STELLAR_SCF_46_SUBMIT.md) → wait for Build invite → [STELLAR_SCF_46_BUILD.md](./STELLAR_SCF_46_BUILD.md) by **2026-11-08**.
 
 ---
 

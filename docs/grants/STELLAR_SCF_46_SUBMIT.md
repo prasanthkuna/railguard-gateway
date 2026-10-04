@@ -23,10 +23,10 @@
 
 ### SCF portal (human steps)
 
-- [ ] **Interest Form submitted ASAP** — field copy: [STELLAR_SCF_46_INTEREST_FORM.md](./STELLAR_SCF_46_INTEREST_FORM.md)
-- [ ] Paste real **Email** and **LinkedIn** on the form
-- [ ] Wait for **Build invite email** before full proposal
+- [x] **Interest Form submitted** (2026-10-04) — copy archived: [STELLAR_SCF_46_INTEREST_FORM.md](./STELLAR_SCF_46_INTEREST_FORM.md)
+- [ ] **Watch inbox** (Discord-linked email) for SCF **Build invite**
 - [ ] Full Build app — [STELLAR_SCF_46_BUILD.md](./STELLAR_SCF_46_BUILD.md) · submit by **2026-11-08**
+- [ ] Optional before Build: Stellar-first demo clip (Interest used proof links; Build may ask for video)
 
 ## Paste for reviewers
 
@@ -39,12 +39,11 @@
 | Failure Lab | https://railguard-site.vercel.app/attack |
 | Cross-chain reference | https://railguard-site.vercel.app/proof/arbitrum-sepolia |
 
-## Readiness vs Arbitrum HackQuest
+## Phase status
 
-| Item | Arbitrum | Stellar SCF #46 |
-| --- | --- | --- |
-| Public proof URL | Live | **Deploy** after merge |
-| Evidence on GitHub | Committed | **Commit** `evidence/stellar-testnet/` |
-| Portal submission | Submitted | **Interest Form pending** |
-| Video | 90s unlisted | Optional for Interest; plan for Build |
-| Full grant form | HackQuest fields | **Build app post-invite** |
+| Phase | Status |
+| --- | --- |
+| Interest Form | **Done** (2026-10-04) |
+| Build invite | **Waiting** on SDF email |
+| Full Build (Nov 8) | **Draft** in [STELLAR_SCF_46_BUILD.md](./STELLAR_SCF_46_BUILD.md) |
+| Public proof + GitHub evidence | **Live** — `bun run verify-stellar-scf-pack` |
