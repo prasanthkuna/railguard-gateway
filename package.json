@@ -53,7 +53,7 @@
     "verify-monad-metropolis-pack": "bun run scripts/verify-monad-metropolis-pack.ts",
     "cdp-base-sepolia-smoke": "bun run scripts/cdp-base-sepolia-smoke.ts",
     "cdp-live-transfer-smoke": "bun run scripts/cdp-live-transfer-smoke.ts",
-    "forge:test": "powershell -NoProfile -Command \"$env:PATH='$env:USERPROFILE\\\\.foundry\\\\bin;' + $env:PATH; cd ..\\\\railguard-protocol\\\\contracts; forge test\"",
+    "forge:test": "powershell -NoProfile -Command \"$env:PATH='$env:USERPROFILE\\.foundry\\bin;' + $env:PATH; cd ..\\railguard-protocol\\contracts; forge test\"",
     "gate-d-evidence": "bun run scripts/gate-d-evidence.ts",
     "test:testnet": "cross-env TESTNET_INTEGRATION=1 bun test packages/settlement/src/base-sepolia.integration.test.ts",
     "dev:web": "bun run --filter @railguard/operator dev",
