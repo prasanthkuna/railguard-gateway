@@ -1,3 +1,6 @@
+> [!IMPORTANT]
+> This file covers the **previous Arc Microgrants round that closed on 14 Oct 2026**. For the active **Arc Microgrants: Built with Arc Studio** round closing **1 Nov 2026**, use [ARC_STUDIO_MICROGRANT_SUBMIT.md](./ARC_STUDIO_MICROGRANT_SUBMIT.md) and [ARC_STUDIO_BUILD_PROMPT.md](./ARC_STUDIO_BUILD_PROMPT.md).
+
 # Arc Microgrant — submission pack
 
 **Deadline:** **14 Oct 2026, 23:59 ET**  
