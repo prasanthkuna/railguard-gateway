@@ -59,7 +59,8 @@
     "dev:web": "bun run --filter @railguard/operator dev",
     "dev:operator": "bun run --filter @railguard/operator dev",
     "dev:site": "bun run --filter @railguard/site dev",
-    "dev:api": "powershell -NoProfile -Command \"$env:PAYMENT_MODE='demo'; $env:ALLOW_DEV_HEADER_AUTH='true'; $env:X402_GUARD_ENABLED='false'; encore run\""
+    "dev:api": "powershell -NoProfile -Command \"$env:PAYMENT_MODE='demo'; $env:ALLOW_DEV_HEADER_AUTH='true'; $env:X402_GUARD_ENABLED='false'; encore run\"",
+    "verify-arc-studio-mainnet": "bun run scripts/verify-arc-studio-mainnet.ts"
   },
   "dependencies": {
     "@coinbase/cdp-sdk": "^1.48.2",
