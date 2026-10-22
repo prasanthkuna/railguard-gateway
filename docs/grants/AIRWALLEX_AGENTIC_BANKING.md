@@ -24,10 +24,10 @@ Resolve a delayed supplier transfer without paying twice — maps to Railguard *
 
 | Asset | Status |
 |-------|--------|
-| `packages/kernel/src/adapters/airwallex/` | **Built** — payout rail + incident commander, 30 mocked-HTTP tests ([AIRWALLEX_BUILD.md](./AIRWALLEX_BUILD.md)) |
-| `packages/integrations/src/rails/airwallexRail.ts` | Env-configured wrapper; fails closed until `AIRWALLEX_CLIENT_ID` + `AIRWALLEX_API_KEY` |
-| Live sandbox smoke | Pending sandbox keys (`scripts/airwallex-sandbox-smoke.ts`) |
-| Site card | ROADMAP until sandbox wired |
+| `packages/kernel/src/adapters/airwallex/` | **Built**: payout rail, incident commander, Gemini payment-ops agent, policy guard, chaos run, signed relay ([AIRWALLEX_BUILD.md](./AIRWALLEX_BUILD.md)) |
+| Live sandbox | **Working**: smoke (`manifest.json`) and live chaos run (`chaos-live.json`) in `evidence/airwallex-sandbox/` |
+| Public demo | https://prebroadcast.vercel.app/incidents (Simulated + Live sandbox), API `https://staging-railguard-s4ii.encr.app/v1/airwallex/runs` |
+| Video | Under 5 min, AI voice (allowed for this hackathon) |
 
 ## Engineering (after acceptance, Oct 25+)
 

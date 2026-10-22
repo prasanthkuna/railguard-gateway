@@ -252,6 +252,17 @@ describe("payment-ops agent", () => {
     expect(
       (await toolbox.run({ name: "get_transfer", args: { execution_id: "nope" } })).status,
     ).toBe("NOT_FOUND")
+    const byTransfer = await toolbox.run({
+      name: "get_transfer",
+      args: { execution_id: t.transfer_id },
+    })
+    expect(byTransfer.execution_id).toBe(paid.execution_id)
+    const byRequest = await toolbox.run({
+      name: "get_transfer",
+      args: { request_id: paid.request_id },
+    })
+    expect(byRequest.transfer_id).toBe(t.transfer_id)
+    expect(rec.execution_id).toBe(paid.execution_id)
   })
 })
 

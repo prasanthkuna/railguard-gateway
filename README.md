@@ -23,6 +23,26 @@ Railguard puts a control boundary between an AI agent and money movement. It bin
 | Railguard Operator | https://prebroadcast.vercel.app/ | Sign-in required |
 | Staging API | https://staging-railguard-s4ii.encr.app | Reference API |
 
+## Airwallex Agentic Banking Hackathon (Track 3): 5-minute judge path
+
+**Payment Ops Incident Commander.** A Gemini payment-ops agent pays suppliers on Airwallex. When a
+create call times out after Airwallex made the transfer, the agent (and the job queue) retry.
+Railguard blocks both retries, reconciles by `request_id`, and confirms **exactly one** transfer.
+
+1. Open **https://prebroadcast.vercel.app/incidents** (public). Press **Force timeout** in *Simulated*,
+   then switch to **Live sandbox** and press it again: a real Airwallex sandbox payout (fake money,
+   1.00 USD) with the response dropped after create. Read the two big numbers:
+   **Airwallex transfers created: 1** and **Create calls: 1**.
+2. In **Ask the payment-ops agent**, run `Pay Acme $1,200 for invoice 42`: denied with
+   `APPROVAL_REQUIRED`; press **Approve as human** and it pays. The agent has no approval tool.
+3. Raw JSON: `GET https://staging-railguard-s4ii.encr.app/v1/airwallex/runs` (stored runs, Postgres),
+   `/v1/airwallex/agent-demo` (policy story), `/v1/airwallex/webhook-events`.
+4. Code: `packages/kernel/src/adapters/airwallex/` (`rail.ts`, `incidentCommander.ts`, `agent.ts`,
+   `policy.ts`, `chaos.ts`). Tests: `bun install && bun test packages/kernel/src/adapters/airwallex`.
+5. Evidence: `evidence/airwallex-sandbox/` (`chaos-live.json`, `manifest.json`, `webhook.json`).
+
+Full build notes: [docs/grants/AIRWALLEX_BUILD.md](docs/grants/AIRWALLEX_BUILD.md).
+
 ## Lifecycle
 
 ```text

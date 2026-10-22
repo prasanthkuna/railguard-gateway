@@ -80,11 +80,15 @@ export const PAYMENT_OPS_TOOLS = [
   },
   {
     name: "get_transfer",
-    description: "Get the current status of a payout by execution_id.",
+    description:
+      "Get the current status of a payout. Pass the execution_id from create_payout (a transfer_id or request_id also works).",
     parameters: {
       type: "object",
-      properties: { execution_id: { type: "string" } },
-      required: ["execution_id"],
+      properties: {
+        execution_id: { type: "string" },
+        transfer_id: { type: "string" },
+        request_id: { type: "string" },
+      },
     },
   },
   {
@@ -107,6 +111,7 @@ export const PAYMENT_OPS_TOOLS = [
 function incidentSummary(incident: PayoutIncident) {
   return {
     incident_id: incident.id,
+    execution_id: incident.executionId,
     kind: incident.kind,
     status: incident.status,
     label: incident.label,
@@ -187,11 +192,17 @@ export function createPaymentOpsToolbox(deps: {
           }
         }
         case "get_transfer": {
-          const executionId = str(args.execution_id)
-          const attempt = rail.getAttempt(executionId)
-          if (!attempt) return { status: "NOT_FOUND", execution_id: executionId }
+          // Accept an execution_id, transfer_id or request_id: models mix them up.
+          const ref = str(args.execution_id) || str(args.transfer_id) || str(args.request_id)
+          const attempt =
+            rail.getAttempt(ref) ??
+            rail.listAttempts().find((a) => a.transferId === ref || a.requestId === ref)
+          if (!attempt) return { status: "NOT_FOUND", reference: ref }
+          const executionId = attempt.executionId
           const incident = commander.list().find((i) => i.executionId === executionId)
-          if (incident && incident.status === "OPEN") await commander.refresh(incident.id)
+          if (incident && incident.status === "OPEN" && attempt.transferId) {
+            await commander.refresh(incident.id)
+          }
           const now = rail.getAttempt(executionId) ?? attempt
           return {
             status: now.state,

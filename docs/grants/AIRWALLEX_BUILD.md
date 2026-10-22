@@ -1,12 +1,14 @@
 # Airwallex build: Payment Ops Incident Commander (Track 3)
 
 Railguard is an open-source project by Prasanth Kuna (payments & backend engineer, solo builder).
-This page covers the Airwallex payout rail and the incident commander built for the Airwallex
-Agentic Banking Hackathon (HackerEarth, Starter Kit 03). Pitch: [AIRWALLEX_AGENTIC_BANKING.md](./AIRWALLEX_AGENTIC_BANKING.md).
+This page covers the Airwallex payout rail, the payment-ops agent and the incident commander built for the
+Airwallex Agentic Banking Hackathon (HackerEarth, Starter Kit 03). Pitch: [AIRWALLEX_AGENTIC_BANKING.md](./AIRWALLEX_AGENTIC_BANKING.md).
 
 **The one guarantee:** when an Airwallex transfer goes UNKNOWN (timeout, 5xx, lost response), Railguard
-never creates a second transfer for the same intent. It blocks retries, reconciles by `request_id`, and
-marks the payout CONFIRMED exactly once.
+never creates a second transfer for the same intent. It blocks retries from the agent *and* from
+infrastructure, reconciles by `request_id`, and marks the payout CONFIRMED exactly once.
+
+> Agents will move money. Railguard makes sure a timeout never becomes a double payment.
 
 | Milestone | Date |
 |-----------|------|
@@ -14,123 +16,161 @@ marks the payout CONFIRMED exactly once.
 | Submission due | Nov 13, 2026 |
 | Demo day (remote OK) | Nov 19, 2026 |
 
+## Judge path (5 minutes)
+
+1. **https://prebroadcast.vercel.app/incidents** (public, no sign-in).
+   - **Chaos: force a timeout after create.** *Simulated* runs on the in-memory Airwallex simulator.
+     *Live sandbox* runs against the real Airwallex sandbox (`api-demo.airwallex.com`, fake money, 1.00 USD):
+     the create reaches Airwallex, the response is dropped, the agent is told to pay again, a queue redelivers
+     the job, Railguard blocks both, reconciles by `request_id`, the sandbox moves the transfer to PAID and a poll
+     confirms it. Read **Airwallex transfers created: 1** and **Create calls: 1**.
+   - **Ask the payment-ops agent.** `Pay Acme $1,200 for invoice 42` → `APPROVAL_REQUIRED`; **Approve as human** → paid.
+   - **Policy guard** story, recorded scenarios A/B/C, and the webhook log.
+2. Raw JSON on the staging API (`https://staging-railguard-s4ii.encr.app`):
+   `GET /v1/airwallex/runs` (Postgres-stored runs incl. relayed live runs), `GET /v1/airwallex/agent-demo`,
+   `GET /v1/airwallex/incident-demo`, `GET /v1/airwallex/incidents`, `GET /v1/airwallex/webhook-events`.
+3. Code: `packages/kernel/src/adapters/airwallex/` — `rail.ts` (rules 1–7), `incidentCommander.ts`, `agent.ts`,
+   `policy.ts`, `chaos.ts`, `relay.ts`.
+4. Tests: `bun install && bun test packages/kernel/src/adapters/airwallex` (53 tests) and `bun run test` (full suite).
+5. Evidence: `evidence/airwallex-sandbox/chaos-live.json` (live chaos run), `manifest.json` (live smoke),
+   `webhook.json` (sandbox webhook created via API).
+
+Live sandbox runs are capped at 3 per hour for the public (12 with the operator token). The cap is enforced by
+Airwallex itself: each hour has fixed chaos invoices, so their `request_id`s can only ever be used once.
+
+## Architecture
+
+```text
+ plain request ──► Gemini payment-ops agent ──► typed tools only
+                    (offline scripted model     create_payout · get_transfer · reconcile · list_incidents
+                     for tests / no keys)                │
+                                                        ▼
+                                  Policy guard (code, not the model)
+                         caps · new-payee hold · human approval bound to exact terms
+                                                        │ grant
+                                                        ▼
+                   Incident commander ──► Airwallex rail ──► Airwallex Payouts API (sandbox)
+                   UNKNOWN → block → reconcile by request_id → poll / signed webhook → CONFIRMED
+                                                        │
+                   Postgres (Encore): attempts, incidents, runs, webhook events
+```
+
+- The agent never sees Airwallex credentials or bank details. Payees are resolved by name from a verified directory.
+- **Two deployables.** The Encore API (staging) holds no Airwallex keys: it serves the simulator, the agent console
+  (Gemini via the existing `GEMINI_API_KEY` secret, capped per hour) and Postgres storage. The live sandbox runner is a
+  Node route in the operator app (Vercel) that holds the sandbox keys as env vars. Each live run or verified webhook is
+  relayed to the API as an **Ed25519-signed envelope**; the API verifies it with the committed public key
+  (`relayPublicKey.ts`) before storing it.
+
 ## What is built
 
 | Piece | Path |
 |-------|------|
-| Airwallex API client (login, token cache, create/get/list transfers, error classification, timeouts) | `packages/kernel/src/adapters/airwallex/client.ts` |
-| Status mapping (Airwallex to Railguard lifecycle and label) | `packages/kernel/src/adapters/airwallex/status.ts` |
-| Webhook signature check (HMAC-SHA256 of `x-timestamp` + raw body, constant-time, 5 min window) | `packages/kernel/src/adapters/airwallex/webhook.ts` |
-| Payout attempt ledger (one row per intent / `request_id`) | `packages/kernel/src/adapters/airwallex/attemptStore.ts` |
-| `ExecutionRail` implementation (prepare / execute / observe / reconcile, safe retry) | `packages/kernel/src/adapters/airwallex/rail.ts` |
-| Incident commander (detect, block, reconcile, timeline, runbook, hash chain) | `packages/kernel/src/adapters/airwallex/incidentCommander.ts` |
-| Sandbox simulator (fault injection: timeout after/before create, 503) | `packages/kernel/src/adapters/airwallex/simulator.ts` |
-| Offline demo scenarios A/B/C | `packages/kernel/src/adapters/airwallex/demo.ts` |
-| Tests (mocked HTTP layer) | `packages/kernel/src/adapters/airwallex/airwallex.test.ts` |
-| Env-configured rail for the registry (replaces the disabled stub) | `packages/integrations/src/rails/airwallexRail.ts` |
-| Public API demo: `GET /v1/airwallex/incident-demo` (simulated, read-only) | `apps/api/airwallexIncidents.ts` |
-| Operator UI: **Incidents** view | `apps/operator/app/incidents/page.tsx` |
-| Live sandbox smoke (writes non-secret evidence) | `scripts/airwallex-sandbox-smoke.ts` |
+| Airwallex API client (login, token cache, create/get/list transfers, sandbox status simulation, error classification) | `packages/kernel/src/adapters/airwallex/client.ts` |
+| Status mapping (Airwallex to Railguard lifecycle and label) | `.../airwallex/status.ts` |
+| Webhook signature check (HMAC-SHA256 of `x-timestamp` + raw body, constant-time, 5 min window) | `.../airwallex/webhook.ts` |
+| Payout attempt ledger (one row per intent / `request_id`, rehydratable) | `.../airwallex/attemptStore.ts` |
+| `ExecutionRail` implementation (prepare / execute / observe / reconcile, safe retry) | `.../airwallex/rail.ts` |
+| Incident commander (detect, block, reconcile, poll, restore, timeline, runbook, hash chain) | `.../airwallex/incidentCommander.ts` |
+| **Payment-ops agent** (Gemini function calling over REST, deterministic offline model, model fallback chain) | `.../airwallex/agent.ts` |
+| **Policy guard** (per-payee daily cap, daily cap, new-payee hold, approval above threshold bound to terms) | `.../airwallex/policy.ts` |
+| **Chaos run** (timeout injected after create, simulated or live sandbox, hourly live slots) | `.../airwallex/chaos.ts` |
+| Agent + policy demo story | `.../airwallex/agentDemo.ts` |
+| Signed relay envelopes (Ed25519) | `.../airwallex/relay.ts`, `relayPublicKey.ts` |
+| Sandbox simulator (fault injection, status transitions) | `.../airwallex/simulator.ts` |
+| API: agent, agent-demo, chaos, runs, relay, webhook, webhook-events, incidents | `apps/api/airwallexOps.ts`, migration `014_airwallex_ops.up.sql` |
+| Live sandbox runner (Vercel Node routes `/airwallex-live/{status,chaos,webhook}`) | `apps/operator/lib/airwallexLiveRunner.ts`, `apps/operator/app/airwallex-live/` |
+| Operator UI: Incidents (chaos panel, agent console, policy guard, webhook log) | `apps/operator/app/incidents/page.tsx`, `apps/operator/components/airwallex/Track3.tsx` |
+| Scripts: live smoke, live chaos, webhook setup, relay keygen, Vercel env push | `scripts/airwallex-*.ts` |
 
 ### Rules the rail enforces
 
 1. **Deterministic `request_id`.** `rg_` + first 40 hex chars of `sha256("railguard:airwallex:" + intentId)`.
-   The same intent always maps to the same Airwallex `request_id`, and Airwallex dedupes it for 7 days.
-2. **Grant check before prepare.** The grant must be `allow`, belong to the intent, use the same currency and
-   reserve at least the amount.
+   The agent's intent id is `payee + invoice`, so a retried or rephrased request maps to the same `request_id`.
+2. **Grant check before prepare.** The grant is minted by the policy guard, must be `allow`, belong to the intent,
+   use the same currency and reserve at least the amount.
 3. **Ambiguous means UNKNOWN, never FAILED.** A network error, timeout, 5xx, 409 or 429 on create, or
-   `duplicate_request_id`, moves the attempt to `UNKNOWN` (`BROADCAST_UNKNOWN`). Only definite 4xx
-   validation/auth failures are `REJECTED_BEFORE_BROADCAST`.
-4. **Fail closed.** `execute` throws `DuplicatePayoutBlockedError` while an attempt is CREATING, SUBMITTED,
-   UNKNOWN, CONFIRMED, FAILED, REVERSED or DISPUTED.
-5. **Reconcile by `request_id`** (`GET /api/v1/transfers?request_id=...`). If a transfer is found, it is adopted.
-   Amount, currency and beneficiary must match the intent; otherwise the attempt is DISPUTED and escalated.
-6. **One safe retry.** Allowed only after a reconcile returned not-found, once the grace window has passed
-   (default 2 min), and always with the **same** `request_id`. A second miss escalates to a human.
-7. **Webhooks are verified before parsing.** Bad signature, missing headers, a stale timestamp or a missing
-   secret all mean the event is rejected and payout state is untouched.
+   `duplicate_request_id`, moves the attempt to `UNKNOWN`. Only definite 4xx validation/auth failures are rejected.
+4. **Fail closed.** `execute` refuses while an attempt is CREATING, SUBMITTED, UNKNOWN, CONFIRMED, FAILED, REVERSED or DISPUTED.
+5. **Reconcile by `request_id`** (`GET /api/v1/transfers?request_id=...`). A found transfer is adopted; amount,
+   currency and beneficiary must match, otherwise the attempt is DISPUTED and escalated.
+6. **One safe retry.** Only after a reconcile returned not-found, once the grace window has passed (2 min), and always
+   with the **same** `request_id`. A second miss escalates to a human.
+7. **Webhooks are verified before parsing.** Bad signature, missing headers, a stale timestamp or a missing secret all
+   mean the event is rejected and payout state is untouched.
+
+### Policy guard (the agent gets a structured denial, never a way around it)
+
+| Code | When | Next step given to the agent |
+|------|------|------------------------------|
+| `APPROVAL_REQUIRED` | amount > 1,000 USD and no human approval for these exact terms (payee, amount, currency, invoice) | stop and ask a human; do not lower the amount |
+| `PER_PAYEE_CAP` | payee would exceed 2,500 USD today (an approval cannot override a cap) | split across days or change policy |
+| `DAILY_CAP` | all payouts would exceed 5,000 USD today | wait or change policy |
+| `NEW_PAYEE_HOLD` | payee verified less than 24 h ago | wait or ask finance |
+| `UNKNOWN_PAYEE` | payee not in the verified directory | finance adds it; agents cannot add bank details |
+| `CURRENCY_NOT_ALLOWED`, `INVALID_AMOUNT` | outside policy | escalate |
+
+Approvals come only from the human channel (operator UI / API). Extra tool arguments such as `approved: true` or a
+`beneficiary_id` are ignored (tested).
 
 ### Status mapping
 
 | Airwallex status | Railguard label | Lifecycle | Notes |
 |------------------|-----------------|-----------|-------|
 | IN_APPROVAL, SCHEDULED, OVERDUE, PROCESSING, CANCELLATION_REQUESTED | PENDING | SUBMITTED | |
-| SENT | PENDING | SUBMITTED | Included at the bank, not yet paid |
+| SENT | PENDING | SUBMITTED | Sent from Airwallex, not yet paid |
 | PAID | CONFIRMED | settlement verified | Not final: a later `payout.transfer.failed` moves it to REVERSED |
 | FAILED, CANCELLED | FAILED | FAILED_SAFE | No funds moved |
 | APPROVAL_RECALLED / REJECTED / BLOCKED | FAILED | FAILED_SAFE | Never left Airwallex |
 | anything else | UNKNOWN | UNKNOWN | Fail closed |
 
-### Incident commander
+## Webhooks
 
-- `pay(intent, grant)`: runs the rail. On UNKNOWN it opens an `UNKNOWN_AFTER_SUBMIT` incident. A second
-  `pay` for the same intent is recorded as `RETRY_BLOCKED`.
-- `scan()`: opens incidents for UNKNOWN attempts and for pending transfers older than 15 min (`STUCK_PENDING`).
-- `reconcile(incidentId)`: lookup by `request_id`, then adopt, wait, safe retry or escalate.
-- `handleWebhook({rawBody, timestamp, signature})`: verify, apply the `payout.transfer.*` status, resolve.
-- Each incident has a timeline (each entry is hash-chained to the previous one), a runbook for its kind,
-  `createCalls` (proof of no duplicate) and `retriesBlocked`.
+- A sandbox webhook for `payout.transfer.{processing,sent,paid,failed,cancelled}` was created through the API
+  (`POST /api/v1/webhooks/create`) by `scripts/airwallex-webhook-setup.ts`, pointing at the live runner
+  `https://prebroadcast.vercel.app/airwallex-live/webhook`. The returned secret went straight into the local `.env` and
+  the runner's env; it is never printed or committed (`evidence/airwallex-sandbox/webhook.json` records ids only).
+- The runner verifies each delivery, then relays it (Ed25519-signed) to `POST /v1/airwallex/relay`, which logs it and
+  applies it to the stored attempt.
+- The API also exposes `POST /v1/airwallex/webhook` (raw body, same verifier). On staging it fails closed
+  (`missing_secret`) until `AIRWALLEX_WEBHOOK_SECRET` is configured there; forged deliveries are logged as rejected.
 
 ## How to run
 
 ```bash
 bun install
-bun test packages/kernel/src/adapters/airwallex   # 30 tests, mocked HTTP layer
+bun test packages/kernel/src/adapters/airwallex   # agent, policy, chaos, relay, rail, commander
 bun run test                                       # full suite
 ```
 
-Public demo (simulated, no credentials, no money):
-
-- API: `https://staging-railguard-s4ii.encr.app/v1/airwallex/incident-demo`
-- Operator UI: `https://prebroadcast.vercel.app/incidents`
-
-Live sandbox smoke (Airwallex sandbox = fake money). Add these to your local `.env`; values are never printed:
+Live sandbox (fake money). Local `.env` (values never printed):
 
 | Env var | Where |
 |---------|-------|
-| `AIRWALLEX_CLIENT_ID` | Airwallex sandbox web app > Developer > API keys |
-| `AIRWALLEX_API_KEY` | Airwallex sandbox web app > Developer > API keys |
-| `AIRWALLEX_BENEFICIARY_ID` | Sandbox > Payouts > Beneficiaries (create one test beneficiary) |
-| `AIRWALLEX_WEBHOOK_SECRET` | Sandbox > Developer > Webhooks (for the live webhook endpoint, next step) |
+| `AIRWALLEX_CLIENT_ID`, `AIRWALLEX_API_KEY` | Sandbox web app > Developer > API keys |
+| `AIRWALLEX_BENEFICIARY_ID` | Sandbox > Payouts > Beneficiaries |
+| `AIRWALLEX_WEBHOOK_SECRET` | written by `scripts/airwallex-webhook-setup.ts` |
+| `RAILGUARD_RELAY_PRIVATE_KEY` | written by `scripts/airwallex-relay-keygen.ts` (public half is committed) |
+| `GEMINI_API_KEY`, `AIRWALLEX_AGENT_MODEL` (optional, default `gemini-3.8-flash`, falls back to `gemini-2.5-flash`, then offline) | Google AI Studio |
 | `AIRWALLEX_BASE_URL` (optional) | Defaults to `https://api-demo.airwallex.com`; non-sandbox hosts are refused |
-| `AIRWALLEX_SOURCE_CURRENCY`, `AIRWALLEX_SMOKE_CURRENCY`, `AIRWALLEX_SMOKE_AMOUNT` (optional) | Default USD / USD / 1.00 |
 
 ```bash
-bun scripts/airwallex-sandbox-smoke.ts
-# writes evidence/airwallex-sandbox/manifest.json (request_id, transfer id, statuses, no secrets)
+bun scripts/airwallex-sandbox-smoke.ts     # create, replay same request_id, reconcile -> manifest.json
+bun scripts/airwallex-chaos-live.ts        # chaos run -> chaos-live.json, relayed to staging
+bun scripts/airwallex-webhook-setup.ts https://prebroadcast.vercel.app/airwallex-live/webhook
+bun scripts/airwallex-vercel-env.ts        # push runner env vars to the operator project (stdin, never printed)
 ```
 
-The smoke creates one transfer, checks that a second `execute` is blocked locally, replays the same
-`request_id` at Airwallex (expects `duplicate_request_id`, no second transfer), and reconciles by `request_id`.
+On some Windows networks Bun's `fetch` stalls on `generativelanguage.googleapis.com` while Node works. Then bundle and
+run under Node: `bun build scripts/airwallex-chaos-live.ts --target=node --outfile=.tmp/chaos-live.mjs && node --env-file=.env .tmp/chaos-live.mjs`.
 
-## Next steps inside the build window (Oct 25 – Nov 13)
+## Demo video (under 5 min, AI voice — allowed for this hackathon)
 
-1. Run the live sandbox smoke and commit `evidence/airwallex-sandbox/manifest.json`.
-2. Add a signed webhook receiver (`POST /v1/airwallex/webhook`, raw body) backed by the
-   `AIRWALLEX_WEBHOOK_SECRET` Encore secret. The verifier and handler already exist and are tested.
-3. Persist attempts in Postgres (same shape as `PayoutAttempt`) so incidents survive restarts.
-4. Point the Incidents view at live sandbox attempts, with a toggle between simulated and live.
-5. Record the video.
-
-## Demo script (Nov 13 submission, under 5 min, own voice)
-
-1. **0:00 – 0:30 · Problem.** An agent pays a supplier on Airwallex, the create call times out, and the
-   naive retry pays twice.
-2. **0:30 – 1:30 · Scenario A (operator Incidents view).** The create landed but the response was lost, so the
-   payout is UNKNOWN. The agent retries and gets *Duplicate payout blocked*. Reconcile by `request_id` finds the
-   transfer, and the signed `payout.transfer.paid` webhook marks it CONFIRMED. Point at
-   **Airwallex transfers created: 1** and **Create calls: 1**.
-3. **1:30 – 2:30 · Scenario B.** The create never arrived. Reconcile waits out the grace window, finds nothing,
-   and retries once with the same `request_id`. Result: one transfer, CONFIRMED.
-4. **2:30 – 3:00 · Scenario C.** A forged webhook is rejected (`bad_signature`) and state is unchanged.
-5. **3:00 – 4:00 · Live sandbox.** Run `bun scripts/airwallex-sandbox-smoke.ts` and show the transfer in the
-   Airwallex sandbox dashboard with the same `request_id`, plus the replay rejected as duplicate.
-6. **4:00 – 4:30 · Code + tests.** `rail.ts` rules 1–7 and `bun test packages/kernel/src/adapters/airwallex`.
-
-## Judge path (5 minutes)
-
-1. Open `https://prebroadcast.vercel.app/incidents` (public, simulated) and read scenarios A, B and C.
-2. Open the raw JSON at `https://staging-railguard-s4ii.encr.app/v1/airwallex/incident-demo`.
-3. Read `packages/kernel/src/adapters/airwallex/rail.ts` (the rules) and `incidentCommander.ts`.
-4. Run `bun test packages/kernel/src/adapters/airwallex`.
-5. Check `evidence/airwallex-sandbox/manifest.json` once the live sandbox smoke has been run.
+1. **0:00 – 0:15 · Hook.** "An agent retried a timed-out payout and paid twice."
+2. **0:15 – 0:45 · The agent.** Plain request, typed tools, policy denial `APPROVAL_REQUIRED`, human approves.
+3. **0:45 – 1:45 · Live chaos.** Force timeout on the real sandbox: UNKNOWN, retry blocked (agent + queue), reconcile by
+   `request_id`, PAID → CONFIRMED. **Airwallex transfers created: 1 · Create calls: 1**.
+4. **1:45 – 2:15 · Evidence.** Stored run JSON, transfer id, same `request_id`; forged webhook rejected.
+5. **2:15 – 2:45 · Policy guard.** Caps, new-payee hold, sneaky re-pay under the threshold blocked.
+6. **2:45 – 3:15 · Code + tests.** Rules 1–7, the test run.
+7. **Close.** "Agents will move money. Railguard makes sure a timeout never becomes a double payment."
