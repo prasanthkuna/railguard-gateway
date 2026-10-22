@@ -174,3 +174,10 @@ run under Node: `bun build scripts/airwallex-chaos-live.ts --target=node --outfi
 5. **2:15 – 2:45 · Policy guard.** Caps, new-payee hold, sneaky re-pay under the threshold blocked.
 6. **2:45 – 3:15 · Code + tests.** Rules 1–7, the test run.
 7. **Close.** "Agents will move money. Railguard makes sure a timeout never becomes a double payment."
+
+**Rendered cut (2:47, 1920x1080, captions on).** Actual timings: hook 0:00-0:13, failure explained 0:13-0:26,
+agent + policy denial + human approval 0:26-0:56, live chaos 0:56-1:34 (live sandbox run
+`run_live_7e69a1ed1bbc_mvjwq247`, transfer `2a7f6ac2-8b11-4f08-88a0-1b6c4dab875a`: transfers created 1, create calls 1,
+retries blocked 2, CONFIRMED), evidence JSON 1:41, forged webhook 1:51, policy guard 2:00, code 2:15, tests 2:25,
+judge path 2:31, close 2:40. Voice: Gemini TTS (prebuilt voice Algieba), mastered with two-pass loudnorm
+(I=-16 LUFS, TP=-1.5). Built with Remotion locally; the video sources and renders are not committed.
