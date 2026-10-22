@@ -8,8 +8,8 @@ import { Button } from "../../../components/ui/Button"
 import { Card, CardHeader, CardTitle } from "../../../components/ui/Card"
 import { api } from "../../../lib/api"
 import { clearWorkOSAuthFlow, getWorkOSAuthFlow, setAuthSession } from "../../../lib/auth"
-import { consumePostAuthRedirect } from "../../../lib/judge-path"
 import { getErrorMessage } from "../../../lib/errors"
+import { consumePostAuthRedirect } from "../../../lib/judge-path"
 
 export function CallbackContent() {
   const router = useRouter()

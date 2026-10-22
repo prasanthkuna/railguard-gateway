@@ -1,6 +1,14 @@
 "use client"
 
-import { Activity, Compass, FileText, History, LayoutDashboard, Settings, Users } from "lucide-react"
+import {
+  Activity,
+  Compass,
+  FileText,
+  History,
+  LayoutDashboard,
+  Settings,
+  Users,
+} from "lucide-react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { cn } from "../../lib/cn"

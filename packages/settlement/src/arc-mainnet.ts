@@ -31,9 +31,7 @@ export function expectedArcMainnetTransferFromEnv(): ExpectedTransferFacts {
   const recipient = process.env.ARC_MAINNET_RECIPIENT?.trim()
   const amountRaw = process.env.ARC_MAINNET_AMOUNT?.trim() ?? "10000"
   if (!sender || !recipient) {
-    throw new Error(
-      "set ARC_MAINNET_SENDER and ARC_MAINNET_RECIPIENT (independent expected facts)",
-    )
+    throw new Error("set ARC_MAINNET_SENDER and ARC_MAINNET_RECIPIENT (independent expected facts)")
   }
   return {
     chainId: ARC_MAINNET_CHAIN_ID,

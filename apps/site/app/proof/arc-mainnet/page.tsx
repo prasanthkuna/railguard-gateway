@@ -1,6 +1,6 @@
 import Link from "next/link"
-import { EXTERNAL_LINK, GITHUB_GATEWAY } from "../../../lib/constants"
 import { ARC_MAINNET_PROOF as P } from "../../../lib/arc-public-proof"
+import { EXTERNAL_LINK, GITHUB_GATEWAY } from "../../../lib/constants"
 
 export const metadata = {
   title: "Arc mainnet verified proof",
@@ -19,10 +19,10 @@ export default function ArcMainnetProofPage() {
       {confirmed ? (
         <>
           <p className="section-intro">
-            Railguard read the transaction receipt, matched the USDC <code>Transfer</code> event against
-            the expected token, sender, recipient, and amount, and recorded the result as{" "}
-            <span className="mono">CONFIRMED</span>. External-wallet proof on Circle Arc (USDC-native
-            gas). <strong>No sign-in required</strong> to inspect the evidence.
+            Railguard read the transaction receipt, matched the USDC <code>Transfer</code> event
+            against the expected token, sender, recipient, and amount, and recorded the result as{" "}
+            <span className="mono">CONFIRMED</span>. External-wallet proof on Circle Arc
+            (USDC-native gas). <strong>No sign-in required</strong> to inspect the evidence.
           </p>
           <article className="proof-card">
             <header className="proof-card-head">

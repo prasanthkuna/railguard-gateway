@@ -64,7 +64,11 @@ export default function LoginPageContent() {
 
   React.useEffect(() => {
     if (devAuthEnabled || hasAuthSession()) {
-      router.replace(judgeIntent ? "/executions/exec_b73824e9-726f-4d59-af49-ac5cd1e1c9aa?guide=judge" : "/welcome")
+      router.replace(
+        judgeIntent
+          ? "/executions/exec_b73824e9-726f-4d59-af49-ac5cd1e1c9aa?guide=judge"
+          : "/welcome",
+      )
     }
   }, [devAuthEnabled, judgeIntent, router])
 
