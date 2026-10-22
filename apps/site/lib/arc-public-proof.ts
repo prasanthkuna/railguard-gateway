@@ -3,7 +3,7 @@ export const ARC_MAINNET_PROOF = {
   slug: "arc-mainnet",
   networkLabel: "Arc mainnet · chain 5042",
   chainId: 5042,
-  status: "PENDING" as const,
+  status: "PENDING" as "PENDING" | "CONFIRMED",
   amountHuman: "0.01 USDC (proof transfer)",
   amountBaseUnits: "10000",
   txHash: "",
