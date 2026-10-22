@@ -45,6 +45,7 @@ evidence/*
 !evidence/monad-testnet/
 !evidence/arc/
 !evidence/arbitrum-one/
+!evidence/airwallex-sandbox/
 !evidence/**/README.md
 !evidence/**/manifest.json
 
@@ -62,7 +63,7 @@ Thumbs.db
 .vscode/
 *.code-workspace
 
-# Personal / local artifacts — never commit
+# Personal / local artifacts â€” never commit
 *.pdf
 *.b64
 *.b64.txt
@@ -78,7 +79,7 @@ Prasanth_*
 scripts/.showcase-seed-out.json
 scripts/*-out.json
 
-# Private — interview prep, product PRDs (local only)
+# Private â€” interview prep, product PRDs (local only)
 docs/private/
 notes/
 # Video renders (sources in apps/video are tracked)

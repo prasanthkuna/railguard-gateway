@@ -377,3 +377,45 @@ describe("airwallex incident demo", () => {
     expect(demo.webhookRejection).toEqual({ accepted: false, reason: "bad_signature" })
   })
 })
+
+describe("airwallex error classification (live API shapes)", () => {
+  const login = () =>
+    new Response(JSON.stringify({ token: "t", expires_at: "2099-01-01T00:00:00Z" }), {
+      status: 201,
+    })
+  const clientReturning = (status: number, body: unknown) =>
+    createAirwallexClient({
+      credentials: { clientId: "c", apiKey: "k" },
+      fetch: async (url) =>
+        url.endsWith("/authentication/login")
+          ? login()
+          : new Response(JSON.stringify(body), { status }),
+    })
+  const req = {
+    request_id: "rg_x",
+    beneficiary_id: "b",
+    transfer_amount: "1.00",
+    transfer_currency: "USD",
+    source_currency: "USD",
+    reason: "payment_to_supplier",
+    reference: "RG x",
+  }
+
+  test("duplicate_request_id (live sandbox code) is DUPLICATE_REQUEST, not REJECTED", async () => {
+    const client = clientReturning(400, { code: "duplicate_request_id", message: "dup" })
+    const err = await client.createTransfer(req).catch((e) => e)
+    expect(err).toBeInstanceOf(AirwallexApiError)
+    expect((err as AirwallexApiError).kind).toBe("DUPLICATE_REQUEST")
+  })
+
+  test("validation_failed surfaces the failing field so a bad beneficiary is diagnosable", async () => {
+    const client = clientReturning(400, {
+      code: "validation_failed",
+      details: { errors: [{ code: "045", source: "beneficiary_id" }] },
+    })
+    const err = (await client.createTransfer(req).catch((e) => e)) as AirwallexApiError
+    expect(err.kind).toBe("REJECTED")
+    expect(err.code).toBe("validation_failed")
+    expect(err.message).toContain("beneficiary_id#045")
+  })
+})

@@ -1,0 +1,44 @@
+{
+  "kind": "airwallex-sandbox-smoke",
+  "environment": "sandbox",
+  "baseUrlHost": "api-demo.airwallex.com",
+  "generatedAt": "2026-10-22T17:52:14.958Z",
+  "intentId": "intent_awx_smoke_1792691532975",
+  "requestId": "rg_c49a8b764c2ad6109292cf2f95b79a7c2a16e164",
+  "amount": "1.00",
+  "currency": "USD",
+  "beneficiaryIdHash": "fe74e706becfb768",
+  "attempt": {
+    "state": "SUBMITTED",
+    "createCalls": 1
+  },
+  "steps": [
+    {
+      "step": "prepare",
+      "requestId": "rg_c49a8b764c2ad6109292cf2f95b79a7c2a16e164",
+      "requestHash": "123a25552e2c65411716b836b9fc1fdbd0219416ef4990c7706ce7222dd10566"
+    },
+    {
+      "step": "create",
+      "result": "BROADCAST_CONFIRMED",
+      "transferId": "f20e2bec-4d39-40a2-a716-670791ae88c5"
+    },
+    {
+      "step": "duplicate_execute_blocked",
+      "blocked": true
+    },
+    {
+      "step": "replay_same_request_id",
+      "outcome": "DUPLICATE_REQUEST:duplicate_request_id"
+    },
+    {
+      "step": "reconcile_by_request_id",
+      "found": true,
+      "transferId": "f20e2bec-4d39-40a2-a716-670791ae88c5",
+      "airwallexStatus": "PROCESSING",
+      "railguardLabel": "PENDING",
+      "mismatch": []
+    }
+  ],
+  "note": "Sandbox (fake money). No credentials or tokens are recorded."
+}

@@ -39,7 +39,7 @@ marks the payout CONFIRMED exactly once.
 2. **Grant check before prepare.** The grant must be `allow`, belong to the intent, use the same currency and
    reserve at least the amount.
 3. **Ambiguous means UNKNOWN, never FAILED.** A network error, timeout, 5xx, 409 or 429 on create, or
-   `request_id_duplicate`, moves the attempt to `UNKNOWN` (`BROADCAST_UNKNOWN`). Only definite 4xx
+   `duplicate_request_id`, moves the attempt to `UNKNOWN` (`BROADCAST_UNKNOWN`). Only definite 4xx
    validation/auth failures are `REJECTED_BEFORE_BROADCAST`.
 4. **Fail closed.** `execute` throws `DuplicatePayoutBlockedError` while an attempt is CREATING, SUBMITTED,
    UNKNOWN, CONFIRMED, FAILED, REVERSED or DISPUTED.
@@ -101,7 +101,7 @@ bun scripts/airwallex-sandbox-smoke.ts
 ```
 
 The smoke creates one transfer, checks that a second `execute` is blocked locally, replays the same
-`request_id` at Airwallex (expects `request_id_duplicate`, no second transfer), and reconciles by `request_id`.
+`request_id` at Airwallex (expects `duplicate_request_id`, no second transfer), and reconciles by `request_id`.
 
 ## Next steps inside the build window (Oct 25 – Nov 13)
 

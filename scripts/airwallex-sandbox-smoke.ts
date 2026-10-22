@@ -57,7 +57,13 @@ const prepared = await rail.prepare(intent, grant)
 steps.push({ step: "prepare", requestId: prepared.providerIdempotencyKey, requestHash: prepared.requestHash })
 
 const submission = await rail.execute(prepared)
-steps.push({ step: "create", result: submission.result, transferId: submission.providerOperationId })
+steps.push({
+  step: "create",
+  result: submission.result,
+  transferId: submission.providerOperationId,
+  // Error class/code/field only (e.g. "HTTP 400 validation_failed (beneficiary_id#045)"); never credentials.
+  error: rail.getAttempt(prepared.executionId)?.lastError,
+})
 
 // Second execute for the same intent must be blocked locally.
 let blocked = false
@@ -110,4 +116,12 @@ const manifest = {
 const dir = join(import.meta.dir, "..", "evidence", "airwallex-sandbox")
 mkdirSync(dir, { recursive: true })
 writeFileSync(join(dir, "manifest.json"), `${JSON.stringify(manifest, null, 2)}\n`)
-console.log(JSON.stringify({ ok: reconcile.found, requestId: manifest.requestId, status, replay }, null, 2))
+const ok = reconcile.found && Boolean(reconcile.transfer?.id) && replay.startsWith("DUPLICATE_REQUEST")
+console.log(
+  JSON.stringify(
+    { ok, requestId: manifest.requestId, transferId: reconcile.transfer?.id, status, replay },
+    null,
+    2,
+  ),
+)
+if (!ok) process.exit(1)

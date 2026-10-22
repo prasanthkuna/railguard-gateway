@@ -97,12 +97,23 @@ export function assertSandboxBaseUrl(baseUrl: string): void {
   }
 }
 
-async function readErrorCode(res: Response): Promise<string | undefined> {
+/** Airwallex returns `duplicate_request_id`; older docs/simulators used `request_id_duplicate`. */
+export const AIRWALLEX_DUPLICATE_REQUEST_CODES = ["duplicate_request_id", "request_id_duplicate"]
+
+interface AirwallexErrorBody {
+  code?: string
+  details?: { errors?: Array<{ code?: string; source?: string }> }
+}
+
+async function readErrorBody(res: Response): Promise<{ code?: string; fields: string[] }> {
   try {
-    const body = (await res.json()) as { code?: string }
-    return typeof body.code === "string" ? body.code : undefined
+    const body = (await res.json()) as AirwallexErrorBody
+    const fields = (body.details?.errors ?? [])
+      .map((e) => [e.source, e.code].filter(Boolean).join("#"))
+      .filter((s) => s.length > 0)
+    return { code: typeof body.code === "string" ? body.code : undefined, fields }
   } catch {
-    return undefined
+    return { fields: [] }
   }
 }
 
@@ -173,14 +184,20 @@ export function createAirwallexClient(options: AirwallexClientOptions): Airwalle
   }
 
   async function classify(res: Response): Promise<never> {
-    const code = await readErrorCode(res)
-    if (res.status === 400 && code === "request_id_duplicate") {
+    const { code, fields } = await readErrorBody(res)
+    const detail = fields.length > 0 ? ` (${fields.join(", ")})` : ""
+    if (res.status === 400 && code && AIRWALLEX_DUPLICATE_REQUEST_CODES.includes(code)) {
       throw new AirwallexApiError("DUPLICATE_REQUEST", "request_id already used", 400, code)
     }
     if (res.status >= 500 || res.status === 409 || res.status === 429) {
       throw new AirwallexApiError("AMBIGUOUS", `HTTP ${res.status}`, res.status, code)
     }
-    throw new AirwallexApiError("REJECTED", `HTTP ${res.status}`, res.status, code)
+    throw new AirwallexApiError(
+      "REJECTED",
+      `HTTP ${res.status} ${code ?? ""}${detail}`.trim(),
+      res.status,
+      code,
+    )
   }
 
   return {

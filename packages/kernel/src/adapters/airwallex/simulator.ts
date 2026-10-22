@@ -64,7 +64,7 @@ export function createAirwallexSimulator(options: { now?: () => Date } = {}): Ai
       const fault = faults.shift()
       if (fault === "timeout_before_create") throw timeoutError()
       if ([...byId.values()].some((t) => t.request_id === requestId)) {
-        return json(400, { code: "request_id_duplicate", message: "duplicate request_id" })
+        return json(400, { code: "duplicate_request_id", message: "duplicate request_id" })
       }
       seq += 1
       const ts = now().toISOString()

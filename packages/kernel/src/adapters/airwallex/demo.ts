@@ -51,7 +51,7 @@ export interface AirwallexIncidentDemoResult {
 
 /** Runs the Track 3 scenarios end to end on a virtual clock. */
 export async function runAirwallexIncidentDemo(
-  start = new Date("2026-11-13T09:00:00.000Z"),
+  start = new Date(),
 ): Promise<AirwallexIncidentDemoResult> {
   let clock = start.getTime()
   const now = () => new Date(clock)
@@ -135,7 +135,7 @@ export async function runAirwallexIncidentDemo(
 
   return {
     mode: "simulated",
-    generatedAt: now().toISOString(),
+    generatedAt: new Date().toISOString(),
     scenarios,
     webhookRejection: { accepted: webhookRejection.accepted, reason: webhookRejection.reason },
   }
