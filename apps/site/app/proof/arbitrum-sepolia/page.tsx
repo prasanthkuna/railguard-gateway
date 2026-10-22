@@ -5,7 +5,7 @@ import { EXTERNAL_LINK, GITHUB_GATEWAY, OPERATOR_LOGIN_URL } from "../../../lib/
 export const metadata = {
   title: "Arbitrum Sepolia verified proof",
   description:
-    "Public testnet proof: external-wallet USDC settlement verified and recorded as SETTLED, separate from hook contract deployment.",
+    "Public testnet proof: external-wallet USDC settlement verified and recorded as CONFIRMED (settlement verified), separate from hook contract deployment.",
   alternates: { canonical: "/proof/arbitrum-sepolia" },
 }
 
@@ -16,16 +16,16 @@ export default function ArbitrumSepoliaProofPage() {
       <h1>Verified testnet execution</h1>
       <p className="section-intro">
         External-wallet verification — intent, authorization, wallet transfer, verification, and{" "}
-        <span className="mono">SETTLED</span> evidence. This is separate from hook contract
-        deployment on the same network (the settlement tx did not traverse the hook in this demo).{" "}
-        <strong>No sign-in or wallet required</strong> to verify this page — use the transaction and
-        repo links below. The testnet console (PreBroadcast) is optional for replaying the operator
-        UI.
+        <span className="mono">CONFIRMED</span> (settlement verified) evidence. This is separate
+        from hook contract deployment on the same network (the settlement tx did not traverse the
+        hook in this demo). <strong>No sign-in or wallet required</strong> to verify this page — use
+        the transaction and repo links below. The testnet console (PreBroadcast) is optional for
+        replaying the operator UI.
       </p>
 
       <article className="proof-card">
         <header className="proof-card-head">
-          <span className="pill pill-ok">SETTLED · envelope complete</span>
+          <span className="pill pill-ok">CONFIRMED · envelope complete</span>
           <p className="mono proof-exec-id">{P.executionId}</p>
         </header>
 

@@ -12,7 +12,7 @@ const PROOFS: { label: string; href: string; date: string; external?: boolean }[
     date: "shipped",
   },
   {
-    label: "Arbitrum Sepolia · SETTLED proof",
+    label: "Arbitrum Sepolia · CONFIRMED proof",
     href: "/proof/arbitrum-sepolia",
     date: "2026-09-30",
   },

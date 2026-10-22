@@ -1,6 +1,6 @@
 import { SITE_URL } from "./site-url"
 
-/** Known SETTLED execution — HackQuest / public proof mirror. */
+/** Known CONFIRMED (settlement verified) execution — HackQuest / public proof mirror. */
 export const SETTLED_EXECUTION_ID = "exec_b73824e9-726f-4d59-af49-ac5cd1e1c9aa"
 
 export const PUBLIC_PROOF_PATH = "/proof/arbitrum-sepolia"

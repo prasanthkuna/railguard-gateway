@@ -12,12 +12,12 @@ export function JudgeGuideBanner() {
     >
       <p className="rg-label-2 text-[var(--rg-accent)]">Judge / reviewer path</p>
       <p className="mt-1 text-sm text-[var(--rg-text-secondary)]">
-        Read-only replay of a verified <strong>SETTLED</strong> execution.{" "}
+        Read-only replay of a <strong>CONFIRMED</strong> (settlement verified) execution.{" "}
         <strong>No wallet action required</strong> on this page — compare with the public proof page
         (no sign-in).
       </p>
       <ol className="mt-3 list-decimal space-y-1 pl-5 text-sm text-[var(--rg-text-secondary)]">
-        <li>Scroll evidence and lifecycle below (already settled on Sepolia).</li>
+        <li>Scroll evidence and lifecycle below (settlement already verified on Sepolia).</li>
         <li>
           Open{" "}
           <a
@@ -49,7 +49,7 @@ export function JudgeQuickLinks() {
         href={settledExecutionPath(true)}
         className="rounded-[var(--rg-radius-lg)] border border-[var(--rg-border)] bg-[var(--rg-bg-base)] p-4 transition hover:border-[var(--rg-brand)]/40"
       >
-        <p className="rg-label-2 text-[var(--rg-brand)]">1 · View SETTLED replay</p>
+        <p className="rg-label-2 text-[var(--rg-brand)]">1 · View CONFIRMED replay</p>
         <p className="mt-1 text-sm text-[var(--rg-text-muted)]">
           Known verified execution — read-only, no wallet.
         </p>

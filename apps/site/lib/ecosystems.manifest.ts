@@ -113,7 +113,7 @@ export const ECOSYSTEM_MANIFEST: EcosystemManifestEntry[] = [
     narrative:
       "Hook contracts deployed on Sepolia; separately, external-wallet 0.01 USDC verified via operator lifecycle (two independent proofs).",
     evidenceHref: `${MARKETING_SITE_URL}/proof/arbitrum-sepolia`,
-    evidenceLabel: "Public SETTLED proof",
+    evidenceLabel: "Public CONFIRMED proof",
     secondaryHref: `${GITHUB_GATEWAY}/tree/main/evidence/arbitrum-sepolia-hook`,
     secondaryLabel: "Hook + manifest",
     lastProof: "2026-09-30",

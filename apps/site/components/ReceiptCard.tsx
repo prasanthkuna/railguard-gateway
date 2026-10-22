@@ -52,7 +52,14 @@ export function ReceiptCard({ data, demo }: { data: ReceiptViewModel; demo?: boo
         <h2>Execution & reconciliation</h2>
         <Row label="Rail" value={data.execution.provider} />
         <Row label="Transaction" value={data.execution.txHash} mono />
-        <Row label="Execution" value={data.execution.status} />
+        <Row
+          label="Execution"
+          value={
+            data.execution.status === "SETTLED"
+              ? "CONFIRMED (settlement verified)"
+              : data.execution.status
+          }
+        />
         <Row label="Settlement" value={data.reconciliation.settlement} />
         <Row label="Observed" value={data.reconciliation.observedAt} mono />
       </section>

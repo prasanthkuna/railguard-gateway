@@ -5,7 +5,7 @@ export const ARBITRUM_SEPOLIA_PROOF = {
   chainId: 421614,
   executionId: "exec_b73824e9-726f-4d59-af49-ac5cd1e1c9aa",
   intentId: "fin_881568b7-208e-4587-9192-2f015118a788",
-  status: "SETTLED" as const,
+  status: "CONFIRMED" as const,
   amountHuman: "0.01 USDC",
   amountBaseUnits: "10,000",
   asset: "USDC",
