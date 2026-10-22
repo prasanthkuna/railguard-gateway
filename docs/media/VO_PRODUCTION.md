@@ -9,7 +9,7 @@ Default `npx hyperframes tts` + `am_adam` reads like **dictation**: even pace, n
 | Piece | Choice | Why |
 | --- | --- | --- |
 | Voice | **Edge `en-US-AndrewMultilingualNeural`** | Warm, conversational (Copilot-class), not announcer-shout |
-| Script | **`grant-90s/assets/vo-full.ssml`** | `<break>`, `<prosody rate="-8%">`, em-dashes for phrasing |
+| Script | **`grant-90s/assets/vo-full.txt`** | Plain text for `edge-tts --file` (SSML is **not** parsed — tags get read aloud) |
 | Pace | ~125–135 wpm effective | Slower than 145 wpm “read the spec” |
 | Captions | `vo-full.vtt` from edge-tts | Burn-in optional; required for muted social |
 | Visuals | **`master-index.html`** | Real site captures (Ken Burns) + proof typography |

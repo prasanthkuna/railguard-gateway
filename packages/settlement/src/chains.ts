@@ -71,6 +71,7 @@ export const EVM_CHAINS: Record<string, EvmChainDescriptor> = {
     chainId: 5042002,
     rpcUrls: ["https://rpc.testnet.arc.io", "https://rpc.drpc.testnet.arc.io"],
     explorerTxUrl: (h) => `https://testnet.arcscan.app/tx/${h}`,
+    usdcAddress: "0x3600000000000000000000000000000000000000",
     cdpExecution: false,
   },
   arc: {
@@ -79,6 +80,7 @@ export const EVM_CHAINS: Record<string, EvmChainDescriptor> = {
     chainId: 5042,
     rpcUrls: ["https://rpc.mainnet.arc.io"],
     explorerTxUrl: (h) => `https://explorer.arc.io/tx/${h}`,
+    usdcAddress: "0x3600000000000000000000000000000000000000",
     cdpExecution: false,
   },
   "celo-alfajores": {

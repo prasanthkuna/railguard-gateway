@@ -1,6 +1,6 @@
 # Stellar SCF #46 — submission pack
 
-**Strategy:** Horizon testnet settlement verify + public proof page + committed evidence. Full **Build** application only after Interest Form invite; deadline **November 8, 2026**.
+**Strategy:** Horizon testnet settlement verify + public proof page + committed evidence. Full **Build** application only after Interest Form invite; deadline **November 8, 2026**. Costs / tiers: [PROOF_STRATEGY.md](./PROOF_STRATEGY.md).
 
 **Verify locally:** `bun run verify-stellar-scf-pack` · **Re-run evidence:** `bun run stellar-testnet-evidence`
 

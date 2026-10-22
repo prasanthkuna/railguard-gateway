@@ -1,0 +1,2 @@
+# Noise cleanup for human recordings (MIT)
+deepfilternet>=0.5.6

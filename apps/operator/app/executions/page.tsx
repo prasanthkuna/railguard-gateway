@@ -9,6 +9,7 @@ import { Skeleton } from "../../components/ui/Skeleton"
 import { api } from "../../lib/api"
 import { getErrorMessage } from "../../lib/errors"
 import { ArbitrumWalletVerificationDemo } from "../../components/executions/ArbitrumWalletVerificationDemo"
+import { JudgeQuickLinks } from "../../components/executions/JudgeGuideBanner"
 import { formatExecutionStatus, formatRailLabel } from "../../lib/executionStatusLabels"
 import type { V5ExecutionListItem } from "../../lib/types"
 
@@ -49,6 +50,8 @@ export default function ExecutionsIndexPage() {
           </Link>
         }
       />
+
+      <JudgeQuickLinks />
 
       <ArbitrumWalletVerificationDemo />
 

@@ -41,8 +41,13 @@ add(
   hookReadme,
 )
 
-const hfIndex = join(root, "apps", "hyperframes", "grant-90s", "index.html")
-add("HyperFrames grant-90s composition", existsSync(hfIndex), hfIndex)
+const remotionRoot = join(root, "apps", "video", "src", "Root.tsx")
+const shotlist = join(root, "apps", "video", "director", "SHOTLIST.json")
+add(
+  "Remotion Arbitrum compositions",
+  existsSync(remotionRoot) && existsSync(shotlist),
+  remotionRoot,
+)
 
 const EXEC_ID = "exec_b73824e9-726f-4d59-af49-ac5cd1e1c9aa"
 const PUBLIC_PROOF = "https://railguard-site.vercel.app/proof/arbitrum-sepolia"
@@ -82,6 +87,9 @@ for (const c of checks) {
 
 console.log("")
 console.log(`Summary: ${checks.length - failed.length}/${checks.length} passed`)
+console.log("")
+console.log("Judge path (no WorkOS): docs/runbooks/JUDGE_PATH_AND_VIDEO_PLAN.md")
+console.log(`Public proof: ${PUBLIC_PROOF}`)
 
 if (failed.length) {
   process.exit(1)

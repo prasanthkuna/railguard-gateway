@@ -32,17 +32,18 @@ Judges can verify without login:
 
 1. **Product:** https://railguard-site.vercel.app/ecosystems/monad  
 2. **Failure Lab (APF):** https://railguard-site.vercel.app/attack  
-3. **Arbitrum public proof:** https://railguard-site.vercel.app/proof/arbitrum-sepolia  
-4. **Stellar public proof:** https://railguard-site.vercel.app/proof/stellar-testnet  
-5. **Code:** https://github.com/prasanthkuna/railguard-gateway — `packages/settlement/src/monad-testnet.ts`, `packages/settlement/src/chains.ts`  
-6. **Reproduce Monad verify:** clone repo → set `MONAD_TESTNET_*` env → `bun run monad-testnet-evidence`
+3. **Monad public proof:** https://railguard-site.vercel.app/proof/monad-testnet  
+4. **Arbitrum public proof:** https://railguard-site.vercel.app/proof/arbitrum-sepolia  
+5. **Stellar public proof:** https://railguard-site.vercel.app/proof/stellar-testnet  
+6. **Code:** https://github.com/prasanthkuna/railguard-gateway — `packages/settlement/src/monad-testnet.ts`, `packages/settlement/src/chains.ts`  
+7. **Reproduce Monad verify:** clone repo → set `MONAD_TESTNET_*` env → `bun run monad-testnet-evidence`
 
 ## Progress during the hackathon (what’s new in the build window)
 
 - Registered **Monad testnet** in settlement registry with production-grade RPC fallbacks (Ankr / Monadinfra / dRPC).  
 - Shipped **`monad-testnet.ts`** + **`bun run monad-testnet-evidence`** + **`bun run verify-monad-metropolis-pack`**.  
 - Wired **`settlementVerifyRail("monad-testnet")`** in integrations registry.  
-- Published **/ecosystems/monad** on the marketing site and grant submit runbook in-repo.
+- Published **/ecosystems/monad** and **/proof/monad-testnet** on the marketing site; grant runbooks + `verify-monad-metropolis-pack` in-repo.
 
 ## Demo / video URL
 
@@ -83,11 +84,33 @@ LinkedIn: https://www.linkedin.com/in/prasanth-kuna-1463631b3/
 
 AI agents, identity, policy, payments, USDC, security, infrastructure, EVM, Monad testnet
 
-## Checklist before final submit (13 Oct)
+## Onboarding profile (if portal asks before “Create project”)
 
-- [ ] Track = **Trust, Identity & AI Infrastructure**  
-- [ ] Public project profile is **visible**  
-- [ ] Demo link + GitHub + short write-up filled  
-- [ ] Logo uploaded  
-- [x] Monad testnet USDC tx + explorer link in description
-- [ ] Click **Submit** / publish profile (wording depends on portal UI)
+Use the same values as **Team** and **Short description** above. Typical fields:
+
+| Field | Paste |
+| --- | --- |
+| Display name | Prashanth Kuna |
+| Role | Founder / builder |
+| Bio (1–2 sentences) | Building Railguard — policy-bound settlement for AI agent payments. Shipping cross-chain testnet proofs on Monad, Arbitrum, and Stellar. |
+| GitHub | https://github.com/prasanthkuna |
+| X / Twitter | https://x.com/prasanth_kuna |
+| LinkedIn | https://www.linkedin.com/in/prasanth-kuna-1463631b3/ |
+| Wallet (if required) | `0x9a3f50804306fDB12046243bDF2dB33D61dcBA2d` (builder wallet used for Monad proof) |
+
+Connect **GitHub** or **Google** when prompted; complete MetaMask wallet connect in the browser extension UI (automation cannot drive the extension popup).
+
+---
+
+## Checklist before final submit (14 Oct 09:29 GMT+5:30)
+
+- [x] Metropolis **registration** (`prasanthkuna` / Prashanth Kuna)  
+- [x] Solo **team** created  
+- [x] Project **Railguard** created  
+- [x] Track = **Trust, Identity & AI Infrastructure**  
+- [x] Demo link + GitHub + description + GTM filled  
+- [x] Logo uploaded  
+- [x] Monad testnet USDC tx + explorer link in description  
+- [x] Portal shows **“Ready for judging”** / entry saved (2026-10-05)
+
+**Portal:** Project → **Submission** tab → review screen. Edit anytime before deadline.

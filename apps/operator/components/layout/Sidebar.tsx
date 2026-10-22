@@ -1,6 +1,6 @@
 "use client"
 
-import { Activity, FileText, History, LayoutDashboard, Settings, Users } from "lucide-react"
+import { Activity, Compass, FileText, History, LayoutDashboard, Settings, Users } from "lucide-react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { cn } from "../../lib/cn"
@@ -9,6 +9,7 @@ import { Logo } from "../brand/Logo"
 
 const primaryNav = [
   { href: "/", label: "Dashboard", icon: LayoutDashboard },
+  { href: "/welcome", label: "Start here", icon: Compass },
   { href: "/executions", label: "Executions", icon: Activity },
 ]
 

@@ -6,8 +6,21 @@
 import { getEvmChain } from "../packages/settlement/src/chains"
 
 const arc = getEvmChain("arc")
-console.log(JSON.stringify({ chainId: arc.chainId, rpc: arc.rpcUrls[0], checklist: [
-  "Deploy minimal Railguard verify UI or contract",
-  "Public repo link",
-  "Submit Arc Microgrant form",
-]}, null, 2))
+console.log(
+  JSON.stringify(
+    {
+      chainId: arc.chainId,
+      rpc: arc.rpcUrls[0],
+      usdc: "0x3600000000000000000000000000000000000000",
+      docs: "docs/grants/ARC_MICROGRANT_SUBMIT.md",
+      checklist: [
+        "Bridge USDC to Arc 5042 via Circle CCTP (no mainnet faucet)",
+        "bun run arc-mainnet-usdc-proof",
+        "bun run verify-arc-microgrant-pack",
+        "Submit Arc Microgrant form",
+      ],
+    },
+    null,
+    2,
+  ),
+)

@@ -1,0 +1,222 @@
+{
+  "generatedAt": "2026-10-04T05:50:28.735Z",
+  "provider": "edge",
+  "voice": "en-US-GuyNeural",
+  "totalSec": 79.924,
+  "fps": 30,
+  "totalFrames": 2398,
+  "approved": false,
+  "timeline": [
+    {
+      "id": "01_hook_open",
+      "kind": "speech",
+      "startSec": 0,
+      "endSec": 3.336,
+      "text": "Giving an agent a wallet is easy."
+    },
+    {
+      "id": "01_hook_open_pause",
+      "kind": "silence",
+      "startSec": 3.336,
+      "endSec": 4.686,
+      "note": "breath"
+    },
+    {
+      "id": "02_hook_turn",
+      "kind": "speech",
+      "startSec": 4.686,
+      "endSec": 9.030000000000001,
+      "text": "Giving it financial authority safely... isn't."
+    },
+    {
+      "id": "02_hook_turn_pause",
+      "kind": "silence",
+      "startSec": 9.030000000000001,
+      "endSec": 11.13,
+      "note": "breath"
+    },
+    {
+      "id": "03_problem_a",
+      "kind": "speech",
+      "startSec": 11.13,
+      "endSec": 14.922,
+      "text": "Because authorization isn't execution."
+    },
+    {
+      "id": "03_problem_a_pause",
+      "kind": "silence",
+      "startSec": 14.922,
+      "endSec": 15.772,
+      "note": "breath"
+    },
+    {
+      "id": "04_problem_b",
+      "kind": "speech",
+      "startSec": 15.772,
+      "endSec": 19.108,
+      "text": "And execution isn't settlement."
+    },
+    {
+      "id": "05_attacks_montage",
+      "kind": "silence",
+      "startSec": 19.108,
+      "endSec": 35.108000000000004,
+      "note": "REPLAY / BLOCKED — typography + SFX only"
+    },
+    {
+      "id": "06_reconcile_a",
+      "kind": "speech",
+      "startSec": 35.108000000000004,
+      "endSec": 38.276,
+      "text": "Some failures should be blocked."
+    },
+    {
+      "id": "06_reconcile_a_pause",
+      "kind": "silence",
+      "startSec": 38.276,
+      "endSec": 39.376000000000005,
+      "note": "breath"
+    },
+    {
+      "id": "07_reconcile_b",
+      "kind": "speech",
+      "startSec": 39.376000000000005,
+      "endSec": 42.44800000000001,
+      "text": "Others have to be reconciled."
+    },
+    {
+      "id": "07_reconcile_b_pause",
+      "kind": "silence",
+      "startSec": 42.44800000000001,
+      "endSec": 44.248000000000005,
+      "note": "breath"
+    },
+    {
+      "id": "08_lifecycle_lead",
+      "kind": "speech",
+      "startSec": 44.248000000000005,
+      "endSec": 49.36000000000001,
+      "text": "Railguard controls the entire financial execution lifecycle."
+    },
+    {
+      "id": "08_lifecycle_lead_pause",
+      "kind": "silence",
+      "startSec": 49.36000000000001,
+      "endSec": 50.260000000000005,
+      "note": "breath"
+    },
+    {
+      "id": "09_authorize",
+      "kind": "speech",
+      "startSec": 50.260000000000005,
+      "endSec": 52.22800000000001,
+      "text": "Authorize."
+    },
+    {
+      "id": "09_authorize_pause",
+      "kind": "silence",
+      "startSec": 52.22800000000001,
+      "endSec": 52.67800000000001,
+      "note": "breath"
+    },
+    {
+      "id": "10_reserve",
+      "kind": "speech",
+      "startSec": 52.67800000000001,
+      "endSec": 54.55000000000001,
+      "text": "Reserve."
+    },
+    {
+      "id": "10_reserve_pause",
+      "kind": "silence",
+      "startSec": 54.55000000000001,
+      "endSec": 55.000000000000014,
+      "note": "breath"
+    },
+    {
+      "id": "11_execute",
+      "kind": "speech",
+      "startSec": 55.000000000000014,
+      "endSec": 57.064000000000014,
+      "text": "Execute."
+    },
+    {
+      "id": "11_execute_pause",
+      "kind": "silence",
+      "startSec": 57.064000000000014,
+      "endSec": 57.51400000000002,
+      "note": "breath"
+    },
+    {
+      "id": "12_observe",
+      "kind": "speech",
+      "startSec": 57.51400000000002,
+      "endSec": 59.38600000000002,
+      "text": "Observe."
+    },
+    {
+      "id": "12_observe_pause",
+      "kind": "silence",
+      "startSec": 59.38600000000002,
+      "endSec": 59.83600000000002,
+      "note": "breath"
+    },
+    {
+      "id": "13_reconcile",
+      "kind": "speech",
+      "startSec": 59.83600000000002,
+      "endSec": 61.82800000000002,
+      "text": "Reconcile."
+    },
+    {
+      "id": "13_reconcile_pause",
+      "kind": "silence",
+      "startSec": 61.82800000000002,
+      "endSec": 62.27800000000002,
+      "note": "breath"
+    },
+    {
+      "id": "14_prove",
+      "kind": "speech",
+      "startSec": 62.27800000000002,
+      "endSec": 64.15000000000002,
+      "text": "Prove."
+    },
+    {
+      "id": "14_prove_pause",
+      "kind": "silence",
+      "startSec": 64.15000000000002,
+      "endSec": 65.75000000000001,
+      "note": "breath"
+    },
+    {
+      "id": "15_proof_a",
+      "kind": "speech",
+      "startSec": 65.75000000000001,
+      "endSec": 68.84600000000002,
+      "text": "So an agent can move money..."
+    },
+    {
+      "id": "15_proof_a_pause",
+      "kind": "silence",
+      "startSec": 68.84600000000002,
+      "endSec": 69.79600000000002,
+      "note": "breath"
+    },
+    {
+      "id": "16_proof_b",
+      "kind": "speech",
+      "startSec": 69.79600000000002,
+      "endSec": 73.92400000000002,
+      "text": "without losing control of what actually happened."
+    },
+    {
+      "id": "17_lockup",
+      "kind": "silence",
+      "startSec": 73.92400000000002,
+      "endSec": 79.92400000000002,
+      "note": "On-screen lockup only — no VO"
+    }
+  ],
+  "note": "Set approved:true after listen; then run video:vo:sync-hero"
+}

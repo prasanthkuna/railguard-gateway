@@ -97,7 +97,13 @@ export function ExternalBroadcastPanel({
         <Button type="button" variant="secondary" size="sm" onClick={() => copy("Token", token)}>
           Copy token
         </Button>
-        <Button type="button" variant="secondary" size="sm" onClick={() => copy("Recipient", recipient)}>
+        <Button
+          type="button"
+          variant="secondary"
+          size="sm"
+          data-testid="external-copy-recipient"
+          onClick={() => copy("Recipient", recipient)}
+        >
           Copy recipient
         </Button>
         <Button type="button" variant="secondary" size="sm" onClick={() => copy("Amount", amount)}>
@@ -112,7 +118,12 @@ export function ExternalBroadcastPanel({
           placeholder="0x..."
           className="flex-1"
         />
-        <Button type="button" disabled={busy || !txHash.trim()} onClick={observe}>
+        <Button
+          type="button"
+          disabled={busy || !txHash.trim()}
+          data-testid="external-observe"
+          onClick={observe}
+        >
           {busy ? "Verifying…" : "Verify transaction"}
         </Button>
       </div>

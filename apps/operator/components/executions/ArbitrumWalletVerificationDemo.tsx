@@ -70,10 +70,17 @@ export function ArbitrumWalletVerificationDemo() {
         <p className="text-xs text-[var(--rg-text-muted)] mb-3 font-mono break-all">
           Demo recipient wallet: {DEMO_RECIPIENT}
         </p>
-        <Button type="button" variant="secondary" size="sm" className="mb-3" onClick={copyRecipient}>
+        <Button
+          type="button"
+          variant="secondary"
+          size="sm"
+          className="mb-3"
+          data-testid="external-copy-recipient"
+          onClick={copyRecipient}
+        >
           {copied ? "Recipient copied" : "Copy recipient address"}
         </Button>
-        <Button type="button" disabled={busy} onClick={run}>
+        <Button type="button" disabled={busy} data-testid="wallet-demo-create-intent" onClick={run}>
           {busy ? "Creating…" : "Create test intent"}
         </Button>
         {error ? <p className="mt-2 text-sm text-[var(--rg-danger)]">{error}</p> : null}

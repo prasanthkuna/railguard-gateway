@@ -11,6 +11,7 @@ const operatorRoot = OPERATOR_URL.replace(/\/$/, "")
 
 export const PUBLIC_PROOF_URL = `${siteRoot}/proof/arbitrum-sepolia`
 export const PUBLIC_STELLAR_PROOF_URL = `${siteRoot}/proof/stellar-testnet`
+export const PUBLIC_MONAD_PROOF_URL = `${siteRoot}/proof/monad-testnet`
 
 /** Public marketing — generic operator sign-in (no hackathon/judge flows). */
 export const OPERATOR_LOGIN_URL = `${operatorRoot}/login`

@@ -93,6 +93,8 @@ export function AgentIntegrationsSection() {
             <Link href="/proof/stellar-testnet">Stellar proof</Link>
             {" · "}
             <Link href="/proof/arbitrum-sepolia">Arbitrum proof</Link>
+            {" · "}
+            <Link href="/proof/monad-testnet">Monad proof</Link>
           </p>
         </article>
       </div>

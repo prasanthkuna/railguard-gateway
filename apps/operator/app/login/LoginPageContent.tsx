@@ -14,6 +14,8 @@ import {
   setWorkOSAuthFlow,
 } from "../../lib/auth"
 import { getErrorMessage } from "../../lib/errors"
+import { publicProofUrl, setPostAuthIntent } from "../../lib/judge-path"
+import { SITE_URL } from "../../lib/site-url"
 
 type AuthMode = "signin" | "signup"
 
@@ -44,6 +46,11 @@ export default function LoginPageContent() {
   const [loading, setLoading] = React.useState<"password" | "google" | null>(null)
   const [error, setError] = React.useState("")
   const devAuthEnabled = isDevAuthEnabled()
+  const judgeIntent = searchParams.get("intent") === "judge"
+
+  React.useEffect(() => {
+    setPostAuthIntent(judgeIntent ? "judge" : "default")
+  }, [judgeIntent])
 
   React.useEffect(() => {
     const oauthError =
@@ -57,9 +64,9 @@ export default function LoginPageContent() {
 
   React.useEffect(() => {
     if (devAuthEnabled || hasAuthSession()) {
-      router.replace("/")
+      router.replace(judgeIntent ? "/executions/exec_b73824e9-726f-4d59-af49-ac5cd1e1c9aa?guide=judge" : "/welcome")
     }
-  }, [devAuthEnabled, router])
+  }, [devAuthEnabled, judgeIntent, router])
 
   async function handlePasswordSubmit(event: React.FormEvent) {
     event.preventDefault()
@@ -73,7 +80,11 @@ export default function LoginPageContent() {
           ? await api.workosSignup(email.trim(), password, organizationID)
           : await api.workosPassword(email.trim(), password, organizationID)
       persistSession(session)
-      router.replace("/")
+      router.replace(
+        judgeIntent
+          ? "/executions/exec_b73824e9-726f-4d59-af49-ac5cd1e1c9aa?guide=judge"
+          : "/welcome",
+      )
     } catch (err) {
       setError(
         getErrorMessage(
@@ -109,6 +120,18 @@ export default function LoginPageContent() {
       title={mode === "signup" ? "Create account" : "Sign in"}
       subtitle="Financial execution firewall — policy, reservation, and tamper-evident evidence on stored executions (v0.1 testnet alpha)."
     >
+      <p className="mb-4 text-center text-sm text-[var(--rg-text-muted)]">
+        <strong>Judges:</strong> verify without signing in —{" "}
+        <a
+          href={publicProofUrl(SITE_URL)}
+          className="text-[var(--rg-brand)] hover:underline"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          public Arbitrum proof
+        </a>
+        . Sign in only to replay the operator UI.
+      </p>
       <div className="rg-auth-tabs">
         <button
           type="button"

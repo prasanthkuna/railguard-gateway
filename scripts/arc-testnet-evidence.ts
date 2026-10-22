@@ -11,9 +11,9 @@ const manifest = {
   chainId: 5042002,
   rpc: "https://rpc.testnet.arc.io",
   deployChecklist: [
-    "Set DEPLOYER_PRIVATE_KEY (testnet faucet funded)",
-    "Set ACCOUNT_OWNER and RAILGUARD_SIGNER (distinct addresses)",
-    "cd ../railguard-new/contracts && forge script script/Deploy.s.sol --rpc-url https://rpc.testnet.arc.io --broadcast",
+    "Testnet USDC: https://faucet.circle.com/ (Arc Testnet)",
+    "Mainnet microgrant: docs/grants/ARC_MICROGRANT_SUBMIT.md — bun run arc-mainnet-usdc-proof",
+    "Optional contract deploy: railguard-new/contracts on https://rpc.testnet.arc.io",
   ],
   rpcPing: { ok: false as boolean, block: "" },
 }

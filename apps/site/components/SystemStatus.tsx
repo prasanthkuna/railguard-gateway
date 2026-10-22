@@ -18,6 +18,16 @@ const PROOFS: { label: string; href: string; date: string; external?: boolean }[
     date: "2026-10-04",
   },
   {
+    label: "Monad testnet · CONFIRMED proof",
+    href: "/proof/monad-testnet",
+    date: "2026-10-04",
+  },
+  {
+    label: "Arc mainnet · settlement proof",
+    href: "/proof/arc-mainnet",
+    date: "5042",
+  },
+  {
     label: "Repository tests & evidence",
     href: `${GITHUB_GATEWAY}/tree/main/evidence`,
     date: "main branch",

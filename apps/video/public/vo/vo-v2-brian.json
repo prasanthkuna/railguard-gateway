@@ -1,0 +1,82 @@
+{
+  "generatedAt": "2026-10-04T06:12:50.380Z",
+  "provider": "edge",
+  "voice": "en-US-BrianMultilingualNeural",
+  "totalSec": 78.516,
+  "fps": 30,
+  "totalFrames": 2356,
+  "approved": false,
+  "timeline": [
+    {
+      "id": "01_hook",
+      "kind": "speech",
+      "startSec": 0,
+      "endSec": 5.952,
+      "text": "Giving an agent a wallet is easy. Giving it financial authority safely is not."
+    },
+    {
+      "id": "01_hook_pause",
+      "kind": "silence",
+      "startSec": 5.952,
+      "endSec": 6.602,
+      "note": "breath"
+    },
+    {
+      "id": "02_control_layer",
+      "kind": "speech",
+      "startSec": 6.602,
+      "endSec": 25.106,
+      "text": "Railguard sits between agent intent and the wallet. Before signing, it binds authorization to network, token, recipient, amount, and budget. It reserves spend, tracks broadcast state, verifies settlement, reconciles uncertainty, and emits evidence."
+    },
+    {
+      "id": "02_control_layer_pause",
+      "kind": "silence",
+      "startSec": 25.106,
+      "endSec": 25.856,
+      "note": "breath"
+    },
+    {
+      "id": "03_failure_lab",
+      "kind": "speech",
+      "startSec": 25.856,
+      "endSec": 46.136,
+      "text": "The Failure Lab tests six classes: replay, budget race, crash after broadcast, settlement mismatch, stale authorization, and policy bypass. Unsafe requests are blocked before broadcast. Ambiguous transactions are observed and reconciled instead of being guessed successful or failed."
+    },
+    {
+      "id": "03_failure_lab_pause",
+      "kind": "silence",
+      "startSec": 46.136,
+      "endSec": 47.086000000000006,
+      "note": "breath"
+    },
+    {
+      "id": "04_arbitrum_proof",
+      "kind": "speech",
+      "startSec": 47.086000000000006,
+      "endSec": 68.614,
+      "text": "On Arbitrum Sepolia, we deployed Railguard's execution-hook contracts. Separately, an external wallet sent zero point zero one U.S.D.C. Railguard matched the chain, token, recipient, and amount. The transfer was confirmed, the execution recorded as settled, and the proof is public. No sign-in required."
+    },
+    {
+      "id": "04_arbitrum_proof_pause",
+      "kind": "silence",
+      "startSec": 68.614,
+      "endSec": 69.56400000000001,
+      "note": "breath"
+    },
+    {
+      "id": "05_close",
+      "kind": "speech",
+      "startSec": 69.56400000000001,
+      "endSec": 77.316,
+      "text": "Railguard is open source and testnet-first. Failure-safe money movement for agents, built on Arbitrum."
+    },
+    {
+      "id": "05_close_pause",
+      "kind": "silence",
+      "startSec": 77.316,
+      "endSec": 78.516,
+      "note": "breath"
+    }
+  ],
+  "note": "Set approved:true after listen; then run video:vo:sync-hero"
+}

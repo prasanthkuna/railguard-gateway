@@ -1,138 +1,97 @@
 # Grant & hackathon submission matrix
 
-> **SUPERSEDED — Arbitrum HackQuest (Oct 2026):** Use **[ARBITRUM_TESTNET_SUBMIT.md](./ARBITRUM_TESTNET_SUBMIT.md)** as canonical (Arbitrum Sepolia testnet only). Rows below that mention Arbitrum One mainnet / MAINNET VERIFIED are outdated for this submission.
-
-**Verified:** 2026-09-30 via Chrome DevTools (HackQuest Arbitrum Singapore, Stellar SCF awards) + repo code map.  
-**Master pack (every submission):** [LAUNCH.md](../../../LAUNCH.md) — site URLs, 90s video, APF-001…006, `docs/ecosystems.yaml`, PORTFOLIO, GitHub pins.
+**Updated:** 2026-10-14  
+**Proof playbook (costs, testnet vs mainnet):** [PROOF_STRATEGY.md](./PROOF_STRATEGY.md)  
+**Master pack (every submission):** [LAUNCH.md](../../../LAUNCH.md) — site URLs, video, APF atlas, GitHub pins.
 
 | Canonical URLs | |
 | --- | --- |
-| Site | https://railguard-site.vercel.app/ (`/`, `/attack`, `/proof/arbitrum-sepolia`, `/proof/stellar-testnet`, `/ecosystems`, `/r/demo`) |
-| Operator | https://prebroadcast.vercel.app/ (Railguard Operator testnet console; `/zebpay` public) |
+| Site | https://railguard-site.vercel.app/ (`/attack`, `/proof/*`, `/ecosystems/*`) |
+| Repo | https://github.com/prasanthkuna/railguard-gateway |
+| Operator | https://prebroadcast.vercel.app/ |
 | API staging | https://staging-railguard-s4ii.encr.app |
-| Gateway repo | https://github.com/prasanthkuna/railguard-gateway |
 
-## Status snapshot (2026-10-04)
+## Status snapshot (2026-10-14)
 
-| Program | Status | Next action |
-| --- | --- | --- |
-| Stellar SCF #46 Interest | **Submitted** | Wait for Build invite → [STELLAR_SCF_46_BUILD.md](./STELLAR_SCF_46_BUILD.md) |
-| Arbitrum HackQuest | **Submitted** (check portal) | [ARBITRUM_TESTNET_SUBMIT.md](./ARBITRUM_TESTNET_SUBMIT.md) |
-| **Monad Metropolis** | **In progress** — RPC + evidence scripts ready; **no committed tx manifest yet** | USDC transfer + [MONAD_METROPOLIS_SUBMIT.md](./MONAD_METROPOLIS_SUBMIT.md) · `bun run verify-monad-metropolis-pack` |
-| Arc Microgrant | **Registered, not submitted** | Arc **mainnet** proof → [ARC_MICROGRANT_SUBMIT.md](./ARC_MICROGRANT_SUBMIT.md) by **14 Oct** |
-| Airwallex Agentic Banking | **Blocked** (event portal) | [AIRWALLEX_AGENTIC_BANKING.md](./AIRWALLEX_AGENTIC_BANKING.md) — NO-GO until portal works |
-
-## Blockers found today
-
-| Issue | Evidence | Fix |
-| --- | --- | --- |
-| `GET /v1/executions` → **404** on staging | Operator network: `staging-railguard-s4ii.encr.app/v1/executions?limit=100` while logged in | `git push encore main` (deploy `260666a`); confirm deploy green in Encore Cloud |
-| Site missing grant rails on `/ecosystems` | Only Stellar, Base, CDP, x402 cards | Ship expanded manifest + `/ecosystems/[id]` (this PR) |
-| Encore push timeout | Local `git push encore` I/O timeout | Retry from your network or deploy from Encore dashboard |
-
----
-
-## Day 1 (Sep 30) — urgent
-
-### 1. Arbitrum Open House Singapore (HackQuest)
-
-| Field | Value |
-| --- | --- |
-| Portal | https://arbitrum-singapore.hackquest.io/buildathons/Arbitrum-Open-House-Singapore-Online-Buildathon |
-| Register | **Oct 2, 2026 ~22:31** (countdown: “2 days left” on Sep 30) |
-| Submit project | **Sep 13 – Oct 4, 2026 ~21:29** |
-| Winners | Oct 12, 2026 |
-| Prize | $115K (70K open + 15K promising + 30K grants) |
-| Requirement | Deploy on **Arbitrum chain**; existing projects allowed |
-| Railguard code | `packages/settlement/src/arbitrum-one.ts` + `evidence/arbitrum-one/` (mainnet USDT) |
-| Site slice | `/ecosystems/arbitrum` (SEPOLIA VERIFIED — see ARBITRUM_TESTNET_SUBMIT.md) |
-| Submit gate | [ARBITRUM_SUBMIT_GATE.md](./ARBITRUM_SUBMIT_GATE.md) — **no submit until video + evidence** |
-| Submit fields (typical HackQuest) | Project name, description, GitHub, demo URL, team, track, **video**, on-chain deployment proof |
-| Copy paste | One-liner: *Open-source financial execution firewall for autonomous agents.* Demo: `railguard attack` → protect → receipt. Link operator + `/attack`. |
-| You must | **Register** (button “Start Register”) → create/update project before Oct 4 |
-
-### 2. Stellar SCF #46 (interest → invite → full submit)
-
-| Field | Value |
-| --- | --- |
-| Portal | https://communityfund.stellar.org/awards → SCF #46 |
-| Round detail | https://communityfund.stellar.org/awards/recxrSMYwAl8vcglg |
-| Submit deadline | **November 8, 2026** |
-| Prerequisite | **Interest form ASAP** → email invite → full Build Award proposal |
-| Tracks | Open / Integration / RFP ([handbook](https://stellar.gitbook.io/scf-handbook/scf-awards/build-award)) |
-| Criteria | Product market fit, use of Stellar, integration plan, budget tranches, submission quality |
-| Railguard code | `packages/integrations/src/rails/stellarRail.ts`, testnet verify |
-| Site slice | `/ecosystems/stellar` (already on index) |
-| Submit pack | **Interest:** [STELLAR_SCF_46_INTEREST_FORM.md](./STELLAR_SCF_46_INTEREST_FORM.md) · **Checklist:** [STELLAR_SCF_46_SUBMIT.md](./STELLAR_SCF_46_SUBMIT.md) · **Build (post-invite):** [STELLAR_SCF_46_BUILD.md](./STELLAR_SCF_46_BUILD.md) |
-
----
-
-## Day 2 (Oct 1) — register + draft
-
-### 3. Monad Metropolis
-
-| Field | Value |
-| --- | --- |
-| Deadline | **Oct 13, 2026** |
-| Portal | https://hackathon.monad.xyz/ |
-| Submit pack | [MONAD_METROPOLIS_SUBMIT.md](./MONAD_METROPOLIS_SUBMIT.md) |
-| Track | Trust, Identity & AI Infrastructure (+ payments demo) |
-| Code | `monad-testnet.ts` + `bun run monad-testnet-evidence` |
-| Site | `/ecosystems/monad` · `/proof/monad-testnet` (after manifest) |
-| Optional | Chainlink CRE bounty (~$3K) — do not make Chainlink the product |
-
-### 4. Colosseum Crypto World’s Fair (optional)
-
-| Deadline | **Oct 12, 2026** |
-| Note | Startup-style pitch; only if zero extra work (plan25) |
-
-### 5. Airwallex Agentic Banking
-
-| Status | **NO-GO** — [AIRWALLEX_AGENTIC_BANKING.md](./AIRWALLEX_AGENTIC_BANKING.md) |
-| Code | `packages/integrations/src/rails/airwallexRail.ts` (stub only) |
-
-### 6. Arc Microgrant
-
-| Deadline | **Oct 14, 2026** |
-| Submit pack | [ARC_MICROGRANT_SUBMIT.md](./ARC_MICROGRANT_SUBMIT.md) |
-| Code | `arc` mainnet required; testnet = `bun run arc-testnet-evidence` only |
-| Site | `/ecosystems/arc` |
-
----
-
-## Rolling / later (still “apply” in plan)
-
-| # | Program | When | Code / site |
+| Program | Status | Proof tier | Next action |
 | --- | --- | --- | --- |
-| 7 | Chainstack × FailSafe audit | Rolling | Contracts freeze + application (plan25) |
-| 8 | Circle Developer Grant | Late Oct after Arc + partners | Arc mainnet evidence |
-| 9 | ETHGlobal Mumbai | Nov 5–7 | One sponsor integration only |
-| 10 | Celo Prezenti Frontier | Dec 29 | `celo` / `celo-alfajores` rails |
-| 11 | GOAT (x402 / ERC-8004) | If applying (plan29 P2) | Real E2E only |
-| 12 | Base cohort / distribution | Open | Polish Base evidence — no new architecture |
+| **Monad Metropolis** | **Submitted** (judging) | Testnet USDC | `bun run verify-monad-metropolis-pack` before any resubmit |
+| Stellar SCF #46 Interest | **Submitted** 2026-10-04 | Testnet Horizon | Wait Build invite → [STELLAR_SCF_46_BUILD.md](./STELLAR_SCF_46_BUILD.md) by **Nov 8** |
+| Arbitrum HackQuest | **Submitted** | Sepolia | [ARBITRUM_TESTNET_SUBMIT.md](./ARBITRUM_TESTNET_SUBMIT.md) |
+| **Arc Microgrant** | Registered, **not submitted** | **Mainnet 5042 required** | [ARC_MICROGRANT_SUBMIT.md](./ARC_MICROGRANT_SUBMIT.md) · **Oct 14 23:59 ET** |
+| Circle Developer Grant | Not applied | Arc mainnet | After Arc manifest → [CIRCLE_DEVELOPER_GRANT.md](./CIRCLE_DEVELOPER_GRANT.md) |
+| Arbitrum One proof | Not committed | Mainnet | [ARBITRUM_ONE_PROOF.md](./ARBITRUM_ONE_PROOF.md) |
+| Airwallex Agentic Banking | **Apply by Oct 23** | Sandbox API | [AIRWALLEX_AGENTIC_BANKING.md](./AIRWALLEX_AGENTIC_BANKING.md) |
+| ETHGlobal Mumbai | Register | Testnet + partner mains | Apply by **~Nov 3** · submit **Nov 7 09:00 IST** |
+| PayPal AI Hackathon | Open | Sandbox | Devpost **Nov 12 12:00 PST** |
+| Celo Open Rails | Open | **Celo mainnet** | **Nov 9 09:00 GMT** |
 
-## Strategic backlog (plan28 — no fixed date)
+## Evidence commands (quick reference)
 
-Circle/Arc, Stellar, Celo, Solana/Superteam, Aptos, XRPL, NEAR, Base cohort, Chainlink/Arbitrum.
+| Chain | Generate | Verify pack |
+| --- | --- | --- |
+| Monad testnet | `monad-testnet-evidence` / `monad-testnet-usdc-proof` | `verify-monad-metropolis-pack` |
+| Stellar testnet | `stellar-testnet-evidence` | `verify-stellar-scf-pack` |
+| Arbitrum Sepolia | `arbitrum-sepolia-evidence` | `verify-arbitrum-sepolia-pack` |
+| **Arc mainnet** | `arc-mainnet-usdc-proof` / `arc-mainnet-evidence` | `verify-arc-microgrant-pack` |
+| Arc testnet (ping only) | `arc-testnet-evidence` | — |
+| Arbitrum One | `arbitrum-one-evidence` | manual |
 
-## Not applying (plan25)
+---
 
-Polygon Encode (closed), Web3 Foundation (watch), Kite / Open Agent (unverified).
+## Urgent deadlines (from 14 Oct 2026)
+
+### Arc Microgrants
+
+| Field | Value |
+| --- | --- |
+| Deadline | **14 Oct 2026 23:59 ET** (~15 Oct 09:29 IST) |
+| Pack | [ARC_MICROGRANT_SUBMIT.md](./ARC_MICROGRANT_SUBMIT.md) |
+| Cost | ~**$10–16** bridge + **0.01 USDC** proof (see PROOF_STRATEGY) |
+| Code | `packages/settlement/src/arc-mainnet.ts` |
+
+### Airwallex Agentic Banking
+
+| Field | Value |
+| --- | --- |
+| Applications close | **23 Oct 2026** |
+| Build / notify | **25 Oct 2026** |
+| Submit | **13 Nov 2026** |
+| Pack | [AIRWALLEX_AGENTIC_BANKING.md](./AIRWALLEX_AGENTIC_BANKING.md) |
+| Track | **03 Payment Ops Incident Commander** |
+
+### Stellar SCF #46 Build
+
+| Field | Value |
+| --- | --- |
+| Submit | **8 Nov 2026** (invite required) |
+| Pack | [STELLAR_SCF_46_SUBMIT.md](./STELLAR_SCF_46_SUBMIT.md) |
+
+### Monad Metropolis (archive)
+
+| Field | Value |
+| --- | --- |
+| Portal | https://hackathon.monad.xyz/ |
+| Pack | [MONAD_METROPOLIS_SUBMIT.md](./MONAD_METROPOLIS_SUBMIT.md) · [MONAD_METROPOLIS_PORTAL_PASTE.md](./MONAD_METROPOLIS_PORTAL_PASTE.md) |
+| Tx | `0x1cbd4610…98aab2` · chain **10143** |
 
 ---
 
 ## Per-integration code ↔ site map
 
-| Site id | Kernel / integrations | Evidence doc |
+| Site id | Settlement / rail | Evidence |
 | --- | --- | --- |
-| `x402` | `kernel/adapters/x402Rail.ts` | x402-guard repo |
-| `cdp` / `base` | `cdpRail`, `baseRail` | demo-verification, operator |
-| `stellar` | `integrations/rails/stellarRail.ts` | P0_TESTNET_COMPLETE |
-| `arbitrum` | `arbitrum-one` settlement verify | `arbitrum-one.test.ts`, `evidence/arbitrum-one` |
-| `monad` | `settlementVerifyRail(monad-testnet)` | [MONAD_METROPOLIS_SUBMIT.md](./MONAD_METROPOLIS_SUBMIT.md) |
-| `arc` | `settlementVerifyRail(arc*)` | `docs/P0_TESTNET_COMPLETE` arc section |
-| `celo` | `settlementVerifyRail(celo*)` | optional testnet |
-| `airwallex` | `airwallexRail.ts` | grant-phase |
-| `failure-lab` | agent-payment-failure-lab | APF atlas |
+| `monad` | `monad-testnet.ts` | `evidence/monad-testnet/` |
+| `stellar` | `stellarRail.ts` | `evidence/stellar-testnet/` |
+| `arbitrum` | Sepolia + `arbitrum-one.ts` | `evidence/arbitrum-sepolia/` · `evidence/arbitrum-one/` |
+| `arc` | `arc-mainnet.ts` | `evidence/arc/` |
+| `airwallex` | `airwallexRail.ts` (stub) | sandbox phase |
+| `failure-lab` | APF demos | `/attack` |
 
-Registry: `packages/integrations/src/rails/registry.ts` + `docs/ecosystems.yaml`.
+Registry: `packages/integrations/src/rails/registry.ts` · `apps/site/lib/ecosystems.manifest.ts`.
+
+---
+
+## Social / founder (all applications)
+
+See [FOUNDER_SOCIAL_PROFILES.md](./FOUNDER_SOCIAL_PROFILES.md) — link site on GitHub/X/LinkedIn; pin proof URL when updated.

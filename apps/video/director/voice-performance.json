@@ -1,0 +1,98 @@
+{
+  "version": 1,
+  "narratorInstruct": "Male English, early 30s, low-mid pitch, close mic, calm technical authority, understated infrastructure engineer. Never salesy or trailer-like. Sentence endings fall.",
+  "ollamaModel": "gemma3:4b",
+  "beats": [
+    {
+      "id": "01_hook_open",
+      "text": "Giving an agent a wallet is easy.",
+      "direction": { "rate": "-14%", "pitch": "-3Hz", "pauseAfterSec": 1.35 }
+    },
+    {
+      "id": "02_hook_turn",
+      "text": "Giving it financial authority safely... isn't.",
+      "direction": { "rate": "-18%", "pitch": "-4Hz", "pauseAfterSec": 2.1 }
+    },
+    {
+      "id": "03_problem_a",
+      "text": "Because authorization isn't execution.",
+      "direction": { "rate": "-12%", "pitch": "-2Hz", "pauseAfterSec": 0.85 }
+    },
+    {
+      "id": "04_problem_b",
+      "text": "And execution isn't settlement.",
+      "direction": { "rate": "-12%", "pitch": "-2Hz", "pauseAfterSec": 0 }
+    }
+  ],
+  "silentBlocks": [
+    {
+      "id": "05_attacks_montage",
+      "durationSec": 16,
+      "note": "REPLAY / BLOCKED — typography + SFX only"
+    }
+  ],
+  "beatsAfterSilence": [
+    {
+      "id": "06_reconcile_a",
+      "text": "Some failures should be blocked.",
+      "direction": { "rate": "-16%", "pitch": "-3Hz", "pauseAfterSec": 1.1 }
+    },
+    {
+      "id": "07_reconcile_b",
+      "text": "Others have to be reconciled.",
+      "direction": { "rate": "-14%", "pitch": "-2Hz", "pauseAfterSec": 1.8 }
+    },
+    {
+      "id": "08_lifecycle_lead",
+      "text": "Railguard controls the entire financial execution lifecycle.",
+      "direction": { "rate": "-11%", "pitch": "-2Hz", "pauseAfterSec": 0.9 }
+    },
+    {
+      "id": "09_authorize",
+      "text": "Authorize.",
+      "direction": { "rate": "-8%", "pitch": "-1Hz", "pauseAfterSec": 0.45 }
+    },
+    {
+      "id": "10_reserve",
+      "text": "Reserve.",
+      "direction": { "rate": "-8%", "pitch": "-1Hz", "pauseAfterSec": 0.45 }
+    },
+    {
+      "id": "11_execute",
+      "text": "Execute.",
+      "direction": { "rate": "-8%", "pitch": "-1Hz", "pauseAfterSec": 0.45 }
+    },
+    {
+      "id": "12_observe",
+      "text": "Observe.",
+      "direction": { "rate": "-8%", "pitch": "-1Hz", "pauseAfterSec": 0.45 }
+    },
+    {
+      "id": "13_reconcile",
+      "text": "Reconcile.",
+      "direction": { "rate": "-8%", "pitch": "-1Hz", "pauseAfterSec": 0.45 }
+    },
+    {
+      "id": "14_prove",
+      "text": "Prove.",
+      "direction": { "rate": "-8%", "pitch": "-1Hz", "pauseAfterSec": 1.6 }
+    },
+    {
+      "id": "15_proof_a",
+      "text": "So an agent can move money...",
+      "direction": { "rate": "-13%", "pitch": "-2Hz", "pauseAfterSec": 0.95 }
+    },
+    {
+      "id": "16_proof_b",
+      "text": "without losing control of what actually happened.",
+      "direction": { "rate": "-12%", "pitch": "-2Hz", "pauseAfterSec": 0 }
+    }
+  ],
+  "silentBlocksTail": [
+    {
+      "id": "17_lockup",
+      "durationSec": 6,
+      "note": "On-screen lockup only — no VO"
+    }
+  ]
+}

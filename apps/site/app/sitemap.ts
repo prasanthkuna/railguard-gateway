@@ -12,6 +12,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/ecosystems",
     "/proof/arbitrum-sepolia",
     "/proof/stellar-testnet",
+    "/proof/monad-testnet",
+    "/proof/arc-mainnet",
     "/r/demo",
     ...ECOSYSTEM_MANIFEST.map((e) => `/ecosystems/${e.id}`),
   ]

@@ -35,9 +35,11 @@ export function AppShell({ children }: { children: React.ReactNode }) {
 
   React.useEffect(() => {
     if (isClient && !isPublicRoute && !isAuthenticated) {
-      router.replace("/login")
+      const judgeEntry =
+        pathname?.startsWith("/executions/") || pathname === "/welcome" ? "?intent=judge" : ""
+      router.replace(`/login${judgeEntry}`)
     }
-  }, [isAuthenticated, isClient, isPublicRoute, router])
+  }, [isAuthenticated, isClient, isPublicRoute, pathname, router])
 
   if (isPublicRoute) {
     return (

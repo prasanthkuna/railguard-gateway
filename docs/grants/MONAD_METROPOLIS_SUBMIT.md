@@ -54,7 +54,9 @@ Working product + **public project profile**: demo, short write-up, **link to pu
 - [x] Builder-wallet testnet USDC tx: `0x1cbd46100de39c60d88d8d7ee7a1dc66cf2c9c16956ebb403b69c1751b98aab2`
 - [x] Generate `evidence/monad-testnet/manifest.json` with `ok: true` / `CONFIRMED`
 - [x] Public proof page + ecosystem card → `/proof/monad-testnet` (deployed)
-- [ ] Hackathon profile: demo video or Loom, GitHub link, 1-paragraph write-up
+- [x] Site sitemap, footer, SystemStatus, integrations footer link to Monad proof
+- [x] `bun run verify-monad-metropolis-pack` (local manifest + GitHub manifest + live URLs)
+- [ ] Hackathon profile: demo video or Loom, GitHub link, 1-paragraph write-up (**portal only**)
 
 ## Generate evidence (PowerShell)
 
@@ -90,12 +92,13 @@ Optional: `$env:MONAD_TESTNET_RPC_URL="https://rpc-testnet.monadinfra.com"`
 ## Registration status
 
 - [x] Portal reachable with **VPN** (Excitel still DNS-blocks `*.monad.xyz` without VPN/DNS fix)
-- [ ] Paste all fields from **[MONAD_METROPOLIS_PORTAL_PASTE.md](./MONAD_METROPOLIS_PORTAL_PASTE.md)** into hackathon profile
-- [ ] Create **public project profile** before 13 Oct
-- [ ] Final submit on portal by deadline
+- [x] Metropolis **profile registration** complete (`@prasanthkuna`)
+- [x] Solo team + **Railguard** project on portal (submission **ready for judging**, saved 2026-10-05)
+- [ ] Optional: separate **pitch video** (currently same YouTube as technical demo)
+- [ ] Optional: **progress update** for mentor access (dashboard next step)
 
 **Paste doc:** [MONAD_METROPOLIS_PORTAL_PASTE.md](./MONAD_METROPOLIS_PORTAL_PASTE.md)
 
 ## Days left (from 2026-10-04)
 
-~9 days to submission — prioritize **one USDC evidence tx** + **portal profile** this week.
+~9 days to submission — engineering is done; remaining work is **onboarding + public project profile + final submit** on [hackathon.monad.xyz](https://hackathon.monad.xyz/) using [MONAD_METROPOLIS_PORTAL_PASTE.md](./MONAD_METROPOLIS_PORTAL_PASTE.md).

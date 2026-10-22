@@ -1,0 +1,28 @@
+{
+  "name": "@railguard/video",
+  "private": true,
+  "version": "0.2.0",
+  "scripts": {
+    "dev": "remotion studio",
+    "build": "remotion bundle",
+    "render": "remotion render src/index.ts ArbitrumHero edit/final.mp4 --codec=h264 --crf=18 --audio-codec=aac --audio-bitrate=320k",
+    "render:hero": "remotion render src/index.ts ArbitrumHero edit/final.mp4 --codec=h264 --crf=18 --audio-codec=aac --audio-bitrate=320k",
+    "render:technical": "remotion render src/index.ts ArbitrumTechnical out/arbitrum-technical.mp4",
+    "render:social": "remotion render src/index.ts ArbitrumHero edit/preview.mp4 --scale=0.5",
+    "upgrade": "remotion upgrade",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@remotion/google-fonts": "4.0.272",
+    "@remotion/transitions": "4.0.272",
+    "react": "19.0.0",
+    "react-dom": "19.0.0",
+    "remotion": "4.0.272"
+  },
+  "devDependencies": {
+    "@remotion/cli": "4.0.272",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "typescript": "^5.0.0"
+  }
+}

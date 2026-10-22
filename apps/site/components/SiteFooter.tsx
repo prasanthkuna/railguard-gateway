@@ -19,6 +19,8 @@ export function SiteFooter() {
         <Link href="/attack">Failure Lab</Link>
         <Link href="/proof/stellar-testnet">Stellar proof</Link>
         <Link href="/proof/arbitrum-sepolia">Arbitrum proof</Link>
+        <Link href="/proof/monad-testnet">Monad proof</Link>
+        <Link href="/proof/arc-mainnet">Arc proof</Link>
         <a href={GITHUB_PROFILE} {...EXTERNAL_LINK}>
           GitHub profile
         </a>

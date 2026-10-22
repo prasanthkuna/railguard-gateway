@@ -1,10 +1,11 @@
 "use client"
 
-import { useParams, useRouter } from "next/navigation"
+import { useParams, useRouter, useSearchParams } from "next/navigation"
 import * as React from "react"
 import { BackLink, PageHeader } from "../../../components/design-system"
 import { ExecutionLifecycle } from "../../../components/executions/ExecutionLifecycle"
 import { ExternalBroadcastPanel } from "../../../components/executions/ExternalBroadcastPanel"
+import { JudgeGuideBanner } from "../../../components/executions/JudgeGuideBanner"
 import { EvidencePanel } from "../../../components/ui/EvidencePanel"
 import { Skeleton } from "../../../components/ui/Skeleton"
 import { api } from "../../../lib/api"
@@ -16,6 +17,8 @@ export default function ExecutionDetailPage() {
   const params = useParams()
   const router = useRouter()
   const executionId = params?.id as string
+  const searchParams = useSearchParams()
+  const showJudgeGuide = searchParams.get("guide") === "judge"
   const [execution, setExecution] = React.useState<V5ExecutionResponse | null>(null)
   const [evidence, setEvidence] = React.useState<V5EvidenceResponse | null>(null)
   const [loading, setLoading] = React.useState(true)
@@ -70,6 +73,7 @@ export default function ExecutionDetailPage() {
         title={execution.executionId}
         description={`Intent ${execution.intentId} · ${formatExecutionStatus(execution.status)}`}
       />
+      {showJudgeGuide ? <JudgeGuideBanner /> : null}
       <ExternalBroadcastPanel
         execution={execution}
         onUpdated={(next) => {
