@@ -1,4 +1,5 @@
 import Link from "next/link"
+import { AboutSection } from "../components/AboutSection"
 import { AgentIntegrationsSection } from "../components/AgentIntegrationsSection"
 import { AttackDemo } from "../components/AttackDemo"
 import { EcosystemVerifyCard } from "../components/EcosystemVerifyCard"
@@ -74,6 +75,8 @@ export default function HomePage() {
       <FossSection />
 
       <EvaluatorSection />
+
+      <AboutSection />
 
       <section className="final-cta">
         <h2>Give agents authority. Not unlimited money.</h2>

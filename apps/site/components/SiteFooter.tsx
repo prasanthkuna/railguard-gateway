@@ -15,6 +15,7 @@ export function SiteFooter() {
       <p className="footer-tag">Agent money. Guarded.</p>
       <FounderSocialLinks />
       <div className="footer-links">
+        <Link href="/#about">About</Link>
         <Link href="/ecosystems">Ecosystems</Link>
         <Link href="/attack">Failure Lab</Link>
         <Link href="/proof/stellar-testnet">Stellar proof</Link>
