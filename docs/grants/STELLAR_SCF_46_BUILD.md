@@ -51,7 +51,7 @@ Link: https://github.com/prasanthkuna/railguard-gateway/blob/main/docs/ARCHITECT
 | **#2 Testnet expansion** | 30% | $22,500 | Operator end-to-end Stellar testnet flow; **threat model + monitoring plan** (SCF tranche 2 req); Failure Lab Stellar scenarios | Screen recording + repo paths; monitoring doc in `docs/` |
 | **#3 Mainnet launch** | 40% | $30,000 | Public `/proof/stellar-mainnet`; developer doc “Agent payouts on Stellar”; **≥10 verified mainnet settlements** attributed to Railguard demo accounts | Horizon links on proof page; counter on site |
 
-Timeline: **≤6 months** from award. Solo founder; no marketing line items.
+Timeline: **≤6 months** from award. Solo builder; no marketing line items.
 
 ---
 

@@ -1,4 +1,4 @@
-# Founder social profiles — X & LinkedIn (live copy)
+# Social profiles — X & LinkedIn (live copy)
 
 **Updated:** 2026-10-05 · Profiles applied in browser where possible.
 
@@ -16,7 +16,7 @@
 | Field | Value |
 | --- | --- |
 | **Name** | Prasanth Kuna |
-| **Bio** (160) | Founder · Railguard — policy-bound payments for AI agents. OSS + public proofs (Monad, Arbitrum, Stellar). Eat·Learn·Apply→proof · Hyderabad |
+| **Bio** (160) | Solo builder · Railguard — policy-bound payments for AI agents. OSS + public proofs (Monad, Arbitrum, Stellar). Eat·Learn·Apply→proof · Hyderabad |
 | **Location** | Hyderabad, India |
 | **Website** | https://railguard-site.vercel.app |
 
@@ -46,7 +46,7 @@ Building in public · Monad Metropolis · Eat · Learn · Apply → proof
 ### Bio alternates
 
 **Recruiting-forward (160):**  
-`Senior backend (11y) · Founder @ Railguard · agent payments & settlement verify · OSS · Hyderabad · open to staff backend / AI infra`
+`Senior backend (11y) · Maintainer @ Railguard · agent payments & settlement verify · OSS · Hyderabad · open to staff backend / AI infra`
 
 **Hackathon-forward (160):**  
 `Metropolis builder · Railguard on Monad testnet (USDC verify, public proof) · Trust & AI infra track · railguard-site.vercel.app`
@@ -57,12 +57,12 @@ Building in public · Monad Metropolis · Eat · Learn · Apply → proof
 
 | Field | Value |
 | --- | --- |
-| **Headline** | Founder @ Railguard · Policy-bound settlement for AI agents · Open source · Monad / Arbitrum / Stellar testnet proofs · Lead Developer @ Stackular · Hyderabad |
+| **Headline** | Maintainer @ Railguard · Policy-bound settlement for AI agents · Open source · Monad / Arbitrum / Stellar testnet proofs · Lead Developer @ Stackular · Hyderabad |
 | **About** | See block below (saved on profile) |
 
 ### About (saved)
 
-Senior backend engineer (11+ years) and founder of Railguard — open-source financial execution firewall for AI agents: policy before sign, settlement verify, tamper-evident evidence.
+Senior backend engineer (11+ years) and the solo builder of Railguard — open-source financial execution firewall for AI agents: policy before sign, settlement verify, tamper-evident evidence.
 
 Public proofs (no login): railguard-site.vercel.app — Monad, Arbitrum Sepolia, Stellar testnet. Gateway: github.com/prasanthkuna/railguard-gateway
 
@@ -83,7 +83,7 @@ Remove old featured items (Mintable, etc.). Add **Links**:
 
 ### Experience entry (add manually)
 
-**Title:** Founder  
+**Title:** Maintainer (solo builder)  
 **Company:** Railguard (project / self-employed)  
 **Dates:** Sep 2025 – Present (adjust to your start)  
 **Description:**
@@ -92,7 +92,7 @@ Open-source financial execution firewall for autonomous agents. Shipped cross-ch
 
 ### Open to work
 
-Consider updating from “Senior Developer” only to include: **Founder**, **Staff Backend Engineer**, **AI Infrastructure**, **Open Source**.
+Consider updating from “Senior Developer” only to include: **Railguard maintainer**, **Staff Backend Engineer**, **AI Infrastructure**, **Open Source**.
 
 ### Skills to pin (top 5)
 
@@ -128,6 +128,6 @@ Metropolis hackathon · open to collaborators and senior backend / AI infra conv
 - [x] LinkedIn headline + About → Railguard + Stackular
 - [ ] X **pinned post**
 - [ ] LinkedIn **Featured** → Railguard links only
-- [ ] LinkedIn **Experience** → Founder, Railguard
+- [ ] LinkedIn **Experience** → Maintainer, Railguard (open-source personal project)
 - [ ] LinkedIn **Open to work** titles refreshed
 - [ ] Optional: X banner + avatar refresh

@@ -1,4 +1,8 @@
-# HackQuest - Arbitrum Open House Singapore (submitted archive)\n\n**Status:** Submitted on 2026-10-04. This file preserves the evidence/copy package used for the submission.
+# HackQuest - Arbitrum Open House Singapore (submitted archive)
+
+> **Archive note:** This file preserves the copy exactly as submitted on 2026-10-04. Current wording is **CONFIRMED** / settlement verified (not SETTLED) and "solo builder" (not founder).
+
+**Status:** Submitted on 2026-10-04. This file preserves the evidence/copy package used for the submission.
 
 ## HackQuest project (canonical — use this one)
 

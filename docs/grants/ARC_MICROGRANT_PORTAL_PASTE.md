@@ -42,7 +42,7 @@ Use after **`bun run verify-arc-microgrant-pack`** passes. Replace `TX_HASH` / e
 
 - GitHub: https://github.com/prasanthkuna
 - X: @prasanth_kuna
-- Product: Railguard (founder-built, Hyderabad)
+- Product: Railguard (open-source personal project, solo builder, Hyderabad)
 
 ## After submit
 

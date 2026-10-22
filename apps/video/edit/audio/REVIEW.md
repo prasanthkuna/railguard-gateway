@@ -27,7 +27,7 @@
 
 Approve neither file solely from metrics. Listen on headphones, laptop speakers, and a phone. Check:
 
-1. Does the voice sound like a calm technical founder rather than an advertisement?
+1. Does the voice sound like a calm technical builder rather than an advertisement?
 2. Are “Arbitrum Sepolia,” “execution-hook,” and “U.S.D.C.” pronounced naturally?
 3. Does “Separately” clearly distinguish hook deployment from the external-wallet settlement?
 4. Are any sentence endings rushed, over-emphasized, metallic, or synthetic?
