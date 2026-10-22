@@ -25,7 +25,7 @@ export const STAGING_API =
 export const GITHUB_PROFILE = "https://github.com/prasanthkuna"
 
 export const FOUNDER_SOCIAL = {
-  name: "Prashanth Kuna",
+  name: "Prasanth Kuna",
   github: GITHUB_PROFILE,
   linkedin: "https://www.linkedin.com/in/prasanth-kuna-1463631b3/",
   x: "https://x.com/prasanth_kuna",

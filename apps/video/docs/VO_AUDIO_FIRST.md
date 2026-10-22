@@ -9,7 +9,7 @@ Use Ollama optionally to **rewrite** a line for speakability (`RAILGUARD_USE_OLL
 ## Build the master
 
 ```powershell
-cd c:\Users\PrashanthKuna\personal\web3\railguard-gateway
+cd c:\Users\PrasanthKuna\personal\web3\railguard-gateway
 
 # Default: Edge, sparse script, variable pauses (no robotic 0.55s grid)
 bun run video:vo:master

@@ -13,7 +13,7 @@ Add to `.cursor/mcp.json` (or global MCP settings):
   "mcpServers": {
     "railguard": {
       "command": "bun",
-      "args": ["run", "c:/Users/PrashanthKuna/coinbase/packages/mcp/src/server.ts"],
+      "args": ["run", "c:/Users/PrasanthKuna/coinbase/packages/mcp/src/server.ts"],
       "env": {
         "RAILGUARD_BASE_URL": "http://localhost:4000",
         "RAILGUARD_ACCESS_TOKEN": "<your-token>"
