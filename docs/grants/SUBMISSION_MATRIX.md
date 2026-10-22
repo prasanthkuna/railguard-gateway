@@ -1,6 +1,6 @@
 # Ecosystem submission status
 
-**Updated:** 2026-10-14  
+**Updated:** 2026-10-22  
 **Proof playbook (costs, testnet vs mainnet):** [PROOF_STRATEGY.md](./PROOF_STRATEGY.md)  
 **Master pack (every submission):** [LAUNCH.md](../../../LAUNCH.md) — site URLs, video, APF atlas, GitHub pins.
 
@@ -20,18 +20,18 @@ This is the operational source for current grant/hackathon state. Product-facing
 | Operator | https://prebroadcast.vercel.app/ |
 | API staging | https://staging-railguard-s4ii.encr.app |
 
-## Status snapshot (2026-10-14)
+## Status snapshot (2026-10-22)
 
 | Program | Status | Proof tier | Next action |
 | --- | --- | --- | --- |
 | **Monad Metropolis** | **Submitted** (judging) | Testnet USDC | `bun run verify-monad-metropolis-pack` before any resubmit |
 | Stellar SCF #46 Interest | **Submitted** 2026-10-04 | Testnet Horizon | Wait Build invite → [STELLAR_SCF_46_BUILD.md](./STELLAR_SCF_46_BUILD.md) by **Nov 8** |
 | Arbitrum HackQuest | **Submitted** | Sepolia | [ARBITRUM_TESTNET_SUBMIT.md](./ARBITRUM_TESTNET_SUBMIT.md) |
-| **Arc Microgrant** | Registered, **not submitted** | **Mainnet 5042 required** | [ARC_MICROGRANT_SUBMIT.md](./ARC_MICROGRANT_SUBMIT.md) · **Oct 14 23:59 ET** |
+| **Arc Microgrant** | Registered, **not submitted** | **Mainnet 5042 required** (proof **pending**) | [ARC_MICROGRANT_SUBMIT.md](./ARC_MICROGRANT_SUBMIT.md) · target **Nov 1** |
 | Circle Developer Grant | Not applied | Arc mainnet | After Arc manifest → [CIRCLE_DEVELOPER_GRANT.md](./CIRCLE_DEVELOPER_GRANT.md) |
 | Arbitrum One proof | Not committed | Mainnet | [ARBITRUM_ONE_PROOF.md](./ARBITRUM_ONE_PROOF.md) |
-| Airwallex Agentic Banking | **Apply by Oct 23** | Sandbox API | [AIRWALLEX_AGENTIC_BANKING.md](./AIRWALLEX_AGENTIC_BANKING.md) |
-| ETHGlobal Mumbai | Register | Testnet + partner mains | Apply by **~Nov 3** · submit **Nov 7 09:00 IST** |
+| Airwallex Agentic Banking Hackathon | **Submitted** 2026-10-22 (Track 3 · Payment Ops Incident Commander) | Sandbox API | Results **Oct 25** · [AIRWALLEX_AGENTIC_BANKING.md](./AIRWALLEX_AGENTIC_BANKING.md) |
+| ETHGlobal Mumbai | **Application submitted** 2026-10-22 (Continuity track) | Testnet + partner mains | Awaiting acceptance · submit **Nov 7 09:00 IST** |
 | PayPal AI Hackathon | Open | Sandbox | Devpost **Nov 12 12:00 PST** |
 | Celo Open Rails | Open | **Celo mainnet** | **Nov 9 09:00 GMT** |
 
@@ -48,13 +48,13 @@ This is the operational source for current grant/hackathon state. Product-facing
 
 ---
 
-## Urgent deadlines (from 14 Oct 2026)
+## Urgent deadlines (updated 22 Oct 2026)
 
 ### Arc Microgrants
 
 | Field | Value |
 | --- | --- |
-| Deadline | **14 Oct 2026 23:59 ET** (~15 Oct 09:29 IST) |
+| Target | **1 Nov 2026** (mainnet proof pending) |
 | Pack | [ARC_MICROGRANT_SUBMIT.md](./ARC_MICROGRANT_SUBMIT.md) |
 | Cost | ~**$10–16** bridge + **0.01 USDC** proof (see PROOF_STRATEGY) |
 | Code | `packages/settlement/src/arc-mainnet.ts` |
@@ -63,8 +63,9 @@ This is the operational source for current grant/hackathon state. Product-facing
 
 | Field | Value |
 | --- | --- |
+| Status | **Submitted 2026-10-22** (Track 3, solo) |
 | Applications close | **23 Oct 2026** |
-| Build / notify | **25 Oct 2026** |
+| Results / notify | **25 Oct 2026** |
 | Submit | **13 Nov 2026** |
 | Pack | [AIRWALLEX_AGENTIC_BANKING.md](./AIRWALLEX_AGENTIC_BANKING.md) |
 | Track | **03 Payment Ops Incident Commander** |
@@ -113,6 +114,6 @@ Do not create a second product, new frontend, or chain-specific architecture sol
 
 ---
 
-## Social / founder (all applications)
+## Social profiles (all applications)
 
 See [FOUNDER_SOCIAL_PROFILES.md](./FOUNDER_SOCIAL_PROFILES.md) — link site on GitHub/X/LinkedIn; pin proof URL when updated.
