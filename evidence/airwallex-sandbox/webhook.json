@@ -1,0 +1,17 @@
+{
+  "kind": "airwallex-sandbox-webhook",
+  "generatedAt": "2026-10-22T18:43:01.928Z",
+  "baseUrlHost": "api-demo.airwallex.com",
+  "webhookId": "wh_0triQBF9B6tX7XXghAiQHtvqnz5LPFKm",
+  "url": "https://prebroadcast.vercel.app/airwallex-live/webhook",
+  "version": "2025-06-30",
+  "events": [
+    "payout.transfer.processing",
+    "payout.transfer.sent",
+    "payout.transfer.paid",
+    "payout.transfer.failed",
+    "payout.transfer.cancelled"
+  ],
+  "created": true,
+  "note": "Secret stored only in local .env and the runner's env; never recorded here."
+}
