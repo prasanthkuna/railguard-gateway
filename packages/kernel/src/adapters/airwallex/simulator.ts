@@ -91,6 +91,19 @@ export function createAirwallexSimulator(options: { now?: () => Date } = {}): Ai
       const items = [...byId.values()].filter((t) => !requestId || t.request_id === requestId)
       return json(200, { items, page_after: null, page_before: null })
     }
+    const sim = u.pathname.match(/^\/api\/v1\/simulation\/transfers\/([^/]+)\/transition$/)
+    if (sim && method === "POST") {
+      const transfer = byId.get(decodeURIComponent(sim[1] ?? ""))
+      if (!transfer) return json(404, { code: "not_found" })
+      const body = JSON.parse(String(init.body ?? "{}")) as { next_status?: string }
+      const next = {
+        ...transfer,
+        status: body.next_status ?? transfer.status,
+        updated_at: now().toISOString(),
+      }
+      byId.set(transfer.id, next)
+      return json(200, next)
+    }
     const match = u.pathname.match(/^\/api\/v1\/transfers\/([^/]+)$/)
     if (match && method === "GET") {
       const transfer = byId.get(decodeURIComponent(match[1] ?? ""))

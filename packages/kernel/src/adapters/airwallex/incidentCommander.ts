@@ -319,10 +319,47 @@ export function createIncidentCommander(options: IncidentCommanderOptions) {
     return { accepted: true, incident }
   }
 
+  /** Poll the transfer status (fallback when no webhook arrives) and resolve if it is final. */
+  async function refresh(incidentId: string): Promise<PayoutIncident> {
+    const incident = incidents.get(incidentId)
+    if (!incident) throw new Error(`unknown incident ${incidentId}`)
+    if (incident.status !== "OPEN") return incident
+    const attempt = rail.getAttempt(incident.executionId)
+    if (!attempt?.transferId) return incident
+    const before = attempt.airwallexStatus
+    const observation = await rail.observe({
+      executionId: incident.executionId,
+      rail: rail.name,
+      providerOperationId: attempt.transferId,
+      result: "BROADCAST_CONFIRMED",
+    })
+    const after = rail.getAttempt(incident.executionId)?.airwallexStatus
+    if (after !== before) {
+      record(
+        incident,
+        "POLL",
+        `Polled transfer ${attempt.transferId}: ${before ?? "?"} -> ${after ?? "?"} (${observation.settlementStatus}).`,
+      )
+    }
+    resolveIfFinal(incident)
+    return incident
+  }
+
+  /** Rehydrate incidents loaded from storage (Postgres) so state survives restarts. */
+  function restore(saved: PayoutIncident[]): void {
+    for (const incident of saved) {
+      incidents.set(incident.id, structuredClone(incident))
+      const n = Number(incident.id.split("_").pop())
+      if (Number.isFinite(n) && n > counter) counter = n
+    }
+  }
+
   return {
     pay,
     scan,
     reconcile,
+    refresh,
+    restore,
     handleWebhook,
     list: () => [...incidents.values()],
     get: (id: string) => incidents.get(id),

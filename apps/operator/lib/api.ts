@@ -41,6 +41,11 @@ function resolveApiUrl(): string {
   return process.env.ENCORE_API_URL || "http://localhost:4000"
 }
 
+/** Public Encore base URL (used by the Airwallex Track 3 views, no auth). */
+export function publicApiUrl(): string {
+  return resolveApiUrl()
+}
+
 let refreshInFlight: Promise<boolean> | null = null
 
 async function refreshAuthSession(): Promise<boolean> {

@@ -49,8 +49,10 @@ export interface PayoutAttemptStore {
   list(): PayoutAttempt[]
 }
 
-export function createInMemoryPayoutAttemptStore(): PayoutAttemptStore {
-  const byExecution = new Map<string, PayoutAttempt>()
+export function createInMemoryPayoutAttemptStore(
+  initial: PayoutAttempt[] = [],
+): PayoutAttemptStore {
+  const byExecution = new Map<string, PayoutAttempt>(initial.map((a) => [a.executionId, { ...a }]))
   return {
     get: (executionId) => byExecution.get(executionId),
     getByRequestId: (requestId) => [...byExecution.values()].find((a) => a.requestId === requestId),

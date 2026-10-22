@@ -7,6 +7,8 @@ const encoreApiUrl =
 
 const nextConfig: NextConfig = {
   transpilePackages: ["@railguard/brand"],
+  // The live sandbox runner reuses the kernel's Airwallex rail from packages/kernel.
+  experimental: { externalDir: true },
   async rewrites() {
     return [
       {

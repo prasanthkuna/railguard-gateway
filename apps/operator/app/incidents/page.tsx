@@ -2,6 +2,12 @@
 
 import { AlertTriangle, CheckCircle2, RefreshCw, ShieldAlert, ShieldCheck } from "lucide-react"
 import * as React from "react"
+import {
+  AgentConsole,
+  ChaosPanel,
+  PolicyGuardPanel,
+  WebhookLog,
+} from "../../components/airwallex/Track3"
 import { PageHeader, SectionCard } from "../../components/design-system"
 import { Button } from "../../components/ui/Button"
 import { Skeleton } from "../../components/ui/Skeleton"
@@ -144,7 +150,7 @@ export default function IncidentsPage() {
       <PageHeader
         eyebrow="Airwallex payouts · Incident Commander"
         title="Payout incidents"
-        description="When an Airwallex transfer goes UNKNOWN, Railguard blocks the second payout, reconciles by request_id, and only then marks it CONFIRMED. Simulated sandbox run, no real money."
+        description="An AI agent pays suppliers on Airwallex. When a transfer goes UNKNOWN, Railguard blocks the second payout, reconciles by request_id, and only then marks it CONFIRMED. Sandbox and simulator only, no real money."
         actions={
           <Button variant="secondary" className="gap-2" onClick={() => void load()}>
             <RefreshCw className="h-4 w-4" />
@@ -173,6 +179,14 @@ export default function IncidentsPage() {
           </p>
         </div>
       </div>
+
+      <ChaosPanel />
+      <AgentConsole />
+      <PolicyGuardPanel />
+
+      <h2 className="rg-label-1 pt-4 text-[var(--rg-text-primary)]">
+        Recorded scenarios (simulator)
+      </h2>
 
       {loading ? (
         <Skeleton className="h-96 w-full rounded-[var(--rg-radius-xl)]" />
@@ -213,6 +227,8 @@ export default function IncidentsPage() {
           </SectionCard>
         </>
       ) : null}
+
+      <WebhookLog />
     </div>
   )
 }

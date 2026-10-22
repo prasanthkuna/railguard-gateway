@@ -75,6 +75,10 @@ export interface AirwallexClient {
   getTransfer(id: string): Promise<AirwallexTransfer>
   /** Authoritative lookup used for reconciliation (request_id is unique for 7 days). */
   findTransferByRequestId(requestId: string): Promise<AirwallexTransfer | null>
+  /** Every transfer Airwallex holds for this request_id (proof that exactly one exists). */
+  listTransfersByRequestId(requestId: string): Promise<AirwallexTransfer[]>
+  /** Sandbox only: POST /api/v1/simulation/transfers/{id}/transition. Refused on non-sandbox hosts. */
+  simulateTransferStatus(id: string, nextStatus: string): Promise<AirwallexTransfer>
 }
 
 interface TokenState {
@@ -200,6 +204,15 @@ export function createAirwallexClient(options: AirwallexClientOptions): Airwalle
     )
   }
 
+  async function listByRequestId(requestId: string): Promise<AirwallexTransfer[]> {
+    const res = await authed(`/api/v1/transfers?request_id=${encodeURIComponent(requestId)}`, {
+      method: "GET",
+    })
+    if (!res.ok) return classify(res)
+    const body = (await res.json()) as { items?: AirwallexTransfer[] }
+    return (body.items ?? []).filter((t) => t.request_id === requestId)
+  }
+
   return {
     baseUrl,
 
@@ -219,12 +232,23 @@ export function createAirwallexClient(options: AirwallexClientOptions): Airwalle
     },
 
     async findTransferByRequestId(requestId) {
-      const res = await authed(`/api/v1/transfers?request_id=${encodeURIComponent(requestId)}`, {
-        method: "GET",
-      })
+      const items = await listByRequestId(requestId)
+      return items[0] ?? null
+    },
+
+    listTransfersByRequestId: (requestId) => listByRequestId(requestId),
+
+    async simulateTransferStatus(id, nextStatus) {
+      assertSandboxBaseUrl(baseUrl)
+      const res = await authed(
+        `/api/v1/simulation/transfers/${encodeURIComponent(id)}/transition`,
+        {
+          method: "POST",
+          body: JSON.stringify({ next_status: nextStatus }),
+        },
+      )
       if (!res.ok) return classify(res)
-      const body = (await res.json()) as { items?: AirwallexTransfer[] }
-      return body.items?.find((t) => t.request_id === requestId) ?? null
+      return (await res.json()) as AirwallexTransfer
     },
   }
 }
