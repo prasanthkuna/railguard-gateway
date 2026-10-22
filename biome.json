@@ -13,7 +13,9 @@
       "scripts/**",
       "coinbase.code-workspace",
       "docs/**",
-      ".vercel/**"
+      ".vercel/**",
+      ".agents/**",
+      "services/gateway-dotnet/**/obj/**"
     ]
   },
   "formatter": {
