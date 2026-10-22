@@ -5,7 +5,7 @@ CLI for the Railguard Gateway (v0.1.0-alpha).
 ## Install (monorepo)
 
 ```powershell
-cd c:\Users\PrasanthKuna\personal\web3\railguard-gateway
+cd c:\Users\PrashanthKuna\personal\web3\railguard-gateway
 bun install
 ```
 

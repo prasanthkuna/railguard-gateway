@@ -1,4 +1,4 @@
-Output C:/Users/PrasanthKuna/coinbase/apps/video/capcut-pipeline/assets/terminal/APF-001.mp4
+Output C:/Users/PrashanthKuna/coinbase/apps/video/capcut-pipeline/assets/terminal/APF-001.mp4
 Set Width 1920
 Set Height 1080
 Set FontSize 26

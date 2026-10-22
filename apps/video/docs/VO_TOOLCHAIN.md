@@ -3,7 +3,7 @@
 ## One-time setup
 
 ```powershell
-cd c:\Users\PrasanthKuna\personal\web3\railguard-gateway
+cd c:\Users\PrashanthKuna\personal\web3\railguard-gateway
 bun run video:vo:install
 ```
 
