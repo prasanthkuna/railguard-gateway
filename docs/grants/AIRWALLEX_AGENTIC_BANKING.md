@@ -24,7 +24,9 @@ Resolve a delayed supplier transfer without paying twice — maps to Railguard *
 
 | Asset | Status |
 |-------|--------|
-| `packages/integrations/src/rails/airwallexRail.ts` | **Stub** — throws until `AIRWALLEX_API_KEY` |
+| `packages/kernel/src/adapters/airwallex/` | **Built** — payout rail + incident commander, 30 mocked-HTTP tests ([AIRWALLEX_BUILD.md](./AIRWALLEX_BUILD.md)) |
+| `packages/integrations/src/rails/airwallexRail.ts` | Env-configured wrapper; fails closed until `AIRWALLEX_CLIENT_ID` + `AIRWALLEX_API_KEY` |
+| Live sandbox smoke | Pending sandbox keys (`scripts/airwallex-sandbox-smoke.ts`) |
 | Site card | ROADMAP until sandbox wired |
 
 ## Engineering (after acceptance, Oct 25+)
