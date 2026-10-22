@@ -28,8 +28,8 @@ Your Chain`}
           </pre>
           <p className="foss-keys">
             <strong>
-              Railguard does not custody your funds or private keys. It sits between agent intent and
-              your signer or wallet provider.
+              Railguard does not custody your funds or private keys. It sits between agent intent
+              and your signer or wallet provider.
             </strong>
           </p>
           <p className="foss-links">

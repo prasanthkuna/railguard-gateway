@@ -2,12 +2,12 @@
 
 import type { Hash } from "viem"
 import { arbitrum } from "viem/chains"
+import { discoverTokenTransferTxHash } from "./etherscan-v2.js"
 import {
   buildExpectedFromTransfer,
   createEvmPublicClient,
   fetchSettlementFromTx,
 } from "./evm-rpc.js"
-import { discoverTokenTransferTxHash } from "./etherscan-v2.js"
 import type { ExpectedTransferFacts, SettlementVerificationResult } from "./index.js"
 import { parseErc20TransferLogs } from "./index.js"
 
@@ -105,13 +105,13 @@ export async function generateArbitrumOneEvidence(input?: {
   generatedAt: string
 }> {
   const rpcUrl = input?.rpcUrl ?? process.env.ARBITRUM_ONE_RPC_URL ?? ARBITRUM_ONE_RPC
-  const token = (input?.token ??
-    process.env.ARBITRUM_ONE_TOKEN ??
-    "usdt") as ArbitrumOneToken
+  const token = (input?.token ?? process.env.ARBITRUM_ONE_TOKEN ?? "usdt") as ArbitrumOneToken
   const tokenAddress = arbitrumOneTokenAddress(token)
   let txHash = input?.txHash ?? process.env.ARBITRUM_ONE_TX_HASH
   const fromAddress =
-    input?.fromAddress ?? process.env.ARBITRUM_ONE_FROM ?? "0x9a3f50804306fDB12046243bDF2dB33D61dcBA2d"
+    input?.fromAddress ??
+    process.env.ARBITRUM_ONE_FROM ??
+    "0x9a3f50804306fDB12046243bDF2dB33D61dcBA2d"
   const toAddress =
     input?.toAddress ?? process.env.ARBITRUM_ONE_TO ?? "0x8c7E2543Aa8bf69dc8458Dc28104234f6A334233"
 

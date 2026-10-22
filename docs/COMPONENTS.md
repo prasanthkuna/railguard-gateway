@@ -9,7 +9,7 @@ One product. These repositories are **parts**, not separate companies.
 | **Failure Lab** | [agent-payment-failure-lab](https://github.com/prasanthkuna/agent-payment-failure-lab) | Adversarial testing; owns [Failure Atlas](https://github.com/prasanthkuna/agent-payment-failure-lab/tree/main/atlas) |
 | **x402 adapter** | [x402-guard](https://github.com/prasanthkuna/x402-guard) | Pre-sign policy integration |
 | **Marketing site** | `apps/site` | Public positioning, ecosystems, `/r/:id` share links |
-| **Operator console** | `apps/operator` | Reference UI for demos/grants (not the public brand) |
+| **Operator console** | `apps/operator` | Authenticated reference UI (not the public brand) |
 
 ## Public architecture (what runs today)
 

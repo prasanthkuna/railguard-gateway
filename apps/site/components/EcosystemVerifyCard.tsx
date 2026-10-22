@@ -1,5 +1,5 @@
-import type { ReactNode } from "react"
 import Link from "next/link"
+import type { ReactNode } from "react"
 import { EXTERNAL_LINK } from "../lib/constants"
 import type { EcosystemCard } from "../lib/ecosystems"
 import { internalSitePath } from "../lib/site-links"

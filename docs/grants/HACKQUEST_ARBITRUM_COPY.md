@@ -1,4 +1,4 @@
-# HackQuest — Arbitrum Open House Singapore (paste targets)
+# HackQuest - Arbitrum Open House Singapore (submitted archive)\n\n**Status:** Submitted on 2026-10-04. This file preserves the evidence/copy package used for the submission.
 
 ## HackQuest project (canonical — use this one)
 

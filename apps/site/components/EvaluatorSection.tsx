@@ -1,7 +1,7 @@
 import Link from "next/link"
-import { CliCommand } from "./CliCommand"
 import { EXTERNAL_LINK, GITHUB_GATEWAY } from "../lib/constants"
 import { INTEGRATION_SNIPPETS } from "../lib/integration-snippets"
+import { CliCommand } from "./CliCommand"
 
 const ARCHITECTURE = `${GITHUB_GATEWAY}/blob/main/docs/ARCHITECTURE.md`
 const QUICKSTART = `${GITHUB_GATEWAY}#quick-start-windows`

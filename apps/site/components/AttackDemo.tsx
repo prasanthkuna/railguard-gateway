@@ -214,7 +214,9 @@ export function AttackDemo() {
         </div>
         <div className="telemetry-table">
           {log.length === 0 ? (
-            <p className="telemetry-empty mono">Press Simulate attack to run the client-side trace…</p>
+            <p className="telemetry-empty mono">
+              Press Simulate attack to run the client-side trace…
+            </p>
           ) : (
             log.map((line) => (
               <div

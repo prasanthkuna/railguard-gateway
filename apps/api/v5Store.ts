@@ -114,7 +114,9 @@ export async function createStoredFinancialIntent(
     try {
       assertIdempotentReplay(
         "financial intent",
-        hashStoredFinancialIntent(parseIntentPayload(existing.payload_json as FinancialIntent | string)),
+        hashStoredFinancialIntent(
+          parseIntentPayload(existing.payload_json as FinancialIntent | string),
+        ),
         hashFinancialIntentInput(input),
       )
     } catch {
@@ -126,10 +128,7 @@ export async function createStoredFinancialIntent(
   }
 
   const intentId = v5Id("fin")
-  if (
-    input.principal.organizationId &&
-    input.principal.organizationId !== organizationId
-  ) {
+  if (input.principal.organizationId && input.principal.organizationId !== organizationId) {
     throw APIError.permissionDenied(
       "principal.organizationId must match the authenticated organization",
     )
@@ -263,7 +262,9 @@ export async function executeExternalStoredIntent(
     throw APIError.failedPrecondition(`intent not authorized: ${row.status}`)
   }
   if (row.status !== "AUTHORIZED" && row.status !== "RESERVED") {
-    throw APIError.failedPrecondition(`intent must be AUTHORIZED before external execute: ${row.status}`)
+    throw APIError.failedPrecondition(
+      `intent must be AUTHORIZED before external execute: ${row.status}`,
+    )
   }
   const intent = parseIntentPayload(row.payload_json as FinancialIntent | string)
   if (!isExternalSettlementNetwork(intent.constraints.network)) {
@@ -323,7 +324,11 @@ export async function observeExternalStoredExecution(
     }
     throw APIError.failedPrecondition("execution already settled with a different transaction")
   }
-  if (row.status !== "AWAITING_BROADCAST" && row.status !== "EXECUTING" && row.status !== "SUBMITTED") {
+  if (
+    row.status !== "AWAITING_BROADCAST" &&
+    row.status !== "EXECUTING" &&
+    row.status !== "SUBMITTED"
+  ) {
     throw APIError.failedPrecondition(`execution not awaiting observe: ${row.status}`)
   }
 
@@ -505,12 +510,7 @@ function buildEvidenceEnvelopeForIntentRow(
 ): EvidenceEnvelope {
   const ctx = intent.context ?? {}
   const txHash = typeof ctx.txHash === "string" ? ctx.txHash : undefined
-  const rail =
-    typeof ctx.rail === "string"
-      ? ctx.rail
-      : row.payment_intent_id
-        ? "cdp"
-        : "x402"
+  const rail = typeof ctx.rail === "string" ? ctx.rail : row.payment_intent_id ? "cdp" : "x402"
   return buildEvidenceEnvelope({
     intent,
     policyDecision: { status },

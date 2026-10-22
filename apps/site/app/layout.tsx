@@ -46,13 +46,12 @@ export const metadata: Metadata = {
 }
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+  const jsonLd = JSON.stringify(founderJsonLd()).replace(/</g, "\\u003c")
+
   return (
     <html lang="en" className={`${spaceGrotesk.variable} ${GeistMono.variable}`}>
       <head>
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(founderJsonLd()) }}
-        />
+        <script type="application/ld+json">{jsonLd}</script>
       </head>
       <body>
         <SiteHeader />

@@ -21,7 +21,11 @@ export const RECIPES: Recipe[] = [
     title: "AI agent",
     persona: "Tool-using agents with spend authority",
     wedge: true,
-    protects: ["Budget caps on supported rails", "Recipient allowlists", "Idempotent execute (APF-001)"],
+    protects: [
+      "Budget caps on supported rails",
+      "Recipient allowlists",
+      "Idempotent execute (APF-001)",
+    ],
     command: "railguard check(intent)",
   },
   {

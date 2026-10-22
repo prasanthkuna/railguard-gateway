@@ -12,8 +12,8 @@ export function RecipesSection() {
       <p className="section-intro">
         Same five CLI verbs —{" "}
         <span className="mono">scan · attack · protect · status · receipts</span> — run in your{" "}
-        <strong>terminal</strong> after{" "}
-        <a href="#integrate">clone &amp; install</a> (<span className="mono">bun run railguard …</span>
+        <strong>terminal</strong> after <a href="#integrate">clone &amp; install</a> (
+        <span className="mono">bun run railguard …</span>
         ). Built first for agent developers and treasury operators; security properties are shown in
         the <a href="/attack">Failure Lab</a> and repo tests. Agent tools use{" "}
         <a href="#integrate">MCP</a>, not these shell lines.

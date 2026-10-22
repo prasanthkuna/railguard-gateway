@@ -16,10 +16,11 @@ export default function ArbitrumSepoliaProofPage() {
       <h1>Verified testnet execution</h1>
       <p className="section-intro">
         External-wallet verification — intent, authorization, wallet transfer, verification, and{" "}
-        <span className="mono">SETTLED</span> evidence. This is separate from hook contract deployment
-        on the same network (the settlement tx did not traverse the hook in this demo).{" "}
+        <span className="mono">SETTLED</span> evidence. This is separate from hook contract
+        deployment on the same network (the settlement tx did not traverse the hook in this demo).{" "}
         <strong>No sign-in or wallet required</strong> to verify this page — use the transaction and
-        repo links below. The testnet console (PreBroadcast) is optional for replaying the operator UI.
+        repo links below. The testnet console (PreBroadcast) is optional for replaying the operator
+        UI.
       </p>
 
       <article className="proof-card">
@@ -65,8 +66,9 @@ export default function ArbitrumSepoliaProofPage() {
       <section className="section">
         <h2>Hook deployment (Sepolia)</h2>
         <p className="section-intro">
-          Railguard execution-hook contracts on Sepolia. The settlement transaction above was verified
-          via the operator lifecycle; it did not traverse this hook in the demonstrated path.
+          Railguard execution-hook contracts on Sepolia. The settlement transaction above was
+          verified via the operator lifecycle; it did not traverse this hook in the demonstrated
+          path.
         </p>
         <p className="mono">
           <a href={P.hookExplorerUrl} {...EXTERNAL_LINK}>

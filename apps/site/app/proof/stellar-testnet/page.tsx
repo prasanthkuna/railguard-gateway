@@ -1,6 +1,6 @@
 import Link from "next/link"
-import { STELLAR_TESTNET_PROOF as P } from "../../../lib/stellar-public-proof"
 import { EXTERNAL_LINK, GITHUB_GATEWAY } from "../../../lib/constants"
+import { STELLAR_TESTNET_PROOF as P } from "../../../lib/stellar-public-proof"
 
 export const metadata = {
   title: "Stellar testnet verified proof",

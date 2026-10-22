@@ -1,25 +1,26 @@
-# Arbitrum HackQuest — submit gate (testnet-only)
+# Arbitrum HackQuest - submit gate archive
 
-**Do not duplicate checklist edits here.** This file mirrors [ARBITRUM_TESTNET_SUBMIT.md](./ARBITRUM_TESTNET_SUBMIT.md). Update the master pack first, then sync boxes below.
+**Status:** **SUBMITTED 2026-10-04**
 
-**Program:** [Arbitrum Open House Singapore](https://arbitrum-singapore.hackquest.io/buildathons/Arbitrum-Open-House-Singapore-Online-Buildathon)  
-**Submit by:** **2026-10-04**
+This checklist is closed. It is retained only as an evidence trail.
 
-## On-chain (Sepolia)
+## On-chain
 
-- [x] Hook deploy → `evidence/arbitrum-sepolia-hook/README.md`
-- [x] External-wallet settlement → `evidence/arbitrum-sepolia/manifest.json` (`ok: true`)
-- [x] Both on Sepolia Arbiscan (hook + tx URLs in master pack)
+- [x] Hook deployment - `evidence/arbitrum-sepolia-hook/README.md`
+- [x] External-wallet settlement - `evidence/arbitrum-sepolia/manifest.json`
+- [x] Hook and settlement explorer links verified
 
 ## Product
 
-- [x] Encore staging wallet-verification routes live
-- [x] Public proof page (no auth) → `/proof/arbitrum-sepolia`
-- [x] `/ecosystems/arbitrum` → **SEPOLIA VERIFIED** + hook / wallet proof copy
+- [x] Public no-login proof - `/proof/arbitrum-sepolia`
+- [x] Arbitrum ecosystem page live
+- [x] Failure Lab live
+- [x] Operator replay available behind sign-in
 
-## Video + HackQuest
+## Video + portal
 
-- [ ] ~90s demo (HyperFrames pipeline) uploaded — URL in `HACKQUEST_ARBITRUM_COPY.md`
-- [ ] Project submit: GitHub, URLs, video, Sepolia proofs
+- [x] Final 84.245s video uploaded - https://youtu.be/L-Gss08bzR0
+- [x] Project submitted with GitHub, website, video and Sepolia evidence
+- [x] Submission completed by 2026-10-04
 
-**Mainnet:** not required for this submission track.
+**Mainnet was not claimed or required for this submission package.**

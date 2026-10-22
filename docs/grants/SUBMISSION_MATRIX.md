@@ -1,12 +1,21 @@
-# Grant & hackathon submission matrix
+# Ecosystem submission status
 
 **Updated:** 2026-10-14  
 **Proof playbook (costs, testnet vs mainnet):** [PROOF_STRATEGY.md](./PROOF_STRATEGY.md)  
 **Master pack (every submission):** [LAUNCH.md](../../../LAUNCH.md) — site URLs, video, APF atlas, GitHub pins.
 
-| Canonical URLs | |
+This is the operational source for current grant/hackathon state. Product-facing claims live in the public site manifest and proof pages.
+
+## Canonical product links
+
+| Surface | URL |
 | --- | --- |
 | Site | https://railguard-site.vercel.app/ (`/attack`, `/proof/*`, `/ecosystems/*`) |
+| Failure Lab | https://railguard-site.vercel.app/attack |
+| Arbitrum proof | https://railguard-site.vercel.app/proof/arbitrum-sepolia |
+| Monad proof | https://railguard-site.vercel.app/proof/monad-testnet |
+| Stellar proof | https://railguard-site.vercel.app/proof/stellar-testnet |
+| Video | https://youtu.be/L-Gss08bzR0 |
 | Repo | https://github.com/prasanthkuna/railguard-gateway |
 | Operator | https://prebroadcast.vercel.app/ |
 | API staging | https://staging-railguard-s4ii.encr.app |
@@ -75,9 +84,11 @@
 | Pack | [MONAD_METROPOLIS_SUBMIT.md](./MONAD_METROPOLIS_SUBMIT.md) · [MONAD_METROPOLIS_PORTAL_PASTE.md](./MONAD_METROPOLIS_PORTAL_PASTE.md) |
 | Tx | `0x1cbd4610…98aab2` · chain **10143** |
 
----
+## Stellar
 
-## Per-integration code ↔ site map
+Interest Form is already submitted. Do not alter the story into a mainnet claim before the Build phase.
+
+Next prepared artifact: [STELLAR_SCF_46_BUILD.md](./STELLAR_SCF_46_BUILD.md).
 
 | Site id | Settlement / rail | Evidence |
 | --- | --- | --- |
@@ -89,6 +100,16 @@
 | `failure-lab` | APF demos | `/attack` |
 
 Registry: `packages/integrations/src/rails/registry.ts` · `apps/site/lib/ecosystems.manifest.ts`.
+
+---
+
+## Arc decision rule
+
+Proceed only if the work remains:
+
+`existing Railguard architecture -> Arc mainnet transaction -> evidence manifest -> public proof -> submit`
+
+Do not create a second product, new frontend, or chain-specific architecture solely for the grant.
 
 ---
 
