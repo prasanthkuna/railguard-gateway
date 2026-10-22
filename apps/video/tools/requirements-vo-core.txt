@@ -1,6 +1,0 @@
-# Isolated VO venv — core (fast install)
-edge-tts>=7.2.0
-soundfile>=0.12.1
-numpy>=2.0.0,<2.8.0
-scipy>=1.14.0
-huggingface_hub>=0.26.0

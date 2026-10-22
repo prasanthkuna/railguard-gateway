@@ -102,3 +102,6 @@ scripts/save-shot.ts
 .vercel
 
 .vercel
+
+# Video pipeline is local-only (not part of the Encore/Vercel builds)
+apps/video/
