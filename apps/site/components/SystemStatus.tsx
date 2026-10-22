@@ -1,5 +1,9 @@
 import Link from "next/link"
+import { ARC_MAINNET_PROOF } from "../lib/arc-public-proof"
 import { EXTERNAL_LINK, GITHUB_GATEWAY } from "../lib/constants"
+
+const ARC_CONFIRMED =
+  ARC_MAINNET_PROOF.status === "CONFIRMED" && ARC_MAINNET_PROOF.txHash.length > 0
 
 const PROOFS: { label: string; href: string; date: string; external?: boolean }[] = [
   {
@@ -23,9 +27,9 @@ const PROOFS: { label: string; href: string; date: string; external?: boolean }[
     date: "2026-10-04",
   },
   {
-    label: "Arc mainnet · settlement proof",
+    label: ARC_CONFIRMED ? "Arc mainnet · CONFIRMED proof" : "Arc mainnet · proof pending",
     href: "/proof/arc-mainnet",
-    date: "5042",
+    date: ARC_CONFIRMED ? "5042" : "pending",
   },
   {
     label: "Repository tests & evidence",

@@ -2,20 +2,23 @@ import Link from "next/link"
 import { ARC_MAINNET_PROOF as P } from "../../../lib/arc-public-proof"
 import { EXTERNAL_LINK, GITHUB_GATEWAY } from "../../../lib/constants"
 
+const ARC_CONFIRMED = P.status === "CONFIRMED" && P.txHash.length > 0
+
 export const metadata = {
-  title: "Arc mainnet verified proof",
-  description:
-    "Public Arc mainnet proof: USDC settlement independently verified from on-chain receipt logs.",
+  title: ARC_CONFIRMED ? "Arc mainnet verified proof" : "Arc mainnet proof (pending)",
+  description: ARC_CONFIRMED
+    ? "Public Arc mainnet proof: USDC settlement independently verified from on-chain receipt logs."
+    : "Arc mainnet settlement proof is pending: no mainnet transaction has been verified yet.",
   alternates: { canonical: "/proof/arc-mainnet" },
 }
 
 export default function ArcMainnetProofPage() {
-  const confirmed = P.status === "CONFIRMED" && P.txHash.length > 0
+  const confirmed = ARC_CONFIRMED
 
   return (
     <main className="page proof-page">
       <p className="eyebrow">v0.1.0-alpha · {P.networkLabel}</p>
-      <h1>Verified Arc settlement</h1>
+      <h1>{confirmed ? "Verified Arc settlement" : "Arc mainnet proof (pending)"}</h1>
       {confirmed ? (
         <>
           <p className="section-intro">
