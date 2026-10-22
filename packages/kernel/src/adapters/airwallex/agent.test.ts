@@ -332,7 +332,7 @@ describe("chaos: timeout after create", () => {
     expect(r.createCalls).toBe(1)
     expect(r.wireCreateCalls).toBe(1)
     expect(r.injectedTimeouts).toBe(1)
-    expect(r.retriesBlocked).toBe(1)
+    expect(r.retriesBlocked).toBe(2)
     expect(r.label).toBe("CONFIRMED")
     expect(r.confirmation).toBe("webhook")
     expect(r.forgedWebhook).toEqual({
@@ -368,6 +368,35 @@ describe("chaos: timeout after create", () => {
     const redacted = redactChaosRun(r, "ben_live")
     expect(JSON.stringify(redacted)).not.toContain('ben_live"')
     expect(redacted.createCalls).toBe(1)
+  })
+
+  test("a well-behaved model that never retries still gets the queue redelivery blocked", async () => {
+    const polite = {
+      name: "polite",
+      async next(history: AgentMessage[]) {
+        const last = history[history.length - 1]
+        if (last?.role === "user" && /^Pay/.test(last.text)) {
+          return {
+            calls: [
+              {
+                name: "create_payout",
+                args: { payee: "Acme", amount: "1.00", invoice: "POLITE-1" },
+              },
+            ],
+          }
+        }
+        return { text: "Already in flight; not paying again.", calls: [] }
+      },
+    }
+    const r = await runChaosTimeout({
+      mode: "simulated",
+      now: () => START,
+      invoice: "POLITE-1",
+      model: polite,
+    })
+    expect(r.retriesBlocked).toBe(1)
+    expect(r.ok).toBe(true)
+    expect(r.createCalls).toBe(1)
   })
 
   test("live mode refuses production hosts and missing credentials", async () => {

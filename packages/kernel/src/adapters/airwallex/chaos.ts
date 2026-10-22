@@ -257,6 +257,23 @@ export async function runChaosTimeout(options: ChaosRunOptions): Promise<ChaosRu
     transcript,
   })
 
+  // Retries also come from infrastructure, not just the model: an at-least-once job queue redelivers
+  // the original create. Whatever the model decided, Railguard must refuse this one too.
+  transcript.push({
+    kind: "system",
+    text: "Job runner redelivers the original create_payout (at-least-once queue retry).",
+  })
+  const redelivery = {
+    name: "create_payout",
+    args: { payee: "Acme Supplies", amount, currency, invoice },
+  }
+  transcript.push({ kind: "tool_call", tool: redelivery.name, args: redelivery.args })
+  transcript.push({
+    kind: "tool_result",
+    tool: redelivery.name,
+    result: await toolbox.run(redelivery),
+  })
+
   const executionId = `exec_${intentId}`
   let incident = commander.list().find((i) => i.executionId === executionId)
 
