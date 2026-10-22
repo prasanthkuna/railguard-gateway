@@ -2,6 +2,7 @@
 
 import {
   Activity,
+  AlertTriangle,
   Compass,
   FileText,
   History,
@@ -19,6 +20,7 @@ const primaryNav = [
   { href: "/", label: "Dashboard", icon: LayoutDashboard },
   { href: "/welcome", label: "Start here", icon: Compass },
   { href: "/executions", label: "Executions", icon: Activity },
+  { href: "/incidents", label: "Incidents", icon: AlertTriangle },
 ]
 
 const invoiceApNav = [

@@ -11,6 +11,7 @@ import { Button } from "../ui/Button"
 const routeTitles: Record<string, string> = {
   "/": "Dashboard",
   "/executions": "Executions",
+  "/incidents": "Payout Incidents",
   "/invoices": "Invoices",
   "/invoices/upload": "Upload Invoice",
   "/vendors": "Vendors",

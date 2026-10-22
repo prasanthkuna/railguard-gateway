@@ -205,6 +205,10 @@ export const api = {
   // Dashboard
   getDashboard: () => apiFetch<DashboardResponse>("/dashboard"),
 
+  // Airwallex Payment Ops Incident Commander (simulated, read-only)
+  getAirwallexIncidentDemo: () =>
+    apiFetch<AirwallexIncidentDemoResponse>("/v1/airwallex/incident-demo"),
+
   // Invoices
   listInvoices: (status?: string) => {
     const query = status ? `?status=${encodeURIComponent(status)}` : ""
@@ -337,4 +341,50 @@ export const api = {
     }),
   getAuditExport: (id: string) =>
     apiFetch<{ auditExport: AuditExportRecord; downloadURL?: string }>(`/audit/exports/${id}`),
+}
+
+export interface AirwallexIncidentTimelineEntry {
+  at: string
+  step: string
+  detail: string
+  attemptState?: string
+  airwallexStatus?: string
+  hash: string
+}
+
+export interface AirwallexPayoutIncident {
+  id: string
+  kind: string
+  status: "OPEN" | "RESOLVED" | "ESCALATED"
+  executionId: string
+  intentId: string
+  requestId: string
+  transferId?: string
+  openedAt: string
+  resolvedAt?: string
+  outcome?: string
+  label: string
+  createCalls: number
+  retriesBlocked: number
+  timeline: AirwallexIncidentTimelineEntry[]
+  runbook: string[]
+  evidenceHead: string
+}
+
+export interface AirwallexIncidentDemoResponse {
+  rail: "airwallex"
+  mode: "simulated"
+  demo: {
+    mode: "simulated"
+    generatedAt: string
+    scenarios: Array<{
+      id: string
+      title: string
+      summary: string
+      airwallexTransfersCreated: number
+      createCallsSent: number
+      incident: AirwallexPayoutIncident
+    }>
+    webhookRejection: { accepted: boolean; reason?: string }
+  }
 }
