@@ -16,6 +16,7 @@ Railguard adds a **financial execution firewall** for AI agents on Stellar: poli
 
 - **Intent → grant → prepare → observe/reconcile** via `ExecutionRail` (`packages/integrations/src/rails/stellarRail.ts`).
 - **Horizon** fetches payment operations; verify matches destination, amount, memo (`packages/settlement/src/stellar-testnet.ts`).
+- **Soroban policy contract** (`contracts/soroban/railguard-policy`, testnet `CBUY5JNZEGYR7I3QJEIALF2DR4NNS3OHEBOS7CGEXY2J4VU64IM7ZL5N`): per-agent budget, intent binding to recipient/asset/amount, deterministic request id, duplicate and replay rejection. Executed with Circle testnet USDC and re-verified on Horizon (`packages/settlement/src/stellar-soroban-policy.ts`).
 - **Evidence:** manifest JSON + site/ecosystem slice; repro `bun run stellar-testnet-evidence`.
 - **Non-goals for #46:** Replacing wallets/anchors; speculative new chains (engineering freeze except Stellar milestones).
 
@@ -57,7 +58,7 @@ Timeline: **≤6 months** from award. Solo builder; no marketing line items.
 
 ## Open source
 
-Application code and Stellar rail: **open source** (MIT/repo license). Any future Soroban contracts (if added in scope): open-source plan disclosed in full application.
+Application code and Stellar rail: **open source** (MIT/repo license). Soroban policy contract: open source in `contracts/soroban/railguard-policy` (same repo license).
 
 ---
 

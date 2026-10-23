@@ -11,6 +11,8 @@
 - [x] Horizon payment verify **CONFIRMED** — tx `3dc3225844f711f9f96ead65690d224b7ccfd616d1da5387df6bfc63bfb8e437`
 - [x] `bun run stellar-testnet-evidence` → `evidence/stellar-testnet/manifest.json`
 - [x] Integration rail — `packages/integrations/src/rails/stellarRail.ts`
+- [x] **Soroban policy contract** deployed (2026-10-23) - `CBUY5JNZEGYR7I3QJEIALF2DR4NNS3OHEBOS7CGEXY2J4VU64IM7ZL5N`: per-agent budget, intent binding (recipient/asset/amount), deterministic request id, duplicates/replays rejected; 15 contract tests
+- [x] Execute with **Circle testnet USDC** CONFIRMED - tx `2e8c13fab4feb88a451ec617dc9c5a129a600e7e6dc62c1868d67336702f8353` - `bun run stellar-soroban-policy-evidence` -> `evidence/stellar-soroban-policy/manifest.json`
 - [ ] Re-run evidence before final Build submit if manifest timestamp stale
 
 ### Site & repo
@@ -34,6 +36,8 @@
 | --- | --- |
 | **Start — public proof** | https://railguard-site.vercel.app/proof/stellar-testnet |
 | Horizon tx | https://horizon-testnet.stellar.org/transactions/3dc3225844f711f9f96ead65690d224b7ccfd616d1da5387df6bfc63bfb8e437 |
+| Soroban policy contract | https://stellar.expert/explorer/testnet/contract/CBUY5JNZEGYR7I3QJEIALF2DR4NNS3OHEBOS7CGEXY2J4VU64IM7ZL5N |
+| Soroban execute (USDC) | https://stellar.expert/explorer/testnet/tx/2e8c13fab4feb88a451ec617dc9c5a129a600e7e6dc62c1868d67336702f8353 |
 | Stellar page | https://railguard-site.vercel.app/ecosystems/stellar |
 | Reproduce | `bun run stellar-testnet-evidence` (https://github.com/prasanthkuna/railguard-gateway) |
 | Failure Lab | https://railguard-site.vercel.app/attack |

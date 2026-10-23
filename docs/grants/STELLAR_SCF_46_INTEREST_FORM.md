@@ -39,7 +39,7 @@ v0.1 alpha · testnet-verified OSS.
 
 Stellar: Horizon testnet CONFIRMED. Proof https://railguard-site.vercel.app/proof/stellar-testnet · tx https://horizon-testnet.stellar.org/transactions/3dc3225844f711f9f96ead65690d224b7ccfd616d1da5387df6bfc63bfb8e437 · repro bun run stellar-testnet-evidence
 
-Cross-chain (not Stellar TVL): EVM Sepolia SETTLED reference https://railguard-site.vercel.app/proof/arbitrum-sepolia · Failure Lab https://railguard-site.vercel.app/attack
+Cross-chain (not Stellar TVL): EVM Sepolia CONFIRMED reference https://railguard-site.vercel.app/proof/arbitrum-sepolia · Failure Lab https://railguard-site.vercel.app/attack
 
 https://railguard-site.vercel.app/ecosystems/stellar · https://github.com/prasanthkuna/railguard-gateway
 
@@ -72,7 +72,7 @@ Tech stack: TypeScript/Bun, Horizon REST, existing Railguard kernel (intent, gra
 
 ### Submitter type *
 
-**Select:** **Individual** (or **Solo founder** / **Single founder** if that is the label).
+**Select:** **Individual** (or the closest solo option).
 
 ### Email *
 
@@ -83,15 +83,15 @@ Tech stack: TypeScript/Bun, Horizon REST, existing Railguard kernel (intent, gra
 ### Team Description *
 
 ```
-Team size: 1 (solo founder).
+Team size: 1 (solo builder).
 
-Prashanth Kuna — full-stack engineer (TypeScript, Go, Solidity); building Railguard open-source financial execution firewall for AI agents. Shipped Stellar Horizon testnet CONFIRMED evidence; additional EVM testnet reference (Sepolia SETTLED) using the same verify-and-proof pattern.
+Prasanth Kuna — full-stack engineer (TypeScript, Go, Solidity); building Railguard open-source financial execution firewall for AI agents. Shipped Stellar Horizon testnet CONFIRMED evidence; additional EVM testnet reference (Sepolia CONFIRMED) using the same verify-and-proof pattern.
 
 LinkedIn: https://www.linkedin.com/in/prasanth-kuna-1463631b3/
 
 Prior experience: enterprise backend / platform engineering (payments-adjacent systems); not a first-time builder for production software. No separate company entity required for this interest form.
 
-AI disclosure: AI tools used for documentation, tests, and grant drafting; architecture and settlement verification code reviewed and maintained by founder.
+AI disclosure: AI tools used for documentation, tests, and grant drafting; architecture and settlement verification code reviewed and maintained by Prasanth Kuna.
 ```
 
 ---

@@ -64,7 +64,8 @@ test.describe("Marketing site", () => {
   test("stellar public proof page", async ({ page }) => {
     await page.goto("/proof/stellar-testnet")
     await expect(page.getByRole("heading", { name: /Verified testnet settlement/i })).toBeVisible()
-    await expect(page.getByText("CONFIRMED")).toBeVisible()
+    await expect(page.getByText("CONFIRMED").first()).toBeVisible()
+    await expect(page.getByRole("heading", { name: /Soroban policy contract/i })).toBeVisible()
   })
 })
 

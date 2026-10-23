@@ -42,6 +42,27 @@ add(
   readme,
 )
 
+const SOROBAN_CONTRACT = "CBUY5JNZEGYR7I3QJEIALF2DR4NNS3OHEBOS7CGEXY2J4VU64IM7ZL5N"
+const sorobanManifestPath = join(root, "evidence", "stellar-soroban-policy", "manifest.json")
+if (existsSync(sorobanManifestPath)) {
+  const m = JSON.parse(readFileSync(sorobanManifestPath, "utf8")) as {
+    status?: string
+    contract?: { id?: string }
+  }
+  add(
+    "evidence/stellar-soroban-policy manifest",
+    m.status === "CONFIRMED" && m.contract?.id === SOROBAN_CONTRACT,
+    `status=${m.status} contract=${m.contract?.id?.slice(0, 8)}`,
+  )
+} else {
+  add("evidence/stellar-soroban-policy manifest", false, "missing file")
+}
+add(
+  "Soroban policy contract source",
+  existsSync(join(root, "contracts", "soroban", "railguard-policy", "contracts", "railguard-policy", "src", "lib.rs")),
+  "contracts/soroban/railguard-policy",
+)
+
 const interestForm = join(root, "docs", "grants", "STELLAR_SCF_46_INTEREST_FORM.md")
 add("STELLAR_SCF_46_INTEREST_FORM.md", existsSync(interestForm), interestForm)
 
@@ -74,7 +95,7 @@ const urlChecks: { name: string; url: string; bodyMust?: string[] }[] = [
   {
     name: "public Stellar proof page",
     url: PUBLIC_PROOF,
-    bodyMust: ["CONFIRMED", TX.slice(0, 8), "Horizon"],
+    bodyMust: ["CONFIRMED", TX.slice(0, 8), "Horizon", "Soroban policy contract", SOROBAN_CONTRACT],
   },
   {
     name: "site stellar ecosystem",
