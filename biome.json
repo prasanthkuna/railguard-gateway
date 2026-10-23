@@ -13,6 +13,7 @@
       "scripts/**",
       "coinbase.code-workspace",
       "docs/**",
+      "evidence/**",
       ".vercel/**",
       ".agents/**",
       "services/gateway-dotnet/**/obj/**"

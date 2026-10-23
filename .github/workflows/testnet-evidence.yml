@@ -18,6 +18,10 @@ jobs:
           node-version: "20"
       - run: bun install
       - name: Base Sepolia settlement evidence
+        # Optional private RPC; the script falls back to public Base Sepolia RPCs
+        # with retries and backoff when this secret is unset.
+        env:
+          BASE_SEPOLIA_RPC_URL: ${{ secrets.BASE_SEPOLIA_RPC_URL }}
         run: bun run testnet-evidence
       - uses: actions/upload-artifact@v4
         with:
