@@ -10,6 +10,7 @@
       "apps/site/next-env.d.ts",
       "apps/video/**",
       "x402-guard/**",
+      "packages/rails/paybox-plugin/**",
       "scripts/**",
       "coinbase.code-workspace",
       "docs/**",
