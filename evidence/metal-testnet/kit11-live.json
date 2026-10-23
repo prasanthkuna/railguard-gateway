@@ -1,0 +1,523 @@
+{
+  "kind": "railguard.metal.kit11.live",
+  "runId": "kit11-20261023T0437",
+  "generatedAt": "2026-10-23T04:43:31.766Z",
+  "network": "eip155:63825",
+  "explorer": "https://testnet.metalntwx.com",
+  "facilitator": "https://x402-testnet.metalntwx.com/x402/facilitator",
+  "model": "gemini-3.8-flash",
+  "treasury": "airwallex-sandbox",
+  "addresses": {
+    "account": "0x7C2AE2f9DeD3ff262790b5F6a95B0C7AA1828F5B",
+    "customerAccount": "0x73101E8E7eCB14c3cd875a77Dd330a60a077aCCF",
+    "upstream": "0x0E2Fe5DD558e1D72EfDdF418715212a8e9c8B843",
+    "bridge": "0xBCE789A230aa93364cF0dC0ca13BCfcec9DE264e"
+  },
+  "funding": {
+    "businessBalance": "20",
+    "customerTx": "0xbddebca8bda08081bfc77e26fe6983a3079a7afd65f7667879440a2957d7e95f"
+  },
+  "mandates": {
+    "sourcing": "0x06e300a1f3cbe8e9a2300738a68e511b7208c19b6faac747626f29703e9520aa",
+    "support": "0x3d628b71c68f6b3f4f7eda9c70bf698d3c408742ed2726894ad6061edf7eed6c",
+    "treasury": "0x26c1d6aa4a49006c07d30310bcf8ea5cf9e18b6ddebb811118e1dd9c4bc5c7b6",
+    "customer": "0xeeb307b7e5bc7154c7d4500d701d7e2c80578406171418d058968d4edfbae0f3"
+  },
+  "bindTx": {
+    "sourcing": "0x507fa355f84345ed42332ec410bbf4194a7d58b8ccc99cc10a606fa670b10f4a",
+    "support": "0xc5976d6e5ffe330efbf676e120c922e494b87cc737e235372c83e79b88f126c4",
+    "treasury": "0x6c4888f1ee179fbb18d0fca6c4f49a78c2ba6bb75a563779822a6a355400d0f4",
+    "customer": "0x58809bd67927619fc65a67cae1b963619b0667de3e6a2acf66aeb4c554106647"
+  },
+  "result": {
+    "runId": "kit11-20261023T0437",
+    "chain": "metal-testnet",
+    "treasuryMode": "airwallex-sandbox",
+    "addresses": {
+      "account": "0x7C2AE2f9DeD3ff262790b5F6a95B0C7AA1828F5B",
+      "upstream": "0x0E2Fe5DD558e1D72EfDdF418715212a8e9c8B843",
+      "bridge": "0xBCE789A230aa93364cF0dC0ca13BCfcec9DE264e",
+      "customerAccount": "0x73101E8E7eCB14c3cd875a77Dd330a60a077aCCF"
+    },
+    "events": [
+      {
+        "at": "2026-10-23T04:38:41.504Z",
+        "step": "MANDATES_BOUND",
+        "actor": "owner",
+        "detail": "sourcing 10.00 (cap 0.03), support 4.00, treasury 6.00: 20.00 of 20.00 *USDZ"
+      },
+      {
+        "at": "2026-10-23T04:38:49.982Z",
+        "step": "QUERY_SOLD",
+        "actor": "customer-agent",
+        "detail": "order 1: buyer paid 0.05 with a signed order; sourcing paid upstream 0.02",
+        "outcome": "SOLD",
+        "transaction": "0x127f7107f2fcdd66fee44c011952039a5bcb8556c18bd2790575e7bb033a6f9d"
+      },
+      {
+        "at": "2026-10-23T04:39:02.910Z",
+        "step": "QUERY_SOLD",
+        "actor": "customer-agent",
+        "detail": "order 2: buyer paid 0.05 with a signed order; sourcing paid upstream 0.02",
+        "outcome": "SOLD",
+        "transaction": "0xe946a4f6e9582059a14da889858b57ab9de8893d3cb2206a38ea560d52acc9ee"
+      },
+      {
+        "at": "2026-10-23T04:39:13.843Z",
+        "step": "QUERY_SOLD",
+        "actor": "customer-agent",
+        "detail": "order 3: buyer paid 0.05 with a signed order; sourcing paid upstream 0.02",
+        "outcome": "SOLD",
+        "transaction": "0xfaea57165e024fbb13772b885a1ab786fec0ff31c0e842394b097e2f564b9c3d"
+      },
+      {
+        "at": "2026-10-23T04:39:13.843Z",
+        "step": "UPSTREAM_PRICE_RAISED",
+        "actor": "railguard",
+        "detail": "upstream 0.02 -> 0.04 *USDZ, above the sourcing cap 0.03"
+      },
+      {
+        "at": "2026-10-23T04:39:19.577Z",
+        "step": "RECONCILED",
+        "actor": "railguard",
+        "detail": "order 4: /settlements says not settled",
+        "outcome": "NOT_CHARGED"
+      },
+      {
+        "at": "2026-10-23T04:39:19.577Z",
+        "step": "QUERY_NOT_CHARGED",
+        "actor": "sourcing-agent",
+        "detail": "order 4: upstream purchase at 0.04 refused (mandate_cap_exceeded); route answered an error, buyer not charged",
+        "outcome": "NOT_CHARGED"
+      },
+      {
+        "at": "2026-10-23T04:39:27.459Z",
+        "step": "REFUSAL_RECORDED",
+        "actor": "railguard",
+        "detail": "the account refused 0.04 to upstream: mandate_cap_exceeded (the amount is above the mandate's per-payment cap); recorded on chain, moves nothing",
+        "transaction": "0x9139ec9ee4ca8462e6aa5898171ec14ec3376a24d5fd9a0c707846835b4bb875",
+        "requestId": "rg_ab7caaa2f662151819b941d949a5bc75920105ee",
+        "outcome": "REFUSED"
+      },
+      {
+        "at": "2026-10-23T04:39:38.892Z",
+        "step": "REFUSAL_VERIFIED",
+        "actor": "railguard",
+        "detail": "mandate verify (sourcing): verified, 3 payments, 1 refusals",
+        "outcome": "VERIFIED"
+      },
+      {
+        "at": "2026-10-23T04:40:46.289Z",
+        "step": "REBALANCE_PROPOSED",
+        "actor": "treasury-agent",
+        "detail": "option C: Raise the query price to 7 cents and move 100 cents from refunds. Option C maintains a healthy margin to cover increased upstream costs, which is crucial for profitability. This cost of potential customer churn is less severe than the critical risks of a late EUR licence fee or severely limited refunds. (gemini-2.5-flash)",
+        "requestId": "apr_185ce2053957b60aa6380c3c"
+      },
+      {
+        "at": "2026-10-23T04:40:46.289Z",
+        "step": "LIMITS_APPROVED",
+        "actor": "approver",
+        "detail": "approved apr_185ce2053957b60aa6380c3c",
+        "requestId": "apr_185ce2053957b60aa6380c3c"
+      },
+      {
+        "at": "2026-10-23T04:41:18.833Z",
+        "step": "MANDATE_REPLACED",
+        "actor": "owner",
+        "detail": "support: cap 0.25, budget 3.00 (spend carried over; old credential revoked)",
+        "transaction": "0x6f13990ea97c82d0bba5d8197ca6b94fe8efecd75ea79e47b438129a0b4d6f95"
+      },
+      {
+        "at": "2026-10-23T04:41:26.481Z",
+        "step": "MANDATE_REPLACED",
+        "actor": "owner",
+        "detail": "sourcing: cap 0.04, budget 11.00 (spend carried over; old credential revoked)",
+        "transaction": "0x993b0637b2fdd1007c378d06c37d4a50adc58962279ce1a669a22f7a111a4590"
+      },
+      {
+        "at": "2026-10-23T04:41:26.481Z",
+        "step": "QUERY_PRICE_CHANGED",
+        "actor": "owner",
+        "detail": "query price now 0.07 *USDZ"
+      },
+      {
+        "at": "2026-10-23T04:41:37.008Z",
+        "step": "QUERY_SOLD",
+        "actor": "customer-agent",
+        "detail": "order 5: buyer paid 0.07 with a signed order; sourcing paid upstream 0.04",
+        "outcome": "SOLD",
+        "transaction": "0x718bb99fb68e2c535916a4cd295ee5d79edc35af16d7e07e291d98b7ee2ce197"
+      },
+      {
+        "at": "2026-10-23T04:41:44.805Z",
+        "step": "QUERY_SOLD",
+        "actor": "customer-agent",
+        "detail": "order 6: buyer paid 0.07 with a signed order; sourcing paid upstream 0.04",
+        "outcome": "SOLD",
+        "transaction": "0xc33cbaa3e2201f44625d71eba2fe7808065b81c673e86d32d502c9ba17f8ebac"
+      },
+      {
+        "at": "2026-10-23T04:41:53.294Z",
+        "step": "SIGNED_ORDER_CHECKED",
+        "actor": "railguard",
+        "detail": "order 1: signed order verified against the payment on chain (buyer's agent placed it)",
+        "outcome": "PLACED_BY_BUYER",
+        "transaction": "0x127f7107f2fcdd66fee44c011952039a5bcb8556c18bd2790575e7bb033a6f9d"
+      },
+      {
+        "at": "2026-10-23T04:42:00.629Z",
+        "step": "SIGNED_ORDER_CHECKED",
+        "actor": "railguard",
+        "detail": "order 2: signed order verified against the payment on chain (buyer's agent placed it)",
+        "outcome": "PLACED_BY_BUYER",
+        "transaction": "0xe946a4f6e9582059a14da889858b57ab9de8893d3cb2206a38ea560d52acc9ee"
+      },
+      {
+        "at": "2026-10-23T04:42:08.044Z",
+        "step": "SIGNED_ORDER_CHECKED",
+        "actor": "railguard",
+        "detail": "order 3: signed order verified against the payment on chain (buyer's agent placed it)",
+        "outcome": "PLACED_BY_BUYER",
+        "transaction": "0xfaea57165e024fbb13772b885a1ab786fec0ff31c0e842394b097e2f564b9c3d"
+      },
+      {
+        "at": "2026-10-23T04:42:39.005Z",
+        "step": "DISPUTE_JUDGED",
+        "actor": "support-agent",
+        "detail": "refund orders [2]: Order 2 delivered a price of 0.00 and a stale timestamp, which are considered wrong data. (gemini-2.5-flash)"
+      },
+      {
+        "at": "2026-10-23T04:42:46.838Z",
+        "step": "PAYOUT_PAID",
+        "actor": "support-agent",
+        "detail": "support paid 0.05 *USDZ to 0x73101E8E…: PAID",
+        "transaction": "0x3ec8019584615902e94c1da2cc49da4d9d691ea4fe37220b3b5f7f126ac7fb42",
+        "requestId": "rg_7e4a430a6b6a1ce9ae716668fd2c28bc06653d49",
+        "outcome": "PAID"
+      },
+      {
+        "at": "2026-10-23T04:42:53.475Z",
+        "step": "PAYOUT_PAID",
+        "actor": "treasury-agent",
+        "detail": "treasury paid 0.10 *USDZ to 0xBCE789A2…: PAID",
+        "transaction": "0x020a0c49f2c43074949893e34334ccd03c3e6bfa13b46e14515fa7b86ccc997c",
+        "requestId": "rg_1e4894c6570fb9e80a06d0ade8b845bd2101790f",
+        "outcome": "PAID"
+      },
+      {
+        "at": "2026-10-23T04:43:04.307Z",
+        "step": "DUPLICATE_PAYOUT_BLOCKED",
+        "actor": "railguard",
+        "detail": "re-sent the same payout (lost-answer drill): already paid, nothing sent",
+        "requestId": "rg_1e4894c6570fb9e80a06d0ade8b845bd2101790f",
+        "outcome": "BLOCKED"
+      },
+      {
+        "at": "2026-10-23T04:43:05.670Z",
+        "step": "EARNINGS_CREDITED",
+        "actor": "airwallex",
+        "detail": "deposit 0.10 USD, reference = Metal tx (PENDING)",
+        "transaction": "0x020a0c49f2c43074949893e34334ccd03c3e6bfa13b46e14515fa7b86ccc997c",
+        "requestId": "5344aea1-65a3-4892-b45e-a3eef664bd3d"
+      },
+      {
+        "at": "2026-10-23T04:43:06.115Z",
+        "step": "FX_CONVERTED",
+        "actor": "treasury-agent",
+        "detail": "bought 25 EUR for 28.31 USD (SETTLED)",
+        "requestId": "ae9bde08-1f0a-4042-ae0f-fc68423a3232"
+      },
+      {
+        "at": "2026-10-23T04:43:07.646Z",
+        "step": "LICENCE_FEE_PAID",
+        "actor": "airwallex",
+        "detail": "EUR 25.00 licence fee transfer 336cc4a3-d9eb-4e42-9e53-d2ee2ef94255 (SCHEDULED)",
+        "requestId": "rg_0d3488f569bd9fa3061125a5580a242a78d54a2b",
+        "outcome": "SCHEDULED"
+      },
+      {
+        "at": "2026-10-23T04:43:17.033Z",
+        "step": "MANDATE_VERIFIED",
+        "actor": "railguard",
+        "detail": "sourcing: verified (2 payments, 0 refusals)",
+        "outcome": "VERIFIED"
+      },
+      {
+        "at": "2026-10-23T04:43:24.618Z",
+        "step": "MANDATE_VERIFIED",
+        "actor": "railguard",
+        "detail": "support: verified (1 payments, 0 refusals)",
+        "outcome": "VERIFIED"
+      },
+      {
+        "at": "2026-10-23T04:43:31.764Z",
+        "step": "MANDATE_VERIFIED",
+        "actor": "railguard",
+        "detail": "treasury: verified (1 payments, 0 refusals)",
+        "outcome": "VERIFIED"
+      }
+    ],
+    "sales": [
+      {
+        "orderNo": 1,
+        "outcome": "SOLD",
+        "queryPriceCents": 5,
+        "upstreamPriceCents": 2,
+        "customerNonce": "0xeeb307b7e5bc7154c7d4500dc60e3c9ce811c44fc2312b506155a60e058b4b4c",
+        "customerTx": "0x127f7107f2fcdd66fee44c011952039a5bcb8556c18bd2790575e7bb033a6f9d",
+        "signedOffer": "eyJhbGciOiJFUzI1NiIsInR5cCI6ImtiLXNkLWp3dCIsImtpZCI6IlllNVNPX01Mc0JVSmJ2WnVCNWRNMm9KTTNMUEw0WElnaDM4Z25RZU1KLWMifQ.eyJub25jZSI6Incwb1FFNXdVY0xXbWR4RWpIN1RDN2ciLCJhdWQiOiIweDdDMkFFMmY5RGVEM2ZmMjYyNzkwYjVGNmE5NUIwQzdBQTE4MjhGNUIiLCJzZF9oYXNoIjoiTGJVM0dJREpXczNZZkRlb044T29RQmNmQWNrUl9NdVpnczhJdF9YdUdzYyIsImlhdCI6MTc5MjczMDMxNywiZGVsZWdhdGVfcGF5bG9hZCI6W3siLi4uIjoid2lZaUMtQzRPNFQ2NVBqX1VFdU9OUTlDbzhmU1IycXRzWWFuclViSzEwZyJ9XSwiX3NkX2FsZyI6InNoYS0yNTYiLCJpc3MiOiJZZTVTT19NTHNCVUpidlp1QjVkTTJvSk0zTFBMNFhJZ2gzOGduUWVNSi1jIiwiZXhwIjoxNzkyNzMwNjIyfQ.Cni8OYqX3bUOHW_g9ff_VVs91m1f5R_F9YVGUtq4Qi8pcddW9EEFqX_jNFcft3E0g5zh_PKrspz6HoueSrN6-w~WyI3cGMwamVSdGxLMGxDTDVIRklvbGJ3Iix7InZjdCI6Im1hbmRhdGUuY2hlY2tvdXQuMSIsImNoZWNrb3V0X2p3dCI6ImV5SmhiR2NpT2lKRlV6STFOaUlzSW5SNWNDSTZJa3BYVkNJc0ltdHBaQ0k2SWxsbE5WTlBYMDFNYzBKVlNtSjJXblZDTldSTk1tOUtUVE5NVUV3MFdFbG5hRE00WjI1UlpVMUtMV01pZlEuZXlKaGJXOTFiblFpT2lJMU1EQXdNREF3TURBd01EQXdNREF3TUNJc0ltRnpjMlYwSWpvaU1IZ3dNREF3TURBd01EQXdNREF3TURBd01EQXdNREF3TURBd01EQXdNREF3TURBd01EQkNOV1ExSWl3aVpYaDBjbUVpT25zaWJtRnRaU0k2SWxWVFJDQmFaWEp2SWl3aWNISnBiV0Z5ZVZSNWNHVWlPaUpVY21GdWMyWmxjbGRwZEdoQmRYUm9iM0pwZW1GMGFXOXVJaXdpY21WemIzVnlZMlVpT2lKSFJWUWdMM0YxWlhKNUlpd2ljMmxuYm1Wa1QyWm1aWElpT2lKeVpYRjFhWEpsWkNJc0luWmxjbk5wYjI0aU9pSXhJbjBzSW1sa0lqb2lNSGczUXpKQlJUSm1PVVJsUkRObVpqSTJNamM1TUdJMVJqWmhPVFZDTUVNM1FVRXhPREk0UmpWQ0lpd2liV0Y0VkdsdFpXOTFkRk5sWTI5dVpITWlPak13TUN3aWJtVjBkMjl5YXlJNkltVnBjREUxTlRvMk16Z3lOU0lzSW5CaGVWUnZJam9pTUhnM1F6SkJSVEptT1VSbFJETm1aakkyTWpjNU1HSTFSalpoT1RWQ01FTTNRVUV4T0RJNFJqVkNJaXdpYzJOb1pXMWxJam9pWlhoaFkzUWlmUS5LM1o3dGtrdThRYTdGeDZ4UzM2TnoxVW5DZ3hqT0JTYWQ2cFN4VDdQQlJvaDExaDZVQ0ctMTBaSzhRU3YwaWNlRkpPRTEyTkpfNVFNOE5jQzZzV0ROdyIsImNoZWNrb3V0X2hhc2giOiJnajdlV0JkUy00d2p1a0U4X2dMbnFJRlVJTkpHZjNCUjBUTEhHbG9mekhZIiwibGluZV9pdGVtcyI6W3siaWQiOiJHRVQgL3F1ZXJ5IiwicXVhbnRpdHkiOjF9XX1d~",
+        "sourcingTx": "0x74fe00e9f394b847d89e69e664d87aee651fc0a822b9234cb06eeebfa7ad7490",
+        "delivered": {
+          "symbol": "ACME",
+          "price": "101.26",
+          "asOf": "2026-10-23T04:38:46.252Z",
+          "source": "upstream-metal-testnet"
+        }
+      },
+      {
+        "orderNo": 2,
+        "outcome": "SOLD",
+        "queryPriceCents": 5,
+        "upstreamPriceCents": 2,
+        "customerNonce": "0xeeb307b7e5bc7154c7d4500d439246f205015594337a9dc6934aa76e25aa90ea",
+        "customerTx": "0xe946a4f6e9582059a14da889858b57ab9de8893d3cb2206a38ea560d52acc9ee",
+        "signedOffer": "eyJhbGciOiJFUzI1NiIsInR5cCI6ImtiLXNkLWp3dCIsImtpZCI6IlllNVNPX01Mc0JVSmJ2WnVCNWRNMm9KTTNMUEw0WElnaDM4Z25RZU1KLWMifQ.eyJub25jZSI6IlpMTXNKZG00WTM5Vm1RRXZpbUg0S2ciLCJhdWQiOiIweDdDMkFFMmY5RGVEM2ZmMjYyNzkwYjVGNmE5NUIwQzdBQTE4MjhGNUIiLCJzZF9oYXNoIjoiTGJVM0dJREpXczNZZkRlb044T29RQmNmQWNrUl9NdVpnczhJdF9YdUdzYyIsImlhdCI6MTc5MjczMDMyNSwiZGVsZWdhdGVfcGF5bG9hZCI6W3siLi4uIjoiX2VESGJjb3BlLVZvVkUteXdGeDRSSGU5S1lOS3hmS0JoX3pDLVlNT0wtOCJ9XSwiX3NkX2FsZyI6InNoYS0yNTYiLCJpc3MiOiJZZTVTT19NTHNCVUpidlp1QjVkTTJvSk0zTFBMNFhJZ2gzOGduUWVNSi1jIiwiZXhwIjoxNzkyNzMwNjMwfQ.06o3YrU28v4lMclM4VK0LIseSN8jUbZkPSEF4j2eB7VuDorF9I2Y_T8s83YbginP_okkLgHDzSwNFEBa8pFGjQ~WyIwWDVnSlNGUUVUbzZ0UXYtWm83MWNRIix7InZjdCI6Im1hbmRhdGUuY2hlY2tvdXQuMSIsImNoZWNrb3V0X2p3dCI6ImV5SmhiR2NpT2lKRlV6STFOaUlzSW5SNWNDSTZJa3BYVkNJc0ltdHBaQ0k2SWxsbE5WTlBYMDFNYzBKVlNtSjJXblZDTldSTk1tOUtUVE5NVUV3MFdFbG5hRE00WjI1UlpVMUtMV01pZlEuZXlKaGJXOTFiblFpT2lJMU1EQXdNREF3TURBd01EQXdNREF3TUNJc0ltRnpjMlYwSWpvaU1IZ3dNREF3TURBd01EQXdNREF3TURBd01EQXdNREF3TURBd01EQXdNREF3TURBd01EQkNOV1ExSWl3aVpYaDBjbUVpT25zaWJtRnRaU0k2SWxWVFJDQmFaWEp2SWl3aWNISnBiV0Z5ZVZSNWNHVWlPaUpVY21GdWMyWmxjbGRwZEdoQmRYUm9iM0pwZW1GMGFXOXVJaXdpY21WemIzVnlZMlVpT2lKSFJWUWdMM0YxWlhKNUlpd2ljMmxuYm1Wa1QyWm1aWElpT2lKeVpYRjFhWEpsWkNJc0luWmxjbk5wYjI0aU9pSXhJbjBzSW1sa0lqb2lNSGczUXpKQlJUSm1PVVJsUkRObVpqSTJNamM1TUdJMVJqWmhPVFZDTUVNM1FVRXhPREk0UmpWQ0lpd2liV0Y0VkdsdFpXOTFkRk5sWTI5dVpITWlPak13TUN3aWJtVjBkMjl5YXlJNkltVnBjREUxTlRvMk16Z3lOU0lzSW5CaGVWUnZJam9pTUhnM1F6SkJSVEptT1VSbFJETm1aakkyTWpjNU1HSTFSalpoT1RWQ01FTTNRVUV4T0RJNFJqVkNJaXdpYzJOb1pXMWxJam9pWlhoaFkzUWlmUS5LM1o3dGtrdThRYTdGeDZ4UzM2TnoxVW5DZ3hqT0JTYWQ2cFN4VDdQQlJvaDExaDZVQ0ctMTBaSzhRU3YwaWNlRkpPRTEyTkpfNVFNOE5jQzZzV0ROdyIsImNoZWNrb3V0X2hhc2giOiJnajdlV0JkUy00d2p1a0U4X2dMbnFJRlVJTkpHZjNCUjBUTEhHbG9mekhZIiwibGluZV9pdGVtcyI6W3siaWQiOiJHRVQgL3F1ZXJ5IiwicXVhbnRpdHkiOjF9XX1d~",
+        "sourcingTx": "0x39188017ed3bb60fb4cd71d93ecc0389934023158ee5e105adeca07cde986c03",
+        "delivered": {
+          "symbol": "ACME",
+          "price": "0.00",
+          "asOf": "2026-01-01T00:00:00Z",
+          "source": "upstream-metal-testnet"
+        }
+      },
+      {
+        "orderNo": 3,
+        "outcome": "SOLD",
+        "queryPriceCents": 5,
+        "upstreamPriceCents": 2,
+        "customerNonce": "0xeeb307b7e5bc7154c7d4500db19754ea8a19bcf78b6796d8a007591e8c31e752",
+        "customerTx": "0xfaea57165e024fbb13772b885a1ab786fec0ff31c0e842394b097e2f564b9c3d",
+        "signedOffer": "eyJhbGciOiJFUzI1NiIsInR5cCI6ImtiLXNkLWp3dCIsImtpZCI6IlllNVNPX01Mc0JVSmJ2WnVCNWRNMm9KTTNMUEw0WElnaDM4Z25RZU1KLWMifQ.eyJub25jZSI6Ino0LS1zRTF5cFdPOVBrc3Rhby1uSFEiLCJhdWQiOiIweDdDMkFFMmY5RGVEM2ZmMjYyNzkwYjVGNmE5NUIwQzdBQTE4MjhGNUIiLCJzZF9oYXNoIjoiTGJVM0dJREpXczNZZkRlb044T29RQmNmQWNrUl9NdVpnczhJdF9YdUdzYyIsImlhdCI6MTc5MjczMDMzOCwiZGVsZWdhdGVfcGF5bG9hZCI6W3siLi4uIjoiRmkwUU9hSEpXYTlPRF9PTFZLNEQ5clZSWWZuWlUzNFZwMzhSX3NiU2luOCJ9XSwiX3NkX2FsZyI6InNoYS0yNTYiLCJpc3MiOiJZZTVTT19NTHNCVUpidlp1QjVkTTJvSk0zTFBMNFhJZ2gzOGduUWVNSi1jIiwiZXhwIjoxNzkyNzMwNjQzfQ.NHwmDvPcmg4upeEvKBw18cFe7xEAqorYfBISKL0iS6VqttgmrX_UsUwvo8FkSbxZ9NqqPeVw7ud00WrkRGhfDA~WyJYVGl0RzRnYUVIM1RjdFQ2cndoZkpnIix7InZjdCI6Im1hbmRhdGUuY2hlY2tvdXQuMSIsImNoZWNrb3V0X2p3dCI6ImV5SmhiR2NpT2lKRlV6STFOaUlzSW5SNWNDSTZJa3BYVkNJc0ltdHBaQ0k2SWxsbE5WTlBYMDFNYzBKVlNtSjJXblZDTldSTk1tOUtUVE5NVUV3MFdFbG5hRE00WjI1UlpVMUtMV01pZlEuZXlKaGJXOTFiblFpT2lJMU1EQXdNREF3TURBd01EQXdNREF3TUNJc0ltRnpjMlYwSWpvaU1IZ3dNREF3TURBd01EQXdNREF3TURBd01EQXdNREF3TURBd01EQXdNREF3TURBd01EQkNOV1ExSWl3aVpYaDBjbUVpT25zaWJtRnRaU0k2SWxWVFJDQmFaWEp2SWl3aWNISnBiV0Z5ZVZSNWNHVWlPaUpVY21GdWMyWmxjbGRwZEdoQmRYUm9iM0pwZW1GMGFXOXVJaXdpY21WemIzVnlZMlVpT2lKSFJWUWdMM0YxWlhKNUlpd2ljMmxuYm1Wa1QyWm1aWElpT2lKeVpYRjFhWEpsWkNJc0luWmxjbk5wYjI0aU9pSXhJbjBzSW1sa0lqb2lNSGczUXpKQlJUSm1PVVJsUkRObVpqSTJNamM1TUdJMVJqWmhPVFZDTUVNM1FVRXhPREk0UmpWQ0lpd2liV0Y0VkdsdFpXOTFkRk5sWTI5dVpITWlPak13TUN3aWJtVjBkMjl5YXlJNkltVnBjREUxTlRvMk16Z3lOU0lzSW5CaGVWUnZJam9pTUhnM1F6SkJSVEptT1VSbFJETm1aakkyTWpjNU1HSTFSalpoT1RWQ01FTTNRVUV4T0RJNFJqVkNJaXdpYzJOb1pXMWxJam9pWlhoaFkzUWlmUS5LM1o3dGtrdThRYTdGeDZ4UzM2TnoxVW5DZ3hqT0JTYWQ2cFN4VDdQQlJvaDExaDZVQ0ctMTBaSzhRU3YwaWNlRkpPRTEyTkpfNVFNOE5jQzZzV0ROdyIsImNoZWNrb3V0X2hhc2giOiJnajdlV0JkUy00d2p1a0U4X2dMbnFJRlVJTkpHZjNCUjBUTEhHbG9mekhZIiwibGluZV9pdGVtcyI6W3siaWQiOiJHRVQgL3F1ZXJ5IiwicXVhbnRpdHkiOjF9XX1d~",
+        "sourcingTx": "0x7df20cb189e3dd58885ccd29aac60c672650285fc0b0fdcd5233833120cb0219",
+        "delivered": {
+          "symbol": "ACME",
+          "price": "101.28",
+          "asOf": "2026-10-23T04:39:08.398Z",
+          "source": "upstream-metal-testnet"
+        }
+      },
+      {
+        "orderNo": 4,
+        "outcome": "NOT_CHARGED",
+        "queryPriceCents": 5,
+        "upstreamPriceCents": 4,
+        "customerNonce": "0xeeb307b7e5bc7154c7d4500d74cc1962e51f7405129d40db41a6c5e0151b21c7",
+        "refusal": "mandate_cap_exceeded",
+        "reconciled": "NOT_FOUND"
+      },
+      {
+        "orderNo": 5,
+        "outcome": "SOLD",
+        "queryPriceCents": 7,
+        "upstreamPriceCents": 4,
+        "customerNonce": "0xeeb307b7e5bc7154c7d4500d4ae4bd361cd46c8cd789cea35437889c0695f842",
+        "customerTx": "0x718bb99fb68e2c535916a4cd295ee5d79edc35af16d7e07e291d98b7ee2ce197",
+        "signedOffer": "eyJhbGciOiJFUzI1NiIsInR5cCI6ImtiLXNkLWp3dCIsImtpZCI6IlllNVNPX01Mc0JVSmJ2WnVCNWRNMm9KTTNMUEw0WElnaDM4Z25RZU1KLWMifQ.eyJub25jZSI6IkdEc1FicVBxOW5neTA0Nng2Z1owc1EiLCJhdWQiOiIweDdDMkFFMmY5RGVEM2ZmMjYyNzkwYjVGNmE5NUIwQzdBQTE4MjhGNUIiLCJzZF9oYXNoIjoiTGJVM0dJREpXczNZZkRlb044T29RQmNmQWNrUl9NdVpnczhJdF9YdUdzYyIsImlhdCI6MTc5MjczMDQ4MiwiZGVsZWdhdGVfcGF5bG9hZCI6W3siLi4uIjoiT3A3SWhRUXEzeTRiTjRudGJBbl8wN2dKRzREV2JNSTFzOVl2SG5lT0N1byJ9XSwiX3NkX2FsZyI6InNoYS0yNTYiLCJpc3MiOiJZZTVTT19NTHNCVUpidlp1QjVkTTJvSk0zTFBMNFhJZ2gzOGduUWVNSi1jIiwiZXhwIjoxNzkyNzMwNzg3fQ.GcNHuhtK6cGh9mRzlYlbtoOFMpU1CP8J2o8FHcdsXRskxZfq5HEkts-viGlFNqlwSIHI0DhH2-ZM0Jr4ZqTYEA~WyJpOTRTM2loZlV6YlN4VFRlY2tIZmVBIix7InZjdCI6Im1hbmRhdGUuY2hlY2tvdXQuMSIsImNoZWNrb3V0X2p3dCI6ImV5SmhiR2NpT2lKRlV6STFOaUlzSW5SNWNDSTZJa3BYVkNJc0ltdHBaQ0k2SWxsbE5WTlBYMDFNYzBKVlNtSjJXblZDTldSTk1tOUtUVE5NVUV3MFdFbG5hRE00WjI1UlpVMUtMV01pZlEuZXlKaGJXOTFiblFpT2lJM01EQXdNREF3TURBd01EQXdNREF3TUNJc0ltRnpjMlYwSWpvaU1IZ3dNREF3TURBd01EQXdNREF3TURBd01EQXdNREF3TURBd01EQXdNREF3TURBd01EQkNOV1ExSWl3aVpYaDBjbUVpT25zaWJtRnRaU0k2SWxWVFJDQmFaWEp2SWl3aWNISnBiV0Z5ZVZSNWNHVWlPaUpVY21GdWMyWmxjbGRwZEdoQmRYUm9iM0pwZW1GMGFXOXVJaXdpY21WemIzVnlZMlVpT2lKSFJWUWdMM0YxWlhKNUlpd2ljMmxuYm1Wa1QyWm1aWElpT2lKeVpYRjFhWEpsWkNJc0luWmxjbk5wYjI0aU9pSXhJbjBzSW1sa0lqb2lNSGczUXpKQlJUSm1PVVJsUkRObVpqSTJNamM1TUdJMVJqWmhPVFZDTUVNM1FVRXhPREk0UmpWQ0lpd2liV0Y0VkdsdFpXOTFkRk5sWTI5dVpITWlPak13TUN3aWJtVjBkMjl5YXlJNkltVnBjREUxTlRvMk16Z3lOU0lzSW5CaGVWUnZJam9pTUhnM1F6SkJSVEptT1VSbFJETm1aakkyTWpjNU1HSTFSalpoT1RWQ01FTTNRVUV4T0RJNFJqVkNJaXdpYzJOb1pXMWxJam9pWlhoaFkzUWlmUS5SVGRVdFFTOUxZN2czdjc0TWVLMUljTWFEU25XaHk4SmR1cGtNaGl4dG9ZLVNRQU9kWllhb19ZemVGZEZEZHdrR3J1bklOYkNoZnRzT0RxOTZEdlpLQSIsImNoZWNrb3V0X2hhc2giOiJPb1NOc0VFc3BIalBSbnNDekVzWEtTdUY5ampIRTRSdWFDWnpQWUxPeEEwIiwibGluZV9pdGVtcyI6W3siaWQiOiJHRVQgL3F1ZXJ5IiwicXVhbnRpdHkiOjF9XX1d~",
+        "sourcingTx": "0x19dae51b943cb5550994a8edfdcbb4f2ff03b61f0e92c8d6a0fb818931c0b556",
+        "delivered": {
+          "symbol": "ACME",
+          "price": "101.30",
+          "asOf": "2026-10-23T04:41:31.935Z",
+          "source": "upstream-metal-testnet"
+        }
+      },
+      {
+        "orderNo": 6,
+        "outcome": "SOLD",
+        "queryPriceCents": 7,
+        "upstreamPriceCents": 4,
+        "customerNonce": "0xeeb307b7e5bc7154c7d4500de6af33d380227eb133fdb0144d44f0c50c0049ed",
+        "customerTx": "0xc33cbaa3e2201f44625d71eba2fe7808065b81c673e86d32d502c9ba17f8ebac",
+        "signedOffer": "eyJhbGciOiJFUzI1NiIsInR5cCI6ImtiLXNkLWp3dCIsImtpZCI6IlllNVNPX01Mc0JVSmJ2WnVCNWRNMm9KTTNMUEw0WElnaDM4Z25RZU1KLWMifQ.eyJub25jZSI6IkVKNlgtODN4SEFLZ2pOTGV0bTRJWmciLCJhdWQiOiIweDdDMkFFMmY5RGVEM2ZmMjYyNzkwYjVGNmE5NUIwQzdBQTE4MjhGNUIiLCJzZF9oYXNoIjoiTGJVM0dJREpXczNZZkRlb044T29RQmNmQWNrUl9NdVpnczhJdF9YdUdzYyIsImlhdCI6MTc5MjczMDQ5MiwiZGVsZWdhdGVfcGF5bG9hZCI6W3siLi4uIjoiVDFEZERieVYyOUhzOEwwM1hlUE1RbW9lX1hBb1JscWpZa0hWbkdtaFdQMCJ9XSwiX3NkX2FsZyI6InNoYS0yNTYiLCJpc3MiOiJZZTVTT19NTHNCVUpidlp1QjVkTTJvSk0zTFBMNFhJZ2gzOGduUWVNSi1jIiwiZXhwIjoxNzkyNzMwNzk3fQ.CzeeU1OUZw7og8HIpohIOIGffE-W2N_iOtYfO0NoYZdVpY8k2aNcHG_smZKvZHj7nKp3ukYALPq-euXa3n7qow~WyJpMlZ3Rng2NWNycTJUNS0tOG1meWRnIix7InZjdCI6Im1hbmRhdGUuY2hlY2tvdXQuMSIsImNoZWNrb3V0X2p3dCI6ImV5SmhiR2NpT2lKRlV6STFOaUlzSW5SNWNDSTZJa3BYVkNJc0ltdHBaQ0k2SWxsbE5WTlBYMDFNYzBKVlNtSjJXblZDTldSTk1tOUtUVE5NVUV3MFdFbG5hRE00WjI1UlpVMUtMV01pZlEuZXlKaGJXOTFiblFpT2lJM01EQXdNREF3TURBd01EQXdNREF3TUNJc0ltRnpjMlYwSWpvaU1IZ3dNREF3TURBd01EQXdNREF3TURBd01EQXdNREF3TURBd01EQXdNREF3TURBd01EQkNOV1ExSWl3aVpYaDBjbUVpT25zaWJtRnRaU0k2SWxWVFJDQmFaWEp2SWl3aWNISnBiV0Z5ZVZSNWNHVWlPaUpVY21GdWMyWmxjbGRwZEdoQmRYUm9iM0pwZW1GMGFXOXVJaXdpY21WemIzVnlZMlVpT2lKSFJWUWdMM0YxWlhKNUlpd2ljMmxuYm1Wa1QyWm1aWElpT2lKeVpYRjFhWEpsWkNJc0luWmxjbk5wYjI0aU9pSXhJbjBzSW1sa0lqb2lNSGczUXpKQlJUSm1PVVJsUkRObVpqSTJNamM1TUdJMVJqWmhPVFZDTUVNM1FVRXhPREk0UmpWQ0lpd2liV0Y0VkdsdFpXOTFkRk5sWTI5dVpITWlPak13TUN3aWJtVjBkMjl5YXlJNkltVnBjREUxTlRvMk16Z3lOU0lzSW5CaGVWUnZJam9pTUhnM1F6SkJSVEptT1VSbFJETm1aakkyTWpjNU1HSTFSalpoT1RWQ01FTTNRVUV4T0RJNFJqVkNJaXdpYzJOb1pXMWxJam9pWlhoaFkzUWlmUS5SVGRVdFFTOUxZN2czdjc0TWVLMUljTWFEU25XaHk4SmR1cGtNaGl4dG9ZLVNRQU9kWllhb19ZemVGZEZEZHdrR3J1bklOYkNoZnRzT0RxOTZEdlpLQSIsImNoZWNrb3V0X2hhc2giOiJPb1NOc0VFc3BIalBSbnNDekVzWEtTdUY5ampIRTRSdWFDWnpQWUxPeEEwIiwibGluZV9pdGVtcyI6W3siaWQiOiJHRVQgL3F1ZXJ5IiwicXVhbnRpdHkiOjF9XX1d~",
+        "sourcingTx": "0x88200c25eb690a299dcf9ab9d53178eecaffbce34ac95960c0319b90f015559c",
+        "delivered": {
+          "symbol": "ACME",
+          "price": "101.31",
+          "asOf": "2026-10-23T04:41:41.697Z",
+          "source": "upstream-metal-testnet"
+        }
+      }
+    ],
+    "allocationBefore": {
+      "sourcing": {
+        "capCents": 3,
+        "budgetCents": 1000,
+        "payees": [
+          "0x0E2Fe5DD558e1D72EfDdF418715212a8e9c8B843"
+        ]
+      },
+      "support": {
+        "capCents": 25,
+        "budgetCents": 400,
+        "payees": []
+      },
+      "treasury": {
+        "capCents": 600,
+        "budgetCents": 600,
+        "payees": [
+          "0xBCE789A230aa93364cF0dC0ca13BCfcec9DE264e"
+        ]
+      }
+    },
+    "allocationAfter": {
+      "sourcing": {
+        "capCents": 4,
+        "budgetCents": 1100,
+        "payees": [
+          "0x0E2Fe5DD558e1D72EfDdF418715212a8e9c8B843"
+        ]
+      },
+      "support": {
+        "capCents": 25,
+        "budgetCents": 300,
+        "payees": []
+      },
+      "treasury": {
+        "capCents": 600,
+        "budgetCents": 600,
+        "payees": [
+          "0xBCE789A230aa93364cF0dC0ca13BCfcec9DE264e"
+        ]
+      }
+    },
+    "approved": true,
+    "verifications": {
+      "sourcing": {
+        "verified": true,
+        "payments": 2,
+        "refusals": 0,
+        "detail": "verified yes"
+      },
+      "support": {
+        "verified": true,
+        "payments": 1,
+        "refusals": 0,
+        "detail": "verified yes"
+      },
+      "treasury": {
+        "verified": true,
+        "payments": 1,
+        "refusals": 0,
+        "detail": "verified yes"
+      }
+    },
+    "invariants": {
+      "budgetsWithinTotal": true,
+      "customerNotChargedOnRefusal": true,
+      "earningsPaidOnce": true,
+      "noUnresolvedUnknown": true
+    },
+    "refusal": {
+      "reason": "mandate_cap_exceeded (the amount is above the mandate's per-payment cap)",
+      "recordedTx": "0x9139ec9ee4ca8462e6aa5898171ec14ec3376a24d5fd9a0c707846835b4bb875"
+    },
+    "proposal": {
+      "option": {
+        "id": "C",
+        "title": "Raise the query price to 7 cents and move 100 cents from refunds",
+        "allocation": {
+          "sourcing": {
+            "capCents": 4,
+            "budgetCents": 1100,
+            "payees": [
+              "0x0E2Fe5DD558e1D72EfDdF418715212a8e9c8B843"
+            ]
+          },
+          "support": {
+            "capCents": 25,
+            "budgetCents": 300,
+            "payees": []
+          },
+          "treasury": {
+            "capCents": 600,
+            "budgetCents": 600,
+            "payees": [
+              "0xBCE789A230aa93364cF0dC0ca13BCfcec9DE264e"
+            ]
+          }
+        },
+        "queryPriceCents": 7,
+        "marginCents": 3,
+        "tradeOff": "Keeps the margin, but buyers pay more and some may leave."
+      },
+      "decision": {
+        "optionId": "C",
+        "rationale": "Option C maintains a healthy margin to cover increased upstream costs, which is crucial for profitability. This cost of potential customer churn is less severe than the critical risks of a late EUR licence fee or severely limited refunds.",
+        "decidedBy": "gemini-2.5-flash"
+      },
+      "approvalHash": "apr_185ce2053957b60aa6380c3c"
+    },
+    "dispute": {
+      "refundOrderNos": [
+        2
+      ],
+      "rationale": "Order 2 delivered a price of 0.00 and a stale timestamp, which are considered wrong data.",
+      "decidedBy": "gemini-2.5-flash",
+      "verifiedOrders": 3,
+      "refunds": [
+        {
+          "orderNo": 2,
+          "paymentId": "rg_7e4a430a6b6a1ce9ae716668fd2c28bc06653d49",
+          "pull": {
+            "outcome": "PAID",
+            "alreadyPaid": false,
+            "transaction": "0x3ec8019584615902e94c1da2cc49da4d9d691ea4fe37220b3b5f7f126ac7fb42"
+          }
+        }
+      ]
+    },
+    "earnings": {
+      "cents": 10,
+      "paymentId": "rg_1e4894c6570fb9e80a06d0ade8b845bd2101790f",
+      "pull": {
+        "outcome": "PAID",
+        "alreadyPaid": false,
+        "transaction": "0x020a0c49f2c43074949893e34334ccd03c3e6bfa13b46e14515fa7b86ccc997c"
+      },
+      "resend": {
+        "outcome": "PAID",
+        "alreadyPaid": true,
+        "transaction": "0x020a0c49f2c43074949893e34334ccd03c3e6bfa13b46e14515fa7b86ccc997c"
+      }
+    },
+    "deposit": {
+      "depositId": "5344aea1-65a3-4892-b45e-a3eef664bd3d",
+      "status": "PENDING",
+      "amount": "0.10",
+      "reference": "0x020a0c49f2c43074949893e34334ccd03c3e6bfa13b46e14515fa7b86ccc997c",
+      "reused": false
+    },
+    "conversion": {
+      "conversionId": "ae9bde08-1f0a-4042-ae0f-fc68423a3232",
+      "status": "SETTLED",
+      "buyAmount": "25",
+      "sellAmount": "28.31",
+      "rate": "1.132479",
+      "reused": false
+    },
+    "licence": {
+      "transferId": "336cc4a3-d9eb-4e42-9e53-d2ee2ef94255",
+      "status": "SCHEDULED",
+      "amount": "25.00",
+      "currency": "EUR",
+      "requestId": "rg_0d3488f569bd9fa3061125a5580a242a78d54a2b",
+      "reused": false
+    }
+  },
+  "verifyOutput": {
+    "sourcing-v1": "mandate 0x7f1150135f512b279dde8c442c0d192f5b301835eeaaecd1efceff77b7752913\nstep 1 pass: The mandate is bound on the principal's account: hash(C), the limits, the payees, the mandate key and the issuer key are on chain\n  0x7f115013… bound in block 1353186 by 0x7C2AE2f9DeD3ff262790b5F6a95B0C7AA1828F5B: hash(C) 0xc887e37b04240de5aaf8a5d7b3295cbddc81d52babdcbea0e45d66ea7e9aedec, issuer key 0xe6b973f6158cc9452134446a10a6a7bd6b83650b7b744d1c8e1a36aede958abe, mandate key 0x0121a854…, 1 payee(s)\nstep 2 pass: The credential in hand hashes to the bound hash(C) and states the bound limits, payees and mandate key\n  the credential hashes to the bound hash(C), and binds exactly the limits, payees and mandate key it states\nstep 3 pass: The credential's signatures: the issuer's under a trusted key that is the one recorded at binding, the owner's under the key the issuer bound\n  the issuer's signature verifies under the trusted key the chain recorded, the owner's under the key the issuer bound, and the credential was valid when bound\nstep 4 pass: Each payment and refusal is the mandate key's per-payment mandate, rebuilt from its transaction, inside the mandate at its block\n  3 payment(s) and 1 refusal(s), each the bound mandate key's per-payment mandate rebuilt byte for byte from its transaction, inside the mandate at its block\npayment 0x74fe00e9f394b847d89e69e664d87aee651fc0a822b9234cb06eeebfa7ad7490 block 1353647: 0.02 *USDZ to 0x0E2Fe5DD558e1D72EfDdF418715212a8e9c8B843, nonce 0x7f1150135f512b279dde8c4400e0036eb7112d67a409024b840a0bd10b62dc7b\npayment 0x39188017ed3bb60fb4cd71d93ecc0389934023158ee5e105adeca07cde986c03 block 1353811: 0.02 *USDZ to 0x0E2Fe5DD558e1D72EfDdF418715212a8e9c8B843, nonce 0x7f1150135f512b279dde8c4447aedf8e8cc049de34b95c605df038f05e50c3d5\npayment 0x7df20cb189e3dd58885ccd29aac60c672650285fc0b0fdcd5233833120cb0219 block 1353932: 0.02 *USDZ to 0x0E2Fe5DD558e1D72EfDdF418715212a8e9c8B843, nonce 0x7f1150135f512b279dde8c44fe70fa6ce7a6bb5b65a792ff5e23407129de8cf9\nrefusal (mandate_cap_exceeded) 0x9139ec9ee4ca8462e6aa5898171ec14ec3376a24d5fd9a0c707846835b4bb875 block 1354146: 0.04 *USDZ to 0x0E2Fe5DD558e1D72EfDdF418715212a8e9c8B843, nonce 0x7f1150135f512b279dde8c449b95b631b417004f8dea0d819eacf713460ef99d\nverified yes\n",
+    "sourcing-v2": "mandate 0x06e300a1f3cbe8e9a2300738a68e511b7208c19b6faac747626f29703e9520aa\nstep 1 pass: The mandate is bound on the principal's account: hash(C), the limits, the payees, the mandate key and the issuer key are on chain\n  0x06e300a1… bound in block 1355672 by 0x7C2AE2f9DeD3ff262790b5F6a95B0C7AA1828F5B: hash(C) 0x912b1340200356453dc21cd228de0166c20edc34b5d95347dc2f5c072041ba6e, issuer key 0xe6b973f6158cc9452134446a10a6a7bd6b83650b7b744d1c8e1a36aede958abe, mandate key 0x0121a854…, 1 payee(s)\nstep 2 pass: The credential in hand hashes to the bound hash(C) and states the bound limits, payees and mandate key\n  the credential hashes to the bound hash(C), and binds exactly the limits, payees and mandate key it states\nstep 3 pass: The credential's signatures: the issuer's under a trusted key that is the one recorded at binding, the owner's under the key the issuer bound\n  the issuer's signature verifies under the trusted key the chain recorded, the owner's under the key the issuer bound, and the credential was valid when bound\nstep 4 pass: Each payment and refusal is the mandate key's per-payment mandate, rebuilt from its transaction, inside the mandate at its block\n  2 payment(s) and 0 refusal(s), each the bound mandate key's per-payment mandate rebuilt byte for byte from its transaction, inside the mandate at its block\npayment 0x19dae51b943cb5550994a8edfdcbb4f2ff03b61f0e92c8d6a0fb818931c0b556 block 1355772: 0.04 *USDZ to 0x0E2Fe5DD558e1D72EfDdF418715212a8e9c8B843, nonce 0x06e300a1f3cbe8e9a2300738df0930b28e4fc96e1ac2fa30cc0c2d4c0d23c893\npayment 0x88200c25eb690a299dcf9ab9d53178eecaffbce34ac95960c0319b90f015559c block 1355892: 0.04 *USDZ to 0x0E2Fe5DD558e1D72EfDdF418715212a8e9c8B843, nonce 0x06e300a1f3cbe8e9a23007382c4c3d29e2b18c85b7758b453a12f67846a41b7d\nverified yes\n",
+    "support-v2": "mandate 0x3d628b71c68f6b3f4f7eda9c70bf698d3c408742ed2726894ad6061edf7eed6c\nstep 1 pass: The mandate is bound on the principal's account: hash(C), the limits, the payees, the mandate key and the issuer key are on chain\n  0x3d628b71… bound in block 1355559 by 0x7C2AE2f9DeD3ff262790b5F6a95B0C7AA1828F5B: hash(C) 0x6365c4e800ab81a3cb9de5eb82b602d2bca8f87654513c292f2f7a02d495ade7, issuer key 0xe6b973f6158cc9452134446a10a6a7bd6b83650b7b744d1c8e1a36aede958abe, mandate key 0x018eb586…, 0 payee(s)\nstep 2 pass: The credential in hand hashes to the bound hash(C) and states the bound limits, payees and mandate key\n  the credential hashes to the bound hash(C), and binds exactly the limits, payees and mandate key it states\nstep 3 pass: The credential's signatures: the issuer's under a trusted key that is the one recorded at binding, the owner's under the key the issuer bound\n  the issuer's signature verifies under the trusted key the chain recorded, the owner's under the key the issuer bound, and the credential was valid when bound\nstep 4 pass: Each payment and refusal is the mandate key's per-payment mandate, rebuilt from its transaction, inside the mandate at its block\n  1 payment(s) and 0 refusal(s), each the bound mandate key's per-payment mandate rebuilt byte for byte from its transaction, inside the mandate at its block\npayment 0x3ec8019584615902e94c1da2cc49da4d9d691ea4fe37220b3b5f7f126ac7fb42 block 1356697: 0.05 *USDZ to 0x73101E8E7eCB14c3cd875a77Dd330a60a077aCCF, nonce 0x3d628b71c68f6b3f4f7eda9c3b92204d46cca6e7daa72a9ceb21e658106f27fc\nverified yes\n",
+    "treasury-v1": "mandate 0x26c1d6aa4a49006c07d30310bcf8ea5cf9e18b6ddebb811118e1dd9c4bc5c7b6\nstep 1 pass: The mandate is bound on the principal's account: hash(C), the limits, the payees, the mandate key and the issuer key are on chain\n  0x26c1d6aa… bound in block 1353435 by 0x7C2AE2f9DeD3ff262790b5F6a95B0C7AA1828F5B: hash(C) 0xb8d49e99b77d9bb6606f567d2cec496b4ba3f3616a592e2e1c30873d14920e6e, issuer key 0xe6b973f6158cc9452134446a10a6a7bd6b83650b7b744d1c8e1a36aede958abe, mandate key 0x0181d3a5…, 1 payee(s)\nstep 2 pass: The credential in hand hashes to the bound hash(C) and states the bound limits, payees and mandate key\n  the credential hashes to the bound hash(C), and binds exactly the limits, payees and mandate key it states\nstep 3 pass: The credential's signatures: the issuer's under a trusted key that is the one recorded at binding, the owner's under the key the issuer bound\n  the issuer's signature verifies under the trusted key the chain recorded, the owner's under the key the issuer bound, and the credential was valid when bound\nstep 4 pass: Each payment and refusal is the mandate key's per-payment mandate, rebuilt from its transaction, inside the mandate at its block\n  1 payment(s) and 0 refusal(s), each the bound mandate key's per-payment mandate rebuilt byte for byte from its transaction, inside the mandate at its block\npayment 0x020a0c49f2c43074949893e34334ccd03c3e6bfa13b46e14515fa7b86ccc997c block 1356782: 0.1 *USDZ to 0xBCE789A230aa93364cF0dC0ca13BCfcec9DE264e, nonce 0x26c1d6aa4a49006c07d303102a666bac51aa0c37c8cf885b3165925acd7f1077\nverified yes\n"
+  }
+}

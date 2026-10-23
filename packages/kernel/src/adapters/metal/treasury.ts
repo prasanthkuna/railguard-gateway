@@ -174,7 +174,7 @@ export function createAirwallexRestTreasury(options: RestTreasuryOptions): Airwa
   ): Promise<{ id?: string; status?: string; amount?: number } | undefined> {
     const list = await call<{
       items?: Array<{ id?: string; reference?: string; status?: string; amount?: number }>
-    }>("GET", "/api/v1/deposits?page_size=100")
+    }>("GET", "/api/v1/deposits?page_num=0&page_size=100")
     return (list.items ?? []).find((d) => d.reference === reference)
   }
 
@@ -213,6 +213,30 @@ export function createAirwallexRestTreasury(options: RestTreasuryOptions): Airwa
       }
     },
     async convertToEur({ buyEur, requestId }) {
+      // FX is booked once per request_id: look it up first (a re-sent create answers 400).
+      type Conv = {
+        conversion_id?: string
+        request_id?: string
+        status?: string
+        buy_amount?: number
+        sell_amount?: number
+        client_rate?: number
+      }
+      const found = await call<{ items?: Conv[] }>(
+        "GET",
+        `/api/v1/fx/conversions?request_id=${encodeURIComponent(requestId)}&page_num=0&page_size=10`,
+      )
+      const prior = (found.items ?? []).find((c) => c.request_id === requestId)
+      if (prior) {
+        return {
+          conversionId: prior.conversion_id ?? "",
+          status: prior.status ?? "UNKNOWN",
+          buyAmount: String(prior.buy_amount ?? buyEur),
+          sellAmount: prior.sell_amount !== undefined ? String(prior.sell_amount) : undefined,
+          rate: prior.client_rate !== undefined ? String(prior.client_rate) : undefined,
+          reused: true,
+        }
+      }
       try {
         const c = await call<{
           conversion_id?: string

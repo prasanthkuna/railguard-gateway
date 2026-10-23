@@ -47,8 +47,11 @@ evidence/*
 !evidence/arc/
 !evidence/arbitrum-one/
 !evidence/airwallex-sandbox/
+!evidence/metal-testnet/
 !evidence/**/README.md
 !evidence/**/manifest.json
+
+.tmp/
 
 # logs
 *.log

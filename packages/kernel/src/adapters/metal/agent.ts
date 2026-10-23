@@ -75,33 +75,43 @@ export function createGeminiKit11Model(options: {
 }): Kit11Model {
   const model = options.model ?? "gemini-2.5-flash"
   const doFetch = options.fetch ?? ((url, init) => fetch(url, init))
+  async function once(system: string, prompt: string): Promise<Record<string, unknown>> {
+    const controller = new AbortController()
+    const timer = setTimeout(() => controller.abort(), options.timeoutMs ?? 25_000)
+    try {
+      const res = await doFetch(
+        `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent`,
+        {
+          method: "POST",
+          signal: controller.signal,
+          headers: { "Content-Type": "application/json", "x-goog-api-key": options.apiKey },
+          body: JSON.stringify({
+            systemInstruction: { parts: [{ text: system }] },
+            contents: [{ role: "user", parts: [{ text: prompt }] }],
+            generationConfig: { responseMimeType: "application/json", temperature: 0.2 },
+          }),
+        },
+      )
+      if (!res.ok) throw new Error(`gemini: HTTP ${res.status}`)
+      const body = (await res.json()) as {
+        candidates?: Array<{ content?: { parts?: Array<{ text?: string }> } }>
+      }
+      const text = (body.candidates?.[0]?.content?.parts ?? []).map((p) => p.text ?? "").join("")
+      return JSON.parse(text) as Record<string, unknown>
+    } finally {
+      clearTimeout(timer)
+    }
+  }
   return {
     name: model,
     async json(system, prompt) {
-      const controller = new AbortController()
-      const timer = setTimeout(() => controller.abort(), options.timeoutMs ?? 25_000)
+      // Free-tier Gemini answers 503/429 under load: one short retry, then the caller falls back.
       try {
-        const res = await doFetch(
-          `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(model)}:generateContent`,
-          {
-            method: "POST",
-            signal: controller.signal,
-            headers: { "Content-Type": "application/json", "x-goog-api-key": options.apiKey },
-            body: JSON.stringify({
-              systemInstruction: { parts: [{ text: system }] },
-              contents: [{ role: "user", parts: [{ text: prompt }] }],
-              generationConfig: { responseMimeType: "application/json", temperature: 0.2 },
-            }),
-          },
-        )
-        if (!res.ok) throw new Error(`gemini: HTTP ${res.status}`)
-        const body = (await res.json()) as {
-          candidates?: Array<{ content?: { parts?: Array<{ text?: string }> } }>
-        }
-        const text = (body.candidates?.[0]?.content?.parts ?? []).map((p) => p.text ?? "").join("")
-        return JSON.parse(text) as Record<string, unknown>
-      } finally {
-        clearTimeout(timer)
+        return await once(system, prompt)
+      } catch (e) {
+        if (!/HTTP (429|5\d\d)/.test((e as Error).message)) throw e
+        await new Promise((r) => setTimeout(r, 2_000))
+        return once(system, prompt)
       }
     },
   }

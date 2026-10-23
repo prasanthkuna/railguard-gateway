@@ -406,45 +406,55 @@ export async function runKit11(o: Kit11RunOptions): Promise<Kit11RunResult> {
   result.earnings = { cents: earningsCents, paymentId: earningsId, pull, resend }
 
   if (pull.outcome === "PAID" && pull.transaction) {
-    result.deposit = await o.treasury.creditEarnings({
-      amountUsd: centsToUsdz(earningsCents),
-      metalTx: pull.transaction,
-    })
-    log({
-      step: "EARNINGS_CREDITED",
-      actor: "airwallex",
-      detail: `deposit ${result.deposit.amount} USD, reference = Metal tx (${result.deposit.status}${result.deposit.reused ? ", found existing" : ""})`,
-      transaction: pull.transaction,
-      requestId: result.deposit.depositId,
-    })
-    const convId = deterministicUuid({ kind: "fx", runId: o.runId, buyEur: config.licenceFeeEur })
-    result.conversion = await o.treasury.convertToEur({
-      buyEur: config.licenceFeeEur,
-      requestId: convId,
-    })
-    log({
-      step: "FX_CONVERTED",
-      actor: "treasury-agent",
-      detail: `bought ${result.conversion.buyAmount} EUR${result.conversion.sellAmount ? ` for ${result.conversion.sellAmount} USD` : ""} (${result.conversion.status})`,
-      requestId: result.conversion.conversionId || convId,
-    })
-    const licenceId = railguardRequestId({
-      kind: "licence-fee",
-      runId: o.runId,
-      eur: config.licenceFeeEur,
-    })
-    result.licence = await o.treasury.payLicenceFee({
-      amountEur: config.licenceFeeEur,
-      requestId: licenceId,
-      reference: `Licence fee ${o.runId}`,
-    })
-    log({
-      step: "LICENCE_FEE_PAID",
-      actor: "airwallex",
-      detail: `EUR ${result.licence.amount} licence fee transfer ${result.licence.transferId} (${result.licence.status})`,
-      requestId: licenceId,
-      outcome: result.licence.status,
-    })
+    try {
+      result.deposit = await o.treasury.creditEarnings({
+        amountUsd: centsToUsdz(earningsCents),
+        metalTx: pull.transaction,
+      })
+      log({
+        step: "EARNINGS_CREDITED",
+        actor: "airwallex",
+        detail: `deposit ${result.deposit.amount} USD, reference = Metal tx (${result.deposit.status}${result.deposit.reused ? ", found existing" : ""})`,
+        transaction: pull.transaction,
+        requestId: result.deposit.depositId,
+      })
+      const convId = deterministicUuid({ kind: "fx", runId: o.runId, buyEur: config.licenceFeeEur })
+      result.conversion = await o.treasury.convertToEur({
+        buyEur: config.licenceFeeEur,
+        requestId: convId,
+      })
+      log({
+        step: "FX_CONVERTED",
+        actor: "treasury-agent",
+        detail: `bought ${result.conversion.buyAmount} EUR${result.conversion.sellAmount ? ` for ${result.conversion.sellAmount} USD` : ""} (${result.conversion.status})`,
+        requestId: result.conversion.conversionId || convId,
+      })
+      const licenceId = railguardRequestId({
+        kind: "licence-fee",
+        runId: o.runId,
+        eur: config.licenceFeeEur,
+      })
+      result.licence = await o.treasury.payLicenceFee({
+        amountEur: config.licenceFeeEur,
+        requestId: licenceId,
+        reference: `Licence fee ${o.runId}`,
+      })
+      log({
+        step: "LICENCE_FEE_PAID",
+        actor: "airwallex",
+        detail: `EUR ${result.licence.amount} licence fee transfer ${result.licence.transferId} (${result.licence.status})`,
+        requestId: licenceId,
+        outcome: result.licence.status,
+      })
+    } catch (e) {
+      // Airwallex unreachable or refused: the Metal payout stands; a person finishes the bank side.
+      log({
+        step: "ESCALATED",
+        actor: "airwallex",
+        detail: `Airwallex step failed (${(e as Error).message}); earnings tx kept for a manual credit`,
+        transaction: pull.transaction,
+      })
+    }
   } else {
     log({
       step: "ESCALATED",
