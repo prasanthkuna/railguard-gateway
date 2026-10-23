@@ -1,198 +1,217 @@
-# Railguard Gateway
+<div align="center">
 
-[![PR Checks](https://github.com/prasanthkuna/railguard-gateway/actions/workflows/pr-checks.yml/badge.svg)](https://github.com/prasanthkuna/railguard-gateway/actions/workflows/pr-checks.yml)
-[![Testnet Evidence](https://github.com/prasanthkuna/railguard-gateway/actions/workflows/testnet-evidence.yml/badge.svg)](https://github.com/prasanthkuna/railguard-gateway/actions/workflows/testnet-evidence.yml)
+<a href="https://railguard-site.vercel.app">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="docs/assets/readme/wordmark-dark.svg">
+    <source media="(prefers-color-scheme: light)" srcset="docs/assets/readme/wordmark-light.svg">
+    <img alt="Railguard" src="docs/assets/readme/wordmark-light.svg" height="64">
+  </picture>
+</a>
 
-> **Open-source financial execution firewall for autonomous software.**  
-> Agent money. Guarded.
+### AI agents can spend money. Railguard makes sure they spend it right.
 
-Railguard puts a control boundary between an AI agent and money movement. It binds authorization to the intended recipient, asset, amount, and network; reserves budget before execution; tracks uncertain broadcasts; reconciles settlement against chain facts; and emits inspectable evidence.
+Open-source guardrails between an AI agent and the wallet or payment API it controls.
 
-**Maturity:** `v0.1.0-alpha` - testnet reference implementation. Not production-ready for mainnet funds.
+[**Site**](https://railguard-site.vercel.app) · [**Demo**](https://railguard-site.vercel.app/demo) · [**Proof**](https://railguard-site.vercel.app/proof) · [**Docs**](docs/README.md) · [**Video**](https://youtu.be/L-Gss08bzR0)
 
-## Start here
+[![PR Checks](https://github.com/prasanthkuna/railguard-gateway/actions/workflows/pr-checks.yml/badge.svg?branch=main)](https://github.com/prasanthkuna/railguard-gateway/actions/workflows/pr-checks.yml)
+[![Testnet Evidence](https://github.com/prasanthkuna/railguard-gateway/actions/workflows/testnet-evidence.yml/badge.svg?branch=main)](https://github.com/prasanthkuna/railguard-gateway/actions/workflows/testnet-evidence.yml)
+[![Proofs verified](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Fprasanthkuna%2Frailguard-gateway%2Fmain%2F.github%2Fbadges%2Fproofs.json)](#proofs)
+[![License: Apache-2.0](https://img.shields.io/github/license/prasanthkuna/railguard-gateway?color=5CF2B2&labelColor=0D1115)](LICENSE)
+[![Last commit](https://img.shields.io/github/last-commit/prasanthkuna/railguard-gateway/main?color=5CF2B2&labelColor=0D1115)](https://github.com/prasanthkuna/railguard-gateway/commits/main)
 
-| Surface | Link | Access |
-| --- | --- | --- |
-| Product | https://railguard-site.vercel.app/ | Public |
-| Try it (Failure Lab, live runs, video) | https://railguard-site.vercel.app/demo | Public |
-| All proofs | https://railguard-site.vercel.app/proof | Public, no sign-in |
-| Metal testnet proof (Kit 11) | https://railguard-site.vercel.app/proof/metal-testnet | Public, no sign-in |
-| Arbitrum Sepolia proof | https://railguard-site.vercel.app/proof/arbitrum-sepolia | Public, no sign-in |
-| Monad testnet proof | https://railguard-site.vercel.app/proof/monad-testnet | Public, no sign-in |
-| Stellar testnet proof | https://railguard-site.vercel.app/proof/stellar-testnet | Public, no sign-in |
-| 84-second product demo | https://youtu.be/L-Gss08bzR0 | Public |
-| Airwallex payout incidents | https://prebroadcast.vercel.app/incidents | Public |
-| Kit 11 x402 agents (Metal testnet) | https://prebroadcast.vercel.app/x402-agents | Public |
-| Railguard Operator | https://prebroadcast.vercel.app/ | Sign-in required |
-| Staging API | https://staging-railguard-s4ii.encr.app | Reference API |
+<br>
 
-## Monad Metropolis entry
+<a href="https://railguard-site.vercel.app/demo">
+  <img src="docs/assets/readme/demo.gif" alt="Railguard blocks a payment to an unknown wallet before signing, stops a retry after a timeout, and lets an allowed payment through" width="880">
+</a>
 
-Monad Metropolis entry = tag `metropolis-submission` (`29ef757`); later work (Airwallex, Arc) came after the deadline.
+</div>
 
-## Airwallex Agentic Banking Hackathon (Track 3): 5-minute judge path
+<a id="start-here"></a>
 
-**Payment Ops Incident Commander.** A Gemini payment-ops agent pays suppliers on Airwallex. When a
-create call times out after Airwallex made the transfer, the agent (and the job queue) retry.
-Railguard blocks both retries, reconciles by `request_id`, and confirms **exactly one** transfer.
+## Why Railguard
 
-1. Open **https://prebroadcast.vercel.app/incidents** (public). Press **Force timeout** in *Simulated*,
-   then switch to **Live sandbox** and press it again: a real Airwallex sandbox payout (fake money,
-   1.00 USD) with the response dropped after create. Read the two big numbers:
-   **Airwallex transfers created: 1** and **Create calls: 1**.
-2. In **Ask the payment-ops agent**, run `Pay Acme $1,200 for invoice 42`: denied with
-   `APPROVAL_REQUIRED`; press **Approve as human** and it pays. The agent has no approval tool.
-3. Raw JSON: `GET https://staging-railguard-s4ii.encr.app/v1/airwallex/runs` (stored runs, Postgres),
-   `/v1/airwallex/agent-demo` (policy story), `/v1/airwallex/webhook-events`.
-4. Code: `packages/kernel/src/adapters/airwallex/` (`rail.ts`, `incidentCommander.ts`, `agent.ts`,
-   `policy.ts`, `chaos.ts`). Tests: `bun install && bun test packages/kernel/src/adapters/airwallex`.
-5. Evidence: `evidence/airwallex-sandbox/` (`chaos-live.json`, `manifest.json`, `webhook.json`).
+An agent with a wallet will eventually retry a payment that already went through, overspend a shared
+budget, or send money to the wrong address. Railguard sits in front of the wallet and does three things
+on every payment: **check** it before signing, **watch** it after sending, and **prove** the result
+from chain facts.
 
-Full build notes: [docs/grants/AIRWALLEX_BUILD.md](docs/grants/AIRWALLEX_BUILD.md).
+> **Status:** `v0.1.0-alpha`. Testnet reference implementation. Not ready for mainnet funds.
 
-## Airwallex Kit 11 (x402 Business Agents) + Metal Award: 5-minute judge path
+## What it stops
 
-**Three agents, one Metal account, limits that move.** A data business sells market data per query
-over x402 in `*USDZ` on Metal testnet. A sourcing agent buys upstream data, a support agent refunds
-buyers, a treasury agent moves earnings to Airwallex and pays a EUR licence fee. Each spends under its
-own on-chain mandate; Railguard holds the three budgets to **20 *USDZ** in code. When the upstream price
-goes from 0.02 to 0.04 (above the 0.03 cap) the purchase is refused, the buyer is not charged, the
-treasury agent (Gemini) proposes new limits, a person approves the exact terms, and the mandates are
-replaced.
+- **Paying twice.** Every payment gets one id before it leaves. After a timeout the state is `UNKNOWN`,
+  not failed, so Railguard checks the chain before anything is sent again.
+- **Going over budget.** Money is reserved before it is sent. Two agents sharing 100 USDC cannot both
+  spend 80.
+- **Wrong recipient.** Approval is bound to recipient, asset, amount and network. If any field changes,
+  Railguard blocks it before the wallet is asked to sign.
 
-1. Open **https://prebroadcast.vercel.app/x402-agents** (public). Press **Run Kit 11** (simulator, same
-   code), then scroll to the **recorded Metal testnet run**: every step links to
-   `testnet.metalntwx.com`.
-2. Recorded run `kit11-20261023T0437` (Metal testnet `eip155:63825` + Airwallex sandbox, fake money):
-   - Business account `0x7C2AE2f9DeD3ff262790b5F6a95B0C7AA1828F5B` funded with exactly 20 *USDZ.
-   - Upstream refusal recorded on chain (`mandate_cap_exceeded`, moves nothing):
-     [0x9139ec9e…](https://testnet.metalntwx.com/tx/0x9139ec9ee4ca8462e6aa5898171ec14ec3376a24d5fd9a0c707846835b4bb875)
-   - Approved rebalance `apr_185ce2053957b60aa6380c3c` (option C: query 0.05 → 0.07, 1 *USDZ from
-     refunds to sourcing); mandates replaced:
-     [support](https://testnet.metalntwx.com/tx/0x6f13990ea97c82d0bba5d8197ca6b94fe8efecd75ea79e47b438129a0b4d6f95),
-     [sourcing](https://testnet.metalntwx.com/tx/0x993b0637b2fdd1007c378d06c37d4a50adc58962279ce1a669a22f7a111a4590).
-   - Disputed batch: 3 signed orders verified against their payments; only the order that delivered
-     wrong data refunded:
-     [refund](https://testnet.metalntwx.com/tx/0x3ec8019584615902e94c1da2cc49da4d9d691ea4fe37220b3b5f7f126ac7fb42).
-   - Earnings payout (re-sent with the same `rg_` payment id: `already paid, nothing sent`):
-     [0x020a0c49…](https://testnet.metalntwx.com/tx/0x020a0c49f2c43074949893e34334ccd03c3e6bfa13b46e14515fa7b86ccc997c),
-     credited in Airwallex as deposit `5344aea1-65a3-4892-b45e-a3eef664bd3d` (reference = Metal tx),
-     converted (conversion `ae9bde08-1f0a-4042-ae0f-fc68423a3232`, 25 EUR) and paid as the EUR licence
-     fee (transfer `336cc4a3-d9eb-4e42-9e53-d2ee2ef94255`).
-   - `mandate verify` passes for all three agents from the chain alone.
-3. Code: `packages/kernel/src/adapters/metal/` (`budget.ts` total + rebalance options + approval hash,
-   `run.ts` the flow, `cliOutput.ts` UNKNOWN-on-doubt parsing, `rail.ts` simulator, `treasury.ts`
-   Airwallex). Live lab: `labs/metal-kit11/live.ts` (x402 seller routes with `requireSignedOffer`,
-   `metal-agent` mandates). Tests: `bun test packages/kernel/src/adapters/metal`.
-4. Evidence: `evidence/metal-testnet/kit11-live.json`. Rerun: [docs/grants/AIRWALLEX_KIT11_METAL.md](docs/grants/AIRWALLEX_KIT11_METAL.md).
+<a id="lifecycle"></a>
 
-## Lifecycle
+## How it works
 
-```text
-Financial Intent
-      ↓
-Authorize
-      ↓
-Reserve
-      ↓
-Execute
-      ↓
-Observe
-      ↓
-Reconcile
-      ↓
-Evidence
+```mermaid
+flowchart LR
+  A["Agent asks to pay"] --> C
+  subgraph C["1 · Check"]
+    C1["Policy and allow list"] --> C2["Reserve budget"]
+  end
+  C -- "blocked" --> X["Refused with a reason.<br/>Wallet never signs."]
+  C -- "allowed" --> W
+  subgraph W["2 · Watch"]
+    W1["Send once with a payment id"] --> W2["Timeout = UNKNOWN,<br/>never retry blind"]
+  end
+  W --> P
+  subgraph P["3 · Prove"]
+    P1["Match token, sender,<br/>recipient, amount on chain"] --> P2["Signed receipt"]
+  end
 ```
 
-Railguard treats a successful signature or transaction broadcast as **insufficient proof**. Final state comes from reconciliation against the expected transfer facts.
+A signature or a broadcast is not proof. A payment is only final after Railguard matches it against
+the chain (or the payment provider) and writes a receipt. More detail:
+[ARCHITECTURE.md](docs/ARCHITECTURE.md) and [STATE_MACHINE.md](docs/STATE_MACHINE.md).
 
-## Verified rails
+<a id="quick-start"></a>
 
-| Rail | Current proof | Evidence |
-| --- | --- | --- |
-| Arbitrum Sepolia | Hook deployment + separate external-wallet 0.01 USDC settlement verification | [Public proof](https://railguard-site.vercel.app/proof/arbitrum-sepolia) |
-| Monad testnet | External-wallet 1 USDC transfer matched from receipt logs | [Public proof](https://railguard-site.vercel.app/proof/monad-testnet) |
-| Stellar testnet | Horizon-confirmed native payment | [Public proof](https://railguard-site.vercel.app/proof/stellar-testnet) |
-| Base Sepolia / CDP | Reference execution path | [Integration docs](./docs/INTEGRATION.md) |
+## Quickstart
 
-The public proof pages distinguish **what Railguard executed** from **what Railguard independently verified**. External-wallet proofs are not presented as Railguard-originated or custodial transfers.
+Needs [Bun](https://bun.sh) 1.3 or newer.
 
-## Core surfaces
-
-| Component | Purpose |
-| --- | --- |
-| Gateway API | Authorize, reserve, execute, observe, reconcile, evidence |
-| SDK | Programmatic `check()` and integration surface |
-| CLI | `scan`, `attack`, `protect`, `status`, `receipts` |
-| MCP | Agent/tool integration |
-| Operator | Authenticated reference console |
-| Failure Lab | Adversarial APF failure demonstrations |
-| Public proof pages | No-login evidence for settlement claims |
-
-## Quick start
-
-```powershell
+```bash
 git clone https://github.com/prasanthkuna/railguard-gateway.git
 cd railguard-gateway
 bun install
 
-bun run dev:api
-bun run dev:operator
-bun run dev:site
+bun run test                                   # full unit suite, no keys needed
+bun test packages/kernel/src/adapters/airwallex # lost response -> retry blocked -> exactly one transfer
+bun run testnet-evidence                       # verify a live Base Sepolia USDC transfer from chain facts
+bun run dev:site                               # this site on http://localhost:3001
 ```
 
-## CLI
+Running the full API locally needs the [Encore CLI](https://encore.dev/docs/install): `encore run`
+(see [INTEGRATION.md](docs/INTEGRATION.md)).
 
-```powershell
-bun run railguard scan
-bun run railguard attack
-bun run railguard protect
-bun run railguard status
-bun run railguard receipts
-```
+<a id="verified-rails"></a>
 
-Advanced commands and MCP integration: [docs/INTEGRATION.md](./docs/INTEGRATION.md).
+## Proofs
 
-## SDK
+Every row is built from a file in [`evidence/`](evidence) by
+[`scripts/readme-proofs.ts`](scripts/readme-proofs.ts). Click through to check it yourself on the explorer.
+
+<!-- PROOFS:START -->
+<!-- Generated by scripts/readme-proofs.ts from evidence/. Do not edit by hand. -->
+
+| Chain / rail | What was proven | Status | Tx / explorer | Date |
+| --- | --- | --- | --- | --- |
+| [Arbitrum Sepolia](https://railguard-site.vercel.app/proof/arbitrum-sepolia) | 0.01 USDC external-wallet transfer matched on chain (token, sender, recipient, amount) | ✅ Settlement verified | [`0x243ec1…608d`](https://sepolia.arbiscan.io/tx/0x243ec1e8eb6a992a85a035af11edd5ff70d78e3b84e7eb6c78ab5badc409608d) | 30 Sep 2026 |
+| [Arbitrum Sepolia](https://github.com/prasanthkuna/railguard-gateway/tree/main/evidence/arbitrum-sepolia-hook) | 3 Railguard hook contracts deployed, source verified on Arbiscan and Sourcify | ✅ Source verified | [`0x756829…965E`](https://sepolia.arbiscan.io/address/0x756829c3ab0eB02b22fe4D7C9E35252A9738965E#code) | 23 Oct 2026 |
+| [Stellar Soroban](https://railguard-site.vercel.app/proof/stellar-testnet) | Policy contract paid 1.25 USDC once and rejected 5 bad calls (replay, wrong recipient, overspend) | ✅ CONFIRMED | [`2e8c13fa…8353`](https://stellar.expert/explorer/testnet/tx/2e8c13fab4feb88a451ec617dc9c5a129a600e7e6dc62c1868d67336702f8353) | 23 Oct 2026 |
+| [Stellar testnet](https://railguard-site.vercel.app/proof/stellar-testnet) | 1 XLM payment confirmed from Horizon facts | ✅ CONFIRMED | [`3dc32258…e437`](https://stellar.expert/explorer/testnet/tx/3dc3225844f711f9f96ead65690d224b7ccfd616d1da5387df6bfc63bfb8e437) | 4 Oct 2026 |
+| [Monad testnet](https://railguard-site.vercel.app/proof/monad-testnet) | 1 USDC transfer matched from receipt logs | ✅ CONFIRMED | [`0x1cbd46…aab2`](https://testnet.monadvision.com/tx/0x1cbd46100de39c60d88d8d7ee7a1dc66cf2c9c16956ebb403b69c1751b98aab2) | 4 Oct 2026 |
+| [Metal testnet](https://railguard-site.vercel.app/proof/metal-testnet) | 3 agents under on-chain limits: over-cap buy refused, duplicate payout blocked | ✅ CONFIRMED | [`0x9139ec…b875`](https://testnet.metalntwx.com/tx/0x9139ec9ee4ca8462e6aa5898171ec14ec3376a24d5fd9a0c707846835b4bb875) | 23 Oct 2026 |
+| [Airwallex sandbox](https://prebroadcast.vercel.app/incidents) | Create response lost, 1 retry blocked, exactly 1 transfer (fake money) | ✅ CONFIRMED | [`chaos-live.json`](https://github.com/prasanthkuna/railguard-gateway/blob/main/evidence/airwallex-sandbox/chaos-live.json) | 22 Oct 2026 |
+| Base Sepolia | Verifier matches a live USDC transfer, re-run by CI on every push | [![Testnet Evidence](https://github.com/prasanthkuna/railguard-gateway/actions/workflows/testnet-evidence.yml/badge.svg?branch=main)](https://github.com/prasanthkuna/railguard-gateway/actions/workflows/testnet-evidence.yml) | latest run | live |
+
+<sub>7 of 7 committed proofs verified from files in [`evidence/`](evidence). Regenerated by [readme-proofs](.github/workflows/readme-proofs.yml).</sub>
+<!-- PROOFS:END -->
+
+Public proof pages: [railguard-site.vercel.app/proof](https://railguard-site.vercel.app/proof). They
+separate what Railguard executed from what it independently verified.
+
+## Use it
+
+**SDK**
 
 ```ts
 import { RailguardClient, check, createClientFromEnv } from "@railguard/sdk"
 
 const client = new RailguardClient(createClientFromEnv())
-const decision = await check(client, intent)
+const result = await check(client, intent) // "ALLOW" or "DENY", with a reason and budget reservation
+if (result.decision === "DENY") throw new Error("Blocked by Railguard")
 ```
 
-## Verification
+**CLI** `bun run railguard --help` (`scan`, `protect`, `status`, `receipts`).
+**MCP** `bun run railguard:mcp` for Cursor, Claude and other agent tools.
+Setup for all three: [INTEGRATION.md](docs/INTEGRATION.md).
 
-```powershell
-bun run test:v5
-bun run test:integrations
-bun run testnet:all
-bun run verify-arbitrum-sepolia-pack
-bun run verify-monad-metropolis-pack
-bun run verify-stellar-testnet-pack
-encore check
+## Repo layout
+
+```text
+apps/api         Gateway API (Encore): authorize, reserve, execute, reconcile, receipts
+apps/site        Public site and proof pages (Next.js)
+apps/operator    Signed-in operator console
+packages/        kernel, policy, settlement, reconciliation, sdk, cli, mcp, adapters
+contracts/       EVM hook contracts and the Soroban policy contract
+evidence/        Committed proof files behind the table above
+labs/            Live labs (Metal Kit 11, failure suite)
+docs/            Architecture, integration guides, judge paths
 ```
 
-## Architecture and evidence
+## Docs
 
-| Document | Purpose |
+| | |
 | --- | --- |
-| [ARCHITECTURE.md](./docs/ARCHITECTURE.md) | Runtime and lifecycle |
-| [COMPONENTS.md](./docs/COMPONENTS.md) | Product/repository map |
-| [INTEGRATION.md](./docs/INTEGRATION.md) | SDK, CLI, MCP and integration paths |
-| [ecosystems.yaml](./docs/ecosystems.yaml) | Public ecosystem manifest |
-| [FINAL_VIDEO_QC.md](./docs/media/FINAL_VIDEO_QC.md) | Published demo and QC record |
+| [Architecture](docs/ARCHITECTURE.md) | Runtime and payment lifecycle |
+| [State machine](docs/STATE_MACHINE.md) · [Invariants](docs/INVARIANTS.md) | The rules that keep money safe |
+| [Integration](docs/INTEGRATION.md) | SDK, CLI, MCP and rails |
+| [Components](docs/COMPONENTS.md) | What lives where |
+| [Judge paths](docs/JUDGE_PATHS.md) | Step-by-step reviewer walkthroughs |
+| [ecosystems.yaml](docs/ecosystems.yaml) | Machine-readable list of supported rails |
+
+## Hackathon entries
+
+Short pointers. Full walkthroughs are in [docs/JUDGE_PATHS.md](docs/JUDGE_PATHS.md).
+
+### Monad Metropolis entry
+
+Tag [`metropolis-submission`](https://github.com/prasanthkuna/railguard-gateway/tree/metropolis-submission)
+(`29ef757`). Later work (Airwallex, Arc) came after the deadline.
+
+### Airwallex Agentic Banking Hackathon (Track 3): 5-minute judge path
+
+A Gemini payment-ops agent pays suppliers on Airwallex. A create call times out after the transfer was
+made; Railguard blocks the retries and confirms exactly one transfer. Try it at
+[prebroadcast.vercel.app/incidents](https://prebroadcast.vercel.app/incidents).
+[Full path](docs/JUDGE_PATHS.md#airwallex-agentic-banking-hackathon-track-3-5-minute-judge-path) ·
+[build notes](docs/grants/AIRWALLEX_BUILD.md).
+
+### Airwallex Kit 11 (x402 Business Agents) + Metal Award: 5-minute judge path
+
+Three agents share one Metal testnet account under on-chain limits. An over-cap purchase is refused, a
+person approves new limits, and a lost payout is paid once. Try it at
+[prebroadcast.vercel.app/x402-agents](https://prebroadcast.vercel.app/x402-agents).
+[Full path](docs/JUDGE_PATHS.md#airwallex-kit-11-x402-business-agents--metal-award-5-minute-judge-path) ·
+[rerun guide](docs/grants/AIRWALLEX_KIT11_METAL.md).
 
 ## Related repositories
 
-| Repository | Role |
-| --- | --- |
-| [railguard-protocol](https://github.com/prasanthkuna/railguard-protocol) | Core, SignGate and contracts |
-| [agent-payment-failure-lab](https://github.com/prasanthkuna/agent-payment-failure-lab) | Failure Lab + Failure Atlas |
-| [x402-guard](https://github.com/prasanthkuna/x402-guard) | x402 policy adapter |
+- [railguard-protocol](https://github.com/prasanthkuna/railguard-protocol): core, SignGate and contracts
+- [agent-payment-failure-lab](https://github.com/prasanthkuna/agent-payment-failure-lab): Failure Lab and Failure Atlas
+- [x402-guard](https://github.com/prasanthkuna/x402-guard): x402 policy adapter
+
+## Contributing
+
+Issues and pull requests are welcome. Read [CONTRIBUTING.md](CONTRIBUTING.md), then run
+`bun run lint && bun run test` before opening a PR.
+
+## Security
+
+Please report vulnerabilities privately to **prasanthkuna@gmail.com**, not in public issues. See
+[SECURITY.md](SECURITY.md).
 
 ## License
 
-Apache-2.0. See [LICENSE](LICENSE). Copyright 2026 Prasanth Kuna.
+[Apache-2.0](LICENSE). Copyright 2026 Prasanth Kuna.
+
+---
+
+<div align="center">
+
+Built by **Prasanth Kuna** ·
+[About](https://railguard-site.vercel.app/about) ·
+[LinkedIn](https://www.linkedin.com/in/prasanth-kuna-1463631b3) ·
+[X](https://x.com/prasanth_kuna)
+
+</div>

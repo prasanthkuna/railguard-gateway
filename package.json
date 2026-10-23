@@ -41,6 +41,7 @@
     "test:v5": "bun test packages/kernel/src/v5.test.ts apps/api/cdpSection22.test.ts apps/api/cdpExecutionDriver.test.ts",
     "test:integrations": "bun test packages/integrations/src packages/settlement/src",
     "testnet-evidence": "bun run scripts/testnet-evidence.ts",
+    "readme:proofs": "bun run scripts/readme-proofs.ts",
     "arbitrum-sepolia-evidence": "bun run scripts/arbitrum-sepolia-evidence.ts",
     "verify-hackquest-pack": "bun run scripts/verify-hackquest-pack.ts",
     "verify-arbitrum-sepolia-pack": "bun run scripts/verify-hackquest-pack.ts",
