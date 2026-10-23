@@ -19,6 +19,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
     pathname === "/setup" ||
     pathname === "/zebpay" ||
     pathname === "/incidents" ||
+    pathname === "/x402-agents" ||
     pathname?.startsWith("/auth/callback")
   const [isAuthenticated, setIsAuthenticated] = React.useState(
     () => devAuthEnabled || (typeof window !== "undefined" && hasAuthSession()),
