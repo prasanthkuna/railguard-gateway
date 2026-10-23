@@ -1,12 +1,27 @@
-# Arbitrum Sepolia — Railguard hook deployment
+﻿# Arbitrum Sepolia - Railguard hook deployment
 
-| Contract | Address | Source verified | Arbiscan |
-|----------|---------|-----------------|----------|
-| RailguardExecutionHook | `0x756829c3ab0eB02b22fe4D7C9E35252A9738965E` | no (pending Etherscan V2) | [hook](https://sepolia.arbiscan.io/address/0x756829c3ab0eB02b22fe4D7C9E35252A9738965E) |
-| RailguardAccountAdapter | `0xe84aEa57cF7b12f746C1c4e6Be64348051fD3514` | no (pending Etherscan V2) | [adapter](https://sepolia.arbiscan.io/address/0xe84aEa57cF7b12f746C1c4e6Be64348051fD3514) |
-| RailguardSessionValidator | `0xc0Bf25808d6cC3B283CCa952e01bD6Fd505fD663` | no (pending Etherscan V2) | [validator](https://sepolia.arbiscan.io/address/0xc0Bf25808d6cC3B283CCa952e01bD6Fd505fD663) |
+All three contracts are **source-verified** on Arbiscan (Etherscan V2) and on Sourcify (`exact_match`). Checked 2026-10-23.
 
-Contract source: [railguard-protocol](https://github.com/prasanthkuna/railguard-protocol) (commit pinned in deploy notes below).
+| Contract | Address | Arbiscan (verified source) | Sourcify |
+|----------|---------|----------------------------|----------|
+| RailguardExecutionHook | `0x756829c3ab0eB02b22fe4D7C9E35252A9738965E` | [code](https://sepolia.arbiscan.io/address/0x756829c3ab0eB02b22fe4D7C9E35252A9738965E#code) | [exact match](https://repo.sourcify.dev/421614/0x756829c3ab0eB02b22fe4D7C9E35252A9738965E) |
+| RailguardAccountAdapter | `0xe84aEa57cF7b12f746C1c4e6Be64348051fD3514` | [code](https://sepolia.arbiscan.io/address/0xe84aEa57cF7b12f746C1c4e6Be64348051fD3514#code) | [exact match](https://repo.sourcify.dev/421614/0xe84aEa57cF7b12f746C1c4e6Be64348051fD3514) |
+| RailguardSessionValidator | `0xc0Bf25808d6cC3B283CCa952e01bD6Fd505fD663` | [code](https://sepolia.arbiscan.io/address/0xc0Bf25808d6cC3B283CCa952e01bD6Fd505fD663#code) | [exact match](https://repo.sourcify.dev/421614/0xc0Bf25808d6cC3B283CCa952e01bD6Fd505fD663) |
+
+Compiler: solc `v0.8.24+commit.e11b9ed9`, optimizer on (200 runs), `via_ir = true`.
+Contract source: [railguard-protocol](https://github.com/prasanthkuna/railguard-protocol) `contracts/src` (last source change `31a2168`).
+
+Constructor arguments:
+
+- AccountAdapter: `owner=0x9a3f50804306fDB12046243bDF2dB33D61dcBA2d`, `signer=0x8c7E2543Aa8bf69dc8458Dc28104234f6A334233`, `hook=0x756829c3ab0eB02b22fe4D7C9E35252A9738965E`
+- SessionValidator: `account=0xe84aEa57cF7b12f746C1c4e6Be64348051fD3514`
+- ExecutionHook: none (`setAdapter(adapter)` called after adapter deploy)
+
+Re-check verification (from `railguard-protocol/contracts`):
+
+```powershell
+forge verify-contract 0xc0Bf25808d6cC3B283CCa952e01bD6Fd505fD663 src/RailguardSessionValidator.sol:RailguardSessionValidator --chain 421614 --verifier etherscan --constructor-args $(cast abi-encode "f(address)" 0xe84aEa57cF7b12f746C1c4e6Be64348051fD3514)
+```
 
 **Chain:** Arbitrum Sepolia (421614)  
 **Deployer:** `0xee93c47daCB59B9B21595c7ecf86920d0DceE89C`  
