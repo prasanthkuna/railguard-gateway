@@ -91,8 +91,8 @@ ecosystems:
 
   - id: airwallex
     label: Airwallex
-    status: grant-phase
-    narrative: Fiat execution adapter is a roadmap integration, not a shipped live rail.
+    status: integrated
+    narrative: Live in the Airwallex sandbox (test money). Public timeout demo confirms exactly one transfer by request_id; evidence in evidence/airwallex-sandbox.
     rails:
       - airwallex
 

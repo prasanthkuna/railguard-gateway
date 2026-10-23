@@ -1,25 +1,16 @@
 import { expect, test } from "@playwright/test"
 
-const OPERATOR_HOST = "prebroadcast.vercel.app"
-
 test.describe("Marketing site", () => {
-  test("home hero and integrations strip", async ({ page }) => {
+  test("home hero, stories and proof tiles", async ({ page }) => {
     await page.goto("/")
-    await expect(page.getByRole("heading", { name: /payment mistakes/i })).toBeVisible()
-    await expect(page.getByRole("region", { name: "Execution rails" })).toBeVisible()
-    await expect(page.getByRole("heading", { name: /Failure Lab/i })).toBeVisible()
+    await expect(page.getByRole("heading", { level: 1, name: /spend it right/i })).toBeVisible()
+    await page.getByRole("tab", { name: "Going over budget" }).click()
+    await expect(page.getByText(/Budget held/i)).toBeVisible()
+    await expect(page.getByRole("link", { name: /View tx/i }).first()).toBeVisible()
   })
 
-  test("hero mode tabs switch telemetry", async ({ page }) => {
-    await page.goto("/")
-    await page.getByRole("tab", { name: "ATTACK" }).click()
-    await expect(page.getByRole("log").getByText("DENY").first()).toBeVisible()
-    await page.getByRole("tab", { name: "FAILURE" }).click()
-    await expect(page.getByRole("log").getByText("UNKNOWN").first()).toBeVisible()
-  })
-
-  test("failure lab run attack does not crash", async ({ page }) => {
-    await page.goto("/")
+  test("demo page runs the failure lab", async ({ page }) => {
+    await page.goto("/demo")
     await page.getByRole("button", { name: "Simulate attack" }).click()
     await expect(page.getByText(/financial failure classes exposed/i)).toBeVisible({
       timeout: 8000,
@@ -27,38 +18,19 @@ test.describe("Marketing site", () => {
     await expect(page.getByText(/Application error/i)).toHaveCount(0)
   })
 
-  test("attack page loads", async ({ page }) => {
+  test("old routes redirect", async ({ page }) => {
     await page.goto("/attack")
-    await expect(page.getByRole("heading", { name: /six financial failures/i })).toBeVisible()
-  })
-
-  test("sample receipt and copy proof", async ({ page, context }) => {
-    await context.grantPermissions(["clipboard-read", "clipboard-write"])
-    await page.goto("/r/demo")
-    await expect(page.getByText(/SAMPLE DATA/i)).toBeVisible()
-    await page.getByRole("button", { name: /Copy sample/i }).click()
-    await expect(page.getByRole("button", { name: /Copied/i })).toBeVisible({ timeout: 10_000 })
-  })
-
-  test("ecosystems CDP links to operator", async ({ page }) => {
+    await expect(page).toHaveURL(/\/demo$/)
     await page.goto("/ecosystems")
-    const cdp = page.getByRole("link", { name: /Open testnet console/i })
-    await expect(cdp).toHaveAttribute("href", new RegExp(OPERATOR_HOST))
-    await expect(cdp).toHaveAttribute("target", "_blank")
+    await expect(page).toHaveURL(/\/proof$/)
+    await page.goto("/r/demo")
+    await expect(page).toHaveURL(/\/demo#receipt$/)
   })
 
-  test("integrate section labels terminal vs MCP", async ({ page }) => {
-    await page.goto("/#integrate")
-    await expect(page.getByRole("heading", { name: /CLI, MCP, and API/i })).toBeVisible()
-    await expect(page.getByText("Terminal command").first()).toBeVisible()
-    await expect(page.getByText("MCP config (JSON)")).toBeVisible()
-    await expect(page.getByText(/not a shell command/i).first()).toBeVisible()
-  })
-
-  test("header testnet proofs route", async ({ page }) => {
-    await page.goto("/")
-    await page.getByRole("link", { name: "Testnet proofs", exact: true }).click()
-    await expect(page).toHaveURL(/\/ecosystems/)
+  test("proof index lists rails honestly", async ({ page }) => {
+    await page.goto("/proof")
+    await expect(page.getByRole("heading", { name: /labelled honestly/i })).toBeVisible()
+    await expect(page.getByText("Sandbox live")).toBeVisible()
   })
 
   test("stellar public proof page", async ({ page }) => {
@@ -67,13 +39,9 @@ test.describe("Marketing site", () => {
     await expect(page.getByText("CONFIRMED").first()).toBeVisible()
     await expect(page.getByRole("heading", { name: /Soroban policy contract/i })).toBeVisible()
   })
-})
 
-test.describe("Operator (public auth)", () => {
-  test("login page matches Railguard brand", async ({ page }) => {
-    await page.goto(`https://${OPERATOR_HOST}/login`)
-    await expect(page.getByRole("heading", { name: /Sign in/i })).toBeVisible()
-    await expect(page.getByText(/Not unlimited money/i)).toBeVisible()
-    await expect(page.getByRole("link", { name: /Marketing site/i })).toBeVisible()
+  test("metal proof page", async ({ page }) => {
+    await page.goto("/proof/metal-testnet")
+    await expect(page.getByRole("heading", { name: /limits that hold/i })).toBeVisible()
   })
 })

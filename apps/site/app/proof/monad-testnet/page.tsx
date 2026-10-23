@@ -1,4 +1,5 @@
 import Link from "next/link"
+import { PlainSummary } from "../../../components/v2/PlainSummary"
 import { EXTERNAL_LINK, GITHUB_GATEWAY } from "../../../lib/constants"
 import { MONAD_TESTNET_PROOF as P } from "../../../lib/monad-public-proof"
 
@@ -14,6 +15,11 @@ export default function MonadTestnetProofPage() {
     <main className="page proof-page">
       <p className="eyebrow">v0.1.0-alpha · {P.networkLabel}</p>
       <h1>Verified Monad settlement</h1>
+      <PlainSummary
+        happened="A 1 USDC transfer was made on Monad testnet from an outside wallet."
+        checked="Railguard read the receipt logs and matched token, sender, recipient and amount, then marked it CONFIRMED."
+        matters="Railguard can verify payments it did not send, so it works alongside wallets you already use."
+      />
       <p className="section-intro">
         Railguard read the transaction receipt, matched the USDC <code>Transfer</code> event against
         the expected token, sender, recipient, and amount, and recorded the result as{" "}
@@ -80,11 +86,11 @@ export default function MonadTestnetProofPage() {
         >
           Evidence manifest
         </a>
-        <Link href="/ecosystems/monad" className="btn btn-ghost">
-          Monad integration
+        <Link href="/proof" className="btn btn-ghost">
+          All proofs
         </Link>
-        <Link href="/attack" className="btn btn-ghost">
-          Failure Lab simulation
+        <Link href="/demo" className="btn btn-ghost">
+          Try the demo
         </Link>
       </div>
     </main>

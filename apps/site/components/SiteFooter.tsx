@@ -1,44 +1,34 @@
 import Link from "next/link"
 import {
+  CONTACT_EMAIL,
   EXTERNAL_LINK,
+  FOUNDER_SOCIAL,
   GITHUB_GATEWAY,
-  GITHUB_LAB,
-  GITHUB_PROFILE,
-  GITHUB_PROTOCOL,
-  GITHUB_X402,
+  LICENSE_URL,
 } from "../lib/constants"
-import { FounderSocialLinks } from "./FounderSocialLinks"
 
 export function SiteFooter() {
   return (
-    <footer className="site-footer">
-      <p className="footer-tag">Agent money. Guarded.</p>
-      <FounderSocialLinks />
-      <div className="footer-links">
-        <Link href="/#about">About</Link>
-        <Link href="/ecosystems">Ecosystems</Link>
-        <Link href="/attack">Failure Lab</Link>
-        <Link href="/proof/stellar-testnet">Stellar proof</Link>
-        <Link href="/proof/arbitrum-sepolia">Arbitrum proof</Link>
-        <Link href="/proof/monad-testnet">Monad proof</Link>
-        <Link href="/proof/arc-mainnet">Arc proof</Link>
-        <a href={GITHUB_PROFILE} {...EXTERNAL_LINK}>
-          GitHub profile
-        </a>
+    <footer className="ui-footer">
+      <span>
+        Railguard v0.1 alpha · testnet only ·{" "}
+        <a href={LICENSE_URL} {...EXTERNAL_LINK}>
+          Apache-2.0
+        </a>{" "}
+        · built by{" "}
+        <Link href="/about" style={{ color: "var(--text)" }}>
+          {FOUNDER_SOCIAL.name}
+        </Link>
+      </span>
+      <nav aria-label="Footer">
+        <Link href="/demo">Try it</Link>
+        <Link href="/proof">Proof</Link>
+        <Link href="/how-it-works">How it works</Link>
         <a href={GITHUB_GATEWAY} {...EXTERNAL_LINK}>
-          Gateway repo
+          GitHub
         </a>
-        <a href={GITHUB_LAB} {...EXTERNAL_LINK}>
-          Failure Lab
-        </a>
-        <a href={GITHUB_PROTOCOL} {...EXTERNAL_LINK}>
-          Core
-        </a>
-        <a href={GITHUB_X402} {...EXTERNAL_LINK}>
-          x402 adapter
-        </a>
-      </div>
-      <p className="footer-meta">v0.1.0-alpha · Apache-2.0 / MIT · Open source</p>
+        <a href={`mailto:${CONTACT_EMAIL}`}>Contact</a>
+      </nav>
     </footer>
   )
 }

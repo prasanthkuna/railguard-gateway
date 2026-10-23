@@ -15,7 +15,9 @@ Railguard puts a control boundary between an AI agent and money movement. It bin
 | Surface | Link | Access |
 | --- | --- | --- |
 | Product | https://railguard-site.vercel.app/ | Public |
-| Failure Lab | https://railguard-site.vercel.app/attack | Public |
+| Try it (Failure Lab, live runs, video) | https://railguard-site.vercel.app/demo | Public |
+| All proofs | https://railguard-site.vercel.app/proof | Public, no sign-in |
+| Metal testnet proof (Kit 11) | https://railguard-site.vercel.app/proof/metal-testnet | Public, no sign-in |
 | Arbitrum Sepolia proof | https://railguard-site.vercel.app/proof/arbitrum-sepolia | Public, no sign-in |
 | Monad testnet proof | https://railguard-site.vercel.app/proof/monad-testnet | Public, no sign-in |
 | Stellar testnet proof | https://railguard-site.vercel.app/proof/stellar-testnet | Public, no sign-in |
@@ -193,4 +195,4 @@ encore check
 
 ## License
 
-Apache-2.0
+Apache-2.0. See [LICENSE](LICENSE). Copyright 2026 Prasanth Kuna.

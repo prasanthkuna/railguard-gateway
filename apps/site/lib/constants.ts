@@ -51,3 +51,12 @@ export const EXTERNAL_LINK = {
   target: "_blank",
   rel: "noopener noreferrer",
 } as const
+
+/** Public demos (no sign-in). */
+export const KIT11_AGENTS_URL = `${operatorRoot}/x402-agents`
+export const AIRWALLEX_INCIDENTS_URL = `${operatorRoot}/incidents`
+export const DEMO_VIDEO_URL = "https://youtu.be/L-Gss08bzR0"
+export const DEMO_VIDEO_EMBED = "https://www.youtube-nocookie.com/embed/L-Gss08bzR0"
+export const CONTACT_EMAIL = "prasanthkuna@gmail.com"
+export const ARCHITECTURE_DOC = `${GITHUB_GATEWAY}/blob/main/docs/ARCHITECTURE.md`
+export const LICENSE_URL = `${GITHUB_GATEWAY}/blob/main/LICENSE`

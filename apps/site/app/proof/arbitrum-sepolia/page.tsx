@@ -1,4 +1,5 @@
 import Link from "next/link"
+import { PlainSummary } from "../../../components/v2/PlainSummary"
 import { ARBITRUM_SEPOLIA_PROOF as P } from "../../../lib/arbitrum-public-proof"
 import { EXTERNAL_LINK, GITHUB_GATEWAY, OPERATOR_LOGIN_URL } from "../../../lib/constants"
 
@@ -14,6 +15,11 @@ export default function ArbitrumSepoliaProofPage() {
     <main className="page proof-page">
       <p className="eyebrow">v0.1.0-alpha · {P.networkLabel}</p>
       <h1>Verified testnet execution</h1>
+      <PlainSummary
+        happened="A 0.01 USDC transfer on Arbitrum Sepolia went through the full Railguard lifecycle: intent, approval, transfer, check."
+        checked="That the on-chain transfer matched the approved token, recipient and amount, so the result is CONFIRMED (settlement verified)."
+        matters="An agent payment is only marked done when the chain agrees. The hook contract below is a separate deployment; this transfer was checked by the Railguard observer, not routed through the hook."
+      />
       <p className="section-intro">
         External-wallet verification — intent, authorization, wallet transfer, verification, and{" "}
         <span className="mono">CONFIRMED</span> (settlement verified) evidence. This is separate
@@ -95,11 +101,11 @@ export default function ArbitrumSepoliaProofPage() {
         >
           Hook evidence
         </a>
-        <Link href="/ecosystems/arbitrum" className="btn btn-ghost">
-          Arbitrum integration
+        <Link href="/proof" className="btn btn-ghost">
+          All proofs
         </Link>
-        <Link href="/attack" className="btn btn-ghost">
-          Failure Lab simulation
+        <Link href="/demo" className="btn btn-ghost">
+          Try the demo
         </Link>
         <a href={OPERATOR_LOGIN_URL} className="btn btn-ghost" {...EXTERNAL_LINK}>
           Optional: replay in operator

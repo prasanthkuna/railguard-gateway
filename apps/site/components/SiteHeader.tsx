@@ -1,124 +1,80 @@
 "use client"
 
 import Link from "next/link"
-import { useCallback, useEffect, useState } from "react"
-import { GITHUB_GATEWAY, GITHUB_PROFILE } from "../lib/constants"
+import { usePathname } from "next/navigation"
+import { useEffect, useState } from "react"
+import { EXTERNAL_LINK, GITHUB_GATEWAY } from "../lib/constants"
 import { Logo } from "./Logo"
-import { SystemStatus } from "./SystemStatus"
 
-const ARCHITECTURE = `${GITHUB_GATEWAY}/blob/main/docs/ARCHITECTURE.md`
-
-const links = [
-  { href: "/attack", label: "Failure Lab" },
-  { href: "/ecosystems", label: "Testnet proofs" },
-  { href: ARCHITECTURE, label: "Architecture", external: true },
-  { href: GITHUB_PROFILE, label: "GitHub", external: true },
-  { href: GITHUB_GATEWAY, label: "Source", external: true },
-]
+export const NAV = [
+  { href: "/demo", label: "Try it" },
+  { href: "/proof", label: "Proof" },
+  { href: "/how-it-works", label: "How it works" },
+  { href: "/about", label: "About" },
+] as const
 
 export function SiteHeader() {
-  const [menuOpen, setMenuOpen] = useState(false)
-
-  const closeMenu = useCallback(() => setMenuOpen(false), [])
+  const [open, setOpen] = useState(false)
+  const pathname = usePathname()
 
   useEffect(() => {
-    if (!menuOpen) return
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") closeMenu()
-    }
-    document.body.style.overflow = "hidden"
-    window.addEventListener("keydown", onKey)
-    return () => {
-      document.body.style.overflow = ""
-      window.removeEventListener("keydown", onKey)
-    }
-  }, [menuOpen, closeMenu])
+    if (pathname) setOpen(false)
+  }, [pathname])
 
   return (
-    <header className="site-header-wrap">
-      <div className="site-header">
-        <Link href="/" className="brand" onClick={closeMenu}>
-          <Logo size={36} />
+    <header className="ui-header">
+      <div className="ui-header-inner">
+        <Link href="/" className="ui-brand" aria-label="Railguard home">
+          <Logo size={28} />
           <span>Railguard</span>
         </Link>
-        <nav className="site-nav" aria-label="Primary">
-          {links.map((l) =>
-            l.external ? (
-              <a key={l.href} href={l.href} target="_blank" rel="noopener noreferrer">
-                {l.label}
-              </a>
-            ) : (
-              <Link key={l.href} href={l.href}>
-                {l.label}
-              </Link>
-            ),
-          )}
+        <nav className="ui-nav" aria-label="Primary">
+          {NAV.map((l) => (
+            <Link
+              key={l.href}
+              href={l.href}
+              aria-current={pathname?.startsWith(l.href) ? "page" : undefined}
+            >
+              {l.label}
+            </Link>
+          ))}
         </nav>
-        <div className="header-actions">
+        <div className="ui-header-actions">
+          <a href={GITHUB_GATEWAY} className="ui-gh" {...EXTERNAL_LINK}>
+            GitHub
+          </a>
+          <Link href="/demo" className="ui-btn ui-btn-primary ui-btn-sm">
+            Try the demo
+          </Link>
           <button
             type="button"
-            className="menu-toggle"
-            aria-expanded={menuOpen}
+            className="ui-menu-btn"
+            aria-expanded={open}
             aria-controls="mobile-nav"
-            onClick={() => setMenuOpen((o) => !o)}
+            aria-label={open ? "Close menu" : "Open menu"}
+            onClick={() => setOpen((o) => !o)}
           >
-            <span className="menu-toggle-icon" aria-hidden />
-            <span className="sr-only">{menuOpen ? "Close menu" : "Open menu"}</span>
+            <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true">
+              {open ? (
+                <path d="M4 4l10 10M14 4L4 14" stroke="currentColor" strokeWidth="1.6" />
+              ) : (
+                <path d="M2 5h14M2 9h14M2 13h14" stroke="currentColor" strokeWidth="1.6" />
+              )}
+            </svg>
           </button>
-          <Link href="/attack" className="btn btn-mint btn-sm header-cta-short">
-            Attack
-          </Link>
-          <Link href="/attack" className="btn btn-mint btn-sm header-cta-full">
-            railguard attack
-          </Link>
         </div>
       </div>
-      <SystemStatus />
-      {menuOpen ? (
-        <>
-          <button
-            type="button"
-            className="mobile-nav-backdrop"
-            aria-label="Close menu"
-            onClick={closeMenu}
-          />
-          <nav id="mobile-nav" className="mobile-nav-panel" aria-label="Mobile">
-            <div className="mobile-nav-head">
-              <span>Menu</span>
-              <button
-                type="button"
-                className="mobile-nav-close"
-                onClick={closeMenu}
-                aria-label="Close"
-              >
-                ×
-              </button>
-            </div>
-            {links.map((l) =>
-              l.external ? (
-                <a
-                  key={l.href}
-                  href={l.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  onClick={closeMenu}
-                >
-                  {l.label}
-                </a>
-              ) : (
-                <Link key={l.href} href={l.href} onClick={closeMenu}>
-                  {l.label}
-                </Link>
-              ),
-            )}
-            <Link href="/attack" className="btn btn-mint" onClick={closeMenu}>
-              railguard attack
+      {open ? (
+        <nav id="mobile-nav" className="ui-mobile-nav" aria-label="Mobile">
+          {NAV.map((l) => (
+            <Link key={l.href} href={l.href}>
+              {l.label}
             </Link>
-            <Link href="/ecosystems" className="btn btn-ghost" onClick={closeMenu}>
-              Ecosystems
-            </Link>
-          </nav>
-        </>
+          ))}
+          <a href={GITHUB_GATEWAY} {...EXTERNAL_LINK}>
+            GitHub
+          </a>
+        </nav>
       ) : null}
     </header>
   )

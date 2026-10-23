@@ -1,4 +1,5 @@
 import Link from "next/link"
+import { PlainSummary } from "../../../components/v2/PlainSummary"
 import { EXTERNAL_LINK, GITHUB_GATEWAY } from "../../../lib/constants"
 import {
   STELLAR_TESTNET_PROOF as P,
@@ -17,6 +18,11 @@ export default function StellarTestnetProofPage() {
     <main className="page proof-page">
       <p className="eyebrow">v0.1.0-alpha · {P.networkLabel}</p>
       <h1>Verified testnet settlement</h1>
+      <PlainSummary
+        happened="A testnet XLM payment was confirmed on Horizon, and a Soroban contract enforced an agent budget on chain for Circle testnet USDC."
+        checked="That the payment matched its intent, and that the contract rejected duplicates, replays, changed recipients, extra amounts and overspend."
+        matters="The same rules hold even if the app is bypassed: the contract itself refuses bad payments."
+      />
       <p className="section-intro">
         Horizon-based observe/reconcile: a Stellar testnet payment was verified as{" "}
         <span className="mono">CONFIRMED</span> and recorded in a reproducible evidence manifest.{" "}
@@ -182,11 +188,11 @@ export default function StellarTestnetProofPage() {
         >
           Evidence manifest
         </a>
-        <Link href="/ecosystems/stellar" className="btn btn-ghost">
-          Stellar integration
+        <Link href="/proof" className="btn btn-ghost">
+          All proofs
         </Link>
-        <Link href="/attack" className="btn btn-ghost">
-          Failure Lab simulation
+        <Link href="/demo" className="btn btn-ghost">
+          Try the demo
         </Link>
       </div>
     </main>

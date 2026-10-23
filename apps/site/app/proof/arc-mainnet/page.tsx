@@ -5,11 +5,12 @@ import { EXTERNAL_LINK, GITHUB_GATEWAY } from "../../../lib/constants"
 const ARC_CONFIRMED = P.status === "CONFIRMED" && P.txHash.length > 0
 
 export const metadata = {
-  title: ARC_CONFIRMED ? "Arc mainnet verified proof" : "Arc mainnet proof (pending)",
+  title: ARC_CONFIRMED ? "Arc mainnet verified proof" : "Arc mainnet: not live yet",
   description: ARC_CONFIRMED
     ? "Public Arc mainnet proof: USDC settlement independently verified from on-chain receipt logs."
     : "Arc mainnet settlement proof is pending: no mainnet transaction has been verified yet.",
   alternates: { canonical: "/proof/arc-mainnet" },
+  robots: ARC_CONFIRMED ? { index: true, follow: true } : { index: false, follow: true },
 }
 
 export default function ArcMainnetProofPage() {
@@ -18,7 +19,7 @@ export default function ArcMainnetProofPage() {
   return (
     <main className="page proof-page">
       <p className="eyebrow">v0.1.0-alpha · {P.networkLabel}</p>
-      <h1>{confirmed ? "Verified Arc settlement" : "Arc mainnet proof (pending)"}</h1>
+      <h1>{confirmed ? "Verified Arc settlement" : "Arc mainnet: not live yet"}</h1>
       {confirmed ? (
         <>
           <p className="section-intro">
@@ -68,18 +69,19 @@ export default function ArcMainnetProofPage() {
         </>
       ) : (
         <p className="section-intro">
-          Arc mainnet evidence is generated locally after a <strong>minimal 0.01 USDC</strong> proof
-          transfer on chain <span className="mono">5042</span>. Bridge USDC via Circle CCTP, run{" "}
-          <span className="mono">bun run arc-mainnet-usdc-proof</span>, then{" "}
-          <span className="mono">bun run sync-arc-public-proof</span> and redeploy the site. See{" "}
-          <span className="mono">docs/grants/ARC_MICROGRANT_SUBMIT.md</span> in the repo.
+          Not live yet. Railguard's Arc settlement checker is built, but no Arc mainnet payment has
+          been verified, so there is nothing to show here. This page will list the transaction once
+          one is confirmed. Until then, see the{" "}
+          <Link href="/proof">confirmed proofs on other networks</Link>.
         </p>
       )}
 
-      <section className="section">
-        <h2>Reproduce independently</h2>
-        <p className="section-intro mono">{P.reproduceCommand}</p>
-      </section>
+      {confirmed ? (
+        <section className="section">
+          <h2>Reproduce independently</h2>
+          <p className="section-intro mono">{P.reproduceCommand}</p>
+        </section>
+      ) : null}
 
       <div className="proof-actions">
         {confirmed ? (
@@ -87,18 +89,20 @@ export default function ArcMainnetProofPage() {
             Inspect transaction
           </a>
         ) : null}
-        <a
-          href={`${GITHUB_GATEWAY}/tree/main/${P.evidenceRepoPath}`}
-          className="btn btn-ghost"
-          {...EXTERNAL_LINK}
-        >
-          Evidence manifest
-        </a>
-        <Link href="/ecosystems/arc" className="btn btn-ghost">
-          Arc integration
+        {confirmed ? (
+          <a
+            href={`${GITHUB_GATEWAY}/blob/main/${P.evidenceRepoPath}`}
+            className="btn btn-ghost"
+            {...EXTERNAL_LINK}
+          >
+            Evidence manifest
+          </a>
+        ) : null}
+        <Link href="/proof#arc" className="btn btn-ghost">
+          Arc status
         </Link>
-        <Link href="/attack" className="btn btn-ghost">
-          Failure Lab
+        <Link href="/demo" className="btn btn-ghost">
+          Try the demo
         </Link>
       </div>
     </main>
