@@ -5,7 +5,12 @@
   "network": "eip155:63825",
   "explorer": "https://testnet.metalntwx.com",
   "facilitator": "https://x402-testnet.metalntwx.com/x402/facilitator",
-  "model": "gemini-3.8-flash",
+  "model": "gemini-2.5-flash",
+  "modelsAttempted": [
+    "gemini-3.8-flash",
+    "gemini-2.5-flash"
+  ],
+  "modelNote": "gemini-3.8-flash was tried first and returned 503; the fallback gemini-2.5-flash answered every decision.",
   "treasury": "airwallex-sandbox",
   "addresses": {
     "account": "0x7C2AE2f9DeD3ff262790b5F6a95B0C7AA1828F5B",

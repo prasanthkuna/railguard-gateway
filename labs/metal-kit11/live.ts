@@ -666,7 +666,9 @@ async function main() {
     network: METAL_TESTNET.network,
     explorer: METAL_TESTNET.explorer,
     facilitator: METAL_TESTNET.facilitator,
-    model: models[0]?.name ?? "scripted-rules",
+    // Record the model that actually answered (a fallback may answer if the first model fails).
+    model: answeringModel(result) ?? models[0]?.name ?? "scripted-rules",
+    modelsAttempted: models.map((m) => m.name),
     treasury: treasury.mode,
     addresses: { account, customerAccount, upstream, bridge },
     funding: {
@@ -694,3 +696,18 @@ main().catch((e) => {
   console.error(`run failed: ${(e as Error).message}`)
   process.exit(1)
 })
+
+/** Collects every `decidedBy` in the run result; returns the answering model(s). */
+function answeringModel(value: unknown): string | undefined {
+  const found = new Set<string>()
+  const walk = (v: unknown): void => {
+    if (Array.isArray(v)) v.forEach(walk)
+    else if (v && typeof v === "object")
+      for (const [k, x] of Object.entries(v)) {
+        if (k === "decidedBy" && typeof x === "string" && x !== "scripted-rules") found.add(x)
+        else walk(x)
+      }
+  }
+  walk(value)
+  return found.size ? [...found].join("+") : undefined
+}
