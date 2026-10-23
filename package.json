@@ -48,6 +48,7 @@
     "arbitrum-one-evidence": "bun run scripts/arbitrum-one-evidence.ts",
     "testnet:all": "bun run scripts/testnet-all.ts",
     "stellar-testnet-evidence": "bun run scripts/stellar-testnet-evidence.ts",
+    "stellar-soroban-policy-evidence": "bun run scripts/stellar-soroban-policy-evidence.ts",
     "arc-testnet-evidence": "bun run scripts/arc-testnet-evidence.ts",
     "arc-mainnet-evidence": "bun run scripts/arc-mainnet-evidence.ts",
     "arc-mainnet-usdc-proof": "bun run scripts/arc-mainnet-usdc-proof.ts",

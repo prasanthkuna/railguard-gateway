@@ -10,6 +10,7 @@ export interface StellarPaymentFacts {
   destination: string
   assetType: string
   assetCode?: string
+  assetIssuer?: string
   amount: string
   memo?: string
 }
@@ -20,6 +21,39 @@ export interface StellarVerifyInput {
   expectedDestination?: string
   expectedAmount?: string
   expectedMemo?: string
+  /** "native" for XLM, or a credit asset such as Circle testnet USDC. */
+  expectedAsset?: StellarExpectedAsset
+  fetchImpl?: typeof fetch
+}
+
+export type StellarExpectedAsset = "native" | { code: string; issuer: string }
+
+/** Circle testnet USDC on Stellar (issuer published by Circle). */
+export const STELLAR_TESTNET_USDC_ASSET = {
+  code: "USDC",
+  issuer: "GBBD47IF6LWK7P7MDEVSCWR7DPUWV3NY3DTQEVFL4NAT4AQH3ZLLFLA5",
+} as const
+
+/** Parse "native" | "XLM" | "CODE:ISSUER" (e.g. from RAILGUARD_STELLAR_ASSET). */
+export function parseStellarAsset(value: string | undefined): StellarExpectedAsset | undefined {
+  const v = value?.trim()
+  if (!v) return undefined
+  if (v === "native" || v.toUpperCase() === "XLM") return "native"
+  const [code, issuer] = v.split(":")
+  if (!code || !issuer) throw new Error("stellar_asset_format")
+  return { code, issuer }
+}
+
+export function stellarAssetMatches(
+  facts: StellarPaymentFacts,
+  expected: StellarExpectedAsset,
+): boolean {
+  if (expected === "native") return facts.assetType === "native"
+  return (
+    facts.assetType !== "native" &&
+    facts.assetCode === expected.code &&
+    facts.assetIssuer === expected.issuer
+  )
 }
 
 export interface StellarVerifyResult {
@@ -31,15 +65,16 @@ export interface StellarVerifyResult {
 export async function fetchStellarPaymentFacts(
   txHash: string,
   horizonUrl = "https://horizon-testnet.stellar.org",
+  fetchImpl: typeof fetch = fetch,
 ): Promise<StellarPaymentFacts> {
-  const res = await fetch(`${horizonUrl}/transactions/${txHash}/operations?limit=10`)
+  const res = await fetchImpl(`${horizonUrl}/transactions/${txHash}/operations?limit=10`)
   if (!res.ok) {
     throw new Error(`horizon_http_${res.status}`)
   }
   const json = (await res.json()) as {
     _embedded?: { records?: Array<Record<string, unknown>> }
   }
-  const txRes = await fetch(`${horizonUrl}/transactions/${txHash}`)
+  const txRes = await fetchImpl(`${horizonUrl}/transactions/${txHash}`)
   if (!txRes.ok) {
     throw new Error(`horizon_tx_${txRes.status}`)
   }
@@ -50,6 +85,7 @@ export async function fetchStellarPaymentFacts(
         to: string
         asset_type: string
         asset_code?: string
+        asset_issuer?: string
         amount: string
       }
     | undefined
@@ -63,6 +99,7 @@ export async function fetchStellarPaymentFacts(
     destination: payment.to,
     assetType: payment.asset_type,
     assetCode: payment.asset_code,
+    assetIssuer: payment.asset_issuer,
     amount: payment.amount,
     memo: typeof tx.memo === "string" ? tx.memo : undefined,
   }
@@ -71,12 +108,15 @@ export async function fetchStellarPaymentFacts(
 export async function verifyStellarTestnetPayment(
   input: StellarVerifyInput,
 ): Promise<StellarVerifyResult> {
-  const facts = await fetchStellarPaymentFacts(input.txHash, input.horizonUrl)
+  const facts = await fetchStellarPaymentFacts(input.txHash, input.horizonUrl, input.fetchImpl)
   if (!facts.successful) {
     return { status: "FAILED", facts, reason: "transaction_not_successful" }
   }
   if (input.expectedDestination && facts.destination !== input.expectedDestination) {
     return { status: "RECONCILIATION_REQUIRED", facts, reason: "destination_mismatch" }
+  }
+  if (input.expectedAsset && !stellarAssetMatches(facts, input.expectedAsset)) {
+    return { status: "RECONCILIATION_REQUIRED", facts, reason: "asset_mismatch" }
   }
   if (input.expectedAmount && facts.amount !== input.expectedAmount) {
     return { status: "RECONCILIATION_REQUIRED", facts, reason: "amount_mismatch" }

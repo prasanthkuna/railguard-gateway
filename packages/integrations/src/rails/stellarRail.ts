@@ -9,6 +9,7 @@ import type {
 import type { FinancialIntent } from "@railguard/kernel/intent"
 import {
   STELLAR_TESTNET_EVIDENCE_TX,
+  parseStellarAsset,
   verifyStellarTestnetPayment,
 } from "@railguard/settlement/stellar-testnet"
 
@@ -53,6 +54,8 @@ export function createStellarExecutionRail(): ExecutionRail {
         expectedDestination: process.env.RAILGUARD_STELLAR_DESTINATION?.trim(),
         expectedAmount: process.env.RAILGUARD_STELLAR_AMOUNT?.trim(),
         expectedMemo: process.env.RAILGUARD_STELLAR_MEMO?.trim(),
+        // "native" or "USDC:GBBD47IF6LWK7P7MDEVSCWR7DPUWV3NY3DTQEVFL4NAT4AQH3ZLLFLA5" (Circle testnet USDC)
+        expectedAsset: parseStellarAsset(process.env.RAILGUARD_STELLAR_ASSET),
       })
       const settled = result.status === "CONFIRMED"
       return {

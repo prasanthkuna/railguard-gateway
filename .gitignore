@@ -42,6 +42,7 @@ evidence/*
 !evidence/arbitrum-sepolia-hook/
 !evidence/arbitrum-sepolia/
 !evidence/stellar-testnet/
+!evidence/stellar-soroban-policy/
 !evidence/monad-testnet/
 !evidence/arc/
 !evidence/arbitrum-one/

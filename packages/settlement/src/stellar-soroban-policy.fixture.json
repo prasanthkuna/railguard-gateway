@@ -1,0 +1,42 @@
+{
+  "type": "invoke_host_function",
+  "transaction_successful": true,
+  "source_account": "GDX7EBCAC4NVLPBE4TGDNEUEA2TAGOYCKELCQP245YMHA66GV6PIDLP5",
+  "parameters": [
+    {
+      "value": "AAAAEgAAAAFpjqW5IbEfo3BJEAWXQ48a2W3HIF0viMS+NJ5WnuIZ/A==",
+      "type": "Address"
+    },
+    {
+      "value": "AAAADwAAAAdleGVjdXRlAA==",
+      "type": "Sym"
+    },
+    {
+      "value": "AAAADQAAACClHOQPQ0FPMLExwStoEiAAU9HbDZP6Z58ATwpJEUJo2w==",
+      "type": "Bytes"
+    },
+    {
+      "value": "AAAAEgAAAAAAAAAAJwgrfMWCg5dqnIq+EKR80FP2iVb58S1ASbDub+qKp00=",
+      "type": "Address"
+    },
+    {
+      "value": "AAAAEgAAAAFQRc1ewHKado/VrQJQWFLfTwKNzoMOWsUiCbpISDsvAQ==",
+      "type": "Address"
+    },
+    {
+      "value": "AAAACgAAAAAAAAAAAAAAAAC+vCA=",
+      "type": "I128"
+    }
+  ],
+  "asset_balance_changes": [
+    {
+      "asset_type": "credit_alphanum4",
+      "asset_code": "USDC",
+      "asset_issuer": "GBBD47IF6LWK7P7MDEVSCWR7DPUWV3NY3DTQEVFL4NAT4AQH3ZLLFLA5",
+      "type": "transfer",
+      "from": "GDX7EBCAC4NVLPBE4TGDNEUEA2TAGOYCKELCQP245YMHA66GV6PIDLP5",
+      "to": "GATQQK34YWBIHF3KTSFL4EFEPTIFH5UJK347CLKAJGYO437KRKTU22VO",
+      "amount": "1.2500000"
+    }
+  ]
+}

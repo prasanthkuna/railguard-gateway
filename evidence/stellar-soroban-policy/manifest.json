@@ -1,0 +1,60 @@
+{
+  "generatedAt": "2026-10-23T04:42:11.085Z",
+  "network": "stellar-testnet",
+  "contract": {
+    "id": "CBUY5JNZEGYR7I3QJEIALF2DR4NNS3OHEBOS7CGEXY2J4VU64IM7ZL5N",
+    "source": "contracts/soroban/railguard-policy",
+    "wasm_sha256": "c9cd982be9ad9b8a5eed42cd1decbe42800a0fc79f1932cde77af04bf5ab8db5",
+    "deploy_tx": "d9c74cb081c1b5cf03fc921bec3b21e02b9995b93614eaf5d5b53c14206462d8",
+    "admin": "GB62LQKQ7UDFSYSKCF4B7WCPVHDNAYBAFITIQJNNINAKMKZVEP3RBE7X"
+  },
+  "asset": {
+    "code": "USDC",
+    "issuer": "GBBD47IF6LWK7P7MDEVSCWR7DPUWV3NY3DTQEVFL4NAT4AQH3ZLLFLA5",
+    "sac": "CBIELTK6YBZJU5UP2WWQEUCYKLPU6AUNZ2BQ4WWFEIE3USCIHMXQDAMA",
+    "note": "Circle testnet USDC"
+  },
+  "intent": {
+    "agent": "GDX7EBCAC4NVLPBE4TGDNEUEA2TAGOYCKELCQP245YMHA66GV6PIDLP5",
+    "recipient": "GATQQK34YWBIHF3KTSFL4EFEPTIFH5UJK347CLKAJGYO437KRKTU22VO",
+    "amount": "1.2500000",
+    "amount_stroops": "12500000",
+    "nonce": "1",
+    "request_id": "a51ce40f43414f30b131c12b6812200053d1db0d93fa679f004f0a49114268db",
+    "budget_limit_stroops": "50000000"
+  },
+  "transactions": {
+    "set_budget": "6bca3dcc2ad8522fc0208590c50c4d2f9b1025b9a574b1e738b54e2be4003bc8",
+    "grant": "063cfeb9165754d71309bd996ae5b117b34caf1e5d887fc6facbe2bee2be076e",
+    "execute": "2e8c13fab4feb88a451ec617dc9c5a129a600e7e6dc62c1868d67336702f8353"
+  },
+  "status": "CONFIRMED",
+  "transfer": {
+    "from": "GDX7EBCAC4NVLPBE4TGDNEUEA2TAGOYCKELCQP245YMHA66GV6PIDLP5",
+    "to": "GATQQK34YWBIHF3KTSFL4EFEPTIFH5UJK347CLKAJGYO437KRKTU22VO",
+    "amount": "1.2500000",
+    "asset": "USDC:GBBD47IF6LWK7P7MDEVSCWR7DPUWV3NY3DTQEVFL4NAT4AQH3ZLLFLA5"
+  },
+  "rejections_recorded_2026_10_23": [
+    {
+      "call": "grant (same intent again)",
+      "error": "DuplicateRequest (#4)"
+    },
+    {
+      "call": "execute (other recipient)",
+      "error": "IntentMismatch (#6)"
+    },
+    {
+      "call": "execute (amount + 1 stroop)",
+      "error": "IntentMismatch (#6)"
+    },
+    {
+      "call": "execute (replay after success)",
+      "error": "AlreadyExecuted (#7)"
+    },
+    {
+      "call": "grant 4 USDC (1.25 spent of 5 budget)",
+      "error": "BudgetExceeded (#3)"
+    }
+  ]
+}
