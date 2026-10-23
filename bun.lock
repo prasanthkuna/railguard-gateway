@@ -180,6 +180,22 @@
       "name": "@railguard/policy",
       "version": "0.1.0",
     },
+    "packages/rail-celo": {
+      "name": "@railguard/rail-celo",
+      "version": "0.1.0",
+      "dependencies": {
+        "@railguard/kernel": "workspace:*",
+        "@x402-guard/middleware": "workspace:*",
+        "viem": "^2.48.4",
+      },
+    },
+    "packages/rail-paypal": {
+      "name": "@railguard/rail-paypal",
+      "version": "0.1.0",
+      "dependencies": {
+        "@railguard/kernel": "workspace:*",
+      },
+    },
     "packages/reconciliation": {
       "name": "@railguard/reconciliation",
       "version": "0.5.0",
@@ -463,6 +479,10 @@
     "@railguard/operator": ["@railguard/operator@workspace:apps/operator"],
 
     "@railguard/policy": ["@railguard/policy@workspace:packages/policy"],
+
+    "@railguard/rail-celo": ["@railguard/rail-celo@workspace:packages/rail-celo"],
+
+    "@railguard/rail-paypal": ["@railguard/rail-paypal@workspace:packages/rail-paypal"],
 
     "@railguard/reconciliation": ["@railguard/reconciliation@workspace:packages/reconciliation"],
 
