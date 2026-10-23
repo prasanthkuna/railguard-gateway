@@ -17,8 +17,8 @@ Open-source guardrails between an AI agent and the wallet or payment API it cont
 [![PR Checks](https://github.com/prasanthkuna/railguard-gateway/actions/workflows/pr-checks.yml/badge.svg?branch=main)](https://github.com/prasanthkuna/railguard-gateway/actions/workflows/pr-checks.yml)
 [![Testnet Evidence](https://github.com/prasanthkuna/railguard-gateway/actions/workflows/testnet-evidence.yml/badge.svg?branch=main)](https://github.com/prasanthkuna/railguard-gateway/actions/workflows/testnet-evidence.yml)
 [![Proofs verified](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Fprasanthkuna%2Frailguard-gateway%2Fmain%2F.github%2Fbadges%2Fproofs.json)](#proofs)
-[![License: Apache-2.0](https://img.shields.io/github/license/prasanthkuna/railguard-gateway?color=5CF2B2&labelColor=0D1115)](LICENSE)
-[![Last commit](https://img.shields.io/github/last-commit/prasanthkuna/railguard-gateway/main?color=5CF2B2&labelColor=0D1115)](https://github.com/prasanthkuna/railguard-gateway/commits/main)
+[![License: Apache-2.0](https://img.shields.io/github/license/prasanthkuna/railguard-gateway?color=5CF2B2)](LICENSE)
+[![Last commit](https://img.shields.io/github/last-commit/prasanthkuna/railguard-gateway/main?color=5CF2B2)](https://github.com/prasanthkuna/railguard-gateway/commits/main)
 
 <br>
 
@@ -54,19 +54,14 @@ from chain facts.
 
 ```mermaid
 flowchart LR
-  A["Agent asks to pay"] --> C
-  subgraph C["1 · Check"]
-    C1["Policy and allow list"] --> C2["Reserve budget"]
-  end
-  C -- "blocked" --> X["Refused with a reason.<br/>Wallet never signs."]
-  C -- "allowed" --> W
-  subgraph W["2 · Watch"]
-    W1["Send once with a payment id"] --> W2["Timeout = UNKNOWN,<br/>never retry blind"]
-  end
-  W --> P
-  subgraph P["3 · Prove"]
-    P1["Match token, sender,<br/>recipient, amount on chain"] --> P2["Signed receipt"]
-  end
+  A([Agent asks to pay]) --> C{"<b>1 · Check</b><br/>policy, allow list,<br/>budget reserved"}
+  C -- blocked --> X["Refused with a reason<br/>wallet never signs"]
+  C -- allowed --> W["<b>2 · Watch</b><br/>sent once with one id<br/>timeout = UNKNOWN"]
+  W --> P["<b>3 · Prove</b><br/>matched on chain<br/>signed receipt"]
+  classDef ok fill:#0d1115,stroke:#5CF2B2,color:#F2F5F7
+  classDef bad fill:#0d1115,stroke:#ff6b6b,color:#F2F5F7
+  class C,W,P ok
+  class X bad
 ```
 
 A signature or a broadcast is not proof. A payment is only final after Railguard matches it against
@@ -84,10 +79,17 @@ git clone https://github.com/prasanthkuna/railguard-gateway.git
 cd railguard-gateway
 bun install
 
-bun run test                                   # full unit suite, no keys needed
-bun test packages/kernel/src/adapters/airwallex # lost response -> retry blocked -> exactly one transfer
-bun run testnet-evidence                       # verify a live Base Sepolia USDC transfer from chain facts
-bun run dev:site                               # this site on http://localhost:3001
+# full unit suite, no keys needed
+bun run test
+
+# lost response -> retry blocked -> exactly one transfer
+bun test packages/kernel/src/adapters/airwallex
+
+# verify a live Base Sepolia USDC transfer from chain facts
+bun run testnet-evidence
+
+# the site, on http://localhost:3001
+bun run dev:site
 ```
 
 Running the full API locally needs the [Encore CLI](https://encore.dev/docs/install): `encore run`
@@ -105,13 +107,13 @@ Every row is built from a file in [`evidence/`](evidence) by
 
 | Chain / rail | What was proven | Status | Tx / explorer | Date |
 | --- | --- | --- | --- | --- |
-| [Arbitrum Sepolia](https://railguard-site.vercel.app/proof/arbitrum-sepolia) | 0.01 USDC external-wallet transfer matched on chain (token, sender, recipient, amount) | ✅ Settlement verified | [`0x243ec1…608d`](https://sepolia.arbiscan.io/tx/0x243ec1e8eb6a992a85a035af11edd5ff70d78e3b84e7eb6c78ab5badc409608d) | 30 Sep 2026 |
-| [Arbitrum Sepolia](https://github.com/prasanthkuna/railguard-gateway/tree/main/evidence/arbitrum-sepolia-hook) | 3 Railguard hook contracts deployed, source verified on Arbiscan and Sourcify | ✅ Source verified | [`0x756829…965E`](https://sepolia.arbiscan.io/address/0x756829c3ab0eB02b22fe4D7C9E35252A9738965E#code) | 23 Oct 2026 |
-| [Stellar Soroban](https://railguard-site.vercel.app/proof/stellar-testnet) | Policy contract paid 1.25 USDC once and rejected 5 bad calls (replay, wrong recipient, overspend) | ✅ CONFIRMED | [`2e8c13fa…8353`](https://stellar.expert/explorer/testnet/tx/2e8c13fab4feb88a451ec617dc9c5a129a600e7e6dc62c1868d67336702f8353) | 23 Oct 2026 |
-| [Stellar testnet](https://railguard-site.vercel.app/proof/stellar-testnet) | 1 XLM payment confirmed from Horizon facts | ✅ CONFIRMED | [`3dc32258…e437`](https://stellar.expert/explorer/testnet/tx/3dc3225844f711f9f96ead65690d224b7ccfd616d1da5387df6bfc63bfb8e437) | 4 Oct 2026 |
-| [Monad testnet](https://railguard-site.vercel.app/proof/monad-testnet) | 1 USDC transfer matched from receipt logs | ✅ CONFIRMED | [`0x1cbd46…aab2`](https://testnet.monadvision.com/tx/0x1cbd46100de39c60d88d8d7ee7a1dc66cf2c9c16956ebb403b69c1751b98aab2) | 4 Oct 2026 |
-| [Metal testnet](https://railguard-site.vercel.app/proof/metal-testnet) | 3 agents under on-chain limits: over-cap buy refused, duplicate payout blocked | ✅ CONFIRMED | [`0x9139ec…b875`](https://testnet.metalntwx.com/tx/0x9139ec9ee4ca8462e6aa5898171ec14ec3376a24d5fd9a0c707846835b4bb875) | 23 Oct 2026 |
-| [Airwallex sandbox](https://prebroadcast.vercel.app/incidents) | Create response lost, 1 retry blocked, exactly 1 transfer (fake money) | ✅ CONFIRMED | [`chaos-live.json`](https://github.com/prasanthkuna/railguard-gateway/blob/main/evidence/airwallex-sandbox/chaos-live.json) | 22 Oct 2026 |
+| [Arbitrum Sepolia](https://railguard-site.vercel.app/proof/arbitrum-sepolia) | 0.01 USDC external-wallet transfer matched on chain | ✅ Settlement verified | [`0x243e…608d`](https://sepolia.arbiscan.io/tx/0x243ec1e8eb6a992a85a035af11edd5ff70d78e3b84e7eb6c78ab5badc409608d) | 2026-09-30 |
+| [Arbitrum Sepolia](https://github.com/prasanthkuna/railguard-gateway/tree/main/evidence/arbitrum-sepolia-hook) | 3 Railguard hook contracts deployed, source verified on Arbiscan and Sourcify | ✅ Source verified | [`0x7568…965E`](https://sepolia.arbiscan.io/address/0x756829c3ab0eB02b22fe4D7C9E35252A9738965E#code) | 2026-10-23 |
+| [Stellar Soroban](https://railguard-site.vercel.app/proof/stellar-testnet) | Policy contract paid 1.25 USDC once, rejected 5 bad calls (replay, wrong recipient, overspend) | ✅ CONFIRMED | [`2e8c13…8353`](https://stellar.expert/explorer/testnet/tx/2e8c13fab4feb88a451ec617dc9c5a129a600e7e6dc62c1868d67336702f8353) | 2026-10-23 |
+| [Stellar testnet](https://railguard-site.vercel.app/proof/stellar-testnet) | 1 XLM payment confirmed from Horizon facts | ✅ CONFIRMED | [`3dc322…e437`](https://stellar.expert/explorer/testnet/tx/3dc3225844f711f9f96ead65690d224b7ccfd616d1da5387df6bfc63bfb8e437) | 2026-10-04 |
+| [Monad testnet](https://railguard-site.vercel.app/proof/monad-testnet) | 1 USDC transfer matched from receipt logs | ✅ CONFIRMED | [`0x1cbd…aab2`](https://testnet.monadvision.com/tx/0x1cbd46100de39c60d88d8d7ee7a1dc66cf2c9c16956ebb403b69c1751b98aab2) | 2026-10-04 |
+| [Metal testnet](https://railguard-site.vercel.app/proof/metal-testnet) | 3 agents under on-chain limits: over-cap buy refused, duplicate payout blocked | ✅ CONFIRMED | [`0x9139…b875`](https://testnet.metalntwx.com/tx/0x9139ec9ee4ca8462e6aa5898171ec14ec3376a24d5fd9a0c707846835b4bb875) | 2026-10-23 |
+| [Airwallex sandbox](https://prebroadcast.vercel.app/incidents) | Create response lost, 1 retry blocked, exactly 1 transfer (fake money) | ✅ CONFIRMED | [`chaos-live.json`](https://github.com/prasanthkuna/railguard-gateway/blob/main/evidence/airwallex-sandbox/chaos-live.json) | 2026-10-22 |
 | Base Sepolia | Verifier matches a live USDC transfer, re-run by CI on every push | [![Testnet Evidence](https://github.com/prasanthkuna/railguard-gateway/actions/workflows/testnet-evidence.yml/badge.svg?branch=main)](https://github.com/prasanthkuna/railguard-gateway/actions/workflows/testnet-evidence.yml) | latest run | live |
 
 <sub>7 of 7 committed proofs verified from files in [`evidence/`](evidence). Regenerated by [readme-proofs](.github/workflows/readme-proofs.yml).</sub>

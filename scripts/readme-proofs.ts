@@ -44,10 +44,9 @@ const day = (iso?: string): string => {
   if (!iso) return "-"
   const d = new Date(iso)
   if (Number.isNaN(d.getTime())) return "-"
-  const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
-  return `${d.getUTCDate()} ${months[d.getUTCMonth()]} ${d.getUTCFullYear()}`
+  return d.toISOString().slice(0, 10)
 }
-const short = (h: string) => (h.length > 14 ? `${h.slice(0, 8)}…${h.slice(-4)}` : h)
+const short = (h: string) => (h.length > 12 ? `${h.slice(0, 6)}…${h.slice(-4)}` : h)
 const units = (raw: string, decimals: number) => {
   const n = Number(raw) / 10 ** decimals
   return Number.isFinite(n) ? String(n) : raw
@@ -61,7 +60,7 @@ const sources: Array<() => Row | null> = [
     return {
       rail: "Arbitrum Sepolia",
       href: `${SITE}/proof/arbitrum-sepolia`,
-      proven: `${units(m.expected.amount, 6)} USDC external-wallet transfer matched on chain (token, sender, recipient, amount)`,
+      proven: `${units(m.expected.amount, 6)} USDC external-wallet transfer matched on chain`,
       verified: evmConfirmed(m),
       okLabel: "Settlement verified",
       link: m.explorerUrl,
@@ -95,7 +94,7 @@ const sources: Array<() => Row | null> = [
     return {
       rail: "Stellar Soroban",
       href: `${SITE}/proof/stellar-testnet`,
-      proven: `Policy contract paid ${Number(m.intent.amount)} USDC once and rejected ${rejected} bad calls (replay, wrong recipient, overspend)`,
+      proven: `Policy contract paid ${Number(m.intent.amount)} USDC once, rejected ${rejected} bad calls (replay, wrong recipient, overspend)`,
       verified: m.status === "CONFIRMED",
       okLabel: "CONFIRMED",
       link: `https://stellar.expert/explorer/testnet/tx/${m.transactions.execute}`,
@@ -204,7 +203,6 @@ const badge = `${JSON.stringify(
     label: "proofs verified",
     message: `${verified}/${rows.length}`,
     color: verified === rows.length ? "5CF2B2" : "orange",
-    labelColor: "0D1115",
   },
   null,
   2,
