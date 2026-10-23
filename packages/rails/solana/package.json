@@ -1,0 +1,17 @@
+{
+  "name": "@railguard/rail-solana",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "license": "Apache-2.0",
+  "description": "Railguard Solana devnet rail: guarded SPL USDC payment + settlement verifier (devnet only).",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "test": "bun test src",
+    "devnet:pay": "bun run scripts/devnet-pay.ts",
+    "devnet:verify": "bun run scripts/devnet-verify.ts",
+    "x402:demo": "bun run scripts/x402-devnet-demo.ts"
+  }
+}
