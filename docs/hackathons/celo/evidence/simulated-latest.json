@@ -1,0 +1,722 @@
+{
+  "mode": "simulated",
+  "network": "eip155:11142220",
+  "model": "scripted-offline",
+  "facilitator": "simulated (in-memory EIP-3009 USDC)",
+  "generatedAt": "2026-10-23T20:14:10.374Z",
+  "buyer": {
+    "address": "0xe4e98de0E76BdFe297c754dce4DD3281e780132B",
+    "agentId": "1"
+  },
+  "seller": {
+    "payTo": "0xc9e3161c6b0fBCA9779b175be29d56acC7f32b14",
+    "agentId": "2"
+  },
+  "policy": {
+    "perCallMaxUsdc": "1.000000",
+    "dailyMaxUsdc": "2.000000",
+    "asset": "USDC 0x01C5C0122039549AD1493B8220cABEdD739BC44E"
+  },
+  "steps": [
+    {
+      "id": "1",
+      "title": "Agent buys an FX quote and a risk score (risk response lost)",
+      "request": "Check supplier 0x5e1fC0aC1Ce5E9aD7e0bC5fA2b1D0A4E3c2B1a09 before we pay it: get a USD/BRL quote and a risk score. task dd-sim",
+      "reply": "fx-usd-brl: paid 0.010000 USDC, CONFIRMED, settlement verified on-chain (tx 0x2c01eba5c3e46f6be1cb3d334bc93409ae1b00ba45e7e5bcd26279f715f796f6, FINALIZED).\nrisk-score: UNKNOWN. The payment was signed but no answer came back; budget frozen, will reconcile.",
+      "outcomes": [
+        {
+          "service": "fx-usd-brl",
+          "status": "CONFIRMED",
+          "tx": "0x2c01eba5c3e46f6be1cb3d334bc93409ae1b00ba45e7e5bcd26279f715f796f6"
+        },
+        {
+          "service": "risk-score",
+          "status": "UNKNOWN"
+        }
+      ],
+      "transcript": [
+        {
+          "kind": "user",
+          "text": "Check supplier 0x5e1fC0aC1Ce5E9aD7e0bC5fA2b1D0A4E3c2B1a09 before we pay it: get a USD/BRL quote and a risk score. task dd-sim"
+        },
+        {
+          "kind": "tool_call",
+          "tool": "list_services",
+          "args": {}
+        },
+        {
+          "kind": "tool_result",
+          "tool": "list_services",
+          "result": {
+            "services": [
+              {
+                "id": "fx-usd-brl",
+                "name": "USD/BRL quote",
+                "seller": "Railguard Data Desk",
+                "price_hint": "0.01 USDC"
+              },
+              {
+                "id": "risk-score",
+                "name": "Address risk score",
+                "seller": "Railguard Data Desk",
+                "price_hint": "0.02 USDC"
+              },
+              {
+                "id": "full-report",
+                "name": "Full due-diligence report",
+                "seller": "Railguard Data Desk",
+                "price_hint": "2.50 USDC"
+              },
+              {
+                "id": "premium-mainnet",
+                "name": "Premium feed (mainnet)",
+                "seller": "Railguard Data Desk",
+                "price_hint": "0.05 USDC"
+              },
+              {
+                "id": "fastfx-usd-brl",
+                "name": "USD/BRL quote (FastFX mirror)",
+                "seller": "FastFX mirror (claims to be Data Desk)",
+                "price_hint": "0.005 USDC"
+              }
+            ]
+          }
+        },
+        {
+          "kind": "tool_call",
+          "tool": "buy_service",
+          "args": {
+            "service_id": "fx-usd-brl",
+            "task": "dd-sim"
+          }
+        },
+        {
+          "kind": "tool_result",
+          "tool": "buy_service",
+          "result": {
+            "service_id": "fx-usd-brl",
+            "execution_id": "exec_dd-sim:fx-usd-brl",
+            "status": "CONFIRMED",
+            "amount_usdc": "0.010000",
+            "pay_to": "0xc9e3161c6b0fBCA9779b175be29d56acC7f32b14",
+            "seller_agent_id": "2",
+            "nonce": "0x7bee071e614197176ec89dab3881699f816cd8e30d8846ab9fb43d50344e6043",
+            "tx": "0x2c01eba5c3e46f6be1cb3d334bc93409ae1b00ba45e7e5bcd26279f715f796f6",
+            "finality": "FINALIZED",
+            "paid_requests": 1,
+            "replays": 0,
+            "data": {
+              "pair": "USD/BRL",
+              "rate": "5.4210",
+              "source": "demo desk",
+              "at": "2026-10-23T20:14:10.344Z",
+              "paid": {
+                "tx": "0x2c01eba5c3e46f6be1cb3d334bc93409ae1b00ba45e7e5bcd26279f715f796f6",
+                "network": "eip155:11142220"
+              }
+            }
+          }
+        },
+        {
+          "kind": "tool_call",
+          "tool": "buy_service",
+          "args": {
+            "service_id": "risk-score",
+            "task": "dd-sim",
+            "query": "0x5e1fC0aC1Ce5E9aD7e0bC5fA2b1D0A4E3c2B1a09"
+          }
+        },
+        {
+          "kind": "tool_result",
+          "tool": "buy_service",
+          "result": {
+            "service_id": "risk-score",
+            "execution_id": "exec_dd-sim:risk-score",
+            "status": "UNKNOWN",
+            "amount_usdc": "0.020000",
+            "pay_to": "0xc9e3161c6b0fBCA9779b175be29d56acC7f32b14",
+            "seller_agent_id": "2",
+            "nonce": "0xdba9a73fc6587a61199a33d94f546fff60d5fc219fec03e7c212c2e50c378f07",
+            "paid_requests": 1,
+            "replays": 0
+          }
+        },
+        {
+          "kind": "agent",
+          "text": "fx-usd-brl: paid 0.010000 USDC, CONFIRMED, settlement verified on-chain (tx 0x2c01eba5c3e46f6be1cb3d334bc93409ae1b00ba45e7e5bcd26279f715f796f6, FINALIZED).\nrisk-score: UNKNOWN. The payment was signed but no answer came back; budget frozen, will reconcile."
+        }
+      ]
+    },
+    {
+      "id": "2",
+      "title": "Over the per-call cap",
+      "request": "Also get the full due-diligence report. task dd-sim",
+      "reply": "full-report: NOT PAID (PER_CALL_CAP). 2.500000 USDC is above the 1.000000 USDC per-call cap.",
+      "outcomes": [
+        {
+          "service": "full-report",
+          "status": "DENIED",
+          "code": "PER_CALL_CAP"
+        }
+      ],
+      "transcript": [
+        {
+          "kind": "user",
+          "text": "Also get the full due-diligence report. task dd-sim"
+        },
+        {
+          "kind": "tool_call",
+          "tool": "buy_service",
+          "args": {
+            "service_id": "full-report",
+            "task": "dd-sim"
+          }
+        },
+        {
+          "kind": "tool_result",
+          "tool": "buy_service",
+          "result": {
+            "service_id": "full-report",
+            "status": "DENIED",
+            "code": "PER_CALL_CAP",
+            "reason": "2.500000 USDC is above the 1.000000 USDC per-call cap.",
+            "next_step": "Pick a cheaper service or ask the owner."
+          }
+        },
+        {
+          "kind": "agent",
+          "text": "full-report: NOT PAID (PER_CALL_CAP). 2.500000 USDC is above the 1.000000 USDC per-call cap."
+        }
+      ]
+    },
+    {
+      "id": "3",
+      "title": "Cheaper mirror whose payTo is not the seller's ERC-8004 wallet",
+      "request": "FastFX mirror is cheaper, use it for the quote. task dd-sim",
+      "reply": "fastfx-usd-brl: NOT PAID (PAYEE_IDENTITY_MISMATCH). The 402 asks to pay 0x3F164B59E48a752cabf0aD7aaa6762Fc198a8B1A, but Railguard Data Desk's ERC-8004 identity (agent #2) names wallet 0xc9e3161c6b0fBCA9779b175be29d56acC7f32b14.",
+      "outcomes": [
+        {
+          "service": "fastfx-usd-brl",
+          "status": "DENIED",
+          "code": "PAYEE_IDENTITY_MISMATCH"
+        }
+      ],
+      "transcript": [
+        {
+          "kind": "user",
+          "text": "FastFX mirror is cheaper, use it for the quote. task dd-sim"
+        },
+        {
+          "kind": "tool_call",
+          "tool": "buy_service",
+          "args": {
+            "service_id": "fastfx-usd-brl",
+            "task": "dd-sim"
+          }
+        },
+        {
+          "kind": "tool_result",
+          "tool": "buy_service",
+          "result": {
+            "service_id": "fastfx-usd-brl",
+            "status": "DENIED",
+            "code": "PAYEE_IDENTITY_MISMATCH",
+            "reason": "The 402 asks to pay 0x3F164B59E48a752cabf0aD7aaa6762Fc198a8B1A, but Railguard Data Desk's ERC-8004 identity (agent #2) names wallet 0xc9e3161c6b0fBCA9779b175be29d56acC7f32b14.",
+            "next_step": "Do not pay. A changed payee must be fixed on-chain by the seller, not in a 402 response."
+          }
+        },
+        {
+          "kind": "agent",
+          "text": "fastfx-usd-brl: NOT PAID (PAYEE_IDENTITY_MISMATCH). The 402 asks to pay 0x3F164B59E48a752cabf0aD7aaa6762Fc198a8B1A, but Railguard Data Desk's ERC-8004 identity (agent #2) names wallet 0xc9e3161c6b0fBCA9779b175be29d56acC7f32b14."
+        }
+      ]
+    },
+    {
+      "id": "4",
+      "title": "A seller asks for Celo mainnet",
+      "request": "Use the premium mainnet feed. task dd-sim",
+      "reply": "premium-mainnet: NOT PAID (MAINNET_DISABLED). The seller asks for payment on Celo mainnet (eip155:42220). This agent only pays on Celo Sepolia testnet.",
+      "outcomes": [
+        {
+          "service": "premium-mainnet",
+          "status": "DENIED",
+          "code": "MAINNET_DISABLED"
+        }
+      ],
+      "transcript": [
+        {
+          "kind": "user",
+          "text": "Use the premium mainnet feed. task dd-sim"
+        },
+        {
+          "kind": "tool_call",
+          "tool": "buy_service",
+          "args": {
+            "service_id": "premium-mainnet",
+            "task": "dd-sim"
+          }
+        },
+        {
+          "kind": "tool_result",
+          "tool": "buy_service",
+          "result": {
+            "service_id": "premium-mainnet",
+            "status": "DENIED",
+            "code": "MAINNET_DISABLED",
+            "reason": "The seller asks for payment on Celo mainnet (eip155:42220). This agent only pays on Celo Sepolia testnet.",
+            "next_step": "Use the seller's testnet endpoint, or ask the owner. The agent cannot enable mainnet."
+          }
+        },
+        {
+          "kind": "agent",
+          "text": "premium-mainnet: NOT PAID (MAINNET_DISABLED). The seller asks for payment on Celo mainnet (eip155:42220). This agent only pays on Celo Sepolia testnet."
+        }
+      ]
+    },
+    {
+      "id": "5",
+      "title": "Eager retry is blocked; reconcile by EIP-3009 nonce",
+      "request": "Retry the risk score. task dd-sim",
+      "reply": "Reconciled exec_dd-sim:risk-score by its EIP-3009 nonce: USDC shows the authorization was used once, in tx 0xa134addfb77631a95192b124909826a02a8a7978eda36861cc72932e4f3525a0. Status CONFIRMED. One payment, not two.",
+      "outcomes": [
+        {
+          "service": "risk-score",
+          "status": "BLOCKED_DUPLICATE"
+        },
+        {
+          "service": "exec_dd-sim:risk-score",
+          "status": "CONFIRMED",
+          "tx": "0xa134addfb77631a95192b124909826a02a8a7978eda36861cc72932e4f3525a0"
+        }
+      ],
+      "transcript": [
+        {
+          "kind": "user",
+          "text": "Retry the risk score. task dd-sim"
+        },
+        {
+          "kind": "tool_call",
+          "tool": "buy_service",
+          "args": {
+            "service_id": "risk-score",
+            "task": "dd-sim",
+            "query": "0x5e1fC0aC1Ce5E9aD7e0bC5fA2b1D0A4E3c2B1a09"
+          }
+        },
+        {
+          "kind": "tool_result",
+          "tool": "buy_service",
+          "result": {
+            "service_id": "risk-score",
+            "execution_id": "exec_dd-sim:risk-score",
+            "status": "BLOCKED_DUPLICATE",
+            "amount_usdc": "0.020000",
+            "pay_to": "0xc9e3161c6b0fBCA9779b175be29d56acC7f32b14",
+            "seller_agent_id": "2",
+            "nonce": "0xdba9a73fc6587a61199a33d94f546fff60d5fc219fec03e7c212c2e50c378f07",
+            "paid_requests": 1,
+            "replays": 0,
+            "first_attempt": "UNKNOWN"
+          }
+        },
+        {
+          "kind": "tool_call",
+          "tool": "reconcile_payment",
+          "args": {
+            "execution_id": "exec_dd-sim:risk-score"
+          }
+        },
+        {
+          "kind": "tool_result",
+          "tool": "reconcile_payment",
+          "result": {
+            "execution_id": "exec_dd-sim:risk-score",
+            "status": "CONFIRMED",
+            "amount_usdc": "0.020000",
+            "pay_to": "0xc9e3161c6b0fBCA9779b175be29d56acC7f32b14",
+            "seller_agent_id": "2",
+            "nonce": "0xdba9a73fc6587a61199a33d94f546fff60d5fc219fec03e7c212c2e50c378f07",
+            "tx": "0xa134addfb77631a95192b124909826a02a8a7978eda36861cc72932e4f3525a0",
+            "finality": "FINALIZED",
+            "paid_requests": 1,
+            "replays": 0,
+            "via": "eip3009_nonce_on_chain"
+          }
+        },
+        {
+          "kind": "agent",
+          "text": "Reconciled exec_dd-sim:risk-score by its EIP-3009 nonce: USDC shows the authorization was used once, in tx 0xa134addfb77631a95192b124909826a02a8a7978eda36861cc72932e4f3525a0. Status CONFIRMED. One payment, not two."
+        }
+      ]
+    },
+    {
+      "id": "v1",
+      "title": "Repeat purchase 1",
+      "request": "FX quote only. task vol-sim-1",
+      "reply": "fx-usd-brl: paid 0.010000 USDC, CONFIRMED, settlement verified on-chain (tx 0xc6fb5897fd40d940bd6ad979e0c9c1608ac9bf97e13c1c22034285298cb96acd, FINALIZED).",
+      "outcomes": [
+        {
+          "service": "fx-usd-brl",
+          "status": "CONFIRMED",
+          "tx": "0xc6fb5897fd40d940bd6ad979e0c9c1608ac9bf97e13c1c22034285298cb96acd"
+        }
+      ],
+      "transcript": [
+        {
+          "kind": "user",
+          "text": "FX quote only. task vol-sim-1"
+        },
+        {
+          "kind": "tool_call",
+          "tool": "buy_service",
+          "args": {
+            "service_id": "fx-usd-brl",
+            "task": "vol-sim-1"
+          }
+        },
+        {
+          "kind": "tool_result",
+          "tool": "buy_service",
+          "result": {
+            "service_id": "fx-usd-brl",
+            "execution_id": "exec_vol-sim-1:fx-usd-brl",
+            "status": "CONFIRMED",
+            "amount_usdc": "0.010000",
+            "pay_to": "0xc9e3161c6b0fBCA9779b175be29d56acC7f32b14",
+            "seller_agent_id": "2",
+            "nonce": "0xb608ac9e29744b6b495edc47b67119ae1973df7c14bc921a07aeccee0100380c",
+            "tx": "0xc6fb5897fd40d940bd6ad979e0c9c1608ac9bf97e13c1c22034285298cb96acd",
+            "finality": "FINALIZED",
+            "paid_requests": 1,
+            "replays": 0,
+            "data": {
+              "pair": "USD/BRL",
+              "rate": "5.4210",
+              "source": "demo desk",
+              "at": "2026-10-23T20:14:10.358Z",
+              "paid": {
+                "tx": "0xc6fb5897fd40d940bd6ad979e0c9c1608ac9bf97e13c1c22034285298cb96acd",
+                "network": "eip155:11142220"
+              }
+            }
+          }
+        },
+        {
+          "kind": "agent",
+          "text": "fx-usd-brl: paid 0.010000 USDC, CONFIRMED, settlement verified on-chain (tx 0xc6fb5897fd40d940bd6ad979e0c9c1608ac9bf97e13c1c22034285298cb96acd, FINALIZED)."
+        }
+      ]
+    },
+    {
+      "id": "v2",
+      "title": "Repeat purchase 2",
+      "request": "FX quote only. task vol-sim-2",
+      "reply": "fx-usd-brl: paid 0.010000 USDC, CONFIRMED, settlement verified on-chain (tx 0xf37c8221549b1925a555b7763c56b930565e72ef4709f05fcc880c98f69a1ba7, FINALIZED).",
+      "outcomes": [
+        {
+          "service": "fx-usd-brl",
+          "status": "CONFIRMED",
+          "tx": "0xf37c8221549b1925a555b7763c56b930565e72ef4709f05fcc880c98f69a1ba7"
+        }
+      ],
+      "transcript": [
+        {
+          "kind": "user",
+          "text": "FX quote only. task vol-sim-2"
+        },
+        {
+          "kind": "tool_call",
+          "tool": "buy_service",
+          "args": {
+            "service_id": "fx-usd-brl",
+            "task": "vol-sim-2"
+          }
+        },
+        {
+          "kind": "tool_result",
+          "tool": "buy_service",
+          "result": {
+            "service_id": "fx-usd-brl",
+            "execution_id": "exec_vol-sim-2:fx-usd-brl",
+            "status": "CONFIRMED",
+            "amount_usdc": "0.010000",
+            "pay_to": "0xc9e3161c6b0fBCA9779b175be29d56acC7f32b14",
+            "seller_agent_id": "2",
+            "nonce": "0xab967a9c15f3341da0da93ddde699c6ce18ff1d40ba0eb996aab4d79dc8b23f9",
+            "tx": "0xf37c8221549b1925a555b7763c56b930565e72ef4709f05fcc880c98f69a1ba7",
+            "finality": "FINALIZED",
+            "paid_requests": 1,
+            "replays": 0,
+            "data": {
+              "pair": "USD/BRL",
+              "rate": "5.4210",
+              "source": "demo desk",
+              "at": "2026-10-23T20:14:10.361Z",
+              "paid": {
+                "tx": "0xf37c8221549b1925a555b7763c56b930565e72ef4709f05fcc880c98f69a1ba7",
+                "network": "eip155:11142220"
+              }
+            }
+          }
+        },
+        {
+          "kind": "agent",
+          "text": "fx-usd-brl: paid 0.010000 USDC, CONFIRMED, settlement verified on-chain (tx 0xf37c8221549b1925a555b7763c56b930565e72ef4709f05fcc880c98f69a1ba7, FINALIZED)."
+        }
+      ]
+    },
+    {
+      "id": "v3",
+      "title": "Repeat purchase 3",
+      "request": "FX quote only. task vol-sim-3",
+      "reply": "fx-usd-brl: paid 0.010000 USDC, CONFIRMED, settlement verified on-chain (tx 0xdfd92b18b3501318e09542124311e275cde67e056cb40f7bf0dfb46bcbcb7207, FINALIZED).",
+      "outcomes": [
+        {
+          "service": "fx-usd-brl",
+          "status": "CONFIRMED",
+          "tx": "0xdfd92b18b3501318e09542124311e275cde67e056cb40f7bf0dfb46bcbcb7207"
+        }
+      ],
+      "transcript": [
+        {
+          "kind": "user",
+          "text": "FX quote only. task vol-sim-3"
+        },
+        {
+          "kind": "tool_call",
+          "tool": "buy_service",
+          "args": {
+            "service_id": "fx-usd-brl",
+            "task": "vol-sim-3"
+          }
+        },
+        {
+          "kind": "tool_result",
+          "tool": "buy_service",
+          "result": {
+            "service_id": "fx-usd-brl",
+            "execution_id": "exec_vol-sim-3:fx-usd-brl",
+            "status": "CONFIRMED",
+            "amount_usdc": "0.010000",
+            "pay_to": "0xc9e3161c6b0fBCA9779b175be29d56acC7f32b14",
+            "seller_agent_id": "2",
+            "nonce": "0x38e52b42692590d081483869f7cce16301a7f36c803536356463e6715fe87b7e",
+            "tx": "0xdfd92b18b3501318e09542124311e275cde67e056cb40f7bf0dfb46bcbcb7207",
+            "finality": "FINALIZED",
+            "paid_requests": 1,
+            "replays": 0,
+            "data": {
+              "pair": "USD/BRL",
+              "rate": "5.4210",
+              "source": "demo desk",
+              "at": "2026-10-23T20:14:10.366Z",
+              "paid": {
+                "tx": "0xdfd92b18b3501318e09542124311e275cde67e056cb40f7bf0dfb46bcbcb7207",
+                "network": "eip155:11142220"
+              }
+            }
+          }
+        },
+        {
+          "kind": "agent",
+          "text": "fx-usd-brl: paid 0.010000 USDC, CONFIRMED, settlement verified on-chain (tx 0xdfd92b18b3501318e09542124311e275cde67e056cb40f7bf0dfb46bcbcb7207, FINALIZED)."
+        }
+      ]
+    },
+    {
+      "id": "v4",
+      "title": "Repeat purchase 4",
+      "request": "FX quote only. task vol-sim-4",
+      "reply": "fx-usd-brl: paid 0.010000 USDC, CONFIRMED, settlement verified on-chain (tx 0x09497a498b9dcaefed1f08707178bfb46fe0fd8f1723ea0c87a3950df83d4a54, FINALIZED).",
+      "outcomes": [
+        {
+          "service": "fx-usd-brl",
+          "status": "CONFIRMED",
+          "tx": "0x09497a498b9dcaefed1f08707178bfb46fe0fd8f1723ea0c87a3950df83d4a54"
+        }
+      ],
+      "transcript": [
+        {
+          "kind": "user",
+          "text": "FX quote only. task vol-sim-4"
+        },
+        {
+          "kind": "tool_call",
+          "tool": "buy_service",
+          "args": {
+            "service_id": "fx-usd-brl",
+            "task": "vol-sim-4"
+          }
+        },
+        {
+          "kind": "tool_result",
+          "tool": "buy_service",
+          "result": {
+            "service_id": "fx-usd-brl",
+            "execution_id": "exec_vol-sim-4:fx-usd-brl",
+            "status": "CONFIRMED",
+            "amount_usdc": "0.010000",
+            "pay_to": "0xc9e3161c6b0fBCA9779b175be29d56acC7f32b14",
+            "seller_agent_id": "2",
+            "nonce": "0x6c879b92fda348b28f464be22f43efff4b7678badfbb1f8ccc2cc711e1013331",
+            "tx": "0x09497a498b9dcaefed1f08707178bfb46fe0fd8f1723ea0c87a3950df83d4a54",
+            "finality": "FINALIZED",
+            "paid_requests": 1,
+            "replays": 0,
+            "data": {
+              "pair": "USD/BRL",
+              "rate": "5.4210",
+              "source": "demo desk",
+              "at": "2026-10-23T20:14:10.369Z",
+              "paid": {
+                "tx": "0x09497a498b9dcaefed1f08707178bfb46fe0fd8f1723ea0c87a3950df83d4a54",
+                "network": "eip155:11142220"
+              }
+            }
+          }
+        },
+        {
+          "kind": "agent",
+          "text": "fx-usd-brl: paid 0.010000 USDC, CONFIRMED, settlement verified on-chain (tx 0x09497a498b9dcaefed1f08707178bfb46fe0fd8f1723ea0c87a3950df83d4a54, FINALIZED)."
+        }
+      ]
+    },
+    {
+      "id": "v5",
+      "title": "Repeat purchase 5",
+      "request": "FX quote only. task vol-sim-5",
+      "reply": "fx-usd-brl: paid 0.010000 USDC, CONFIRMED, settlement verified on-chain (tx 0x5f8c69e4d9b1125af606e883b6cfdf34dc840f04b4026a4d1fe2b83f372f2ac7, FINALIZED).",
+      "outcomes": [
+        {
+          "service": "fx-usd-brl",
+          "status": "CONFIRMED",
+          "tx": "0x5f8c69e4d9b1125af606e883b6cfdf34dc840f04b4026a4d1fe2b83f372f2ac7"
+        }
+      ],
+      "transcript": [
+        {
+          "kind": "user",
+          "text": "FX quote only. task vol-sim-5"
+        },
+        {
+          "kind": "tool_call",
+          "tool": "buy_service",
+          "args": {
+            "service_id": "fx-usd-brl",
+            "task": "vol-sim-5"
+          }
+        },
+        {
+          "kind": "tool_result",
+          "tool": "buy_service",
+          "result": {
+            "service_id": "fx-usd-brl",
+            "execution_id": "exec_vol-sim-5:fx-usd-brl",
+            "status": "CONFIRMED",
+            "amount_usdc": "0.010000",
+            "pay_to": "0xc9e3161c6b0fBCA9779b175be29d56acC7f32b14",
+            "seller_agent_id": "2",
+            "nonce": "0xb8226dcc6d083a99bc5160805cf811b527f5abc429e91ad4ab9cd8ba969e1f0e",
+            "tx": "0x5f8c69e4d9b1125af606e883b6cfdf34dc840f04b4026a4d1fe2b83f372f2ac7",
+            "finality": "FINALIZED",
+            "paid_requests": 1,
+            "replays": 0,
+            "data": {
+              "pair": "USD/BRL",
+              "rate": "5.4210",
+              "source": "demo desk",
+              "at": "2026-10-23T20:14:10.372Z",
+              "paid": {
+                "tx": "0x5f8c69e4d9b1125af606e883b6cfdf34dc840f04b4026a4d1fe2b83f372f2ac7",
+                "network": "eip155:11142220"
+              }
+            }
+          }
+        },
+        {
+          "kind": "agent",
+          "text": "fx-usd-brl: paid 0.010000 USDC, CONFIRMED, settlement verified on-chain (tx 0x5f8c69e4d9b1125af606e883b6cfdf34dc840f04b4026a4d1fe2b83f372f2ac7, FINALIZED)."
+        }
+      ]
+    }
+  ],
+  "payments": [
+    {
+      "intentId": "dd-sim:fx-usd-brl",
+      "state": "CONFIRMED",
+      "amountUsdc": "0.010000",
+      "nonce": "0x7bee071e614197176ec89dab3881699f816cd8e30d8846ab9fb43d50344e6043",
+      "txHash": "0x2c01eba5c3e46f6be1cb3d334bc93409ae1b00ba45e7e5bcd26279f715f796f6",
+      "finality": "FINALIZED",
+      "paidRequests": 1,
+      "replays": 0
+    },
+    {
+      "intentId": "dd-sim:risk-score",
+      "state": "CONFIRMED",
+      "amountUsdc": "0.020000",
+      "nonce": "0xdba9a73fc6587a61199a33d94f546fff60d5fc219fec03e7c212c2e50c378f07",
+      "txHash": "0xa134addfb77631a95192b124909826a02a8a7978eda36861cc72932e4f3525a0",
+      "finality": "FINALIZED",
+      "paidRequests": 1,
+      "replays": 0
+    },
+    {
+      "intentId": "vol-sim-1:fx-usd-brl",
+      "state": "CONFIRMED",
+      "amountUsdc": "0.010000",
+      "nonce": "0xb608ac9e29744b6b495edc47b67119ae1973df7c14bc921a07aeccee0100380c",
+      "txHash": "0xc6fb5897fd40d940bd6ad979e0c9c1608ac9bf97e13c1c22034285298cb96acd",
+      "finality": "FINALIZED",
+      "paidRequests": 1,
+      "replays": 0
+    },
+    {
+      "intentId": "vol-sim-2:fx-usd-brl",
+      "state": "CONFIRMED",
+      "amountUsdc": "0.010000",
+      "nonce": "0xab967a9c15f3341da0da93ddde699c6ce18ff1d40ba0eb996aab4d79dc8b23f9",
+      "txHash": "0xf37c8221549b1925a555b7763c56b930565e72ef4709f05fcc880c98f69a1ba7",
+      "finality": "FINALIZED",
+      "paidRequests": 1,
+      "replays": 0
+    },
+    {
+      "intentId": "vol-sim-3:fx-usd-brl",
+      "state": "CONFIRMED",
+      "amountUsdc": "0.010000",
+      "nonce": "0x38e52b42692590d081483869f7cce16301a7f36c803536356463e6715fe87b7e",
+      "txHash": "0xdfd92b18b3501318e09542124311e275cde67e056cb40f7bf0dfb46bcbcb7207",
+      "finality": "FINALIZED",
+      "paidRequests": 1,
+      "replays": 0
+    },
+    {
+      "intentId": "vol-sim-4:fx-usd-brl",
+      "state": "CONFIRMED",
+      "amountUsdc": "0.010000",
+      "nonce": "0x6c879b92fda348b28f464be22f43efff4b7678badfbb1f8ccc2cc711e1013331",
+      "txHash": "0x09497a498b9dcaefed1f08707178bfb46fe0fd8f1723ea0c87a3950df83d4a54",
+      "finality": "FINALIZED",
+      "paidRequests": 1,
+      "replays": 0
+    },
+    {
+      "intentId": "vol-sim-5:fx-usd-brl",
+      "state": "CONFIRMED",
+      "amountUsdc": "0.010000",
+      "nonce": "0xb8226dcc6d083a99bc5160805cf811b527f5abc429e91ad4ab9cd8ba969e1f0e",
+      "txHash": "0x5f8c69e4d9b1125af606e883b6cfdf34dc840f04b4026a4d1fe2b83f372f2ac7",
+      "finality": "FINALIZED",
+      "paidRequests": 1,
+      "replays": 0
+    }
+  ],
+  "volume": {
+    "confirmedPayments": 7,
+    "totalUsdc": "0.080000",
+    "refused": 3
+  },
+  "invariantOnePaymentPerIntent": true,
+  "auditReceipts": 15
+}

@@ -1,0 +1,16 @@
+{
+  "name": "@railguard/rail-celo",
+  "private": true,
+  "version": "0.1.0",
+  "license": "Apache-2.0",
+  "type": "module",
+  "description": "Celo x402 payments guarded by Railguard (built on x402-guard): ERC-8004 identity-bound payees, EIP-3009 nonce as the request id, UNKNOWN on timeout with the budget frozen, an on-chain Celo settlement verifier, ERC-8021 attribution. Celo Sepolia testnet only.",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "dependencies": {
+    "@railguard/kernel": "workspace:*",
+    "@x402-guard/middleware": "workspace:*",
+    "viem": "^2.48.4"
+  }
+}

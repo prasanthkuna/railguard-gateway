@@ -1,0 +1,12 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "noEmit": true,
+    "types": ["bun"],
+    "baseUrl": ".",
+    "paths": {
+      "@x402-guard/middleware": ["../../vendor/x402-guard/packages/middleware/src"]
+    }
+  },
+  "include": ["src", "bin"]
+}
