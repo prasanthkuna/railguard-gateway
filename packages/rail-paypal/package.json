@@ -1,0 +1,20 @@
+{
+  "name": "@railguard/rail-paypal",
+  "private": true,
+  "version": "0.1.0",
+  "license": "Apache-2.0",
+  "type": "module",
+  "description": "PayPal Payouts (sandbox) ExecutionRail for Railguard: PayPal-Request-Id idempotency, UNKNOWN on timeout with the budget frozen, reconcile by request id, and a guarded AI accounts-payable agent.",
+  "exports": {
+    ".": "./src/index.ts",
+    "./client": "./src/client.ts",
+    "./rail": "./src/rail.ts",
+    "./policy": "./src/policy.ts",
+    "./agent": "./src/agent.ts",
+    "./simulator": "./src/simulator.ts",
+    "./demo": "./src/demo.ts"
+  },
+  "dependencies": {
+    "@railguard/kernel": "workspace:*"
+  }
+}
