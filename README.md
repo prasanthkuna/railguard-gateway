@@ -23,6 +23,10 @@ Railguard puts a control boundary between an AI agent and money movement. It bin
 | Railguard Operator | https://prebroadcast.vercel.app/ | Sign-in required |
 | Staging API | https://staging-railguard-s4ii.encr.app | Reference API |
 
+## Monad Metropolis entry
+
+Monad Metropolis entry = tag `metropolis-submission` (`29ef757`); later work (Airwallex, Arc) came after the deadline.
+
 ## Airwallex Agentic Banking Hackathon (Track 3): 5-minute judge path
 
 **Payment Ops Incident Commander.** A Gemini payment-ops agent pays suppliers on Airwallex. When a
