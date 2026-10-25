@@ -135,7 +135,10 @@ $ bun run verify-monad-metropolis-pack`}
           </div>
           <div className="ui-card">
             <h3>4. Call it from code</h3>
-            <p>TypeScript SDK for policy checks over /v1/*; direct v5 legacy linkage does not broadcast funds.</p>
+            <p>
+              TypeScript SDK for policy checks over /v1/*; direct v5 legacy linkage does not
+              broadcast funds.
+            </p>
             <pre className="ui-code" style={{ marginTop: 16 }}>
               {`import { RailguardClient, check } from "@railguard/sdk"
 
