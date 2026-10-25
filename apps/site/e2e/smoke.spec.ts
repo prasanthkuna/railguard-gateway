@@ -33,6 +33,14 @@ test.describe("Marketing site", () => {
     await expect(page.getByText("Sandbox live")).toBeVisible()
   })
 
+  test("integration maturity is honest about stubs and sandbox proofs", async ({ page }) => {
+    await page.goto("/integrations")
+    await expect(page.getByRole("heading", { name: /real provider facts/i })).toBeVisible()
+    await expect(page.getByText(/Synthetic signatures are blocked/i)).toBeVisible()
+    await expect(page.getByText(/Simulator and sandbox adapter/i)).toBeVisible()
+    await expect(page.getByRole("link", { name: "Install Railguard" })).toBeVisible()
+  })
+
   test("stellar public proof page", async ({ page }) => {
     await page.goto("/proof/stellar-testnet")
     await expect(page.getByRole("heading", { name: /Verified testnet settlement/i })).toBeVisible()
