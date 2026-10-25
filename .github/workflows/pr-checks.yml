@@ -61,7 +61,7 @@ jobs:
         run: bun run build:site
 
       - name: Install Playwright Chromium
-        run: bunx playwright install --with-deps chromium
+        run: bunx playwright@1.63.0 install --with-deps chromium
 
       - name: Site browser E2E smoke tests
         run: bun run test:site:e2e
