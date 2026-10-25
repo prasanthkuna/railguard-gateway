@@ -25,9 +25,12 @@ import {
   createFinancialIntent,
 } from "../../packages/kernel/src/intent"
 import { authorizeIntent } from "../../packages/kernel/src/v5Actions"
+import { resolvePaymentMode } from "./config"
 import { db } from "./db"
 import { buildExecutionCorrelation, buildGuardInput } from "./paymentCorrelation"
 import { resolveCdpPayerAddress } from "./providers"
+import { requiresLivePolicy } from "./v5AuthorizationMode"
+import { evidenceSettlementStatus } from "./v5EvidenceStatus"
 import { evaluatePaymentGuard, isX402GuardEnabled, organizationAgentId } from "./x402Guard"
 
 interface FinancialIntentRow {
@@ -164,8 +167,15 @@ export async function authorizeStoredIntent(
   if (!row) throw APIError.notFound("financial intent not found")
 
   const intent = parseIntentPayload(row.payload_json as FinancialIntent | string)
+  const guardEnabled = isX402GuardEnabled()
+  if (requiresLivePolicy(resolvePaymentMode(), guardEnabled)) {
+    throw APIError.failedPrecondition(
+      "Live authorization requires X402_GUARD_ENABLED=true; demo-only allow grants are forbidden",
+    )
+  }
+
   const auth = await authorizeIntent(intent, async (candidate) => {
-    if (!isX402GuardEnabled()) {
+    if (!guardEnabled) {
       return {
         grantId: v5Id("grant"),
         intentId: candidate.id,
@@ -407,14 +417,25 @@ export async function linkPaymentIntentToFinancialIntent(
 ): Promise<void> {
   const executionId = v5Id("exec")
   const status = mapLegacyPaymentStatus(paymentStatus)
-  await db.exec`
+  const linked = await db.queryRow<{ execution_id: string }>`
     UPDATE financial_intents
     SET payment_intent_id = ${paymentIntentId},
-        execution_id = ${executionId},
-        status = ${status},
+        execution_id = COALESCE(execution_id, ${executionId}),
+        status = CASE
+          WHEN status IN ('CREATED', 'AUTHORIZED', 'RESERVED') THEN ${status}
+          ELSE status
+        END,
         updated_at = NOW()
-    WHERE id = ${intentId} AND organization_id = ${organizationId}
+    WHERE id = ${intentId}
+      AND organization_id = ${organizationId}
+      AND (payment_intent_id IS NULL OR payment_intent_id = ${paymentIntentId})
+    RETURNING execution_id
   `
+  if (!linked) {
+    throw APIError.failedPrecondition(
+      "financial intent not found or already linked to a different payment intent",
+    )
+  }
 }
 
 export interface ExecutionListItem {
@@ -521,7 +542,7 @@ function buildEvidenceEnvelopeForIntentRow(
       txHash,
     },
     settlement: {
-      status: status === "SETTLED" ? "FINALIZED" : "UNOBSERVED",
+      status: evidenceSettlementStatus(status, ctx),
       observedAt: row.updated_at.toISOString(),
     },
     policyVersion: row.authorization_grant_json?.policyVersion ?? "railguard-v5",

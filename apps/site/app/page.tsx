@@ -133,11 +133,13 @@ export default function HomePage() {
             </p>
             <pre className="ui-code" style={{ marginTop: 18 }}>
               {`const result = await check(rg, intent)
-if (result.decision === "ALLOW")
-  await rg.execute(result.intent.id)`}
+if (result.decision !== "ALLOW") throw new Error("blocked")
+// Use a connected payment driver, then verify settlement.`}
             </pre>
             <div className="ui-card-foot">
               <Link href="/how-it-works#build">Install guide →</Link>
+              {" · "}
+              <Link href="/integrations">Integration maturity →</Link>
             </div>
           </div>
           <div className="ui-card">

@@ -24,7 +24,7 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: "20"
+          node-version: "24"
 
       - name: Install Encore CLI
         run: |
@@ -59,3 +59,9 @@ jobs:
 
       - name: Site build
         run: bun run build:site
+
+      - name: Install Playwright Chromium
+        run: bunx playwright@1.63.0 install --with-deps chromium
+
+      - name: Site browser E2E smoke tests
+        run: bun run test:site:e2e

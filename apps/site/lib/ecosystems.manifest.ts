@@ -24,6 +24,7 @@ export type EcosystemLogoId =
   | "arc"
   | "celo"
   | "airwallex"
+  | "paypal"
   | "failure-lab"
 
 export type EcosystemManifestEntry = {
@@ -180,18 +181,18 @@ export const ECOSYSTEM_MANIFEST: EcosystemManifestEntry[] = [
   {
     id: "celo",
     label: "Celo",
-    status: "grant-phase",
-    statusLabel: "ROADMAP",
-    rail: "celo (roadmap)",
-    codePath: "packages/settlement/src/chains.ts",
-    protects: ["Observe", "Reconcile", "Evidence"],
-    apf: ["APF-001", "APF-004"],
+    status: "adapter",
+    statusLabel: "ADAPTER",
+    rail: "celo-sepolia (testnet)",
+    codePath: "packages/rail-celo/src/rail.ts",
+    protects: ["Policy", "Payee identity", "Replay safety", "Settlement verifier"],
+    apf: ["APF-001", "APF-003", "APF-004"],
     narrative:
-      "Roadmap only: no Celo proof yet. The EVM settlement-verify config still targets the retired Alfajores testnet; moving it to Celo Sepolia (chain 11142220) is pending.",
-    evidenceHref: DOC_LINKS.ecosystems,
-    evidenceLabel: "Ecosystem manifest",
-    oneCommand: "railguard check",
-    architectureBlurb: "EVM settlement-verify; deepen when application warrants.",
+      "Celo Sepolia x402 rail and EIP-3009 verifier implemented; the saved demo is simulated and facilitator wire checks are not evidence of paid settlement.",
+    evidenceHref: `${GITHUB_GATEWAY}/tree/main/docs/hackathons/celo`,
+    evidenceLabel: "Demo, tests and wire-check evidence",
+    oneCommand: "bun run celo:demo",
+    architectureBlurb: "Celo Sepolia adapter; no verified live transfer claimed.",
   },
   {
     id: "airwallex",
@@ -212,6 +213,22 @@ export const ECOSYSTEM_MANIFEST: EcosystemManifestEntry[] = [
     evidenceStatus: "VERIFIED",
     oneCommand: "railguard protect",
     architectureBlurb: "Traditional payment API as execution adapter — not a second product.",
+  },
+  {
+    id: "paypal",
+    label: "PayPal Payouts",
+    status: "adapter",
+    statusLabel: "ADAPTER",
+    rail: "paypal (sandbox only)",
+    codePath: "packages/rail-paypal/src/rail.ts",
+    protects: ["Policy", "Idempotency", "Unknown recovery"],
+    apf: ["APF-001", "APF-003"],
+    narrative:
+      "PayPal Payouts sandbox adapter and offline simulator are implemented; only simulated evidence is committed. No independent live sandbox payout proof published.",
+    evidenceHref: `${GITHUB_GATEWAY}/tree/main/docs/hackathons/paypal`,
+    evidenceLabel: "Sandbox adapter and demo",
+    oneCommand: "bun run paypal:demo",
+    architectureBlurb: "Provider-specific idempotency and reconciliation; sandbox-limited.",
   },
   {
     id: "failure-lab",

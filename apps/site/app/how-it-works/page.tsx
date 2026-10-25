@@ -135,13 +135,17 @@ $ bun run verify-monad-metropolis-pack`}
           </div>
           <div className="ui-card">
             <h3>4. Call it from code</h3>
-            <p>TypeScript SDK over the REST API (/v1/*).</p>
+            <p>
+              TypeScript SDK for policy checks over /v1/*; direct v5 legacy linkage does not
+              broadcast funds.
+            </p>
             <pre className="ui-code" style={{ marginTop: 16 }}>
               {`import { RailguardClient, check } from "@railguard/sdk"
 
 const rg = new RailguardClient({ baseUrl, getAuthHeaders })
 const result = await check(rg, intent)
-if (result.decision === "ALLOW") await rg.execute(result.intent.id)`}
+if (result.decision !== "ALLOW") throw new Error("blocked")
+// Execute via a connected provider, then verify its receipt`}
             </pre>
           </div>
         </div>

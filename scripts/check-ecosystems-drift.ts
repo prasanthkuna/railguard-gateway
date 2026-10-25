@@ -43,7 +43,8 @@ const pairs: Array<{
   { yamlId: "monad", manifestId: "monad", expectedChain: "monad-testnet" },
   { yamlId: "arc", manifestId: "arc", expectedChain: "arc-testnet" },
   { yamlId: "stellar", manifestId: "stellar" },
-  { yamlId: "celo", manifestId: "celo", expectedChain: "celo-alfajores" },
+  { yamlId: "celo", manifestId: "celo", expectedChain: "celo-sepolia" },
+  { yamlId: "paypal", manifestId: "paypal" },
   { yamlId: "airwallex", manifestId: "airwallex" },
   { yamlId: "failure-lab", manifestId: "failure-lab" },
 ]

@@ -3,6 +3,7 @@ import type { AuthorizationGrant } from "../../packages/kernel/src/authority"
 import type { EvidenceEnvelope } from "../../packages/kernel/src/evidence"
 import type { V5ExecutionStatus } from "../../packages/kernel/src/executionRail"
 import type { CreateFinancialIntentInput, FinancialIntent } from "../../packages/kernel/src/intent"
+import { canLinkV5Intent } from "./v5LinkPolicy"
 import {
   authorizeStoredIntent,
   buildAndStoreEvidence,
@@ -140,7 +141,7 @@ export const observeV1Execution = api(
   },
 )
 
-/** v5 §10 — POST /v1/intents/:id/execute (links to legacy payment intent when invoiceId in context) */
+/** v5 §10 — Link a pre-existing legacy payment intent; this endpoint does NOT send funds. */
 export const executeV1Intent = api(
   {
     expose: true,
@@ -157,8 +158,8 @@ export const executeV1Intent = api(
   }): Promise<V5ExecutionResponse> => {
     const actor = await requireV5Actor(["owner", "finance"])
     const stored = await getStoredExecutionByIntent(actor.organizationID, params.id)
-    if (stored.status === "DENIED" || stored.status === "APPROVAL_REQUIRED") {
-      throw APIError.failedPrecondition(`intent not authorized: ${stored.status}`)
+    if (stored.status !== "AUTHORIZED" && stored.status !== "RESERVED") {
+      throw APIError.failedPrecondition(`intent is not linkable: ${stored.status}`)
     }
     if (!params.paymentIntentId && !stored.paymentIntentId) {
       throw APIError.invalidArgument(
@@ -167,14 +168,27 @@ export const executeV1Intent = api(
     }
     const paymentIntentId = params.paymentIntentId ?? stored.paymentIntentId
     if (!paymentIntentId) throw APIError.invalidArgument("paymentIntentId required")
+    if (
+      !canLinkV5Intent(
+        stored.status,
+        paymentIntentId,
+        stored.paymentIntentId,
+        stored.intent.context?.paymentIntentId,
+      )
+    ) {
+      throw APIError.failedPrecondition(
+        "payment intent must match the previously authorized financial intent context",
+      )
+    }
 
     const { linkPaymentIntentToFinancialIntent } = await import("./v5Store")
     await linkPaymentIntentToFinancialIntent(
       actor.organizationID,
       params.id,
       paymentIntentId,
-      "executing",
+      "prepared",
     )
+    // Linkage is not provider execution: do not claim EXECUTING or SUBMITTED.
     const updated = await getStoredExecutionByIntent(actor.organizationID, params.id)
     return {
       executionId: updated.executionId ?? `exec_${params.id}`,

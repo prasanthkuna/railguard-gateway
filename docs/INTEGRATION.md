@@ -11,7 +11,7 @@ Railguard exposes three integration paths for humans, scripts, and AI agents.
 | **CLI** | CI, demos, operators | `@railguard/cli` |
 | **MCP** | Cursor, Codex, Claude Desktop agents | `@railguard/mcp` |
 
-All paths implement the same three verbs: **authorize → execute → verify**.
+The public verbs are **authorize → execute → verify**, but they are not interchangeable with actual settlement. The legacy v5 `/execute` endpoint currently links an already authorized and bound payment intent; it does **not** broadcast money. Real execution uses the existing authenticated payment-intent driver or an external wallet path, followed by provider/chain verification. The SDK's `pay()` convenience function now fails closed when it cannot verify finalized settlement.
 
 ## Quick start
 

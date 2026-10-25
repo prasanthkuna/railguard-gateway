@@ -1,8 +1,4 @@
-import {
-  createTestnetEvmWalletAdapter,
-  testnetSignDigest,
-  testnetWalletConfigured,
-} from "./testnetEvm"
+import { createTestnetEvmWalletAdapter, testnetWalletConfigured } from "./testnetEvm"
 import type { SignRequest, SignResult, WalletProviderAdapter } from "./types"
 
 /** ZeroDev — ERC-4337 session keys (env: ZERODEV_PROJECT_ID). */
@@ -17,11 +13,10 @@ export function createZeroDevWalletAdapter(): WalletProviderAdapter {
       if (!addr) throw new Error("ZERODEV_ACCOUNT_ADDRESS not set")
       return addr
     },
-    async sign(request: SignRequest): Promise<SignResult> {
-      if (process.env.ZERODEV_PROJECT_ID?.trim()) {
-        return testnetSignDigest("zerodev", request.digest)
-      }
-      throw new Error("ZERODEV_PROJECT_ID required for ZeroDev signing integration")
+    async sign(_request: SignRequest): Promise<SignResult> {
+      throw new Error(
+        "zerodev: provider signing not implemented; use the explicitly enabled local testnet signer or a real provider SDK",
+      )
     },
   }
 }

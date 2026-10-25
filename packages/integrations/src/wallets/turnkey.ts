@@ -1,8 +1,4 @@
-import {
-  createTestnetEvmWalletAdapter,
-  testnetSignDigest,
-  testnetWalletConfigured,
-} from "./testnetEvm"
+import { createTestnetEvmWalletAdapter, testnetWalletConfigured } from "./testnetEvm"
 import type { SignRequest, SignResult, WalletProviderAdapter } from "./types"
 
 export function createTurnkeyWalletAdapter(): WalletProviderAdapter {
@@ -16,14 +12,10 @@ export function createTurnkeyWalletAdapter(): WalletProviderAdapter {
       if (!addr) throw new Error("TURNKEY_WALLET_ADDRESS not set")
       return addr
     },
-    async sign(request: SignRequest): Promise<SignResult> {
-      if (
-        process.env.TURNKEY_API_PUBLIC_KEY?.trim() &&
-        process.env.TURNKEY_API_PRIVATE_KEY?.trim()
-      ) {
-        return testnetSignDigest("turnkey", request.digest)
-      }
-      throw new Error("TURNKEY_API_PUBLIC_KEY and TURNKEY_API_PRIVATE_KEY required")
+    async sign(_request: SignRequest): Promise<SignResult> {
+      throw new Error(
+        "turnkey: provider signing not implemented; use the explicitly enabled local testnet signer or a real provider SDK",
+      )
     },
   }
 }

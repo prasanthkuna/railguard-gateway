@@ -47,9 +47,9 @@ From monorepo root after `bun install`:
 | `railguard_doctor` | Environment check |
 | `railguard_create_intent` | POST /v1/intents |
 | `railguard_authorize` | POST /v1/intents/:id/authorize |
-| `railguard_execute` | POST /v1/intents/:id/execute |
+| `railguard_execute` | POST /v1/intents/:id/execute (linkage only; no broadcast) |
 | `railguard_verify` | GET /v1/executions/:id/evidence |
-| `railguard_pay` | Full pay flow |
+| `railguard_pay` | Create, authorize, link and require finalized evidence; fails closed until a connected execution path settles |
 | `railguard_get_execution` | GET /v1/executions/:id |
 | `railguard_financial_metrics` | GET /v1/metrics/financial |
 

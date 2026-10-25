@@ -81,13 +81,20 @@ ecosystems:
 
   - id: celo
     label: Celo
-    status: grant-phase
+    status: adapter
     chains:
-      - celo-alfajores
-    narrative: Shared EVM settlement-verification path; no public live proof claimed yet.
+      - celo-sepolia
+    narrative: Celo Sepolia x402/EIP-3009 code and facilitator wire check; simulator evidence only, no public paid settlement proof.
     rails:
-      - celo-alfajores
+      - celo-sepolia
       - celo
+
+  - id: paypal
+    label: PayPal Payouts
+    status: adapter
+    narrative: Sandbox-only payout adapter and simulated run; no independent live sandbox payout evidence yet.
+    rails:
+      - paypal
 
   - id: airwallex
     label: Airwallex

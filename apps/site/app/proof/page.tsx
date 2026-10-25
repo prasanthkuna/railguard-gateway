@@ -36,6 +36,7 @@ const ORDER = [
   "stellar",
   "monad",
   "airwallex",
+  "paypal",
   "x402",
   "cdp",
   "base",

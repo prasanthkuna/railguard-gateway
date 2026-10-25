@@ -49,7 +49,7 @@ const TOOLS = [
   },
   {
     name: "railguard_execute",
-    description: "Execute an authorized intent",
+    description: "Link a previously authorized legacy payment intent (does not send funds)",
     inputSchema: {
       type: "object",
       required: ["intentId"],
@@ -70,7 +70,7 @@ const TOOLS = [
   },
   {
     name: "railguard_pay",
-    description: "Create → authorize → execute → verify",
+    description: "Create, authorize, link and require finalized evidence (errors unless settled)",
     inputSchema: {
       type: "object",
       required: ["intent"],

@@ -1,4 +1,3 @@
-import { createHash } from "node:crypto"
 import type { SignRequest, SignResult, WalletProviderAdapter } from "./types"
 
 /** Testnet-only local EVM signer (env: TESTNET_WALLET_PRIVATE_KEY). */
@@ -28,7 +27,7 @@ export function testnetWalletConfigured(): boolean {
   return Boolean(process.env.TESTNET_WALLET_PRIVATE_KEY?.trim())
 }
 
-export function testnetSignDigest(provider: string, digest: string): SignResult {
-  const stub = createHash("sha256").update(`${provider}:${digest}`).digest("hex").slice(0, 32)
-  return { signature: `0xtestnet_${stub}`, signerId: `${provider}-testnet-stub` }
+/** Legacy helper kept only to fail closed; synthetic signatures must never escape. */
+export function testnetSignDigest(_provider: string, _digest: string): SignResult {
+  throw new Error("Synthetic provider signatures are disabled; connect a real signer")
 }
