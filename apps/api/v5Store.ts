@@ -27,9 +27,9 @@ import {
 import { authorizeIntent } from "../../packages/kernel/src/v5Actions"
 import { resolvePaymentMode } from "./config"
 import { db } from "./db"
-import { requiresLivePolicy } from "./v5AuthorizationMode"
 import { buildExecutionCorrelation, buildGuardInput } from "./paymentCorrelation"
 import { resolveCdpPayerAddress } from "./providers"
+import { requiresLivePolicy } from "./v5AuthorizationMode"
 import { evaluatePaymentGuard, isX402GuardEnabled, organizationAgentId } from "./x402Guard"
 
 interface FinancialIntentRow {

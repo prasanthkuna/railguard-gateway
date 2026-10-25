@@ -1,8 +1,8 @@
 import { describe, expect, test } from "bun:test"
 import { createPrivyWalletAdapter } from "./privy"
 import { createSafeWalletAdapter } from "./safe"
-import { createTurnkeyWalletAdapter } from "./turnkey"
 import { testnetSignDigest } from "./testnetEvm"
+import { createTurnkeyWalletAdapter } from "./turnkey"
 import { createZeroDevWalletAdapter } from "./zerodev"
 
 const providers = [
@@ -24,9 +24,9 @@ describe("provider signing is fail-closed until integrated", () => {
           provider.factory().sign({ digest: `0x${"00".repeat(32)}`, chainId: 84532 }),
         ).rejects.toThrow("provider signing not implemented")
       } finally {
-        if (priorFlag === undefined) delete process.env.RAILGUARD_TESTNET_WALLET
+        if (priorFlag === undefined) process.env.RAILGUARD_TESTNET_WALLET = undefined
         else process.env.RAILGUARD_TESTNET_WALLET = priorFlag
-        if (priorProvider === undefined) delete process.env[provider.env]
+        if (priorProvider === undefined) process.env[provider.env] = undefined
         else process.env[provider.env] = priorProvider
       }
     })
