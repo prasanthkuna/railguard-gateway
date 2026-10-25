@@ -104,7 +104,9 @@ export class RailguardClient {
     const created = await this.createIntent(input)
     const auth = await this.authorize(created.intent.id)
     if (auth.status !== "AUTHORIZED") {
-      return { intent: created.intent, grant: auth.grant, executionId: created.intent.id }
+      throw new Error(
+        `Railguard payment not authorized (status=${auth.status}, intent=${created.intent.id})`,
+      )
     }
     const exec = await this.execute(created.intent.id, options)
     if (exec.status !== "SETTLED") {

@@ -30,6 +30,7 @@ import { db } from "./db"
 import { buildExecutionCorrelation, buildGuardInput } from "./paymentCorrelation"
 import { resolveCdpPayerAddress } from "./providers"
 import { requiresLivePolicy } from "./v5AuthorizationMode"
+import { evidenceSettlementStatus } from "./v5EvidenceStatus"
 import { evaluatePaymentGuard, isX402GuardEnabled, organizationAgentId } from "./x402Guard"
 
 interface FinancialIntentRow {
@@ -541,7 +542,7 @@ function buildEvidenceEnvelopeForIntentRow(
       txHash,
     },
     settlement: {
-      status: status === "SETTLED" ? "FINALIZED" : "UNOBSERVED",
+      status: evidenceSettlementStatus(status, ctx),
       observedAt: row.updated_at.toISOString(),
     },
     policyVersion: row.authorization_grant_json?.policyVersion ?? "railguard-v5",
