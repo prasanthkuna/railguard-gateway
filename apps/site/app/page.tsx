@@ -138,6 +138,8 @@ if (result.decision === "ALLOW")
             </pre>
             <div className="ui-card-foot">
               <Link href="/how-it-works#build">Install guide →</Link>
+              {" · "}
+              <Link href="/integrations">Integration maturity →</Link>
             </div>
           </div>
           <div className="ui-card">
