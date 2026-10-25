@@ -2,6 +2,7 @@ import type { CreateFinancialIntentInput, FinancialIntent } from "@railguard/ker
 import type { AuthorizationGrant } from "@railguard/kernel"
 import type { EvidenceEnvelope } from "@railguard/kernel"
 import type { V5ExecutionStatus } from "@railguard/kernel"
+import { assertFinalizedPayment } from "./paymentSafety"
 
 export interface RailguardClientConfig {
   baseUrl: string
@@ -90,7 +91,7 @@ export class RailguardClient {
     return this.request(`/v1/executions/${executionId}/evidence`)
   }
 
-  /** convenience — authorize → execute → verify */
+  /** Only resolves successfully after FINALIZED settlement evidence; pending/unknown throws. */
   async pay(
     input: CreateFinancialIntentInput,
     options?: { paymentIntentId?: string },
@@ -106,16 +107,18 @@ export class RailguardClient {
       return { intent: created.intent, grant: auth.grant, executionId: created.intent.id }
     }
     const exec = await this.execute(created.intent.id, options)
-    try {
-      const verified = await this.verify(exec.executionId)
-      return {
-        intent: created.intent,
-        grant: auth.grant,
-        executionId: exec.executionId,
-        evidence: verified.evidence,
-      }
-    } catch {
-      return { intent: created.intent, grant: auth.grant, executionId: exec.executionId }
+    if (exec.status !== "SETTLED") {
+      throw new Error(
+        `Railguard payment is not settled (status=${exec.status}, execution=${exec.executionId}); inspect and reconcile before considering it paid`,
+      )
+    }
+    const verified = await this.verify(exec.executionId)
+    assertFinalizedPayment(exec.status, verified.evidence)
+    return {
+      intent: created.intent,
+      grant: auth.grant,
+      executionId: exec.executionId,
+      evidence: verified.evidence,
     }
   }
 }

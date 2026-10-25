@@ -416,14 +416,25 @@ export async function linkPaymentIntentToFinancialIntent(
 ): Promise<void> {
   const executionId = v5Id("exec")
   const status = mapLegacyPaymentStatus(paymentStatus)
-  await db.exec`
+  const linked = await db.queryRow<{ execution_id: string }>`
     UPDATE financial_intents
     SET payment_intent_id = ${paymentIntentId},
-        execution_id = ${executionId},
-        status = ${status},
+        execution_id = COALESCE(execution_id, ${executionId}),
+        status = CASE
+          WHEN status IN ('CREATED', 'AUTHORIZED', 'RESERVED') THEN ${status}
+          ELSE status
+        END,
         updated_at = NOW()
-    WHERE id = ${intentId} AND organization_id = ${organizationId}
+    WHERE id = ${intentId}
+      AND organization_id = ${organizationId}
+      AND (payment_intent_id IS NULL OR payment_intent_id = ${paymentIntentId})
+    RETURNING execution_id
   `
+  if (!linked) {
+    throw APIError.failedPrecondition(
+      "financial intent not found or already linked to a different payment intent",
+    )
+  }
 }
 
 export interface ExecutionListItem {
