@@ -25,7 +25,9 @@ import {
   createFinancialIntent,
 } from "../../packages/kernel/src/intent"
 import { authorizeIntent } from "../../packages/kernel/src/v5Actions"
+import { resolvePaymentMode } from "./config"
 import { db } from "./db"
+import { requiresLivePolicy } from "./v5AuthorizationMode"
 import { buildExecutionCorrelation, buildGuardInput } from "./paymentCorrelation"
 import { resolveCdpPayerAddress } from "./providers"
 import { evaluatePaymentGuard, isX402GuardEnabled, organizationAgentId } from "./x402Guard"
@@ -164,8 +166,15 @@ export async function authorizeStoredIntent(
   if (!row) throw APIError.notFound("financial intent not found")
 
   const intent = parseIntentPayload(row.payload_json as FinancialIntent | string)
+  const guardEnabled = isX402GuardEnabled()
+  if (requiresLivePolicy(resolvePaymentMode(), guardEnabled)) {
+    throw APIError.failedPrecondition(
+      "Live authorization requires X402_GUARD_ENABLED=true; demo-only allow grants are forbidden",
+    )
+  }
+
   const auth = await authorizeIntent(intent, async (candidate) => {
-    if (!isX402GuardEnabled()) {
+    if (!guardEnabled) {
       return {
         grantId: v5Id("grant"),
         intentId: candidate.id,

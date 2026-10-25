@@ -109,11 +109,20 @@ describe("v5 kernel", () => {
     const auth = await authorizeIntent(intent, async () => grant)
     expect(auth.status).toBe("AUTHORIZED")
     const cdp = createCdpExecutionRail({ organizationId: "org_1", payerAddress: "0xpayer" })
-    const exec = await executeIntent(intent, grant, cdp)
-    expect(exec.status).toBe("UNKNOWN")
+    await expect(executeIntent(intent, grant, cdp)).rejects.toThrow(
+      "v5 reference rail cannot execute payments",
+    )
     const x402 = createX402ExecutionRail()
-    const exec2 = await executeIntent(intent, grant, x402)
-    expect(exec2.status).toBe("SUBMITTED")
+    await expect(executeIntent(intent, grant, x402)).rejects.toThrow(
+      "v5 reference rail cannot execute payments",
+    )
+    const observation = await x402.observe({
+      executionId: "exec_intent_2",
+      rail: "x402",
+      result: "BROADCAST_UNKNOWN",
+    })
+    expect(observation.settlementStatus).toBe("UNOBSERVED")
+    expect((await x402.reconcile("exec_intent_2")).decision).toBe("UNKNOWN")
   })
 
   test("base rail aliases cdp", () => {

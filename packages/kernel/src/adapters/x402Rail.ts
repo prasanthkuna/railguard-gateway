@@ -1,5 +1,7 @@
-/** v5 x402 ExecutionRail adapter — policy + HTTP payment rail */
-
+/**
+ * v5 x402 descriptor only. Real x402 settlement lives in x402-guard / rail-celo.
+ * Never manufacture a transaction hash or finalized settlement for an interface.
+ */
 import { createHash } from "node:crypto"
 import type { AuthorizationGrant } from "../authority"
 import type {
@@ -16,6 +18,9 @@ export function createX402ExecutionRail(): ExecutionRail {
     name: "x402",
 
     async prepare(intent: FinancialIntent, grant: AuthorizationGrant): Promise<PreparedExecution> {
+      if (grant.decision !== "allow" || grant.intentId !== intent.id) {
+        throw new Error("x402: intent has no matching allow grant")
+      }
       const resource = intent.context?.resource ?? intent.counterparty.domain
       const canonicalRequest = {
         resource,
@@ -32,20 +37,16 @@ export function createX402ExecutionRail(): ExecutionRail {
       }
     },
 
-    async execute(prepared: PreparedExecution): Promise<ExecutionSubmission> {
-      return {
-        executionId: prepared.executionId,
-        rail: "x402",
-        txHash: `0x${prepared.requestHash.slice(0, 64)}`,
-        result: "BROADCAST_CONFIRMED",
-        responseHash: prepared.requestHash,
-      }
+    async execute(_prepared: PreparedExecution): Promise<ExecutionSubmission> {
+      throw new Error(
+        "x402: v5 reference rail cannot execute payments; use a connected x402-guard/facilitator rail",
+      )
     },
 
     async observe(submission: ExecutionSubmission): Promise<ExecutionObservation> {
       return {
         executionId: submission.executionId,
-        settlementStatus: "FINALIZED",
+        settlementStatus: "UNOBSERVED",
         observedAt: new Date().toISOString(),
       }
     },
@@ -53,8 +54,8 @@ export function createX402ExecutionRail(): ExecutionRail {
     async reconcile(executionId: string): Promise<SettlementResult> {
       return {
         executionId,
-        status: "CLEAN",
-        decision: "SETTLED",
+        status: "REQUIRED",
+        decision: "UNKNOWN",
         observations: [],
       }
     },
