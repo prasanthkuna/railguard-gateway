@@ -1,6 +1,6 @@
-import { describe, it, expect } from "bun:test"
-import { HederaPaymentVerifier } from "./verifier"
+import { describe, expect, it } from "bun:test"
 import type { HederaExpectedPayment } from "./types"
+import { HederaPaymentVerifier } from "./verifier"
 
 describe("HederaPaymentVerifier", () => {
   const mockMirrorNode = {

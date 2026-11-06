@@ -10,11 +10,11 @@
 
 import { createHash } from "node:crypto"
 import {
+  AccountId,
   Client,
   PrivateKey,
-  AccountId,
-  TopicMessageSubmitTransaction,
   TopicCreateTransaction,
+  TopicMessageSubmitTransaction,
 } from "@hashgraph/sdk"
 
 export interface HcsAuditEntry {
@@ -41,7 +41,7 @@ export interface HcsAuditConfig {
 }
 
 export class HcsAuditLog {
-  private lastHash: string = "genesis"
+  private lastHash = "genesis"
 
   constructor(private config: HcsAuditConfig) {}
 
@@ -96,9 +96,7 @@ export class HcsAuditLog {
    */
   async submitEntry(entry: HcsAuditEntry): Promise<string> {
     if (!this.config.privateKey) {
-      throw new Error(
-        "HCS submission requires HEDERA_TESTNET_PRIVATE_KEY environment variable",
-      )
+      throw new Error("HCS submission requires HEDERA_TESTNET_PRIVATE_KEY environment variable")
     }
 
     const client = Client.forTestnet()
@@ -131,9 +129,7 @@ export class HcsAuditLog {
       const expectedPrev = i === 0 ? "genesis" : entries[i - 1].hash
 
       if (entry.prevHash !== expectedPrev) {
-        errors.push(
-          `Entry ${i} prevHash mismatch: expected ${expectedPrev}, got ${entry.prevHash}`,
-        )
+        errors.push(`Entry ${i} prevHash mismatch: expected ${expectedPrev}, got ${entry.prevHash}`)
       }
 
       // Recompute hash
@@ -151,9 +147,7 @@ export class HcsAuditLog {
 
       const computedHash = createHash("sha256").update(dataToHash).digest("hex")
       if (computedHash !== entry.hash) {
-        errors.push(
-          `Entry ${i} hash mismatch: expected ${entry.hash}, computed ${computedHash}`,
-        )
+        errors.push(`Entry ${i} hash mismatch: expected ${entry.hash}, computed ${computedHash}`)
       }
     }
 
@@ -170,9 +164,7 @@ export function createHcsAuditLog(): HcsAuditLog {
   const privateKey = process.env.HEDERA_TESTNET_PRIVATE_KEY
 
   if (!topicId || !accountId) {
-    throw new Error(
-      "HCS audit log requires HEDERA_HCS_TOPIC_ID and HEDERA_TESTNET_ACCOUNT_ID",
-    )
+    throw new Error("HCS audit log requires HEDERA_HCS_TOPIC_ID and HEDERA_TESTNET_ACCOUNT_ID")
   }
 
   return new HcsAuditLog({ topicId, accountId, privateKey })

@@ -3,11 +3,11 @@
  * Demonstrates complete challenge-payment-verification flow without live credentials.
  */
 import { afterEach, beforeEach, describe, expect, test } from "bun:test"
-import { createX402Server } from "./x402Server.js"
-import { createX402Client } from "./x402Client.js"
-import type { HederaPaymentVerifier } from "./verifier.js"
 import type { PaymentIntent, TransactionVerificationResult } from "./types.js"
+import type { HederaPaymentVerifier } from "./verifier.js"
 import type { X402GuardedClient } from "./x402.js"
+import { createX402Client } from "./x402Client.js"
+import { createX402Server } from "./x402Server.js"
 
 // Mock verifier that simulates mirror node verification
 class MockVerifier implements HederaPaymentVerifier {

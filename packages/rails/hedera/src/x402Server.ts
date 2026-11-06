@@ -5,8 +5,8 @@
  * Reference: https://github.com/Standard-Digital-Labs/x402
  */
 import { createHash } from "node:crypto"
-import type { HederaPaymentVerifier } from "./verifier.js"
 import type { PaymentIntent } from "./types.js"
+import type { HederaPaymentVerifier } from "./verifier.js"
 
 export const HEADER_PAYMENT_REQUIRED = "PAYMENT-REQUIRED"
 export const HEADER_PAYMENT_SIGNATURE = "PAYMENT-SIGNATURE"
@@ -196,10 +196,7 @@ export function createX402Server(options: {
     }
 
     // Verify transaction on Hedera mirror node
-    const verified = await options.verifier.verifyTransaction(
-      payload.payload.transactionId,
-      intent,
-    )
+    const verified = await options.verifier.verifyTransaction(payload.payload.transactionId, intent)
 
     if (verified.status !== "SUCCESS") {
       stats.refused += 1

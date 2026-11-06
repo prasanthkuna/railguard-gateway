@@ -83,15 +83,12 @@ export class HederaPaymentGuard {
     }
 
     // Check approval threshold (requires approval but not denied)
-    if (
-      this.policy.approvalThreshold &&
-      intent.amount > this.policy.approvalThreshold
-    ) {
+    if (this.policy.approvalThreshold && intent.amount > this.policy.approvalThreshold) {
       // Reserve budget for approval
       this.spentBudget += intent.amount
       this.merchantSpends.set(intent.recipient, merchantSpent + intent.amount)
       this.processedPayments.add(intent.requestId)
-      
+
       return {
         decision: "APPROVAL_REQUIRED",
         reason: "amount_exceeds_approval_threshold",

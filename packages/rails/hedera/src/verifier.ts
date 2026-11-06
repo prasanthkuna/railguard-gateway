@@ -11,12 +11,8 @@
  * never "settled" or "failed" without independent evidence.
  */
 
-import type {
-  HederaExpectedPayment,
-  HederaTransactionFacts,
-  HederaVerifyResult,
-} from "./types"
 import { HederaMirrorNode, type MirrorNodeConfig } from "./mirrorNode"
+import type { HederaExpectedPayment, HederaTransactionFacts, HederaVerifyResult } from "./types"
 
 export interface HederaVerifierConfig {
   mirrorNode: MirrorNodeConfig
@@ -112,9 +108,7 @@ export class HederaPaymentVerifier {
       }
     } else {
       // For HBAR transfers
-      const recipientTransfer = facts.hbarTransfers.find(
-        (t) => t.account === expected.recipient,
-      )
+      const recipientTransfer = facts.hbarTransfers.find((t) => t.account === expected.recipient)
 
       if (!recipientTransfer) {
         return {

@@ -4,12 +4,12 @@
  */
 
 import {
-  Client,
-  PrivateKey,
-  AccountId,
-  TopicCreateTransaction,
   AccountCreateTransaction,
+  AccountId,
+  Client,
   Hbar,
+  PrivateKey,
+  TopicCreateTransaction,
 } from "@hashgraph/sdk"
 
 export interface HederaTestnetAccount {

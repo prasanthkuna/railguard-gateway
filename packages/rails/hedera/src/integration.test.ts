@@ -10,13 +10,13 @@
  *   bun test src/integration.test.ts
  */
 
-import { describe, it, expect, beforeAll } from "bun:test"
+import { beforeAll, describe, expect, it } from "bun:test"
 import {
-  HederaPaymentGuard,
   HcsAuditLog,
+  HederaPaymentGuard,
   X402GuardedClient,
-  createHederaTestnetVerifier,
   createAuditTopic,
+  createHederaTestnetVerifier,
   getAccountBalance,
 } from "./index"
 

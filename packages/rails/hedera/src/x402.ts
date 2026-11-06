@@ -4,13 +4,13 @@
  */
 
 import {
-  Client,
-  PrivateKey,
   AccountId,
-  TransferTransaction,
-  TopicMessageSubmitTransaction,
+  Client,
   Hbar,
+  PrivateKey,
   Status,
+  TopicMessageSubmitTransaction,
+  TransferTransaction,
 } from "@hashgraph/sdk"
 import type { HederaPaymentGuard, PaymentIntent } from "./guard"
 import type { HcsAuditLog } from "./hcsAudit"
@@ -119,10 +119,7 @@ export class X402GuardedClient {
    * Verify a payment after timeout or on retry
    * Returns CONFIRMED only when mirror node shows the exact payment
    */
-  async verifyPayment(
-    paymentId: string,
-    transactionId: string,
-  ): Promise<X402PaymentStatus> {
+  async verifyPayment(paymentId: string, transactionId: string): Promise<X402PaymentStatus> {
     if (!this.config.verifier) {
       return {
         status: "UNKNOWN",
@@ -255,7 +252,7 @@ export class X402GuardedClient {
     }
 
     const client = Client.forTestnet()
-    
+
     // Try ED25519 first, fall back to ECDSA
     let operatorKey: PrivateKey
     try {
@@ -267,7 +264,7 @@ export class X402GuardedClient {
         throw new Error("Invalid private key format. Must be ED25519 or ECDSA DER-encoded")
       }
     }
-    
+
     const operatorId = AccountId.fromString(this.config.accountId)
     client.setOperator(operatorId, operatorKey)
 
@@ -282,7 +279,7 @@ export class X402GuardedClient {
       } else {
         // HTS token transfer
         const tokenId = this.getTokenId(intent.asset)
-        
+
         transaction = new TransferTransaction()
           .addTokenTransfer(tokenId, operatorId, -intent.amount)
           .addTokenTransfer(tokenId, intent.recipient, intent.amount)

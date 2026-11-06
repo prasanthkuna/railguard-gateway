@@ -1,4 +1,4 @@
-import { describe, it, expect } from "bun:test"
+import { describe, expect, it } from "bun:test"
 import { HederaPaymentGuard } from "./guard"
 import { X402GuardedClient } from "./x402"
 
