@@ -1,6 +1,6 @@
 # Railguard Hedera Testnet Rail
 
-**Status:** Complete testnet implementation. Real blockchain execution.
+**Status:** Implementation complete. Tests pending execution. Critical defects fixed.
 
 ## What this is
 
@@ -40,7 +40,7 @@ cd packages/rails/hedera
 bun test
 ```
 
-**22 tests pass** without any credentials.
+**26 tests expected** (pending execution without credentials).
 
 ### 2. Get free testnet account (10 min)
 
@@ -68,7 +68,7 @@ export RUN_HEDERA_INTEGRATION=1
 bun run test:integration
 ```
 
-**5 integration tests** execute real transactions on Hedera testnet.
+**5 integration tests** (pending execution with credentials).
 
 ## Available Scripts
 
