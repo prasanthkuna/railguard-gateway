@@ -50,7 +50,13 @@ class MockGuardedClient {
     this.verifier = verifier
   }
 
-  async requestPayment(intent: { requestId: string; recipient: string; amount: bigint; asset: string; memo?: string }) {
+  async requestPayment(intent: {
+    requestId: string
+    recipient: string
+    amount: bigint
+    asset: string
+    memo?: string
+  }) {
     this.executionCount++
     const txId = `0.0.12345@${Date.now()}.${this.executionCount}`
     // Auto-register transaction as valid for verification

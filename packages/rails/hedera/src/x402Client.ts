@@ -87,9 +87,7 @@ export class X402Client {
     }
 
     if (!paymentResult.transactionId) {
-      throw new Error(
-        `Payment execution failed: status=${paymentResult.status}`,
-      )
+      throw new Error(`Payment execution failed: status=${paymentResult.status}`)
     }
 
     // Build payment proof payload

@@ -17,6 +17,9 @@
     "verify": "bun run scripts/testnet-verify.ts"
   },
   "dependencies": {
-    "@hashgraph/sdk": "^2.56.0"
+    "@hashgraph/sdk": "^2.56.0",
+    "@hiero-ledger/sdk": "^2.90.1",
+    "@x402/core": "^2.30.0",
+    "@x402/hedera": "^2.30.0"
   }
 }

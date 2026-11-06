@@ -213,10 +213,7 @@ export function createX402Server(options: {
     }
 
     // Verify transaction on Hedera mirror node
-    const verified = await options.verifier.verifyPayment(
-      payload.payload.transactionId,
-      expected,
-    )
+    const verified = await options.verifier.verifyPayment(payload.payload.transactionId, expected)
 
     if (verified.status !== "CONFIRMED") {
       stats.refused += 1
