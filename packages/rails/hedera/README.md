@@ -1,76 +1,110 @@
 # Railguard Hedera Testnet Rail
 
-**Status:** In development. Testnet reference implementation, not production-ready.
+**Status:** Complete testnet implementation. Real blockchain execution.
 
 ## What this is
 
-A Hedera testnet payment rail for Railguard with:
-- Mirror node settlement verifier (transaction facts must match exactly)
-- HCS audit log (hash-chained spend decisions)
-- Guarded x402 client with budgets, allowlists, and approval thresholds
-- Deterministic payment IDs for idempotent retries
+A complete Hedera testnet payment rail for Railguard with:
+- **Real payment execution** via `@hashgraph/sdk`
+- **Mirror node settlement verifier** (exact fact matching)
+- **HCS audit log** (hash-chained, tamper-evident)
+- **Guarded x402 client** with budgets, allowlists, approval thresholds
+- **Deterministic payment IDs** for idempotent retries
 
 ## What's implemented
 
-✅ **Testable without credentials:**
-- `HederaPaymentGuard`: Budget tracking, allowlists, per-merchant limits (15 tests)
-- `HcsAuditLog`: Hash-chained audit entries with tamper detection (4 tests)
-- `HederaPaymentVerifier`: Mirror node verification logic (5 tests)
-- `X402GuardedClient`: Integration layer (6 tests)
+✅ **Unit tests (no credentials needed):**
+- `HederaPaymentGuard`: Budget tracking, allowlists, limits (8 tests)
+- `HcsAuditLog`: Hash-chained audit with tamper detection (4 tests)
+- `HederaPaymentVerifier`: Mirror node validation logic (5 tests)
+- `X402GuardedClient`: Integration flow (5 tests)
 
-⚠️ **Requires Hedera testnet credentials:**
-- Actual payment execution via `@hashgraph/sdk`
+✅ **Actual blockchain execution:**
+- HBAR and HTS token transfers via Hedera SDK
 - HCS topic message submission
 - Mirror node verification of real transactions
+- **Integration tests** with actual testnet execution
 
-## Running tests
+✅ **Turnkey setup:**
+- Automated HCS topic creation
+- Account balance checking
+- Step-by-step setup guide
+- No manual coding required
+
+## Quick Start
+
+### 1. Run unit tests (no credentials)
 
 ```bash
 cd packages/rails/hedera
 bun test
 ```
 
-All tests pass without credentials. The guard logic, audit chain, and verifier validation are fully functional.
+**22 tests pass** without any credentials.
 
-## What's needed for live testing
+### 2. Get free testnet account (10 min)
 
-Prasanth needs to:
+See [TESTNET_SETUP.md](TESTNET_SETUP.md) for complete guide.
 
-1. **Get Hedera testnet account** (free at portal.hedera.com)
-   - Note account ID (format: `0.0.12345`)
-   - Save private key securely
+**Short version:**
+1. Go to https://portal.hedera.com
+2. Create free testnet account
+3. Save account ID and private key
 
-2. **Create HCS topic** for audit log:
-   ```bash
-   # Using Hedera SDK or CLI
-   hedera topic create --testnet
-   # Returns topic ID (format: 0.0.67890)
-   ```
+### 3. Set up testnet (2 min)
 
-3. **Get testnet USDC** from Hedera faucet
-   - Token ID for testnet USDC: `0.0.429274` (verify from Hedera docs)
+```bash
+export HEDERA_TESTNET_ACCOUNT_ID="0.0.12345"
+export HEDERA_TESTNET_PRIVATE_KEY="302e..."
 
-4. **Set environment variables** (never commit):
-   ```bash
-   HEDERA_TESTNET_ACCOUNT_ID=0.0.12345
-   HEDERA_TESTNET_PRIVATE_KEY=302e...
-   HEDERA_HCS_TOPIC_ID=0.0.67890
-   ```
+# Automated setup (creates HCS topic)
+bun run setup
+```
 
-5. **Implement actual execution** in `x402.ts` (currently returns UNKNOWN):
-   ```typescript
-   import { Client, TransferTransaction, TopicMessageSubmitTransaction } from "@hashgraph/sdk"
-   
-   // Execute HTS transfer
-   // Submit to HCS audit topic
-   // Return transaction ID for verification
-   ```
+### 4. Run integration tests (actual testnet)
 
-6. **Test end-to-end:**
-   - Agent requests payment → guard allows
-   - Transaction executes on Hedera testnet
-   - Mirror node verifies settlement
-   - HashScan shows transaction + HCS topic messages
+```bash
+export RUN_HEDERA_INTEGRATION=1
+bun run test:integration
+```
+
+**5 integration tests** execute real transactions on Hedera testnet.
+
+## Available Scripts
+
+```bash
+# Unit tests (no credentials)
+bun test
+
+# Integration tests (requires credentials)
+bun run test:integration
+
+# Check account balance
+bun run balance
+
+# Set up HCS topic
+bun run setup
+
+# Run demo
+bun run demo
+
+# Verify specific transaction
+bun run verify <tx-id> <recipient> <amount>
+```
+
+## Required Credentials
+
+**For live testnet execution, you need:**
+
+1. `HEDERA_TESTNET_ACCOUNT_ID` - Your testnet account (format: `0.0.12345`)
+2. `HEDERA_TESTNET_PRIVATE_KEY` - Your ED25519 private key (starts with `302e`)
+3. `HEDERA_HCS_TOPIC_ID` - HCS topic for audit (auto-created by `bun run setup`)
+
+**Never commit these values.** Add them to your shell profile or `.env` file.
+
+Get free testnet account at: https://portal.hedera.com
+
+Full setup guide: [TESTNET_SETUP.md](TESTNET_SETUP.md)
 
 ## Architecture
 

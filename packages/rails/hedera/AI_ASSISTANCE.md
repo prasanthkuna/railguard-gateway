@@ -29,52 +29,67 @@ Claude generated:
 4. Payment verifier with exact-match validation (`verifier.ts`)
 5. Hash-chained HCS audit log (`hcsAudit.ts`)
 6. Payment guard with budget/policy enforcement (`guard.ts`)
-7. X402 guarded client integration (`x402.ts`)
-8. Test suites for all components (30 tests total)
-9. README with setup instructions and architecture
-10. This attribution document
+7. **X402 guarded client with real Hedera SDK execution** (`x402.ts`)
+8. **Hedera SDK transaction execution** (HBAR and HTS transfers)
+9. **HCS topic creation and message submission** (`setup.ts`)
+10. Unit test suites (22 tests)
+11. **Integration test suite** (5 tests with actual testnet execution)
+12. **Turnkey setup scripts** (setup, balance check, demo)
+13. **Complete testnet setup guide** (TESTNET_SETUP.md)
+14. README with setup instructions and architecture
+15. This attribution document
 
 ## AI Did NOT Do
 
-- Actual Hedera SDK integration (requires `@hashgraph/sdk` and credentials)
-- HCS topic creation or message submission
-- Live testnet transactions
-- Credential management
-- Video recording
-- Human verification and testing
+- Get actual Hedera testnet credentials (Prasanth must get free account)
+- Execute integration tests (requires credentials)
+- Record any demo video
+- Deploy to any environment
+- Access or generate private keys
+- Execute mainnet transactions (testnet only)
 
 ## Human Work Required
 
 Prasanth must:
 1. Review all generated code for correctness
-2. Get Hedera testnet account and credentials
-3. Create HCS topic for audit log
-4. Implement actual transaction execution in `x402.ts`
-5. Test end-to-end with real testnet transactions
-6. Verify mirror node responses match expectations
-7. Record demo video (human voice, not AI)
-8. Security review before any mainnet use
+2. **Get free Hedera testnet account** (https://portal.hedera.com, 10 min)
+3. **Run setup script** (`bun run setup` - creates HCS topic automatically)
+4. **Run integration tests** (`bun run test:integration` - executes on testnet)
+5. Get at least one confirmed transaction ID for any submission
+6. Record demo video if needed (human voice, not AI)
+7. Security review before any mainnet use
 
 ## Verification
 
-To verify the generated code:
+**Unit tests (no credentials):**
 ```bash
-# Run tests (requires Bun 1.3+)
 cd packages/rails/hedera
 bun test
 
-# All 30 tests should pass without credentials
-# Tests validate: guard logic, audit chain integrity, verifier validation
+# 22 tests pass without any credentials
+# Tests validate: guard logic, audit chain, verifier validation
+```
+
+**Integration tests (requires credentials):**
+```bash
+export HEDERA_TESTNET_ACCOUNT_ID="0.0.12345"
+export HEDERA_TESTNET_PRIVATE_KEY="302e..."
+export RUN_HEDERA_INTEGRATION=1
+
+bun run test:integration
+
+# 5 integration tests execute real transactions on Hedera testnet
+# Proves: actual payment execution, verification, duplicate prevention
 ```
 
 ## AI Limitations Acknowledged
 
-- Cannot execute real blockchain transactions
-- Cannot test with actual Hedera testnet
-- Cannot verify mirror node API responses
-- Cannot create HCS topics
+- Cannot get Hedera testnet credentials (user must get free account)
+- Cannot execute integration tests without credentials
 - Cannot access or generate private keys
-- Cannot determine if Hedera testnet USDC token ID is correct
+- Cannot verify if testnet USDC token ID `0.0.429274` is current
+- Cannot deploy to any environment
+- Cannot execute mainnet transactions (testnet only by design)
 
 ## References Used by AI
 
