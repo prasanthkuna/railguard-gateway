@@ -1,0 +1,28 @@
+{
+  "name": "@railguard/rail-hedera",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "license": "Apache-2.0",
+  "description": "Railguard Hedera testnet rail: x402 payments with mirror node verification and HCS audit log.",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "test": "bun test src/*.test.ts",
+    "test:integration": "RUN_HEDERA_INTEGRATION=1 bun test src/integration.test.ts",
+    "setup": "bun run scripts/setup-testnet.ts",
+    "balance": "bun run scripts/check-balance.ts",
+    "demo": "bun run scripts/testnet-demo.ts",
+    "verify": "bun run scripts/testnet-verify.ts"
+  },
+  "dependencies": {
+    "@hashgraph/sdk": "^2.56.0",
+    "@hiero-ledger/sdk": "^2.90.1",
+    "@x402/core": "^2.30.0",
+    "@x402/hedera": "^2.30.0"
+  },
+  "devDependencies": {
+    "bun-types": "latest"
+  }
+}
