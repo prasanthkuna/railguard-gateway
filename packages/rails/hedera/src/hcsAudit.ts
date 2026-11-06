@@ -9,6 +9,13 @@
  */
 
 import { createHash } from "node:crypto"
+import {
+  Client,
+  PrivateKey,
+  AccountId,
+  TopicMessageSubmitTransaction,
+  TopicCreateTransaction,
+} from "@hashgraph/sdk"
 
 export interface HcsAuditEntry {
   timestamp: string
@@ -94,18 +101,23 @@ export class HcsAuditLog {
       )
     }
 
-    // In a real implementation, this would use @hashgraph/sdk:
-    // const client = Client.forTestnet()
-    // client.setOperator(this.config.accountId, this.config.privateKey)
-    // const transaction = new TopicMessageSubmitTransaction()
-    //   .setTopicId(this.config.topicId)
-    //   .setMessage(JSON.stringify(entry))
-    // const receipt = await transaction.execute(client)
-    // return receipt.transactionId.toString()
+    const client = Client.forTestnet()
+    const operatorKey = PrivateKey.fromStringED25519(this.config.privateKey)
+    const operatorId = AccountId.fromString(this.config.accountId)
+    client.setOperator(operatorId, operatorKey)
 
-    throw new Error(
-      "HCS submission not implemented: requires HEDERA_TESTNET_PRIVATE_KEY",
-    )
+    try {
+      const transaction = new TopicMessageSubmitTransaction()
+        .setTopicId(this.config.topicId)
+        .setMessage(JSON.stringify(entry))
+
+      const response = await transaction.execute(client)
+      const receipt = await response.getReceipt(client)
+
+      return response.transactionId.toString()
+    } finally {
+      client.close()
+    }
   }
 
   /**
