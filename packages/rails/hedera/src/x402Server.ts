@@ -5,7 +5,7 @@
  * Reference: https://github.com/Standard-Digital-Labs/x402
  */
 import { createHash } from "node:crypto"
-import type { PaymentIntent } from "./types.js"
+import type { HederaExpectedPayment } from "./types.js"
 import type { HederaPaymentVerifier } from "./verifier.js"
 
 export const HEADER_PAYMENT_REQUIRED = "PAYMENT-REQUIRED"
@@ -80,10 +80,15 @@ export function createX402Server(options: {
   routes: X402Route[]
   serviceName?: string
   network?: "hedera-testnet" | "hedera-mainnet"
+  expectedPayer?: string
 }) {
   const cache = new Map<
     string,
     { fingerprint: string; status: number; body: string; headers: Record<string, string> }
+  >()
+  const usedTransactions = new Map<
+    string,
+    { paymentId: string; resource: string; amount: string; timestamp: number }
   >()
   const stats = { paid: 0, refused: 0, cached: 0 }
 
@@ -186,26 +191,49 @@ export function createX402Server(options: {
       return new Response(hit.body, { status: hit.status, headers: hit.headers })
     }
 
-    // Build intent for verification
-    const intent: PaymentIntent = {
-      requestId: payload.payload.requestId,
+    // Check transaction replay
+    const txUsed = usedTransactions.get(payload.payload.transactionId)
+    if (txUsed) {
+      if (txUsed.paymentId !== pid) {
+        return new Response(
+          JSON.stringify({ error: "transaction already used for different payment" }),
+          { status: 409 },
+        )
+      }
+      // Same payment-identifier with same tx: fall through to cache check
+    }
+
+    // Build expected payment for verification
+    const expected: HederaExpectedPayment = {
+      tokenId: req.asset === "HBAR" ? "HBAR" : req.asset,
       recipient: req.payTo,
       amount: BigInt(req.amount),
-      asset: req.asset,
+      sender: options.expectedPayer,
       memo: payload.payload.memo ?? `x402:${url.pathname}`,
     }
 
     // Verify transaction on Hedera mirror node
-    const verified = await options.verifier.verifyTransaction(payload.payload.transactionId, intent)
+    const verified = await options.verifier.verifyPayment(
+      payload.payload.transactionId,
+      expected,
+    )
 
-    if (verified.status !== "SUCCESS") {
+    if (verified.status !== "CONFIRMED") {
       stats.refused += 1
       return paymentRequired(
         url,
         route,
-        `verification failed: ${verified.status} ${verified.error ?? ""}`,
+        `verification failed: ${verified.status} ${verified.reason ?? ""}`,
       )
     }
+
+    // Reserve transaction to prevent replay
+    usedTransactions.set(payload.payload.transactionId, {
+      paymentId: pid,
+      resource: url.pathname,
+      amount: req.amount,
+      timestamp: Date.now(),
+    })
 
     // Execute handler and return protected resource
     const data = await route.handler(url)
@@ -223,6 +251,9 @@ export function createX402Server(options: {
   return {
     handle,
     stats: () => ({ ...stats }),
-    clearCache: () => cache.clear(),
+    clearCache: () => {
+      cache.clear()
+      usedTransactions.clear()
+    },
   }
 }

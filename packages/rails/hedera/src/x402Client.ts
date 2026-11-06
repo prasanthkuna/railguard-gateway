@@ -82,19 +82,13 @@ export class X402Client {
       memo: `x402:${new URL(urlString).pathname}`,
     })
 
-    if (paymentResult.status === "APPROVAL_REQUIRED") {
-      throw new Error(
-        `Payment requires approval: ${paymentResult.reason ?? "exceeds approval threshold"}`,
-      )
-    }
-
     if (paymentResult.status === "DENIED") {
       throw new Error(`Payment denied: ${paymentResult.reason ?? "policy violation"}`)
     }
 
     if (!paymentResult.transactionId) {
       throw new Error(
-        `Payment execution failed: status=${paymentResult.status} ${paymentResult.error ?? ""}`,
+        `Payment execution failed: status=${paymentResult.status}`,
       )
     }
 

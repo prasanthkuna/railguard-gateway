@@ -3,33 +3,46 @@
  * Demonstrates complete challenge-payment-verification flow without live credentials.
  */
 import { afterEach, beforeEach, describe, expect, test } from "bun:test"
-import type { PaymentIntent, TransactionVerificationResult } from "./types.js"
-import type { HederaPaymentVerifier } from "./verifier.js"
-import type { X402GuardedClient } from "./x402.js"
+import type { HederaExpectedPayment, HederaVerifyResult } from "./types.js"
+import { HederaPaymentVerifier } from "./verifier.js"
 import { createX402Client } from "./x402Client.js"
 import { createX402Server } from "./x402Server.js"
 
 // Mock verifier that simulates mirror node verification
-class MockVerifier implements HederaPaymentVerifier {
+class MockVerifier extends HederaPaymentVerifier {
   private validTransactions = new Set<string>()
+
+  constructor() {
+    super({ mirrorNode: { baseUrl: "http://mock" } })
+  }
 
   addValidTransaction(txId: string) {
     this.validTransactions.add(txId)
   }
 
-  async verifyTransaction(
+  async verifyPayment(
     transactionId: string,
-    intent: PaymentIntent,
-  ): Promise<TransactionVerificationResult> {
+    expected: HederaExpectedPayment,
+  ): Promise<HederaVerifyResult> {
     if (this.validTransactions.has(transactionId)) {
-      return { status: "SUCCESS" }
+      return {
+        status: "CONFIRMED",
+        facts: {
+          transactionId,
+          consensusTimestamp: new Date().toISOString(),
+          result: "SUCCESS",
+          transfers: [],
+          hbarTransfers: [],
+          chargedTxFee: 0n,
+        },
+      }
     }
-    return { status: "INVALID", error: "transaction not found" }
+    return { status: "NOT_FOUND", reason: "transaction_not_found" }
   }
 }
 
 // Mock guarded client that simulates payment execution
-class MockGuardedClient implements X402GuardedClient {
+class MockGuardedClient {
   private executionCount = 0
   private verifier?: MockVerifier
 
@@ -37,7 +50,7 @@ class MockGuardedClient implements X402GuardedClient {
     this.verifier = verifier
   }
 
-  async requestPayment(intent: PaymentIntent) {
+  async requestPayment(intent: { requestId: string; recipient: string; amount: bigint; asset: string; memo?: string }) {
     this.executionCount++
     const txId = `0.0.12345@${Date.now()}.${this.executionCount}`
     // Auto-register transaction as valid for verification
@@ -47,30 +60,6 @@ class MockGuardedClient implements X402GuardedClient {
       paymentId: `pay_hedera_${intent.requestId}`,
       transactionId: txId,
     }
-  }
-
-  async verifyPayment() {
-    return { status: "CONFIRMED" as const }
-  }
-
-  async approvePayment() {
-    return { status: "CONFIRMED" as const }
-  }
-
-  async denyPayment() {
-    return { status: "DENIED" as const }
-  }
-
-  async executePayment() {
-    return { status: "CONFIRMED" as const }
-  }
-
-  async submitAuditEntry() {
-    return { topicId: "0.0.99999", sequenceNumber: BigInt(1) }
-  }
-
-  getTokenId() {
-    return "0.0.429274"
   }
 }
 
@@ -353,5 +342,45 @@ describe("x402 HTTP Flow", () => {
     expect(response.status).toBe(402)
     const body = await response.json()
     expect(body.error).toContain("payment-identifier is required")
+  })
+
+  test("prevents transaction replay across different resources", async () => {
+    const txId = "0.0.12345@1234567890.1"
+    verifier.addValidTransaction(txId)
+
+    const makeRequest = (path: string, pid: string) =>
+      new Request(`http://localhost:3000${path}`, {
+        headers: {
+          "PAYMENT-SIGNATURE": Buffer.from(
+            JSON.stringify({
+              x402Version: 2,
+              accepted: {
+                scheme: "hedera",
+                network: "hedera-testnet",
+                amount: path === "/premium-data" ? "10000000" : "1000000",
+                asset: path === "/premium-data" ? "HBAR" : "0.0.429274",
+                payTo: "0.0.12345",
+              },
+              payload: {
+                transactionId: txId,
+                requestId: "test",
+              },
+              extensions: {
+                "payment-identifier": { info: { required: true, id: pid } },
+              },
+            }),
+          ).toString("base64"),
+        },
+      })
+
+    // First resource succeeds
+    const response1 = await server.handle(makeRequest("/premium-data", "pid_1"))
+    expect(response1.status).toBe(200)
+
+    // Same transaction, new payment-identifier, different resource: rejected
+    const response2 = await server.handle(makeRequest("/token-data", "pid_2"))
+    expect(response2.status).toBe(409)
+    const body = await response2.json()
+    expect(body.error).toContain("transaction already used")
   })
 })
