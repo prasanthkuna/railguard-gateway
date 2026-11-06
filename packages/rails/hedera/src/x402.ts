@@ -323,7 +323,7 @@ export class X402GuardedClient {
     client.setOperator(operatorId, operatorKey)
 
     try {
-      const topicId = this.config.auditLog["config"].topicId
+      const topicId = this.config.auditLog.config.topicId
       const transaction = new TopicMessageSubmitTransaction()
         .setTopicId(topicId)
         .setMessage(JSON.stringify(entry))

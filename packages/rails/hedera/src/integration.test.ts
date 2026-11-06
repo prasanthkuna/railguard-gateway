@@ -44,7 +44,7 @@ describe.skipIf(!shouldRun || !accountId || !privateKey)("Hedera Integration Tes
     // Check account balance
     const balance = await getAccountBalance({ accountId, privateKey })
     console.log(`Account balance: ${balance.hbar} HBAR`)
-    console.log(`Tokens:`, balance.tokens)
+    console.log("Tokens:", balance.tokens)
   })
 
   it("executes HBAR payment and verifies on chain", async () => {
@@ -93,7 +93,10 @@ describe.skipIf(!shouldRun || !accountId || !privateKey)("Hedera Integration Tes
     await new Promise((resolve) => setTimeout(resolve, 5000))
 
     // Verify payment
-    const verifyResult = await client.verifyPayment(result.paymentId, result.transactionId!)
+    if (!result.transactionId) {
+      throw new Error("Transaction ID missing")
+    }
+    const verifyResult = await client.verifyPayment(result.paymentId, result.transactionId)
 
     expect(verifyResult.status).toBe("CONFIRMED")
     console.log(`Payment CONFIRMED: ${result.transactionId}`)
