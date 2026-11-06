@@ -77,7 +77,10 @@ describe("HederaPaymentGuard", () => {
   })
 
   it("requires approval for amount above threshold", () => {
-    const guard = new HederaPaymentGuard(policy)
+    const guard = new HederaPaymentGuard({
+      ...policy,
+      perMerchantLimit: 10_000_000n, // Increase limit so approval threshold triggers first
+    })
     const intent: PaymentIntent = {
       requestId: "req_006",
       recipient: "0.0.12345",

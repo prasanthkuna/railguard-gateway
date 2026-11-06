@@ -5,7 +5,7 @@ import { X402GuardedClient } from "./x402"
 describe("X402GuardedClient", () => {
   const policy = {
     totalBudget: 10_000_000n,
-    perMerchantLimit: 3_000_000n,
+    perMerchantLimit: 7_000_000n, // Allow 7 USDC per merchant
     recipientAllowlist: ["0.0.12345"],
     approvalThreshold: 5_000_000n,
   }

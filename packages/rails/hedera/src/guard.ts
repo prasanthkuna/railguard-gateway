@@ -63,7 +63,7 @@ export class HederaPaymentGuard {
       }
     }
 
-    // Check total budget
+    // Check total budget first (hard limit)
     if (this.spentBudget + intent.amount > this.policy.totalBudget) {
       return {
         decision: "DENY",
@@ -72,7 +72,7 @@ export class HederaPaymentGuard {
       }
     }
 
-    // Check per-merchant limit
+    // Check per-merchant limit (hard limit)
     const merchantSpent = this.merchantSpends.get(intent.recipient) ?? 0n
     if (merchantSpent + intent.amount > this.policy.perMerchantLimit) {
       return {
@@ -82,11 +82,16 @@ export class HederaPaymentGuard {
       }
     }
 
-    // Check approval threshold
+    // Check approval threshold (requires approval but not denied)
     if (
       this.policy.approvalThreshold &&
       intent.amount > this.policy.approvalThreshold
     ) {
+      // Reserve budget for approval
+      this.spentBudget += intent.amount
+      this.merchantSpends.set(intent.recipient, merchantSpent + intent.amount)
+      this.processedPayments.add(intent.requestId)
+      
       return {
         decision: "APPROVAL_REQUIRED",
         reason: "amount_exceeds_approval_threshold",

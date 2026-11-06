@@ -17,17 +17,16 @@ describe("Amount Conversion", () => {
     // Correct: Use Hbar.fromTinybars(bigint)
     const correct = Hbar.fromTinybars(tinybars)
     
-    // WRONG (what we had before): Convert to Number first
-    // const wrong = new Hbar(Number(tinybars) / 100_000_000)
-    
-    expect(correct.toTinybars()).toBe(tinybars)
+    // toTinybars() returns Long, convert to bigint for comparison
+    expect(correct.toTinybars().toBigInt()).toBe(tinybars)
   })
 
   it("handles large amounts without precision loss", () => {
     const tinybars = 1_000_000_000_000n // 10,000 HBAR
     const hbar = Hbar.fromTinybars(tinybars)
     
-    expect(hbar.toTinybars()).toBe(tinybars)
+    // toTinybars() returns Long, convert to bigint
+    expect(hbar.toTinybars().toBigInt()).toBe(tinybars)
   })
 
   it("handles token transfer amounts as bigint", () => {
