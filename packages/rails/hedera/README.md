@@ -1,15 +1,10 @@
 # Railguard Hedera Testnet Rail
 
-Official x402 v2 payment rail for Hedera with policy enforcement, mirror node verification, and HCS audit logging.
+Hedera payment rail with policy enforcement, mirror node verification, and HCS audit logging.
+
+**⚠️ Official x402 integration incomplete** - see `OFFICIAL_X402_TODO.md`
 
 ## Features
-
-### ✅ Official x402 v2 Integration
-- **ExactHederaScheme** client and server from `@x402/hedera`
-- **Facilitator model** with fee payer (`0.0.9185802` on testnet)
-- **Exact scheme** (`scheme: "exact"`, `network: "hedera:testnet"`)
-- **HBAR payments** (`asset: "0.0.0"`) in tinybars
-- **HTS token payments** (e.g., `0.0.429274` for testnet USDC)
 
 ### ✅ Policy Enforcement
 - **Total budget** limits across all payments
@@ -40,12 +35,11 @@ npm install @railguard/rail-hedera
 
 ## Quick Start
 
-### Official x402 Client
+### Policy Guard
 
 ```typescript
-import { createOfficialX402Client, HederaPaymentGuard } from "@railguard/rail-hedera"
+import { HederaPaymentGuard } from "@railguard/rail-hedera"
 
-// Create policy guard
 const guard = new HederaPaymentGuard({
   totalBudget: 100_000_000n, // 1 HBAR
   perMerchantLimit: 50_000_000n, // 0.5 HBAR per recipient
@@ -53,63 +47,53 @@ const guard = new HederaPaymentGuard({
   approvalThreshold: 20_000_000n, // 0.2 HBAR requires approval
 })
 
-// Create x402 client
-const client = createOfficialX402Client({
-  accountId: "0.0.1111",
-  privateKey: process.env.HEDERA_PRIVATE_KEY!,
-  network: "hedera:testnet",
-  guard,
-  facilitatorUrl: "https://x402.org/facilitator", // Optional, defaults to this
-})
-
-// Fetch paid resource - policy checked BEFORE signing transaction
-const result = await client.fetch("https://example.com/premium-data", {
+const decision = guard.checkPayment({
   requestId: "req_123",
   recipient: "0.0.12345",
-  amount: 10_000_000n, // 0.1 HBAR
+  amount: 10_000_000n,
   asset: "HBAR",
-  memo: "AI agent payment",
 })
 
-console.log(result.status) // "CONFIRMED"
-console.log(result.transactionId) // "0.0.1111@1234567890.123"
+if (decision.decision === "ALLOW") {
+  // Execute payment
+}
 ```
 
-### Official x402 Server
+### Mirror Node Verification
 
 ```typescript
-import { createOfficialX402Server } from "@railguard/rail-hedera"
+import { HederaPaymentVerifier } from "@railguard/rail-hedera"
 
-const server = createOfficialX402Server(
-  {
-    payTo: "0.0.12345",
-    network: "hedera:testnet",
-    asset: "0.0.0", // HBAR
-    facilitatorUrl: "https://x402.org/facilitator",
-  },
-  [
-    {
-      path: "/premium-data",
-      amount: "10000000", // 0.1 HBAR in tinybars
-      description: "Premium API data",
-      handler: () => ({ data: "secret content" }),
-    },
-  ]
-)
+const verifier = new HederaPaymentVerifier({
+  mirrorNode: { baseUrl: "https://testnet.mirrornode.hedera.com" }
+})
 
-// Handle requests
-const response = await server.handle(request)
+const result = await verifier.verifyPayment("0.0.1111@1234567890.123", {
+  tokenId: "HBAR",
+  recipient: "0.0.12345",
+  amount: 10_000_000n,
+  memo: "payment_id"
+})
+
+console.log(result.status) // "CONFIRMED" | "NOT_FOUND" | "FAILED"
 ```
 
-## Facilitators
+## Official x402 Integration
 
-### Official x402 Facilitator (Testnet)
-- **URL:** https://x402.org/facilitator
-- **Fee Payer:** `0.0.9185802`
-- **Network:** `hedera:testnet`
-- **Capabilities:** `GET /supported`
+**Status:** Packages installed but **not integrated**
 
-Facilitator pays network fees and submits transactions. Clients sign partially, facilitator completes and submits.
+See `OFFICIAL_X402_TODO.md` for required implementation work.
+
+**Installed:**
+- `@x402/core@2.30.0`
+- `@x402/hedera@2.30.0`
+- `@hiero-ledger/sdk@2.90.1`
+
+**Needed:**
+- x402HTTPClient integration
+- HTTPFacilitatorClient setup
+- ExactHederaScheme in HTTP flow
+- Real facilitator communication
 
 ## Payment Requirements Format
 
