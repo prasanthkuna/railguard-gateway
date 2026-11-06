@@ -3,8 +3,9 @@
  * Tests use mock network calls but real encoding/decoding and protocol types.
  * Tests marked with LIVE require actual testnet credentials and are skipped by default.
  */
-import { describe, test, expect, beforeEach, afterEach } from "bun:test"
-import { createX402RealClient, fetchX402Resource } from "./x402RealClient.js"
+import { afterEach, beforeEach, describe, expect, test } from "bun:test"
+import type { HederaPaymentGuard } from "./guard.js"
+import { createUnguardedX402TestClient, fetchX402Resource } from "./x402RealClient.js"
 import { createX402RealServer } from "./x402RealServer.js"
 
 describe("x402 Real Implementation", () => {
@@ -26,12 +27,23 @@ describe("x402 Real Implementation", () => {
     globalThis.fetch = originalFetch
   })
 
-  test("client creation with official library", () => {
+  test("unguarded test client creation requires explicit flag", () => {
     expect(() => {
-      createX402RealClient({
+      createUnguardedX402TestClient({
         accountId: MOCK_ACCOUNT_ID,
         privateKey: MOCK_PRIVATE_KEY,
-        network: "hedera:testnet",
+        // @ts-expect-error - testing missing flag
+        allowWithoutGuardForTest: false,
+      })
+    }).toThrow("requires allowWithoutGuardForTest: true")
+  })
+
+  test("unguarded test client creation with explicit flag", () => {
+    expect(() => {
+      createUnguardedX402TestClient({
+        accountId: MOCK_ACCOUNT_ID,
+        privateKey: MOCK_PRIVATE_KEY,
+        allowWithoutGuardForTest: true,
       })
     }).not.toThrow()
   })
@@ -40,7 +52,6 @@ describe("x402 Real Implementation", () => {
     expect(() => {
       createX402RealServer({
         payTo: MOCK_ACCOUNT_ID,
-        network: "hedera:testnet",
         routes: [
           {
             path: "/test",
@@ -56,7 +67,6 @@ describe("x402 Real Implementation", () => {
   test("server returns 402 without payment", async () => {
     const server = createX402RealServer({
       payTo: MOCK_ACCOUNT_ID,
-      network: "hedera:testnet",
       routes: [
         {
           path: "/premium",
@@ -140,17 +150,16 @@ describe("x402 Real Implementation", () => {
   )
 
   test("full payment flow with mocked facilitator", async () => {
-    // Create client
-    const client = createX402RealClient({
+    // Create unguarded test client
+    const client = createUnguardedX402TestClient({
       accountId: MOCK_ACCOUNT_ID,
       privateKey: MOCK_PRIVATE_KEY,
-      network: "hedera:testnet",
+      allowWithoutGuardForTest: true,
     })
 
     // Create server
     const server = createX402RealServer({
       payTo: MOCK_ACCOUNT_ID,
-      network: "hedera:testnet",
       routes: [
         {
           path: "/data",
@@ -240,10 +249,11 @@ describe("x402 Real Implementation", () => {
       expect(facilitatorCalls).toContain("verify")
       expect(facilitatorCalls).toContain("settle")
 
-      // Payment should be marked as paid
+      // Payment should be settled by facilitator
       expect(result.paid).toBe(true)
-      expect(result.paymentStatus).toBe("settled")
+      expect(result.paymentStatus).toBe("SETTLED_BY_FACILITATOR")
       expect(result.status).toBe(200)
+      expect(result.transactionId).toBe("0.0.12345@1234567890.1")
       expect(result.body).toMatchObject({
         content: "success",
       })
@@ -255,7 +265,6 @@ describe("x402 Real Implementation", () => {
   test("HTS token payment with mocked facilitator", async () => {
     const server = createX402RealServer({
       payTo: MOCK_ACCOUNT_ID,
-      network: "hedera:testnet",
       routes: [
         {
           path: "/token-gate",
@@ -299,17 +308,7 @@ describe("x402 Real Implementation", () => {
       const request = new Request("http://localhost:3000/token-gate")
       const response = await server.handle(request)
 
-      if (response.status !== 402) {
-        const text = await response.text()
-        console.log("HTS test response:", response.status, text)
-      }
-
       expect(response.status).toBe(402)
-
-      // Verify the payment requirements include the correct token
-      const body = await response.json()
-      expect(body).toBeDefined()
-      // Just verify it's a 402 response with some payment info
       expect(response.headers.has("PAYMENT-REQUIRED")).toBe(true)
     } finally {
       globalThis.fetch = originalFetch
@@ -317,10 +316,10 @@ describe("x402 Real Implementation", () => {
   })
 
   test("proper encoding of payment headers", async () => {
-    const client = createX402RealClient({
+    const client = createUnguardedX402TestClient({
       accountId: MOCK_ACCOUNT_ID,
       privateKey: MOCK_PRIVATE_KEY,
-      network: "hedera:testnet",
+      allowWithoutGuardForTest: true,
     })
 
     // Create a mock 402 response
@@ -391,6 +390,87 @@ describe("x402 Real Implementation", () => {
       const decoded = Buffer.from(headers["PAYMENT-SIGNATURE"], "base64").toString("utf8")
       const parsed = JSON.parse(decoded)
       expect(parsed.x402Version).toBe(2)
+    } finally {
+      globalThis.fetch = originalFetch
+    }
+  })
+
+  test("402 after retry returns paid:false and failed status", async () => {
+    const client = createUnguardedX402TestClient({
+      accountId: MOCK_ACCOUNT_ID,
+      privateKey: MOCK_PRIVATE_KEY,
+      allowWithoutGuardForTest: true,
+    })
+
+    const server = createX402RealServer({
+      payTo: MOCK_ACCOUNT_ID,
+      routes: [
+        {
+          path: "/fail",
+          price: "10000000",
+          description: "Always fails",
+          handler: () => ({ data: "should not see" }),
+        },
+      ],
+    })
+
+    // Mock facilitator that fails settlement
+    globalThis.fetch = async (url: string | URL, init?: RequestInit): Promise<Response> => {
+      const urlStr = typeof url === "string" ? url : url.toString()
+
+      if (urlStr.includes("/facilitator/supported")) {
+        return new Response(
+          JSON.stringify({
+            kinds: [
+              {
+                x402Version: 2,
+                scheme: "exact",
+                network: "hedera:testnet",
+                extra: { feePayer: FACILITATOR_FEE_PAYER },
+              },
+            ],
+            extensions: [],
+            signers: { "hedera:*": [FACILITATOR_FEE_PAYER] },
+          }),
+          { status: 200, headers: { "content-type": "application/json" } },
+        )
+      }
+
+      if (urlStr.includes("/facilitator/verify")) {
+        return new Response(JSON.stringify({ isValid: true, payer: MOCK_ACCOUNT_ID }), {
+          status: 200,
+          headers: { "content-type": "application/json" },
+        })
+      }
+
+      if (urlStr.includes("/facilitator/settle")) {
+        // Settlement fails
+        return new Response(
+          JSON.stringify({
+            success: false,
+            errorReason: "insufficient_balance",
+            network: "hedera:testnet",
+            transaction: "",
+            payer: MOCK_ACCOUNT_ID,
+          }),
+          { status: 200, headers: { "content-type": "application/json" } },
+        )
+      }
+
+      if (urlStr.includes("/fail")) {
+        return server.handle(new Request(urlStr, init))
+      }
+
+      return new Response("Not found", { status: 404 })
+    }
+
+    try {
+      const result = await fetchX402Resource(client, "http://localhost:3000/fail")
+
+      // Should NOT be marked as paid since we got 402 back
+      expect(result.paid).toBe(false)
+      expect(result.paymentStatus).toBe("failed")
+      expect(result.status).toBe(402)
     } finally {
       globalThis.fetch = originalFetch
     }

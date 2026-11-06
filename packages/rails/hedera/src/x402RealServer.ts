@@ -19,8 +19,6 @@ export interface X402RealServerConfig {
   payTo: string
   /** Protected routes */
   routes: X402RealServerRoute[]
-  /** Network (defaults to hedera:testnet) */
-  network?: string
   /** Facilitator URL (defaults to x402.org) */
   facilitatorUrl?: string
   /** Service name for metadata */
@@ -29,9 +27,11 @@ export interface X402RealServerConfig {
 
 /**
  * Creates a real x402 HTTP resource server.
+ * Network is enforced to hedera:testnet only (no mainnet support).
  */
 export function createX402RealServer(config: X402RealServerConfig) {
-  const network = config.network ?? "hedera:testnet"
+  // Enforce testnet only - no mainnet support
+  const network = "hedera:testnet"
 
   // Create facilitator client
   const facilitator = new HTTPFacilitatorClient({

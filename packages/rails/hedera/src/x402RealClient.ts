@@ -11,40 +11,91 @@ export interface X402RealClientConfig {
   accountId: string
   /** Private key for signing transactions (ED25519 or ECDSA, testnet only) */
   privateKey: string
-  /** Optional payment guard for policy enforcement (REQUIRED for production) */
-  guard?: HederaPaymentGuard
-  /** Optional network (defaults to hedera:testnet) */
-  network?: string
+  /** Payment guard for policy enforcement (REQUIRED - use createUnguardedX402TestClient for tests) */
+  guard: HederaPaymentGuard
   /** Optional spend controls (defaults to false for testnet ONLY, configure for production) */
   spendControls?: Parameters<typeof x402Client.prototype.setSpendControls>[0]
 }
 
 /**
- * Creates a real x402 HTTP client that handles 402 payment challenges.
+ * Test-only client configuration without guard.
+ * NOT FOR PRODUCTION USE.
+ */
+export interface X402TestClientConfig {
+  /** Hedera account ID for the payer */
+  accountId: string
+  /** Private key for signing transactions (ED25519 or ECDSA, testnet only) */
+  privateKey: string
+  /** Explicit flag required to create unguarded client */
+  allowWithoutGuardForTest: true
+  /** Optional spend controls */
+  spendControls?: Parameters<typeof x402Client.prototype.setSpendControls>[0]
+}
+
+/**
+ * Options for fetchX402Resource
+ */
+export interface FetchX402Options extends RequestInit {
+  /** Optional request ID for caller correlation and idempotency */
+  requestId?: string
+}
+
+/**
+ * Creates a real x402 HTTP client with mandatory guard.
  * Uses the official x402 libraries with Hedera Exact scheme.
- *
- * IMPORTANT: For production use, always provide a HederaPaymentGuard.
- * spendControls: false is only acceptable for explicit test/demo scenarios.
  */
 export function createX402RealClient(config: X402RealClientConfig): x402HTTPClient {
+  return createX402ClientInternal(
+    config.accountId,
+    config.privateKey,
+    config.guard,
+    config.spendControls,
+  )
+}
+
+/**
+ * Creates an unguarded x402 client for testing purposes only.
+ * REQUIRES explicit allowWithoutGuardForTest flag.
+ */
+export function createUnguardedX402TestClient(config: X402TestClientConfig): x402HTTPClient {
+  if (config.allowWithoutGuardForTest !== true) {
+    throw new Error("createUnguardedX402TestClient requires allowWithoutGuardForTest: true")
+  }
+  return createX402ClientInternal(
+    config.accountId,
+    config.privateKey,
+    undefined,
+    config.spendControls,
+  )
+}
+
+function createX402ClientInternal(
+  accountId: string,
+  privateKeyStr: string,
+  guard: HederaPaymentGuard | undefined,
+  spendControls?: Parameters<typeof x402Client.prototype.setSpendControls>[0],
+): x402HTTPClient {
   // Parse private key - use fromStringED25519 for known ED25519 keys, or fromString for auto-detect
   let privateKey: ReturnType<typeof PrivateKey.fromString>
   try {
     // Try ED25519 first (32 bytes hex = 64 chars)
-    if (config.privateKey.length === 64 && /^[0-9a-fA-F]+$/.test(config.privateKey)) {
-      privateKey = PrivateKey.fromStringED25519(config.privateKey)
+    if (privateKeyStr.length === 64 && /^[0-9a-fA-F]+$/.test(privateKeyStr)) {
+      privateKey = PrivateKey.fromStringED25519(privateKeyStr)
     } else {
       // Auto-detect for DER or other formats
-      privateKey = PrivateKey.fromString(config.privateKey)
+      privateKey = PrivateKey.fromString(privateKeyStr)
     }
   } catch {
     // Fallback to auto-detect
-    privateKey = PrivateKey.fromString(config.privateKey)
+    privateKey = PrivateKey.fromString(privateKeyStr)
   }
 
+  // Enforce hedera:testnet only (no mainnet support)
+  const network = "hedera:testnet"
+
   // Create official Hedera signer with proper key handling
-  const signer = createClientHederaSigner(config.accountId, privateKey, {
-    network: config.network ?? "hedera:testnet",
+  const signer = createClientHederaSigner(accountId, privateKey, {
+    network,
   })
 
   // Create Hedera scheme client
@@ -52,18 +103,18 @@ export function createX402RealClient(config: X402RealClientConfig): x402HTTPClie
 
   // Create base x402 client with Hedera scheme
   const baseClient = new x402Client()
-    .register(config.network ?? "hedera:testnet", hederaScheme)
-    .setSpendControls(config.spendControls ?? false)
+    .register(network, hederaScheme)
+    .setSpendControls(spendControls ?? false)
 
   // Create HTTP client wrapper
   const httpClient = new x402HTTPClient(baseClient)
 
   // Add guard hook if provided (MUST check BEFORE createPaymentPayload)
-  if (config.guard) {
+  if (guard) {
     httpClient.onPaymentRequired(async (context) => {
-      // Find hedera exact payment option
+      // Find hedera:testnet exact payment option
       const hederaOption = context.paymentRequired.accepts.find(
-        (opt) => opt.scheme === "exact" && opt.network === (config.network ?? "hedera:testnet"),
+        (opt) => opt.scheme === "exact" && opt.network === network,
       )
 
       if (!hederaOption) {
@@ -71,7 +122,7 @@ export function createX402RealClient(config: X402RealClientConfig): x402HTTPClie
       }
 
       // Check with guard BEFORE proceeding to payment
-      const guardResult = config.guard!.checkPayment({
+      const guardResult = guard.checkPayment({
         requestId: context.requestUrl,
         recipient: hederaOption.payTo,
         amount: BigInt(hederaOption.amount),
@@ -95,21 +146,40 @@ export function createX402RealClient(config: X402RealClientConfig): x402HTTPClie
 }
 
 /**
+ * Generates deterministic request ID from payment requirements.
+ * Allows same logical payment to have same ID for idempotency.
+ */
+function generateRequestId(
+  url: string,
+  requirements: { scheme: string; amount: string; asset: string; payTo: string },
+  callerRequestId?: string,
+): string {
+  if (callerRequestId) {
+    return callerRequestId
+  }
+  // Deterministic: scheme + amount + asset + payTo (not URL to avoid query param collisions)
+  const canonical = `${requirements.scheme}:${requirements.amount}:${requirements.asset}:${requirements.payTo}`
+  return Buffer.from(canonical).toString("base64url").slice(0, 32)
+}
+
+/**
  * Fetches a protected resource using x402 payment flow.
  * Properly handles 402 challenge, payment creation, and settlement verification.
  */
 export async function fetchX402Resource(
   client: x402HTTPClient,
   url: string,
-  init?: RequestInit,
+  options?: FetchX402Options,
 ): Promise<{
   status: number
   body: unknown
   paid: boolean
-  /** Transaction ID from PAYMENT-RESPONSE header (SETTLED) or UNKNOWN */
-  paymentStatus: "none" | "paid" | "settled" | "failed"
+  /** Payment status: SETTLED_BY_FACILITATOR (not claiming mirror verification) */
+  paymentStatus: "none" | "paid" | "SETTLED_BY_FACILITATOR" | "failed"
   transactionId?: string
 }> {
+  const { requestId: callerRequestId, ...init } = options ?? {}
+
   // Initial fetch - may return 402
   let response = await fetch(url, init)
 
@@ -129,6 +199,23 @@ export async function fetchX402Resource(
     await response.clone().json(),
   )
 
+  // Find hedera exact option
+  const hederaOption = paymentRequired.accepts.find(
+    (opt) => opt.scheme === "exact" && opt.network === "hedera:testnet",
+  )
+
+  if (!hederaOption) {
+    return {
+      status: 402,
+      body: await parseBody(response),
+      paid: false,
+      paymentStatus: "failed",
+    }
+  }
+
+  // Generate deterministic request ID
+  const requestId = generateRequestId(url, hederaOption, callerRequestId)
+
   // Create payment payload (calls signer to create signed transaction)
   const paymentPayload = await client.createPaymentPayload(paymentRequired)
 
@@ -144,6 +231,16 @@ export async function fetchX402Resource(
     },
   })
 
+  // If still 402 after retry, payment failed
+  if (response.status === 402) {
+    return {
+      status: 402,
+      body: await parseBody(response),
+      paid: false,
+      paymentStatus: "failed",
+    }
+  }
+
   // Process payment result (parses PAYMENT-RESPONSE header if present)
   const paymentResult = await client.processPaymentResult(
     paymentPayload,
@@ -152,28 +249,25 @@ export async function fetchX402Resource(
   )
 
   // Extract settlement status and transaction ID from PAYMENT-RESPONSE header
-  let paymentStatus: "paid" | "settled" | "failed" = "paid"
+  let paymentStatus: "paid" | "SETTLED_BY_FACILITATOR" | "failed" = "paid"
   let transactionId: string | undefined
 
   if (paymentResult.settleResponse) {
     // PAYMENT-RESPONSE header was present (server settled the payment)
     if (paymentResult.settleResponse.success) {
-      paymentStatus = "settled"
+      paymentStatus = "SETTLED_BY_FACILITATOR" // Not claiming mirror verification
       // Transaction ID comes from the settlement response "transaction" field
       transactionId = paymentResult.settleResponse.transaction
     } else {
       paymentStatus = "failed"
     }
-  } else if (response.status === 402) {
-    // Still 402 after payment - settlement failed or not completed
-    paymentStatus = "failed"
   }
 
   // Return result
   return {
     status: response.status,
     body: await parseBody(response),
-    paid: true,
+    paid: response.status === 200, // Only true if got resource
     paymentStatus,
     transactionId,
   }
