@@ -1,10 +1,14 @@
 # Railguard Hedera Testnet Rail
 
-Hedera payment rail with policy enforcement, mirror node verification, and HCS audit logging.
-
-**⚠️ Official x402 integration incomplete** - see `OFFICIAL_X402_TODO.md`
+Official x402 payment protocol implementation for Hedera testnet with policy enforcement, facilitator settlement, and mirror node verification.
 
 ## Features
+
+### ✅ Official x402 Protocol
+- **HTTP 402 Payment Required** flow via `@x402/core` and `@x402/hedera`
+- **Exact Hedera Scheme** with facilitator settlement
+- **Public facilitator** support via `https://x402.org/facilitator`
+- **ED25519 and ECDSA** key support
 
 ### ✅ Policy Enforcement
 - **Total budget** limits across all payments
@@ -14,18 +18,15 @@ Hedera payment rail with policy enforcement, mirror node verification, and HCS a
 - **Idempotent retries** - same request ID = same decision
 
 ### ✅ Settlement Verification
+- **Facilitator settlement** via x402.org public facilitator
 - **Mirror node verification** via Hedera REST API
 - **Transaction status** checking (SUCCESS, PENDING, FAILED)
 - **Amount validation** (exact match required)
-- **Recipient validation** (payTo must match)
-- **Sender validation** (optional payer verification)
-- **Memo validation** (optional memo matching)
 
 ### ✅ HCS Audit Logging
 - **Hash-chained entries** via Hedera Consensus Service
 - **Tamper-evident log** of all payment decisions
 - **Chain integrity verification** (prevHash validation)
-- **Audit trail** with timestamps and reasons
 
 ## Installation
 
@@ -35,11 +36,12 @@ npm install @railguard/rail-hedera
 
 ## Quick Start
 
-### Policy Guard
+### x402 Client (Guarded)
 
 ```typescript
-import { HederaPaymentGuard } from "@railguard/rail-hedera"
+import { createX402RealClient, fetchX402Resource, HederaPaymentGuard } from "@railguard/rail-hedera"
 
+// Create guard with policy
 const guard = new HederaPaymentGuard({
   totalBudget: 100_000_000n, // 1 HBAR
   perMerchantLimit: 50_000_000n, // 0.5 HBAR per recipient
@@ -47,164 +49,237 @@ const guard = new HederaPaymentGuard({
   approvalThreshold: 20_000_000n, // 0.2 HBAR requires approval
 })
 
-const decision = guard.checkPayment({
-  requestId: "req_123",
-  recipient: "0.0.12345",
-  amount: 10_000_000n,
-  asset: "HBAR",
+// Create x402 client (REQUIRES guard)
+const client = createX402RealClient({
+  accountId: "0.0.12345",
+  privateKey: "302e...", // ED25519 or ECDSA
+  guard,
 })
 
-if (decision.decision === "ALLOW") {
-  // Execute payment
+// Fetch protected resource
+const result = await fetchX402Resource(client, "https://api.example.com/data", {
+  requestId: "req_123", // Optional caller request ID
+  guard, // Pass guard to enable checking before signing
+})
+
+console.log(result.paymentStatus) // "SETTLED_BY_FACILITATOR" | "failed" | "none"
+console.log(result.transactionId) // Hedera transaction ID if settled
+```
+
+### x402 Server
+
+```typescript
+import { createX402RealServer } from "@railguard/rail-hedera"
+
+const server = createX402RealServer({
+  facilitatorUrl: "https://x402.org/facilitator",
+  facilitatorAccountId: "0.0.9185802",
+})
+
+const handler = async (request: Request): Promise<Response> => {
+  const result = await server.handle(request)
+  
+  if (result.settled) {
+    // Payment successful, return protected resource
+    return new Response(JSON.stringify({ data: "protected content" }), {
+      status: 200,
+      headers: result.headers, // Includes PAYMENT-RESPONSE header
+    })
+  }
+  
+  // Return 402 challenge or error
+  return result.response
 }
 ```
 
-### Mirror Node Verification
+## Demo Commands
 
-```typescript
-import { HederaPaymentVerifier } from "@railguard/rail-hedera"
+### Mocked Demo (No Network)
 
-const verifier = new HederaPaymentVerifier({
-  mirrorNode: { baseUrl: "https://testnet.mirrornode.hedera.com" }
-})
-
-const result = await verifier.verifyPayment("0.0.1111@1234567890.123", {
-  tokenId: "HBAR",
-  recipient: "0.0.12345",
-  amount: 10_000_000n,
-  memo: "payment_id"
-})
-
-console.log(result.status) // "CONFIRMED" | "NOT_FOUND" | "FAILED"
+```bash
+bun test packages/rails/hedera
 ```
 
-## Official x402 Integration
+Runs 45+ unit tests with mocked facilitator and network calls.
 
-**Status:** Packages installed but **not integrated**
+### Live Testnet Integration
 
-See `OFFICIAL_X402_TODO.md` for required implementation work.
+**⚠️ Requires real Hedera testnet credentials**
 
-**Installed:**
-- `@x402/core@2.30.0`
-- `@x402/hedera@2.30.0`
-- `@hiero-ledger/sdk@2.90.1`
+```bash
+export HEDERA_TESTNET_ACCOUNT_ID=0.0.xxxxx
+export HEDERA_TESTNET_PRIVATE_KEY=302e...
+export RUN_HEDERA_INTEGRATION=1
 
-**Needed:**
-- x402HTTPClient integration
-- HTTPFacilitatorClient setup
-- ExactHederaScheme in HTTP flow
-- Real facilitator communication
+bun test packages/rails/hedera/src/integration.test.ts
+```
 
-## Payment Requirements Format
+Live integration tests:
+- Real facilitator verify/settle
+- Real Hedera testnet transactions
+- Mirror node verification
+- HCS audit logging
 
-```json
-{
-  "scheme": "exact",
-  "network": "hedera:testnet",
-  "amount": "10000000",
-  "asset": "0.0.0",
-  "payTo": "0.0.12345",
-  "maxTimeoutSeconds": 120,
-  "extra": {
-    "feePayer": "0.0.9185802"
-  }
+### End-to-End Demo Script
+
+```bash
+export HEDERA_TESTNET_ACCOUNT_ID=0.0.xxxxx
+export HEDERA_TESTNET_PRIVATE_KEY=302e...
+
+bun run packages/rails/hedera/scripts/x402-demo.ts
+```
+
+Full x402 flow:
+1. Starts local server on port 3000
+2. Client fetches protected resource
+3. Server returns 402 with Hedera exact scheme (100,000 tinybars / 0.001 HBAR)
+4. Client creates payment with guard check
+5. Facilitator verifies and settles
+6. Server returns resource with PAYMENT-RESPONSE header
+7. Mirror node verification (polling)
+8. HashScan URL output
+
+## API Reference
+
+### Client
+
+#### `createX402RealClient(config)`
+
+Creates a guarded x402 HTTP client (REQUIRED for production).
+
+```typescript
+interface X402RealClientConfig {
+  accountId: string // Hedera account ID
+  privateKey: string // ED25519 or ECDSA private key
+  guard: HederaPaymentGuard // Policy enforcement
+  spendControls?: false | { ... } // Default: false (testnet only)
+}
+```
+
+#### `createUnguardedX402TestClient(config)`
+
+Creates an unguarded client for testing only.
+
+```typescript
+interface X402TestClientConfig {
+  accountId: string
+  privateKey: string
+  allowWithoutGuardForTest: true // Explicit flag required
+}
+```
+
+#### `fetchX402Resource(client, url, options?)`
+
+Fetches a protected resource with x402 payment flow.
+
+```typescript
+interface FetchX402Options extends RequestInit {
+  requestId?: string // Caller request ID (for idempotency)
+  guard?: HederaPaymentGuard // Guard instance (required if using guarded client)
+}
+
+interface FetchX402Result {
+  status: number
+  body: unknown
+  paid: boolean
+  paymentStatus: "none" | "paid" | "SETTLED_BY_FACILITATOR" | "failed"
+  transactionId?: string // Hedera transaction ID if settled
+}
+```
+
+**Guard Check:** The guard is called BEFORE `createPaymentPayload` with the caller-provided `requestId` or deterministic ID. If guard denies, no signing occurs and `paymentStatus: "failed"` is returned immediately.
+
+### Server
+
+#### `createX402RealServer(config)`
+
+Creates an x402 HTTP resource server with facilitator settlement.
+
+```typescript
+interface X402RealServerConfig {
+  facilitatorUrl: string // e.g. "https://x402.org/facilitator"
+  facilitatorAccountId: string // e.g. "0.0.9185802"
+}
+```
+
+### Guard
+
+#### `HederaPaymentGuard`
+
+Policy enforcement with budget tracking and allowlists.
+
+```typescript
+class HederaPaymentGuard {
+  constructor(config: {
+    totalBudget: bigint // Total budget across all payments
+    perMerchantLimit: bigint // Per-recipient limit
+    recipientAllowlist: string[] // Allowed recipient account IDs
+    approvalThreshold?: bigint // Amount requiring approval
+  })
+
+  checkPayment(params: {
+    requestId: string
+    recipient: string
+    amount: bigint
+    asset: string
+  }): { decision: "ALLOW" | "DENY" | "APPROVAL_REQUIRED"; reason?: string }
+
+  approvePayment(requestId: string): void
+  rollbackPayment(requestId: string): void
 }
 ```
 
 ## Testing
 
-### Unit Tests
+### All Tests
+
 ```bash
-bun test
+bun test packages/rails/hedera
 ```
 
-**45 unit tests** including:
-- Policy enforcement (budgets, limits, allowlists)
+**45 unit tests:**
+- x402 Real Implementation (10 tests)
+  - Client/server creation
+  - Facilitator live check
+  - Full payment flow with mocked facilitator
+  - HTS token payments
+  - 402 retry failure handling
+  - Guard requestId correlation and denial
+- Policy enforcement
 - Amount precision (tinybar/bigint)
 - HCS audit chain verification
 - HTTP 402 flow
-- Official x402 integration
-- Facilitator capabilities
 
-### Integration Tests
+### Integration Tests (Optional)
 
 Requires testnet credentials:
+
 ```bash
 export RUN_HEDERA_INTEGRATION=1
 export HEDERA_TESTNET_ACCOUNT_ID=0.0.xxxxx
 export HEDERA_TESTNET_PRIVATE_KEY=302e...
 export HEDERA_HCS_TOPIC_ID=0.0.xxxxx
-bun test src/integration.test.ts
+
+bun test packages/rails/hedera/src/integration.test.ts
 ```
 
-## Architecture
+## Testnet Setup
 
-### Payment Flow
+1. **Create Account**: https://portal.hedera.com/
+2. **Fund with HBAR**: Portal faucet
+3. **Get USDC** (optional): https://faucet.circle.com/ (select Hedera Testnet)
+4. **Associate Tokens** (if using HTS): See Token Association below
 
-1. **Policy Check** - Guard checks budgets/limits/allowlist BEFORE signing
-2. **Partially Sign** - Client creates and signs TransferTransaction
-3. **Facilitator Verify** - Facilitator validates transaction structure
-4. **Facilitator Settle** - Facilitator adds signature, pays fee, submits
-5. **Mirror Node Verify** - Verify settlement via Hedera mirror node REST API
-6. **HCS Audit** - Record decision to tamper-evident audit log
-
-### Policy Guard
-
-```
-1. Duplicate check (same requestId)
-2. Recipient allowlist check
-3. Total budget check (hard limit)
-4. Per-merchant limit check (hard limit)
-5. Approval threshold check (soft limit - requires approval)
-6. Reserve budget and proceed
-```
-
-## Examples
-
-### HBAR Payment
-```typescript
-const result = await client.fetch(url, {
-  requestId: "req_hbar_1",
-  recipient: "0.0.12345",
-  amount: 10_000_000n, // 0.1 HBAR = 10,000,000 tinybars
-  asset: "HBAR",
-})
-```
-
-### HTS Token Payment (USDC)
-```typescript
-const result = await client.fetch(url, {
-  requestId: "req_usdc_1",
-  recipient: "0.0.12345",
-  amount: 1_000_000n, // 1 USDC = 1,000,000 (6 decimals)
-  asset: "0.0.429274", // Testnet USDC token ID
-})
-```
-
-### Approval Flow
-```typescript
-// First request - exceeds threshold
-const result1 = await client.fetch(url, intent)
-if (result1.status === "APPROVAL_REQUIRED") {
-  // Human approves via dashboard/UI
-  await approvalService.approve(result1.paymentId)
-  
-  // Retry with approval
-  const result2 = await client.approveAndFetch(url, intent)
-  // result2.status === "CONFIRMED"
-}
-```
-
-## Token Association
+### Token Association
 
 HTS tokens require account association before first use:
 
 ```typescript
-import { AccountId, Client, PrivateKey, TokenAssociateTransaction, TokenId } from "@x402/hedera"
+import { AccountId, Client, PrivateKey, TokenAssociateTransaction, TokenId } from "@hashgraph/sdk"
 
 const client = Client.forTestnet().setOperator(
   AccountId.fromString(accountId),
-  PrivateKey.fromStringECDSA(privateKey)
+  PrivateKey.fromString(privateKey)
 )
 
 await new TokenAssociateTransaction()
@@ -216,21 +291,40 @@ await new TokenAssociateTransaction()
 client.close()
 ```
 
-## Testnet Setup
+## Payment Flow
 
-1. **Create Account**: https://portal.hedera.com/
-2. **Fund with HBAR**: Portal faucet
-3. **Get USDC**: https://faucet.circle.com/ (select Hedera Testnet)
-4. **Associate Tokens**: See Token Association above
-5. **Create HCS Topic**: `bun run scripts/setup-testnet.ts`
+1. **Client → Server:** Initial request
+2. **Server → Client:** 402 Payment Required with Hedera exact scheme
+3. **Client:** Guard checks policy (budget, allowlist, limits) with caller `requestId`
+4. **Client:** Creates partially signed TransferTransaction (if guard allows)
+5. **Facilitator:** Verifies transaction structure
+6. **Facilitator:** Adds signature, pays fee, submits to Hedera
+7. **Client → Server:** Retry with PAYMENT-SIGNATURE header
+8. **Server:** Calls facilitator settle, returns resource with PAYMENT-RESPONSE
+9. **Client:** Parses settlement result (transaction ID, status)
+10. **Mirror Node:** Verification (optional, for confirmation beyond facilitator)
+
+## Amount Formats
+
+- **HBAR:** 1 HBAR = 100,000,000 tinybars (8 decimals)
+  - Example: 0.001 HBAR = 100,000 tinybars = `100000n`
+- **USDC:** 1 USDC = 1,000,000 units (6 decimals)
+  - Example: 1 USDC = `1000000n`
+
+## Security Notes
+
+- **Testnet Only:** This implementation enforces `hedera:testnet` network
+- **Guard Required:** Production clients MUST use `createX402RealClient` with guard
+- **No Mainnet:** Mainnet is explicitly disabled for safety
+- **Credentials:** Never commit private keys or account IDs
 
 ## References
 
 - [Official x402 Docs](https://docs.hedera.com/solutions/ai/x402)
-- [Exact Scheme Spec](https://docs.hedera.com/solutions/ai/x402/exact-scheme)
+- [Merchant Integration](https://docs.hedera.com/solutions/ai/x402/merchant-integration)
+- [Facilitators](https://docs.hedera.com/solutions/ai/x402/facilitators)
+- [x402 Foundation GitHub](https://github.com/x402-foundation/x402)
 - [Hedera Mirror Node API](https://docs.hedera.com/hedera/sdks-and-apis/rest-api)
-- [HCS Documentation](https://docs.hedera.com/hedera/sdks-and-apis/sdks/consensus-service)
-- [ETHGlobal Mumbai Prize](https://ethglobal.com/events/mumbai/prizes/hedera)
 
 ## License
 

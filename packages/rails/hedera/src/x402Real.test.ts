@@ -475,4 +475,80 @@ describe("x402 Real Implementation", () => {
       globalThis.fetch = originalFetch
     }
   })
+
+  test("guard receives caller requestId and denial prevents signing", async () => {
+    const client = createUnguardedX402TestClient({
+      accountId: MOCK_ACCOUNT_ID,
+      privateKey: MOCK_PRIVATE_KEY,
+      allowWithoutGuardForTest: true,
+    })
+
+    // Mock guard that tracks calls
+    const guardCalls: Array<{ requestId: string; recipient: string }> = []
+    const mockGuard: HederaPaymentGuard = {
+      checkPayment: (params) => {
+        guardCalls.push({ requestId: params.requestId, recipient: params.recipient })
+        return { decision: "DENY", reason: "Test denial" }
+      },
+      approvePayment: () => {},
+      rollbackPayment: () => {},
+    }
+
+    const originalFetch = globalThis.fetch
+
+    try {
+      globalThis.fetch = async (urlOrReq: RequestInfo | URL, init?: RequestInit) => {
+        const urlStr = typeof urlOrReq === "string" ? urlOrReq : urlOrReq.toString()
+
+        if (urlStr.includes("/protected")) {
+          // Return 402 challenge
+          if (
+            !init?.headers ||
+            !("PAYMENT-SIGNATURE" in (init.headers as Record<string, string>))
+          ) {
+            const paymentRequired = {
+              accepts: [
+                {
+                  scheme: "exact",
+                  network: "hedera:testnet",
+                  asset: "0.0.0",
+                  amount: "100000",
+                  payTo: "0.0.999",
+                },
+              ],
+            }
+            const encodedHeader = Buffer.from(JSON.stringify(paymentRequired)).toString("base64url")
+            return new Response(JSON.stringify(paymentRequired), {
+              status: 402,
+              headers: {
+                "content-type": "application/json",
+                "PAYMENT-REQUIRED": encodedHeader,
+              },
+            })
+          }
+          // If we got here, signing happened (BAD - should have been denied)
+          throw new Error("Payment signature was created despite guard denial")
+        }
+
+        return new Response("Not found", { status: 404 })
+      }
+
+      const result = await fetchX402Resource(client, "http://localhost:3000/protected", {
+        requestId: "r1",
+        guard: mockGuard,
+      })
+
+      // Guard should have been called with caller requestId 'r1'
+      expect(guardCalls.length).toBe(1)
+      expect(guardCalls[0].requestId).toBe("r1")
+      expect(guardCalls[0].recipient).toBe("0.0.999")
+
+      // Result should be failed without signing
+      expect(result.paid).toBe(false)
+      expect(result.paymentStatus).toBe("failed")
+      expect(result.status).toBe(402)
+    } finally {
+      globalThis.fetch = originalFetch
+    }
+  })
 })

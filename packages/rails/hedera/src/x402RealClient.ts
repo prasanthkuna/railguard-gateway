@@ -38,6 +38,8 @@ export interface X402TestClientConfig {
 export interface FetchX402Options extends RequestInit {
   /** Optional request ID for caller correlation and idempotency */
   requestId?: string
+  /** Optional guard for policy enforcement (required for guarded clients) */
+  guard?: HederaPaymentGuard
 }
 
 /**
@@ -106,41 +108,8 @@ function createX402ClientInternal(
     .register(network, hederaScheme)
     .setSpendControls(spendControls ?? false)
 
-  // Create HTTP client wrapper
+  // Create HTTP client wrapper (guard check moved to fetchX402Resource)
   const httpClient = new x402HTTPClient(baseClient)
-
-  // Add guard hook if provided (MUST check BEFORE createPaymentPayload)
-  if (guard) {
-    httpClient.onPaymentRequired(async (context) => {
-      // Find hedera:testnet exact payment option
-      const hederaOption = context.paymentRequired.accepts.find(
-        (opt) => opt.scheme === "exact" && opt.network === network,
-      )
-
-      if (!hederaOption) {
-        return // No Hedera option available
-      }
-
-      // Check with guard BEFORE proceeding to payment
-      const guardResult = guard.checkPayment({
-        requestId: context.requestUrl,
-        recipient: hederaOption.payTo,
-        amount: BigInt(hederaOption.amount),
-        asset: hederaOption.asset,
-      })
-
-      if (guardResult.decision === "DENY") {
-        throw new Error(`Payment denied by guard: ${guardResult.reason}`)
-      }
-
-      if (guardResult.decision === "APPROVAL_REQUIRED") {
-        throw new Error("Payment requires approval (not implemented in client flow)")
-      }
-
-      // ALLOW - continue to payment
-      return
-    })
-  }
 
   return httpClient
 }
@@ -178,7 +147,7 @@ export async function fetchX402Resource(
   paymentStatus: "none" | "paid" | "SETTLED_BY_FACILITATOR" | "failed"
   transactionId?: string
 }> {
-  const { requestId: callerRequestId, ...init } = options ?? {}
+  const { requestId: callerRequestId, guard, ...init } = options ?? {}
 
   // Initial fetch - may return 402
   let response = await fetch(url, init)
@@ -215,6 +184,36 @@ export async function fetchX402Resource(
 
   // Generate deterministic request ID
   const requestId = generateRequestId(url, hederaOption, callerRequestId)
+
+  // CHECK GUARD BEFORE CREATING PAYMENT PAYLOAD (prevents signing if denied)
+  if (guard) {
+    const guardResult = guard.checkPayment({
+      requestId,
+      recipient: hederaOption.payTo,
+      amount: BigInt(hederaOption.amount),
+      asset: hederaOption.asset,
+    })
+
+    if (guardResult.decision === "DENY") {
+      // Guard denied - return failed without creating payload
+      return {
+        status: 402,
+        body: await parseBody(response),
+        paid: false,
+        paymentStatus: "failed",
+      }
+    }
+
+    if (guardResult.decision === "APPROVAL_REQUIRED") {
+      // Approval required - return failed (approval flow not implemented)
+      return {
+        status: 402,
+        body: await parseBody(response),
+        paid: false,
+        paymentStatus: "failed",
+      }
+    }
+  }
 
   // Create payment payload (calls signer to create signed transaction)
   const paymentPayload = await client.createPaymentPayload(paymentRequired)

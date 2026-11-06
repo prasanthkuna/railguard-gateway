@@ -85,6 +85,8 @@
     "@x402-guard/middleware": "workspace:*",
     "@x402-guard/policy": "workspace:*",
     "@x402-guard/receipts": "workspace:*",
+    "@x402/core": "^2.30.0",
+    "@x402/hedera": "^2.30.0",
     "~encore": "workspace:*",
     "bs58": "^6.0.0",
     "encore.dev": "1.56.6",
