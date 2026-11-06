@@ -190,7 +190,7 @@ export function createX402RealServer(config: X402RealServerConfig) {
         }
 
         if (result.type === "payment-verified") {
-          // Payment verified - call the route handler
+          // Payment verified - now settle it before calling handler
           const routePath = path
           const routeConfig = x402Routes[routePath]
           if (!routeConfig) {
@@ -199,17 +199,43 @@ export function createX402RealServer(config: X402RealServerConfig) {
             })
           }
 
-          // Call the handler
+          // Settle the payment before calling the handler
+          const settlementResult = await server.processSettlement(
+            result.paymentPayload,
+            result.paymentRequirements,
+            result.declaredExtensions,
+            undefined, // transportContext
+            undefined, // settlementOverrides
+            result.beforeHandlerSettlement, // beforeHandlerSettlement from processHTTPRequest
+          )
+
+          // Check settlement result (settlementResult IS a SettleResponse with success field)
+          if (!settlementResult.success) {
+            // Settlement failed - return 402 with error
+            const body = JSON.stringify({
+              error: "Payment settlement failed",
+              reason: settlementResult.errorReason,
+              message: settlementResult.errorMessage,
+            })
+            return new Response(body, {
+              status: 402,
+              headers: settlementResult.headers ?? {},
+            })
+          }
+
+          // Settlement successful - call the handler
           const handlerResult = await routeConfig.handler({ request })
 
           // Serialize the result
           const body =
             typeof handlerResult === "string" ? handlerResult : JSON.stringify(handlerResult)
 
+          // Return resource with PAYMENT-RESPONSE settlement headers
           return new Response(body, {
             status: 200,
             headers: {
               "content-type": "application/json",
+              ...(settlementResult.headers ?? {}),
             },
           })
         }
