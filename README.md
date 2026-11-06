@@ -145,6 +145,8 @@ apps/api         Gateway API (Encore): authorize, reserve, execute, reconcile, r
 apps/site        Public site and proof pages (Next.js)
 apps/operator    Signed-in operator console
 packages/        kernel, policy, settlement, reconciliation, sdk, cli, mcp, adapters
+  rails/         Chain-specific rails: Solana devnet, Hedera testnet, PayBox plugin
+  approvals/     Approval services: World ID (structure only)
 contracts/       EVM hook contracts and the Soroban policy contract
 evidence/        Committed proof files behind the table above
 labs/            Live labs (Metal Kit 11, failure suite)
