@@ -3,7 +3,7 @@
  * Uses real protocol types and validates against live facilitator capabilities.
  */
 import { beforeEach, describe, expect, test } from "bun:test"
-import { HederaPaymentGuard, type HederaGuardPolicy } from "./guard.js"
+import { type HederaGuardPolicy, HederaPaymentGuard } from "./guard.js"
 
 interface PaymentIntent {
   requestId: string
@@ -15,7 +15,14 @@ interface PaymentIntent {
 
 describe("Official x402 Integration", () => {
   let guard: HederaPaymentGuard
-  let facilitatorCapabilities: any
+  let facilitatorCapabilities: {
+    kinds: Array<{
+      scheme: string
+      network: string
+      x402Version: number
+      extra?: { feePayer?: string }
+    }>
+  }
 
   beforeEach(async () => {
     // Fetch real facilitator capabilities
@@ -34,7 +41,7 @@ describe("Official x402 Integration", () => {
 
   test("facilitator advertises Hedera testnet support", () => {
     const hederaKind = facilitatorCapabilities.kinds.find(
-      (k: any) => k.scheme === "exact" && k.network === "hedera:testnet",
+      (k) => k.scheme === "exact" && k.network === "hedera:testnet",
     )
 
     expect(hederaKind).toBeDefined()
@@ -48,7 +55,7 @@ describe("Official x402 Integration", () => {
 
   test("facilitator fee payer matches expected value", () => {
     const hederaKind = facilitatorCapabilities.kinds.find(
-      (k: any) => k.network === "hedera:testnet",
+      (k) => k.network === "hedera:testnet",
     )
 
     // From docs: https://docs.hedera.com/solutions/ai/x402/facilitators
@@ -180,7 +187,7 @@ describe("Official x402 Integration", () => {
   })
 
   test("facilitator supports multiple networks", () => {
-    const networks = facilitatorCapabilities.kinds.map((k: any) => k.network)
+    const networks = facilitatorCapabilities.kinds.map((k) => k.network)
 
     expect(networks).toContain("hedera:testnet")
     expect(networks.length).toBeGreaterThan(1) // Multiple chains supported

@@ -4,7 +4,7 @@
  *
  * Connects to facilitator for transaction verification and settlement.
  */
-import { x402ResourceServer } from "@x402/core/server"
+import type { x402ResourceServer } from "@x402/core/server"
 import type { PaymentRequirements, SchemeNetworkServer } from "@x402/core/types"
 import { ExactHederaScheme } from "@x402/hedera/exact/server"
 
@@ -20,7 +20,7 @@ export interface OfficialX402Route {
   path: string
   amount: string // Atomic units (tinybars for HBAR, token decimals for HTS)
   description: string
-  handler: (url: URL) => any | Promise<any>
+  handler: (url: URL) => unknown | Promise<unknown>
 }
 
 /**
@@ -39,7 +39,7 @@ export class OfficialX402Server {
 
     // Note: Official implementation requires HTTPFacilitatorClient
     // This is a placeholder showing the structure
-    this.server = {} as any
+    this.server = {} as x402ResourceServer
 
     // Register Hedera exact scheme
     this.scheme = new ExactHederaScheme({

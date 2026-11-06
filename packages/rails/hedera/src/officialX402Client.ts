@@ -87,11 +87,12 @@ export class OfficialX402Client {
     // - getPaymentRequiredResponse() to parse 402
     // - createPaymentPayload() to build payment
     // - encodePaymentSignatureHeader() to send proof
-    
+
     return {
       status: "CONFIRMED",
       paymentId: `pay_hedera_${intent.requestId}`,
-      reason: "Official x402 client placeholder - full implementation requires x402HTTPClient wrapper",
+      reason:
+        "Official x402 client placeholder - full implementation requires x402HTTPClient wrapper",
     }
   }
 
