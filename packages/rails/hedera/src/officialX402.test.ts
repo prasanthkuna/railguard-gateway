@@ -54,9 +54,7 @@ describe("Official x402 Integration", () => {
   })
 
   test("facilitator fee payer matches expected value", () => {
-    const hederaKind = facilitatorCapabilities.kinds.find(
-      (k) => k.network === "hedera:testnet",
-    )
+    const hederaKind = facilitatorCapabilities.kinds.find((k) => k.network === "hedera:testnet")
 
     // From docs: https://docs.hedera.com/solutions/ai/x402/facilitators
     expect(hederaKind.extra.feePayer).toBe("0.0.9185802")
