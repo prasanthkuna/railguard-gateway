@@ -1,6 +1,6 @@
 # Railguard Hedera Testnet Rail
 
-**Status:** Implementation complete. Tests pending execution. Critical defects fixed.
+**Status:** Implementation complete. Unit tests passing (27/27). Integration tests require credentials.
 
 ## What this is
 
@@ -40,7 +40,7 @@ cd packages/rails/hedera
 bun test
 ```
 
-**26 tests expected** (pending execution without credentials).
+**Test Results:** 27 pass, 6 skip, 0 fail (55 expect() calls)
 
 ### 2. Get free testnet account (10 min)
 
