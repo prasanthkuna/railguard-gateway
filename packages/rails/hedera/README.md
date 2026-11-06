@@ -23,10 +23,11 @@ Official x402 payment protocol implementation for Hedera testnet with policy enf
 - **Transaction status** checking (SUCCESS, PENDING, FAILED)
 - **Amount validation** (exact match required)
 
-### ✅ HCS Audit Logging
+### ✅ HCS Audit Logging (Optional)
 - **Hash-chained entries** via Hedera Consensus Service
-- **Tamper-evident log** of all payment decisions
+- **Tamper-evident log** of all payment decisions (when HCS topic configured)
 - **Chain integrity verification** (prevHash validation)
+- **Optional enhancement** - not required for x402 flow
 
 ## Installation
 
@@ -102,42 +103,33 @@ bun test packages/rails/hedera
 
 Runs 45+ unit tests with mocked facilitator and network calls.
 
-### Live Testnet Integration
+### Known Limitations
 
-**⚠️ Requires real Hedera testnet credentials**
+⚠️ **ExactHederaScheme (from `@x402/hedera`) only supports HTS tokens, not HBAR (0.0.0)**
+
+The official x402 Exact Hedera scheme does not support HBAR payments directly. For production use with HBAR, you would need to:
+- Use an HTS-wrapped HBAR token
+- Implement a custom scheme
+- Use a different payment protocol
+
+The tests in this package use mocked facilitator responses and work correctly for demonstrating the integration patterns, but real HBAR payments via ExactHederaScheme are not currently supported by the upstream library.
+
+### Live Integration Tests (Optional)
 
 ```bash
 export HEDERA_TESTNET_ACCOUNT_ID=0.0.xxxxx
 export HEDERA_TESTNET_PRIVATE_KEY=302e...
+export HEDERA_HCS_TOPIC_ID=0.0.xxxxx  # Optional for HCS audit tests
 export RUN_HEDERA_INTEGRATION=1
 
 bun test packages/rails/hedera/src/integration.test.ts
 ```
 
-Live integration tests:
+Real testnet integration tests (skipped by default):
 - Real facilitator verify/settle
-- Real Hedera testnet transactions
+- Real Hedera transactions
 - Mirror node verification
-- HCS audit logging
-
-### End-to-End Demo Script
-
-```bash
-export HEDERA_TESTNET_ACCOUNT_ID=0.0.xxxxx
-export HEDERA_TESTNET_PRIVATE_KEY=302e...
-
-bun run packages/rails/hedera/scripts/x402-demo.ts
-```
-
-Full x402 flow:
-1. Starts local server on port 3000
-2. Client fetches protected resource
-3. Server returns 402 with Hedera exact scheme (100,000 tinybars / 0.001 HBAR)
-4. Client creates payment with guard check
-5. Facilitator verifies and settles
-6. Server returns resource with PAYMENT-RESPONSE header
-7. Mirror node verification (polling)
-8. HashScan URL output
+- HCS audit logging (if topic configured)
 
 ## API Reference
 
@@ -208,12 +200,14 @@ interface X402RealServerConfig {
 
 Policy enforcement with budget tracking and allowlists.
 
+⚠️ **In-memory demo implementation** - budgets/allowlists are not persisted. For production use, implement durable storage.
+
 ```typescript
 class HederaPaymentGuard {
   constructor(config: {
-    totalBudget: bigint // Total budget across all payments
-    perMerchantLimit: bigint // Per-recipient limit
-    recipientAllowlist: string[] // Allowed recipient account IDs
+    totalBudget: bigint // Total budget across all payments (in-memory)
+    perMerchantLimit: bigint // Per-recipient limit (in-memory)
+    recipientAllowlist: string[] // Allowed recipient account IDs (in-memory)
     approvalThreshold?: bigint // Amount requiring approval
   })
 
