@@ -35,6 +35,7 @@ export interface X402GuardedClientConfig {
 
 export class X402GuardedClient {
   private pendingPayments = new Map<string, PaymentIntent>()
+  private executedPayments = new Map<string, { intent: PaymentIntent; transactionId: string }>()
 
   constructor(private config: X402GuardedClientConfig) {}
 
@@ -56,8 +57,11 @@ export class X402GuardedClient {
         recipient: intent.recipient,
         reason: guardResult.reason,
       })
-      // In real implementation, would submit to HCS:
-      // await this.config.auditLog.submitEntry(auditEntry)
+      try {
+        await this.submitAuditEntry(auditEntry)
+      } catch (error) {
+        console.warn("HCS audit submission failed:", error)
+      }
     }
 
     if (guardResult.decision === "DENY") {
@@ -69,7 +73,7 @@ export class X402GuardedClient {
     }
 
     if (guardResult.decision === "APPROVAL_REQUIRED") {
-      // Store for later approval
+      // Store for approval
       this.pendingPayments.set(guardResult.paymentId, intent)
       return {
         status: "DENIED",
@@ -91,23 +95,8 @@ export class X402GuardedClient {
       // Execute payment on Hedera testnet
       const transactionId = await this.executePayment(intent)
 
-      // Log to HCS audit
-      if (this.config.auditLog) {
-        const auditEntry = this.config.auditLog.createEntry({
-          decision: "CONFIRMED",
-          requestId: intent.requestId,
-          amount: intent.amount.toString(),
-          asset: intent.asset,
-          recipient: intent.recipient,
-          transactionId,
-        })
-        try {
-          await this.submitAuditEntry(auditEntry)
-        } catch (error) {
-          // Don't fail payment if audit submission fails
-          console.warn("HCS audit submission failed:", error)
-        }
-      }
+      // Store for verification
+      this.executedPayments.set(guardResult.paymentId, { intent, transactionId })
 
       // Return UNKNOWN - verification happens separately
       return {
@@ -142,9 +131,9 @@ export class X402GuardedClient {
       }
     }
 
-    // Get intent from pending payments
-    const intent = this.pendingPayments.get(paymentId)
-    if (!intent) {
+    // Get intent from executed payments
+    const executed = this.executedPayments.get(paymentId)
+    if (!executed) {
       return {
         status: "UNKNOWN",
         paymentId,
@@ -152,15 +141,17 @@ export class X402GuardedClient {
       }
     }
 
+    const intent = executed.intent
+
     // Verify with mirror node
     const result = await this.config.verifier.verifyPayment(transactionId, {
-      tokenId: intent.asset === "HBAR" ? "HBAR" : "0.0.429274", // USDC token ID
+      tokenId: this.getTokenId(intent.asset),
       recipient: intent.recipient,
       amount: intent.amount,
       memo: intent.memo,
     })
 
-    // Log verification result to HCS
+    // Log verification result to HCS only if CONFIRMED
     if (this.config.auditLog && result.status === "CONFIRMED") {
       const auditEntry = this.config.auditLog.createEntry({
         decision: "CONFIRMED",
@@ -170,7 +161,11 @@ export class X402GuardedClient {
         recipient: intent.recipient,
         transactionId,
       })
-      // Would submit to HCS in real implementation
+      try {
+        await this.submitAuditEntry(auditEntry)
+      } catch (error) {
+        console.warn("HCS audit submission failed:", error)
+      }
     }
 
     if (result.status === "CONFIRMED") {
@@ -202,9 +197,35 @@ export class X402GuardedClient {
       }
     }
 
-    // Remove approval requirement and execute
+    // Remove from pending
     this.pendingPayments.delete(paymentId)
-    return this.requestPayment(intent)
+
+    // Execute directly without guard check (already approved)
+    if (!this.config.accountId || !this.config.privateKey) {
+      return {
+        status: "UNKNOWN",
+        paymentId,
+        reason: "missing_hedera_credentials",
+      }
+    }
+
+    try {
+      const transactionId = await this.executePayment(intent)
+      this.executedPayments.set(paymentId, { intent, transactionId })
+
+      return {
+        status: "UNKNOWN",
+        paymentId,
+        transactionId,
+      }
+    } catch (error) {
+      this.config.guard.rollback(intent)
+      return {
+        status: "FAILED",
+        paymentId,
+        reason: error instanceof Error ? error.message : "execution_failed",
+      }
+    }
   }
 
   /**
@@ -234,7 +255,19 @@ export class X402GuardedClient {
     }
 
     const client = Client.forTestnet()
-    const operatorKey = PrivateKey.fromStringED25519(this.config.privateKey)
+    
+    // Try ED25519 first, fall back to ECDSA
+    let operatorKey: PrivateKey
+    try {
+      operatorKey = PrivateKey.fromStringED25519(this.config.privateKey)
+    } catch {
+      try {
+        operatorKey = PrivateKey.fromStringECDSA(this.config.privateKey)
+      } catch {
+        throw new Error("Invalid private key format. Must be ED25519 or ECDSA DER-encoded")
+      }
+    }
+    
     const operatorId = AccountId.fromString(this.config.accountId)
     client.setOperator(operatorId, operatorKey)
 
@@ -242,18 +275,17 @@ export class X402GuardedClient {
       let transaction: TransferTransaction
 
       if (intent.asset === "HBAR") {
-        // HBAR transfer
+        // HBAR transfer - use Hbar.fromTinybars to avoid precision loss
         transaction = new TransferTransaction()
-          .addHbarTransfer(operatorId, new Hbar(-Number(intent.amount) / 100_000_000))
-          .addHbarTransfer(intent.recipient, new Hbar(Number(intent.amount) / 100_000_000))
+          .addHbarTransfer(operatorId, Hbar.fromTinybars(-intent.amount))
+          .addHbarTransfer(intent.recipient, Hbar.fromTinybars(intent.amount))
       } else {
-        // HTS token transfer (e.g., USDC)
-        // Parse token ID from asset (could be "USDC" → "0.0.429274" or direct token ID)
+        // HTS token transfer
         const tokenId = this.getTokenId(intent.asset)
         
         transaction = new TransferTransaction()
-          .addTokenTransfer(tokenId, operatorId, -Number(intent.amount))
-          .addTokenTransfer(tokenId, intent.recipient, Number(intent.amount))
+          .addTokenTransfer(tokenId, operatorId, -intent.amount)
+          .addTokenTransfer(tokenId, intent.recipient, intent.amount)
       }
 
       // Add memo if provided
