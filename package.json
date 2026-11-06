@@ -79,6 +79,7 @@
   },
   "dependencies": {
     "@coinbase/cdp-sdk": "^1.48.2",
+    "@hashgraph/sdk": "^2.56.0",
     "@workos-inc/node": "^9.1.0",
     "@x402-guard/core": "workspace:*",
     "@x402-guard/middleware": "workspace:*",
