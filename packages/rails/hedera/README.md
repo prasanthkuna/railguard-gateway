@@ -103,16 +103,13 @@ bun test packages/rails/hedera
 
 Runs 45+ unit tests with mocked facilitator and network calls.
 
-### Known Limitations
+### Mocked Demo (No Credentials)
 
-⚠️ **ExactHederaScheme (from `@x402/hedera`) only supports HTS tokens, not HBAR (0.0.0)**
+```bash
+X402_DEMO_DRY_RUN=1 bun run packages/rails/hedera/scripts/x402-demo.ts
+```
 
-The official x402 Exact Hedera scheme does not support HBAR payments directly. For production use with HBAR, you would need to:
-- Use an HTS-wrapped HBAR token
-- Implement a custom scheme
-- Use a different payment protocol
-
-The tests in this package use mocked facilitator responses and work correctly for demonstrating the integration patterns, but real HBAR payments via ExactHederaScheme are not currently supported by the upstream library.
+Verifies 402 response format with HBAR payment (100,000 tinybars = 0.001 HBAR) without signing.
 
 ### Live Integration Tests (Optional)
 

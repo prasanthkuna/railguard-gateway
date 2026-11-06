@@ -70,33 +70,25 @@ export function createX402RealServer(config: X402RealServerConfig) {
   > = {}
 
   for (const route of config.routes) {
-    // Format price according to x402 spec
-    // Can be: "$1.50", "10 HBAR", "100 USDC", or atomic like "10000000" (tinybars)
-    let priceStr: string
+    // Create payment option with price
+    // Price can be string or object {amount, asset}
+    let price: string | { amount: string; asset: string; extra?: unknown }
+
     if (typeof route.price === "string") {
-      // Simple string price - pass through as atomic amount (assumes HBAR)
-      priceStr = route.price
+      // Simple string price - use as-is
+      price = route.price
     } else {
-      // Asset-specific price
-      // Map token IDs to symbols for known assets
-      let assetSymbol: string
-      if (route.price.asset === "HBAR" || route.price.asset === "0.0.0") {
-        assetSymbol = "HBAR"
-      } else if (route.price.asset === "0.0.429274") {
-        assetSymbol = "USDC"
-      } else {
-        // Unknown asset - use the ID as-is
-        assetSymbol = route.price.asset
+      // Asset-specific price - pass as object to scheme parsePrice
+      price = {
+        amount: route.price.amount,
+        asset: route.price.asset === "HBAR" ? "0.0.0" : route.price.asset,
       }
-      // Format as "amount asset"
-      priceStr = `${route.price.amount} ${assetSymbol}`
     }
 
-    // Create payment option
     const paymentOption = {
       scheme: "exact",
       payTo: config.payTo,
-      price: priceStr,
+      price,
       network,
       maxTimeoutSeconds: 120,
     }
