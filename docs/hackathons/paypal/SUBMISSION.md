@@ -1,6 +1,8 @@
 # Devpost submission draft: PayPal AI Hackathon
 
-> Draft for Prasanth to review and paste into Devpost. Fill the two `TODO` links after recording and the live run.
+> Draft for Prasanth to review and paste into Devpost. Fill the two `TODO` links after recording and a successful live sandbox run.
+>
+> **Live run status (10 Nov 2026, 7:55 PM IST):** not complete. OAuth and the Payouts scope succeeded, but PayPal returned HTTP 403 `PAYOUT_NOT_AVAILABLE` ("You live in a country that is not allowed to send this payout.", debug id `f138830519247`). India is receive-and-withdraw only for Payouts, so the Default Application's sender account cannot create payouts. Details: `docs/hackathons/paypal/evidence/live-blocked-2026-11-10.json`. Do not treat this as a passing live demo.
 
 **Project name:** Railguard for PayPal Payouts
 
@@ -50,11 +52,12 @@ webhook verification, the AP agent with Gemini, the PayPal simulator, the chaos 
 - **There is no "find payout by request id" API.** We had to reconcile by replaying the exact same request, and prove that this is safe: same request id, same body, inside PayPal's 30-day window.
 - **"Success" is not the end.** A `SUCCESS` payout can later be `RETURNED` or `REVERSED`, and `UNCLAIMED` can last 30 days. The rail keeps watching and only frees or commits money on real states.
 - **Timeouts are ambiguous.** Treating a timeout as "failed" causes double payments, and treating it as "paid" hides losses. We made `UNKNOWN` a first-class state that freezes money and blocks retries.
+- **Sandbox sender country.** A live Payouts call with the Default Application credentials was rejected (`PAYOUT_NOT_AVAILABLE`) because India can receive and withdraw payouts but cannot send them. The next step is a United States Sandbox Business account and a Merchant app attached to it.
 
 ## Accomplishments we're proud of
 
 - A real AI agent that tries to do the wrong thing in five different ways and is stopped each time with a clear reason and next step.
-- The double-payment check holds both against the simulator and against the PayPal sandbox.
+- The double-payment check holds against the simulator (21 unit/e2e tests and the offline demo). It has not yet been shown against the PayPal sandbox: the live create-payout call was rejected with `PAYOUT_NOT_AVAILABLE` (see live run status above).
 
 ## What we learned
 

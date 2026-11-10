@@ -1,5 +1,7 @@
 # Video script: PayPal AI Hackathon (about 2 min 40 s)
 
+Status (10 Nov 2026): no video file has been recorded or rendered yet. This is a script only. Do not record until `bun run paypal:demo -- --live` succeeds against a send-eligible sandbox business account; the 10 Nov live attempt was blocked (`PAYOUT_NOT_AVAILABLE`). Target length remains under 3 minutes.
+
 Rules check: the video must be under 3 minutes, public on YouTube, and show the project working. It must not use
 third-party copyrighted music or trademarks without permission. The rules do not forbid an AI voice, so a
 text-to-speech narration is fine. Use no music, or royalty-free music you have rights to. Show the PayPal sandbox

@@ -1,0 +1,43 @@
+{
+  "mode": "paypal-sandbox-blocked",
+  "generatedAt": "2026-11-10T19:55:00+05:30",
+  "generatedAtLabel": "2026-11-10 7:55 PM IST (Asia/Calcutta)",
+  "result": "FAIL",
+  "notASuccessfulLiveRun": true,
+  "auth": {
+    "oauthToken": "OK",
+    "tokenType": "Bearer",
+    "payoutsScopePresent": true,
+    "payoutsScope": "https://uri.paypal.com/payments/payouts",
+    "appId": "APP-0LF07181CP817711B",
+    "credentialsSource": "sandbox Default Application (client id/secret present; values not recorded)"
+  },
+  "probe": {
+    "description": "Single $1.00 USD sandbox payout to confirm Payouts capability. Not part of the AP-agent demo. No money is real; sandbox only.",
+    "method": "POST",
+    "url": "https://api-m.sandbox.paypal.com/v1/payments/payouts",
+    "currency": "USD",
+    "amount": "1.00",
+    "receiver": "railguard-demo-receiver@personal.example.com",
+    "httpStatus": 403,
+    "name": "PAYOUT_NOT_AVAILABLE",
+    "message": "You live in a country that is not allowed to send this payout.",
+    "debugId": "f138830519247",
+    "informationLink": "https://developer.paypal.com/docs/api/payments.payouts-batch/#errors"
+  },
+  "fullDemo": "NOT RUN. bun run paypal:demo -- --live was not started. A live run also requires PAYPAL_SANDBOX_RECEIVER_EMAIL (a Personal sandbox account email), which was not in the env file. The capability probe failed first, so no demo payouts were sent.",
+  "why": {
+    "officialFeatureSet": "India is listed as 'Receive and withdraw' only on PayPal Payouts country support \u2014 merchants cannot send payouts from India.",
+    "source": "https://developer.paypal.com/payouts/supported-features",
+    "interpretation": "The Default Application's sandbox business account is in a send-ineligible country (India). OAuth and the Payouts scope both succeed; PayPal still rejects create-payout with PAYOUT_NOT_AVAILABLE."
+  },
+  "requiredToUnblock": [
+    "In https://developer.paypal.com/dashboard/accounts create a Sandbox Business account with Country = United States (a send-eligible country).",
+    "Create or keep a Sandbox Personal account to receive payouts (India personal accounts can receive; a US personal account also works).",
+    "Apps & Credentials (Sandbox) \u2192 Create App \u2192 type Merchant \u2192 attach the US Business sandbox account. Enable Payouts on that app if the dashboard offers the feature toggle.",
+    "Replace PAYPAL_CLIENT_ID and PAYPAL_CLIENT_SECRET in the locked env file with that new app's sandbox credentials. Do not put them in git or chat.",
+    "Set PAYPAL_SANDBOX_RECEIVER_EMAIL to the Personal sandbox account email (optional PAYPAL_SANDBOX_RECEIVER_EMAIL_2 for a second payee).",
+    "Re-run: set -a; . /home/box/secure/paypal.env; set +a; bun run paypal:demo -- --live --save"
+  ],
+  "redaction": "No client secrets, access tokens, or raw credential values are stored in this file."
+}

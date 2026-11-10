@@ -39,6 +39,19 @@ The run ends with a check that holds in every mode: **one PayPal payout per invo
 The AI agent (Gemini 2.5 Flash with function calling, or an offline scripted model) has five tools: `read_invoices`,
 `pay_invoice`, `get_payout`, `reconcile_payout`, `budget_status`. It has no tool to approve, add payees or raise budgets.
 
+## Live sandbox status (10 Nov 2026, 7:55 PM IST)
+
+A live run against the Default Application sandbox credentials did **not** complete. This is not a simulated result.
+
+- OAuth client-credentials on `api-m.sandbox.paypal.com` succeeded, and the token includes the Payouts scope (`https://uri.paypal.com/payments/payouts`).
+- `POST /v1/payments/payouts` (a $1.00 USD capability probe, not the full agent demo) returned HTTP 403 `PAYOUT_NOT_AVAILABLE`: "You live in a country that is not allowed to send this payout." PayPal debug id `f138830519247`.
+- Official country support lists India as **Receive and withdraw** only, so a sender account in India cannot create payouts, including in sandbox. Source: https://developer.paypal.com/payouts/supported-features
+- `PAYPAL_SANDBOX_RECEIVER_EMAIL` was also unset. The full `bun run paypal:demo -- --live` was not started.
+
+Evidence (redacted, no secrets): [`evidence/live-blocked-2026-11-10.json`](./evidence/live-blocked-2026-11-10.json).
+
+To unblock: in the Developer Dashboard create a **Sandbox Business** account with country **United States**, create a **Merchant** sandbox app attached to that US business account, put that app's client id/secret in the locked env file (never in git or chat), set `PAYPAL_SANDBOX_RECEIVER_EMAIL` to a Personal sandbox account email, then re-run `bun run paypal:demo -- --live --save`.
+
 ## Run it
 
 ```bash
