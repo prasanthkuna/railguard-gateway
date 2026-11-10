@@ -1,6 +1,6 @@
 # Devpost submission draft: PayPal AI Hackathon
 
-> Draft for Prasanth to review and paste into Devpost. Add the YouTube link after the demo video is uploaded.
+> Draft for the Devpost entry. Demo video is public at https://youtu.be/2cTR2_x2c60 (published 10 Nov 2026, IST).
 >
 > **Live run (10 Nov 2026, 8:06 PM IST):** passed against a United States PayPal sandbox business app. Scripted agent (`scripted-offline`). Three payouts CONFIRMED at PayPal: INV-1001 `YRUFL6J3GL6P2`, INV-1002 `3DB7ZVA7EQPPW` (after human approval), INV-1005 `YRNQ62VPPNKUU` (response lost, retry blocked, reconciled via PayPal's duplicate `sender_batch_id` link, 1 create + 1 replay). INV-1003/1004/1006 denied (`PAYEE_CHANGED`, `UNKNOWN_PAYEE`, `DAILY_BUDGET`). Budget 1,725.00 / 2,000.00 USD. One payout per invoice. Evidence: `docs/hackathons/paypal/evidence/paypal-sandbox-latest.json`.
 
@@ -10,7 +10,7 @@
 
 **Links**
 - Repo (Apache-2.0): https://github.com/prasanthkuna/railguard-gateway (code in `packages/rail-paypal`, docs in `docs/hackathons/paypal`)
-- Demo video (YouTube, under 3 min): TODO
+- Demo video (YouTube, under 3 min): https://youtu.be/2cTR2_x2c60
 - Run it: `bun install && bun run paypal:demo` (offline) or `bun run paypal:demo -- --live` (PayPal sandbox)
 
 ## Inspiration
@@ -39,7 +39,7 @@ The demo ends with a hard check: one PayPal payout per invoice.
 - **Chaos drill:** in live mode the client really sends one payout to the PayPal sandbox and then drops the response, so the timeout path is tested against real PayPal.
 - **Tests:** 22 unit and end-to-end tests (`bun test packages/rail-paypal`) with a PayPal simulator that copies PayPal's request-id replay and duplicate-batch rules, plus fixtures from the live sandbox error shape.
 
-**AI tools used:** The live demo agent was the scripted model, not Gemini. Gemini 2.5 Flash is wired as an optional agent runtime (function calling) when a key is set. TODO (Prasanth): list any AI coding assistant you used while building, and how.
+**AI tools used:** The live demo agent was the scripted model, not Gemini. Gemini 2.5 Flash is wired as an optional agent runtime (function calling) when a key is set. Coding and packaging for this entry used AI assistance. The live sandbox run used the scripted agent, not an LLM.
 
 ## What changed during the hackathon
 
