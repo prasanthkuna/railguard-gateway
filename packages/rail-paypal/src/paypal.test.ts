@@ -99,9 +99,9 @@ describe("paypal ids", () => {
       links: [],
     })
     expect(liveShape).toBe("https://api.sandbox.paypal.com/v1/payments/payouts/NXL242UZSPJAS")
-    expect(
-      rewriteToClientBaseUrl(liveShape ?? "", "https://api-m.sandbox.paypal.com"),
-    ).toBe("https://api-m.sandbox.paypal.com/v1/payments/payouts/NXL242UZSPJAS")
+    expect(rewriteToClientBaseUrl(liveShape ?? "", "https://api-m.sandbox.paypal.com")).toBe(
+      "https://api-m.sandbox.paypal.com/v1/payments/payouts/NXL242UZSPJAS",
+    )
   })
 
   test("item status mapping: UNCLAIMED keeps money reserved, SUCCESS is CONFIRMED not final", () => {

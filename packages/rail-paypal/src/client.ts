@@ -179,7 +179,10 @@ async function readErrorBody(res: Response): Promise<PayPalErrorBody> {
 }
 
 /** PayPal sandbox REST hosts used interchangeably in HATEOAS links. */
-export const PAYPAL_SANDBOX_API_HOSTS = ["api-m.sandbox.paypal.com", "api.sandbox.paypal.com"] as const
+export const PAYPAL_SANDBOX_API_HOSTS = [
+  "api-m.sandbox.paypal.com",
+  "api.sandbox.paypal.com",
+] as const
 
 function payoutLinksFrom(body: PayPalErrorBody): PayPalLink[] {
   const links: PayPalLink[] = [...(body.links ?? [])]
