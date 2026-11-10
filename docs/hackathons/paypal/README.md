@@ -34,23 +34,26 @@ The run ends with a check that holds in every mode: **one PayPal payout per invo
   `FAILED`/`DENIED`/`BLOCKED` → failed (budget released); `RETURNED`/`REFUNDED`/`REVERSED` → reversed. If PayPal shows a different
   amount, currency or receiver, the attempt is `DISPUTED` and the money stays frozen.
 - **Webhooks are hints.** `createPayPalWebhookHandler` verifies the signature with PayPal, drops repeated event ids, then re-reads the batch from PayPal.
-- **Sandbox only.** The client refuses any host that is not `api-m.sandbox.paypal.com`.
+- **Sandbox only.** The client calls `api-m.sandbox.paypal.com` only. HATEOAS links on `api.sandbox.paypal.com` are rewritten to that base; any other host is refused.
 
 The AI agent (Gemini 2.5 Flash with function calling, or an offline scripted model) has five tools: `read_invoices`,
 `pay_invoice`, `get_payout`, `reconcile_payout`, `budget_status`. It has no tool to approve, add payees or raise budgets.
 
-## Live sandbox status (10 Nov 2026, 7:55 PM IST)
+## Live sandbox status (10 Nov 2026, 8:06 PM IST)
 
-A live run against the Default Application sandbox credentials did **not** complete. This is not a simulated result.
+A live `bun run paypal:demo -- --live --save` run against a United States Sandbox Business app **passed**. This is a real PayPal sandbox result, not a simulation. The agent in this run was the scripted model (`scripted-offline`); `GEMINI_API_KEY` was not set.
 
-- OAuth client-credentials on `api-m.sandbox.paypal.com` succeeded, and the token includes the Payouts scope (`https://uri.paypal.com/payments/payouts`).
-- `POST /v1/payments/payouts` (a $1.00 USD capability probe, not the full agent demo) returned HTTP 403 `PAYOUT_NOT_AVAILABLE`: "You live in a country that is not allowed to send this payout." PayPal debug id `f138830519247`.
-- Official country support lists India as **Receive and withdraw** only, so a sender account in India cannot create payouts, including in sandbox. Source: https://developer.paypal.com/payouts/supported-features
-- `PAYPAL_SANDBOX_RECEIVER_EMAIL` was also unset. The full `bun run paypal:demo -- --live` was not started.
+| Invoice | Result | PayPal batch | Notes |
+| --- | --- | --- | --- |
+| INV-1001-2611101435 | `CONFIRMED` (item `SUCCESS`) | `YRUFL6J3GL6P2` | 180.00 USD, 1 create |
+| INV-1002-2611101435 | `CONFIRMED` (item `SUCCESS`) | `3DB7ZVA7EQPPW` | 1,450.00 USD after a human approved the exact terms |
+| INV-1003 / INV-1004 | `DENIED` | — | `PAYEE_CHANGED`, `UNKNOWN_PAYEE` |
+| INV-1005-2611101435 | `CONFIRMED` (item `SUCCESS`) | `YRNQ62VPPNKUU` | Response dropped after PayPal accepted it (`UNKNOWN`, budget frozen); retry `BLOCKED_DUPLICATE`; reconcile followed PayPal's duplicate `sender_batch_id` link (`via: duplicate_batch_link`, 1 create + 1 replay) |
+| INV-1006 | `DENIED` | — | `DAILY_BUDGET` (frozen money still counted) |
 
-Evidence (redacted, no secrets): [`evidence/live-blocked-2026-11-10.json`](./evidence/live-blocked-2026-11-10.json).
+Budget: 1,725.00 of 2,000.00 USD used. PayPal create POSTs: 4. One payout per invoice: yes.
 
-To unblock: in the Developer Dashboard create a **Sandbox Business** account with country **United States**, create a **Merchant** sandbox app attached to that US business account, put that app's client id/secret in the locked env file (never in git or chat), set `PAYPAL_SANDBOX_RECEIVER_EMAIL` to a Personal sandbox account email, then re-run `bun run paypal:demo -- --live --save`.
+Evidence: [`evidence/paypal-sandbox-latest.json`](./evidence/paypal-sandbox-latest.json). An earlier US-app run left INV-1005 `UNKNOWN` because PayPal puts the duplicate-batch link under `details[].link` on `api.sandbox.paypal.com`; that is archived at [`evidence/paypal-sandbox-2026-11-10-pre-link-fix.json`](./evidence/paypal-sandbox-2026-11-10-pre-link-fix.json). A first Default Application probe was blocked (`PAYOUT_NOT_AVAILABLE`, India is receive-and-withdraw only): [`evidence/live-blocked-2026-11-10.json`](./evidence/live-blocked-2026-11-10.json).
 
 ## Run it
 
@@ -58,7 +61,7 @@ To unblock: in the Developer Dashboard create a **Sandbox Business** account wit
 bun install
 bun run paypal:demo                 # offline: PayPal simulator + scripted agent, no keys needed
 bun run paypal:demo -- --live       # PayPal sandbox; uses Gemini if GEMINI_API_KEY is set
-bun run paypal:demo -- --live --save   # also writes evidence/live-latest.json
+bun run paypal:demo -- --live --save   # also writes evidence/paypal-sandbox-latest.json
 bun test packages/rail-paypal
 ```
 

@@ -1,8 +1,8 @@
 # Devpost submission draft: PayPal AI Hackathon
 
-> Draft for Prasanth to review and paste into Devpost. Fill the two `TODO` links after recording and a successful live sandbox run.
+> Draft for Prasanth to review and paste into Devpost. Add the YouTube link after the demo video is uploaded.
 >
-> **Live run status (10 Nov 2026, 7:55 PM IST):** not complete. OAuth and the Payouts scope succeeded, but PayPal returned HTTP 403 `PAYOUT_NOT_AVAILABLE` ("You live in a country that is not allowed to send this payout.", debug id `f138830519247`). India is receive-and-withdraw only for Payouts, so the Default Application's sender account cannot create payouts. Details: `docs/hackathons/paypal/evidence/live-blocked-2026-11-10.json`. Do not treat this as a passing live demo.
+> **Live run (10 Nov 2026, 8:06 PM IST):** passed against a United States PayPal sandbox business app. Scripted agent (`scripted-offline`). Three payouts CONFIRMED at PayPal: INV-1001 `YRUFL6J3GL6P2`, INV-1002 `3DB7ZVA7EQPPW` (after human approval), INV-1005 `YRNQ62VPPNKUU` (response lost, retry blocked, reconciled via PayPal's duplicate `sender_batch_id` link, 1 create + 1 replay). INV-1003/1004/1006 denied (`PAYEE_CHANGED`, `UNKNOWN_PAYEE`, `DAILY_BUDGET`). Budget 1,725.00 / 2,000.00 USD. One payout per invoice. Evidence: `docs/hackathons/paypal/evidence/paypal-sandbox-latest.json`.
 
 **Project name:** Railguard for PayPal Payouts
 
@@ -35,11 +35,11 @@ The demo ends with a hard check: one PayPal payout per invoice.
 - **TypeScript on Bun**, inside Railguard's open-source kernel. The new package `packages/rail-paypal` implements Railguard's `ExecutionRail` interface (prepare, execute, observe, reconcile) for PayPal Payouts.
 - **PayPal APIs (sandbox):** OAuth client credentials, `POST /v1/payments/payouts` with `PayPal-Request-Id`, `GET /v1/payments/payouts/{id}`, and `POST /v1/notifications/verify-webhook-signature`.
 - **Reconcile by request id:** PayPal keeps a request id for 30 days and returns the original result when it is sent again. Railguard replays the byte-identical request (body hash checked) to recover a lost response. If PayPal reports a duplicate `sender_batch_id`, Railguard follows PayPal's link to the original batch.
-- **AI:** Google Gemini 2.5 Flash with function calling drives the agent. It gets five tools (read invoices, pay, get payout, reconcile, budget status) and no tool to approve, add payees or raise limits. An offline scripted model runs the same story with no keys.
+- **AI:** The agent has five tools (read invoices, pay, get payout, reconcile, budget status) and no tool to approve, add payees or raise limits. Google Gemini 2.5 Flash can drive it when `GEMINI_API_KEY` is set. The recorded live sandbox run used the scripted model (`scripted-offline`) with the same tools; no Gemini key was configured for that run.
 - **Chaos drill:** in live mode the client really sends one payout to the PayPal sandbox and then drops the response, so the timeout path is tested against real PayPal.
-- **Tests:** 21 unit and end-to-end tests (`bun test packages/rail-paypal`) with a PayPal simulator that copies PayPal's request-id replay and duplicate-batch rules.
+- **Tests:** 22 unit and end-to-end tests (`bun test packages/rail-paypal`) with a PayPal simulator that copies PayPal's request-id replay and duplicate-batch rules, plus fixtures from the live sandbox error shape.
 
-**AI tools used:** Gemini 2.5 Flash (agent runtime, function calling). TODO (Prasanth): list any AI coding assistant you used while building, and how.
+**AI tools used:** The live demo agent was the scripted model, not Gemini. Gemini 2.5 Flash is wired as an optional agent runtime (function calling) when a key is set. TODO (Prasanth): list any AI coding assistant you used while building, and how.
 
 ## What changed during the hackathon
 
@@ -52,12 +52,13 @@ webhook verification, the AP agent with Gemini, the PayPal simulator, the chaos 
 - **There is no "find payout by request id" API.** We had to reconcile by replaying the exact same request, and prove that this is safe: same request id, same body, inside PayPal's 30-day window.
 - **"Success" is not the end.** A `SUCCESS` payout can later be `RETURNED` or `REVERSED`, and `UNCLAIMED` can last 30 days. The rail keeps watching and only frees or commits money on real states.
 - **Timeouts are ambiguous.** Treating a timeout as "failed" causes double payments, and treating it as "paid" hides losses. We made `UNKNOWN` a first-class state that freezes money and blocks retries.
-- **Sandbox sender country.** A live Payouts call with the Default Application credentials was rejected (`PAYOUT_NOT_AVAILABLE`) because India can receive and withdraw payouts but cannot send them. The next step is a United States Sandbox Business account and a Merchant app attached to it.
+- **Sandbox sender country.** A first probe with India-based Default Application credentials was rejected (`PAYOUT_NOT_AVAILABLE`). India can receive and withdraw payouts but cannot send them. A United States Sandbox Business account and Merchant app unblocked the live run.
+- **Live PayPal error shape.** Replaying a lost create does not always return the original batch body. PayPal answered `USER_BUSINESS_ERROR` (duplicate `sender_batch_id`) with the original-batch HATEOAS link under `details[].link` on `api.sandbox.paypal.com`, not on the top-level `links` array. The client now reads that shape and rewrites the sandbox host alias.
 
 ## Accomplishments we're proud of
 
 - A real AI agent that tries to do the wrong thing in five different ways and is stopped each time with a clear reason and next step.
-- The double-payment check holds against the simulator (21 unit/e2e tests and the offline demo). It has not yet been shown against the PayPal sandbox: the live create-payout call was rejected with `PAYOUT_NOT_AVAILABLE` (see live run status above).
+- The double-payment check holds against the simulator (22 unit/e2e tests) and against the PayPal sandbox: one payout per invoice, and the lost-response invoice recovered as a single CONFIRMED batch (`YRNQ62VPPNKUU`) after an idempotent replay.
 
 ## What we learned
 

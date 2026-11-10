@@ -125,6 +125,8 @@ export async function runApDemo(
     now?: () => Date
     log?: ((step: ApDemoStep) => void) | undefined
     settleWaitMs?: number | undefined
+    /** Test hook: append this to invoice ids (live mode already appends a timestamp). */
+    invoiceSuffix?: string | undefined
   } = {},
 ): Promise<ApDemoResult> {
   const env = options.env ?? {}
@@ -172,7 +174,9 @@ export async function runApDemo(
   })
   const verifiedAt = new Date(now().getTime() - 30 * 24 * 3_600_000).toISOString()
   const guard = createPayPalPolicyGuard({ payees: demoPayees(receivers, verifiedAt), budget, now })
-  const suffix = live ? `-${now().toISOString().replace(/[-:T]/g, "").slice(2, 12)}` : ""
+  const suffix =
+    options.invoiceSuffix ??
+    (live ? `-${now().toISOString().replace(/[-:T]/g, "").slice(2, 12)}` : "")
   const all = demoInvoices(suffix)
   let inbox: Invoice[] = [all["1001"], all["1002"], all["1003"], all["1004"]] as Invoice[]
   const toolbox = createApToolbox({ guard, rail, budget, invoices: () => inbox })

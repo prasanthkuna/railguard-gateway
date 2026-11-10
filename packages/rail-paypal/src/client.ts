@@ -131,7 +131,7 @@ export interface PayPalClient {
   createPayout(request: CreatePayoutRequest, paypalRequestId: string): Promise<PayPalPayoutBatch>
   /** GET /v1/payments/payouts/{payout_batch_id} (authoritative status incl. items). */
   getPayoutBatch(payoutBatchId: string): Promise<PayPalPayoutBatch>
-  /** GET a HATEOAS href (used for the duplicate sender_batch_id link). Same host only. */
+  /** GET a HATEOAS href (used for the duplicate sender_batch_id link). Sandbox API host aliases allowed. */
   getByHref(href: string): Promise<PayPalPayoutBatch>
   /** POST /v1/notifications/verify-webhook-signature. Returns true only for SUCCESS. */
   verifyWebhookSignature(input: WebhookVerificationInput): Promise<boolean>
@@ -153,11 +153,20 @@ export function assertSandboxBaseUrl(baseUrl: string): void {
   }
 }
 
+interface PayPalErrorDetail {
+  field?: string
+  issue?: string
+  description?: string
+  /** Real PayPal sandbox puts the original-batch HATEOAS link here, not on the top-level `links` array. */
+  link?: PayPalLink | PayPalLink[]
+  links?: PayPalLink[]
+}
+
 interface PayPalErrorBody {
   name?: string
   message?: string
   debug_id?: string
-  details?: Array<{ field?: string; issue?: string; description?: string }>
+  details?: PayPalErrorDetail[]
   links?: PayPalLink[]
 }
 
@@ -167,6 +176,39 @@ async function readErrorBody(res: Response): Promise<PayPalErrorBody> {
   } catch {
     return {}
   }
+}
+
+/** PayPal sandbox REST hosts used interchangeably in HATEOAS links. */
+export const PAYPAL_SANDBOX_API_HOSTS = ["api-m.sandbox.paypal.com", "api.sandbox.paypal.com"] as const
+
+function payoutLinksFrom(body: PayPalErrorBody): PayPalLink[] {
+  const links: PayPalLink[] = [...(body.links ?? [])]
+  for (const detail of body.details ?? []) {
+    const extra = detail.link
+    if (Array.isArray(extra)) links.push(...extra)
+    else if (extra) links.push(extra)
+    if (detail.links) links.push(...detail.links)
+  }
+  return links
+}
+
+function payoutBatchHref(links: PayPalLink[]): string | undefined {
+  return links.find((l) => /\/v1\/payments\/payouts\/[^/?#]+/.test(l.href ?? ""))?.href
+}
+
+/**
+ * Rewrite a PayPal sandbox HATEOAS href onto the client's base URL when the host is a known alias
+ * (`api.sandbox.paypal.com` vs `api-m.sandbox.paypal.com`). Any other origin is rejected.
+ */
+export function rewriteToClientBaseUrl(href: string, baseUrl: string): string {
+  const target = new URL(href)
+  const base = new URL(baseUrl)
+  if (target.origin === base.origin) return href
+  const sandbox = new Set<string>(PAYPAL_SANDBOX_API_HOSTS)
+  if (sandbox.has(target.hostname) && sandbox.has(base.hostname)) {
+    return new URL(`${target.pathname}${target.search}${target.hash}`, base.origin).toString()
+  }
+  throw new PayPalApiError("REJECTED", `refusing cross-origin link ${target.origin}`)
 }
 
 /** PayPal answers a reused sender_batch_id with an error that links to the original batch. */
@@ -180,8 +222,7 @@ export function isDuplicateBatchError(status: number, body: PayPalErrorBody): st
     .filter(Boolean)
     .join(" ")
   if (!/duplicate|already\s+(exists|used|been used)|sender_batch_id/i.test(text)) return undefined
-  const link = (body.links ?? []).find((l) => /\/v1\/payments\/payouts\//.test(l.href))
-  return link?.href ?? ""
+  return payoutBatchHref(payoutLinksFrom(body)) ?? ""
 }
 
 export function createPayPalClient(options: PayPalClientOptions): PayPalClient {
@@ -298,11 +339,8 @@ export function createPayPalClient(options: PayPalClientOptions): PayPalClient {
     },
 
     async getByHref(href) {
-      const target = new URL(href)
-      if (target.origin !== new URL(baseUrl).origin) {
-        throw new PayPalApiError("REJECTED", `refusing cross-origin link ${target.origin}`)
-      }
-      const res = await authed(target.toString(), { method: "GET" })
+      const resolved = rewriteToClientBaseUrl(href, baseUrl)
+      const res = await authed(resolved, { method: "GET" })
       if (!res.ok) return classify(res)
       return (await res.json()) as PayPalPayoutBatch
     },

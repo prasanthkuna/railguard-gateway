@@ -248,6 +248,8 @@ export function createApToolbox(deps: {
 
 const MONEY = /(?:USD\s*)?\$\s*([\d,]+(?:\.\d{1,2})?)|([\d,]+(?:\.\d{1,2})?)\s*USD/i
 const EMAIL = /[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/i
+/** Live mode appends a compact timestamp, e.g. INV-1001-2611101432. */
+const INVOICE_ID = /INV-\d+(?:-\d+)?/i
 
 /** Deterministic invoice reader (stands in for the LLM offline). */
 export function extractInvoice(inv: Invoice) {
@@ -313,15 +315,16 @@ export function createScriptedApModel(): PaymentOpsModel {
       if (!results) {
         const last = history[history.length - 1]
         const text = last?.role === "user" ? last.text : ""
-        const retry = text.match(/(?:retry|again|resend|re-pay|repay)\D*(INV-\d+)/i)
-        if (retry?.[1]) {
-          const args = priorPayArgs(history, retry[1])
+        const invoiceId = text.match(INVOICE_ID)?.[0]
+        const retry = /(?:retry|again|resend|re-pay|repay)/i.test(text)
+        if (retry && invoiceId) {
+          const args = priorPayArgs(history, invoiceId)
           if (args) return { calls: [{ name: "pay_invoice", args }] }
         }
-        const one = text.match(/pay\s+(?:invoice\s+)?(INV-\d+)/i)
+        const one = /pay\s+(?:invoice\s+)?INV-/i.test(text) ? invoiceId : undefined
         if (/invoice|inbox|pay/i.test(text) && !one)
           return { calls: [{ name: "read_invoices", args: {} }] }
-        if (one?.[1]) return { calls: [{ name: "read_invoices", args: { only: one[1] } }] }
+        if (one) return { calls: [{ name: "read_invoices", args: { only: one } }] }
         if (/budget/i.test(text)) return { calls: [{ name: "budget_status", args: {} }] }
         return {
           text: "I can read the invoice inbox, pay invoices through Railguard, and reconcile payouts.",
@@ -331,7 +334,7 @@ export function createScriptedApModel(): PaymentOpsModel {
       const first = results[0]
       if (first?.name === "read_invoices") {
         const lastUser = [...history].reverse().find((m) => m.role === "user")
-        const only = lastUser?.role === "user" ? lastUser.text.match(/(INV-\d+)/i)?.[1] : undefined
+        const only = lastUser?.role === "user" ? lastUser.text.match(INVOICE_ID)?.[0] : undefined
         const invoices = ((first.result.invoices as Invoice[] | undefined) ?? []).filter(
           (i) => !only || i.id.toLowerCase() === only.toLowerCase(),
         )

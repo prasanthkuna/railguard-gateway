@@ -6,7 +6,7 @@ import {
   extractInvoice,
 } from "./agent"
 import { createBudgetLedger } from "./budget"
-import { createPayPalClient, isDuplicateBatchError } from "./client"
+import { createPayPalClient, isDuplicateBatchError, rewriteToClientBaseUrl } from "./client"
 import { runApDemo } from "./demo"
 import { type PayPalPayee, createPayPalPolicyGuard } from "./policy"
 import {
@@ -78,6 +78,30 @@ describe("paypal ids", () => {
     })
     expect(href).toBe("https://api-m.sandbox.paypal.com/v1/payments/payouts/ABC")
     expect(isDuplicateBatchError(422, { name: "INSUFFICIENT_FUNDS" })).toBeUndefined()
+    // Real PayPal sandbox (10 Nov 2026): link is under details[].link, top-level links is empty,
+    // and the host is api.sandbox.paypal.com rather than api-m.sandbox.paypal.com.
+    const liveShape = isDuplicateBatchError(400, {
+      name: "USER_BUSINESS_ERROR",
+      message: "User business error.",
+      details: [
+        {
+          field: "SENDER_BATCH_ID",
+          issue: "Batch with given sender_batch_id already exists",
+          link: [
+            {
+              href: "https://api.sandbox.paypal.com/v1/payments/payouts/NXL242UZSPJAS",
+              rel: "self",
+              method: "GET",
+            },
+          ],
+        },
+      ],
+      links: [],
+    })
+    expect(liveShape).toBe("https://api.sandbox.paypal.com/v1/payments/payouts/NXL242UZSPJAS")
+    expect(
+      rewriteToClientBaseUrl(liveShape ?? "", "https://api-m.sandbox.paypal.com"),
+    ).toBe("https://api-m.sandbox.paypal.com/v1/payments/payouts/NXL242UZSPJAS")
   })
 
   test("item status mapping: UNCLAIMED keeps money reserved, SUCCESS is CONFIRMED not final", () => {
@@ -331,6 +355,30 @@ describe("paypal agent", () => {
       ]),
     )
     expect(result.paypalCreatePosts).toBe(4) // 3 creates + 1 idempotent replay, never a 4th payout
+  })
+
+  test("scripted model still completes the story when invoice ids have a live timestamp suffix", async () => {
+    const result = await runApDemo({
+      model: createScriptedApModel(),
+      now,
+      invoiceSuffix: "-2611101432",
+    })
+    expect(result.invariantOnePayoutPerInvoice).toBe(true)
+    expect(Object.keys(result.batchesPerInvoice)).toHaveLength(3)
+    expect(result.payouts.every((p) => p.state === "CONFIRMED")).toBe(true)
+    expect(result.payouts.every((p) => p.intentId.includes("2611101432"))).toBe(true)
+    const codes = result.steps.flatMap((s) => s.outcomes.map((o) => o.code ?? o.status))
+    expect(codes).toEqual(
+      expect.arrayContaining([
+        "APPROVAL_REQUIRED",
+        "PAYEE_CHANGED",
+        "UNKNOWN_PAYEE",
+        "UNKNOWN",
+        "DAILY_BUDGET",
+        "BLOCKED_DUPLICATE",
+      ]),
+    )
+    expect(result.paypalCreatePosts).toBe(4)
   })
 })
 
