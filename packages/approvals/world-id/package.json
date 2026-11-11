@@ -1,0 +1,14 @@
+{
+  "name": "@railguard/approval-world-id",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "license": "Apache-2.0",
+  "description": "World ID Agent Pass approval for Railguard payments above threshold.",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "test": "bun test src"
+  }
+}
